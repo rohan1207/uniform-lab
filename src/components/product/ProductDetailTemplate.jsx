@@ -26,58 +26,58 @@ const GLOBAL_CSS = `
     padding-top: 5.5rem; /* clear fixed navbar so breadcrumb sits below it */
   }
 
-  /* ── Add to Cart — amber glow (matches ProductCard feel, scaled up) ── */
+  /* ── Add to Cart — NewHero gold pill CTA ── */
   .pdt-btn-cart {
     font-family: 'Baloo 2', cursive;
     font-weight: 900;
-    font-size: 12.5px;
-    letter-spacing: 0.07em;
+    font-size: clamp(11px, 1vw, 13px);
+    letter-spacing: 0.11em;
     text-transform: uppercase;
-    color: #fff;
-    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 60%, #d97706 100%);
-    border: none;
-    border-radius: 12px;
+    color: #5c3a0a;
+    background: linear-gradient(180deg, #fcd88a 0%, #F7BE4F 50%, #e5a732 100%);
+    border: 1px solid rgba(229,167,50,0.6);
+    border-radius: 9999px;
     cursor: pointer;
     padding: 0 26px;
     height: 46px;
-    box-shadow: 0 2px 12px rgba(245,158,11,0.25);
-    transition: box-shadow 0.22s ease, transform 0.16s ease, filter 0.16s ease;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.18);
+    box-shadow: 0 2px 8px rgba(247,190,79,0.35), inset 0 1px 0 rgba(255,255,255,0.45);
+    text-shadow: 0 1px 0 rgba(255,255,255,0.45);
+    transition: transform 0.1s ease, box-shadow 0.1s ease, filter 0.12s ease;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
     white-space: nowrap;
   }
-  .pdt-btn-cart:hover  { box-shadow: 0 8px 28px rgba(245,158,11,0.40); transform: translateY(-2px); filter: brightness(1.06); }
-  .pdt-btn-cart:active { transform: scale(0.97); box-shadow: 0 2px 8px rgba(245,158,11,0.20); }
+  .pdt-btn-cart:hover  { filter: brightness(1.04); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(247,190,79,0.4), inset 0 1px 0 rgba(255,255,255,0.5); }
+  .pdt-btn-cart:active { transform: translateY(1px); box-shadow: 0 1px 4px rgba(247,190,79,0.25), inset 0 1px 0 rgba(255,255,255,0.35); }
   .pdt-btn-cart:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
-  /* ── Buy Now — dark navy → blue glow on hover (like ProductCard Quick Shop) ── */
+  /* ── Buy Now — NewHero blue pill CTA ── */
   .pdt-btn-buy {
     font-family: 'Baloo 2', cursive;
     font-weight: 900;
-    font-size: 12.5px;
-    letter-spacing: 0.07em;
+    font-size: clamp(11px, 1vw, 13px);
+    letter-spacing: 0.11em;
     text-transform: uppercase;
-    color: #94a3b8;
-    background: #0f172a;
-    border: none;
-    border-radius: 12px;
+    color: #fff;
+    background: linear-gradient(180deg, #1a6bb8 0%, #004C99 50%, #003d7a 100%);
+    border: 1px solid rgba(0,76,153,0.6);
+    border-radius: 9999px;
     cursor: pointer;
     padding: 0 26px;
     height: 46px;
-    box-shadow: none;
-    transition: background 0.22s ease, color 0.22s ease,
-                box-shadow 0.22s ease, transform 0.16s ease;
+    box-shadow: 0 2px 8px rgba(0,76,153,0.25), inset 0 1px 0 rgba(255,255,255,0.15);
+    text-shadow: 0 1px 0 rgba(0,0,0,0.2);
+    transition: transform 0.1s ease, box-shadow 0.1s ease, filter 0.12s ease;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
     white-space: nowrap;
   }
-  .pdt-btn-buy:hover  { background: #1e3a8a; color: #fff; box-shadow: 0 8px 28px rgba(37,99,235,0.32); transform: translateY(-2px); }
-  .pdt-btn-buy:active { transform: scale(0.97); }
+  .pdt-btn-buy:hover  { filter: brightness(1.04); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,76,153,0.3), inset 0 1px 0 rgba(255,255,255,0.2); }
+  .pdt-btn-buy:active { transform: translateY(1px); box-shadow: 0 1px 4px rgba(0,76,153,0.2), inset 0 1px 0 rgba(255,255,255,0.1); }
   .pdt-btn-buy:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
   /* ── Size pill ── */
@@ -169,7 +169,7 @@ const GLOBAL_CSS = `
       height: 44px !important;
       padding: 0 14px !important;
       font-size: 12px !important;
-      border-radius: 10px !important;
+      border-radius: 9999px !important;
     }
 
     /* Size pills — compact */

@@ -62,43 +62,79 @@ const QS_CSS = `
     box-shadow: 0 3px 10px rgba(15,23,42,0.18);
   }
 
-  /* ── Add to cart (pill, NewHero-style premium) ── */
+  /* ── School name: square badge, high visibility ── */
+  .qs-school-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #eef5ff 0%, #ddeaff 100%);
+    border: 1.5px solid rgba(0,76,153,0.35);
+    color: #004C99;
+    font-family: 'Baloo 2', cursive;
+    font-weight: 900;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    box-shadow: 0 2px 6px rgba(0,76,153,0.12);
+    transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
+  }
+  .qs-school-badge:hover {
+    background: linear-gradient(135deg, #ddeaff 0%, #cce0ff 100%);
+    box-shadow: 0 3px 10px rgba(0,76,153,0.18);
+    transform: translateY(-0.5px);
+  }
+
+  /* ── Add to cart: NewHero gold pill ── */
   .qs-btn-cart {
     flex: 1;
     height: 46px;
-    border: 1px solid #c97d00;
+    border: 1px solid rgba(229,167,50,0.6);
     border-radius: 9999px;
     cursor: pointer;
-    background: linear-gradient(180deg, #fbbf24 0%, #f59e0b 62%, #d97706 100%);
-    color: #fff;
-    font-family: 'Baloo 2', cursive; font-weight: 900; font-size: 12px;
-    letter-spacing: 0.09em; text-transform: uppercase;
-    display: inline-flex; align-items: center; justify-content: center; gap: 7px;
-    box-shadow: 0 1px 0 #b45309, 0 4px 14px rgba(245,158,11,0.24), inset 0 1px 0 rgba(255,255,255,0.45);
-    text-shadow: 0 1px 0 #9a5800, 0 2px 5px rgba(0,0,0,0.22);
-    transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+    background: linear-gradient(180deg, #fcd88a 0%, #F7BE4F 50%, #e5a732 100%);
+    color: #5c3a0a;
+    font-family: 'Baloo 2', cursive;
+    font-weight: 900;
+    font-size: clamp(11px, 1vw, 13px);
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    box-shadow: 0 2px 8px rgba(247,190,79,0.35), inset 0 1px 0 rgba(255,255,255,0.45);
+    text-shadow: 0 1px 0 rgba(255,255,255,0.45);
+    transition: transform 0.1s ease, box-shadow 0.1s ease, filter 0.12s ease;
   }
-  .qs-btn-cart:hover   { transform: translateY(-2px); filter: brightness(1.04); box-shadow: 0 1px 0 #b45309, 0 8px 24px rgba(245,158,11,0.32), inset 0 1px 0 rgba(255,255,255,0.5); }
-  .qs-btn-cart:active  { transform: translateY(1px); box-shadow: 0 1px 0 #b45309, 0 1px 6px rgba(245,158,11,0.16), inset 0 1px 0 rgba(255,255,255,0.35); }
+  .qs-btn-cart:hover  { filter: brightness(1.04); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(247,190,79,0.4), inset 0 1px 0 rgba(255,255,255,0.5); }
+  .qs-btn-cart:active { transform: translateY(1px); box-shadow: 0 1px 4px rgba(247,190,79,0.25), inset 0 1px 0 rgba(255,255,255,0.35); }
 
-  /* ── Buy now (pill, dark navy like NewHero secondary) ── */
+  /* ── Buy now: NewHero blue pill ── */
   .qs-btn-buy {
     flex: 1;
     height: 46px;
-    border: 1px solid #1f314f;
+    border: 1px solid rgba(0,76,153,0.6);
     border-radius: 9999px;
     cursor: pointer;
-    background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
-    color: #94a3b8;
-    font-family: 'Baloo 2', cursive; font-weight: 900; font-size: 12px;
-    letter-spacing: 0.09em; text-transform: uppercase;
-    display: inline-flex; align-items: center; justify-content: center; gap: 7px;
-    box-shadow: 0 1px 0 #0b1220, 0 4px 14px rgba(15,23,42,0.22), inset 0 1px 0 rgba(255,255,255,0.18);
-    text-shadow: 0 1px 0 #0b1220, 0 2px 5px rgba(0,0,0,0.28);
-    transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+    background: linear-gradient(180deg, #1a6bb8 0%, #004C99 50%, #003d7a 100%);
+    color: #fff;
+    font-family: 'Baloo 2', cursive;
+    font-weight: 900;
+    font-size: clamp(11px, 1vw, 13px);
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    box-shadow: 0 2px 8px rgba(0,76,153,0.25), inset 0 1px 0 rgba(255,255,255,0.15);
+    text-shadow: 0 1px 0 rgba(0,0,0,0.2);
+    transition: transform 0.1s ease, box-shadow 0.1s ease, filter 0.12s ease;
   }
-  .qs-btn-buy:hover  { background: linear-gradient(180deg, #2563eb 0%, #1e3a8a 100%); color: #fff; transform: translateY(-2px); box-shadow: 0 1px 0 #0b1220, 0 6px 20px rgba(37,99,235,0.28), inset 0 1px 0 rgba(255,255,255,0.2); }
-  .qs-btn-buy:active { transform: translateY(1px); box-shadow: 0 1px 0 #0b1220, 0 1px 6px rgba(15,23,42,0.14), inset 0 1px 0 rgba(255,255,255,0.12); }
+  .qs-btn-buy:hover  { filter: brightness(1.04); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,76,153,0.3), inset 0 1px 0 rgba(255,255,255,0.2); }
+  .qs-btn-buy:active { transform: translateY(1px); box-shadow: 0 1px 4px rgba(0,76,153,0.2), inset 0 1px 0 rgba(255,255,255,0.1); }
 
   /* ═══════════════════════════════════════════════════════════════════════
      MOBILE — bottom sheet (< 768 px)
@@ -262,10 +298,10 @@ export function QuickShopDrawer({ open, onClose, product, schoolName, schoolSlug
           style={{ borderBottom: '1px solid #e8ecf1' }}>
           <div className="flex-1 min-w-0 pr-3">
             {schoolName && (
-              <p className="m-0 mb-0.5"
-                style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: '10px', color: '#2563eb', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+              <Link to={schoolSlug ? `/schools/${schoolSlug}` : '/schools'} onClick={onClose}
+                className="qs-school-badge inline-block mb-2">
                 🏫 {schoolName}
-              </p>
+              </Link>
             )}
             <h2 className="m-0 leading-snug line-clamp-2"
               style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: '16px', color: '#0f172a' }}>
@@ -339,8 +375,7 @@ export function QuickShopDrawer({ open, onClose, product, schoolName, schoolSlug
             <div className="hidden md:block">
               {schoolName && (
                 <Link to={schoolSlug ? `/schools/${schoolSlug}` : '/schools'} onClick={onClose}
-                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full mb-2"
-                  style={{ background: '#f1f5f9', color: '#475569', fontSize: '10px', fontFamily: "'Nunito', sans-serif", fontWeight: 700, textDecoration: 'none', border: '1px solid #e2e8f0', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
+                  className="qs-school-badge mb-3">
                   🏫 {schoolName}
                 </Link>
               )}

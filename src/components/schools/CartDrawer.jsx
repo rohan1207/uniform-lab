@@ -590,7 +590,7 @@ export function CartDrawer({ open, onClose }) {
                   >
                     <ShoppingBag size={16} strokeWidth={2.5} />
                     Proceed to Checkout
-                  </Link>
+            </Link>
 
                   <p className="text-center mt-3 m-0"
                     style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 600, fontSize: '11px', color: '#94a3b8' }}>
