@@ -15,49 +15,71 @@ const CART_CSS = `
   .cart-scrollbar-hide { scrollbar-width: none; }
   .cart-scrollbar-hide::-webkit-scrollbar { display: none; }
 
-  /* ── Checkout CTA (pill, NewHero-style premium) ── */
+  /* ── Checkout CTA: NewHero gold pill ── */
   .cart-checkout-btn {
     border-radius: 9999px !important;
-    border: 1px solid #c97d00 !important;
-    background: linear-gradient(180deg, #fbbf24 0%, #f59e0b 62%, #d97706 100%) !important;
-    box-shadow: 0 1px 0 #b45309, 0 4px 14px rgba(245,158,11,0.24), inset 0 1px 0 rgba(255,255,255,0.45) !important;
+    border: 1px solid rgba(229,167,50,0.6) !important;
+    background: linear-gradient(180deg, #fcd88a 0%, #F7BE4F 50%, #e5a732 100%) !important;
+    box-shadow: 0 2px 8px rgba(247,190,79,0.35), inset 0 1px 0 rgba(255,255,255,0.45) !important;
     font-family: 'Baloo 2', cursive !important;
     font-weight: 900 !important;
-    letter-spacing: 0.09em !important;
+    font-size: clamp(11px, 1vw, 13px) !important;
+    letter-spacing: 0.11em !important;
     text-transform: uppercase !important;
-    color: #fff !important;
-    text-shadow: 0 1px 0 #9a5800, 0 2px 5px rgba(0,0,0,0.22) !important;
+    color: #5c3a0a !important;
+    text-shadow: 0 1px 0 rgba(255,255,255,0.45) !important;
     text-decoration: none !important;
-    transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease !important;
+    transition: transform 0.1s ease, box-shadow 0.1s ease, filter 0.12s ease !important;
   }
   .cart-checkout-btn:hover {
-    transform: translateY(-2px) !important;
     filter: brightness(1.04) !important;
-    box-shadow: 0 1px 0 #b45309, 0 8px 24px rgba(245,158,11,0.32), inset 0 1px 0 rgba(255,255,255,0.5) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba(247,190,79,0.4), inset 0 1px 0 rgba(255,255,255,0.5) !important;
   }
   .cart-checkout-btn:active {
     transform: translateY(1px) !important;
-    box-shadow: 0 1px 0 #b45309, 0 1px 6px rgba(245,158,11,0.16), inset 0 1px 0 rgba(255,255,255,0.35) !important;
+    box-shadow: 0 1px 4px rgba(247,190,79,0.25), inset 0 1px 0 rgba(255,255,255,0.35) !important;
   }
 
-  /* ── Empty state / Browse Uniforms (pill, dark like NewHero secondary) ── */
+  /* ── Browse Uniforms: NewHero blue pill ── */
   .cart-btn-browse {
     border-radius: 9999px !important;
-    border: 1px solid #1f314f !important;
-    background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%) !important;
-    box-shadow: 0 1px 0 #0b1220, 0 4px 14px rgba(15,23,42,0.22), inset 0 1px 0 rgba(255,255,255,0.18) !important;
+    border: 1px solid rgba(0,76,153,0.6) !important;
+    background: linear-gradient(180deg, #1a6bb8 0%, #004C99 50%, #003d7a 100%) !important;
+    box-shadow: 0 2px 8px rgba(0,76,153,0.25), inset 0 1px 0 rgba(255,255,255,0.15) !important;
     font-family: 'Baloo 2', cursive !important;
     font-weight: 900 !important;
-    letter-spacing: 0.09em !important;
+    font-size: clamp(11px, 1vw, 13px) !important;
+    letter-spacing: 0.11em !important;
+    text-transform: uppercase !important;
     color: #fff !important;
+    text-shadow: 0 1px 0 rgba(0,0,0,0.2) !important;
     text-decoration: none !important;
-    transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease !important;
+    transition: transform 0.1s ease, box-shadow 0.1s ease, filter 0.12s ease !important;
   }
   .cart-btn-browse:hover {
-    transform: translateY(-2px) !important;
-    filter: brightness(1.06) !important;
-    box-shadow: 0 1px 0 #0b1220, 0 6px 20px rgba(37,99,235,0.28), inset 0 1px 0 rgba(255,255,255,0.2) !important;
-    background: linear-gradient(180deg, #2563eb 0%, #1e3a8a 100%) !important;
+    filter: brightness(1.04) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba(0,76,153,0.3), inset 0 1px 0 rgba(255,255,255,0.2) !important;
+  }
+  .cart-btn-browse:active {
+    transform: translateY(1px) !important;
+    box-shadow: 0 1px 4px rgba(0,76,153,0.2), inset 0 1px 0 rgba(255,255,255,0.1) !important;
+  }
+
+  /* ── Item badges (Size / Color): NewHero-style square badge ── */
+  .cart-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 10px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #eef5ff 0%, #ddeaff 100%);
+    border: 1px solid rgba(0,76,153,0.25);
+    color: #004C99;
+    font-family: 'Baloo 2', cursive;
+    font-weight: 800;
+    font-size: 10.5px;
+    box-shadow: 0 1px 3px rgba(0,76,153,0.08);
   }
 
   /* ═══════════════════════════════════════════════════════════════════════
@@ -480,16 +502,14 @@ export function CartDrawer({ open, onClose }) {
                                 style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: '13.5px', color: '#0f172a' }}>
                                 {item.name}
                               </p>
-                              <div className="flex flex-wrap items-center gap-x-1 mt-0.5">
+                              <div className="flex flex-wrap items-center gap-1.5 mt-0.5">
                                 {item.size && (
-                                  <span className="inline-flex items-center px-1.5 py-0.5 rounded-md"
-                                    style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: '10.5px', color: '#475569', background: '#f1f5f9' }}>
+                                  <span className="cart-badge">
                                     Size: {item.size}
                                   </span>
                                 )}
                                 {item.color && (
-                                  <span className="inline-flex items-center px-1.5 py-0.5 rounded-md"
-                                    style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: '10.5px', color: '#475569', background: '#f1f5f9' }}>
+                                  <span className="cart-badge">
                                     {item.color}
                                   </span>
                                 )}
@@ -548,19 +568,19 @@ export function CartDrawer({ open, onClose }) {
                 <div className="cart-footer px-5 py-4"
                   style={{ borderTop: '1.5px solid #e8ecf1', background: '#fff' }}>
 
-                  {/* Free shipping bar */}
+                  {/* Kit completion bar */}
                   <div className="mb-4">
                     {remaining > 0 ? (
                       <p className="m-0 mb-2 flex items-center gap-1"
                         style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: '12px', color: '#64748b' }}>
                         Add{' '}
                         <span style={{ color: '#0f172a', fontFamily: "'Baloo 2', cursive", fontWeight: 900 }}>₹{remaining}</span>
-                        {' '}more for free delivery 🚚
+                        {' '}more to complete your kit
                       </p>
                     ) : (
                       <p className="m-0 mb-2 flex items-center gap-1.5"
                         style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: '12px', color: '#16a34a' }}>
-                        <Check size={12} strokeWidth={2.5} /> You've unlocked free delivery! 🎉
+                        <Check size={12} strokeWidth={2.5} /> You have completed the kit!
                       </p>
                     )}
                     <div className="w-full rounded-full overflow-hidden" style={{ height: '6px', background: '#e2e8f0' }}>

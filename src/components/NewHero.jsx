@@ -19,6 +19,35 @@ const GLOBAL_CSS = `
   /* Hide mobile-only buttons row on desktop */
   .hero-btns-mobile { display: none; }
 
+  /* Desktop only: hide left-col text content (pill, lineTwo, divider, feature list); structure/columns unchanged */
+  @media (min-width: 768px) {
+    .hero-left-col > div:first-of-type,
+    .hero-left-col > p,
+    .hero-left-divider,
+    .hero-features-list {
+      display: none !important;
+    }
+  }
+
+  /* Desktop only: right-col metrics — one-by-one reveal on load */
+  @keyframes hero-metric-reveal {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @media (min-width: 768px) {
+    .hero-right-col > * {
+      opacity: 0;
+      animation: hero-metric-reveal 0.5s ease-out forwards;
+    }
+    .hero-right-col > *:nth-child(1) { animation-delay: 0.08s; }
+    .hero-right-col > *:nth-child(2) { animation-delay: 0.18s; }
+    .hero-right-col > *:nth-child(3) { animation-delay: 0.28s; }
+    .hero-right-col > *:nth-child(4) { animation-delay: 0.38s; }
+    .hero-right-col > *:nth-child(5) { animation-delay: 0.48s; }
+    .hero-right-col > *:nth-child(6) { animation-delay: 0.58s; }
+    .hero-right-col > *:nth-child(7) { animation-delay: 0.68s; }
+  }
+
   /* ── Peek SVG icon ── */
   .peek-wrap {
     position: relative;

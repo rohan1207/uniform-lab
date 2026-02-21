@@ -47,6 +47,7 @@ const GLOBAL_CSS = `
 
   /* Card shell — no border at all, only floating shadow */
   .sp-card-new {
+    position: relative;
     display: flex;
     flex-direction: column;
     border-radius: 20px;
@@ -55,6 +56,24 @@ const GLOBAL_CSS = `
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
     cursor: pointer;
     will-change: transform;
+  }
+
+  /* Tag: minimal, top-right corner */
+  .sp-card-tag {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 2;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 9px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #64748b;
+    background: rgba(255,255,255,0.92);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.06);
   }
 
   /* ── Visual area: flex column, two stacked zones ── */
@@ -125,41 +144,30 @@ const GLOBAL_CSS = `
     will-change: transform;
   }
 
-  /* ── Card body (text below visual) ── */
+  /* ── Card body (school name — subtle bg so name reads clearly) ── */
   .sp-card-body {
-    /* Fixed height so every card is identical regardless of name length */
-    height: 84px;
-    padding: 10px 14px 14px;
-    background: #ffffff;
+    height: 82px;
+    padding: 10px 12px 12px 22px;
     overflow: hidden;
     flex-shrink: 0;
-  }
-
-  .sp-card-level {
-    display: inline-block;
-    padding: 2px 10px;
-    border-radius: 999px;
-    font-family: 'Nunito', sans-serif;
-    font-weight: 700;
-    font-size: clamp(9px, 0.7vw, 10px);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: #2563eb;
-    background: linear-gradient(135deg, #eef5ff 0%, #ddeaff 100%);
-    margin-bottom: 6px;
+    background: linear-gradient(165deg, #f8fafc 0%, #f1f5f9 50%, #eef2f7 100%);
+    border-radius: 0 0 20px 20px;
+    border-top: 1px solid rgba(203, 213, 225, 0.6);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 1px 2px rgba(0,0,0,0.04);
   }
 
   .sp-card-name {
     margin: 0;
     font-family: 'Baloo 2', cursive;
     font-weight: 900;
-    color: #1a1a2e;
-    line-height: 1.25;
+    color: #0f172a;
+    line-height: 1.28;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    font-size: clamp(12px, 1vw, 14px);
+    font-size: clamp(13px, 1.05vw, 15px);
+    letter-spacing: -0.02em;
   }
 
   /* ── View-more button (game style) ── */
@@ -188,7 +196,7 @@ const GLOBAL_CSS = `
   ═══════════════════════════════════════════════════════════════════════════ */
   @media (max-width: 767px) {
 
-    .sp-root { padding-top: 90px !important; }
+    .sp-root { padding-top: 56px !important; }
     .sp-header { margin-bottom: 24px !important; }
 
     .sp-heading {
@@ -218,9 +226,9 @@ const GLOBAL_CSS = `
     .sp-card-logo-img    { max-height: 82px !important; max-width: 92% !important; }
     .sp-card-initials    { width: 48px !important; height: 48px !important; font-size: 17px !important; border-radius: 13px !important; }
 
-    .sp-card-body    { height: 66px !important; padding: 8px 10px 10px !important; }
-    .sp-card-name    { font-size: 11.5px !important; }
-    .sp-card-level   { font-size: 9px !important; margin-bottom: 4px !important; }
+    .sp-card-body    { height: 68px !important; padding: 8px 10px 10px 18px !important; }
+    .sp-card-name    { font-size: 12px !important; }
+    .sp-card-tag     { font-size: 8px !important; padding: 2px 5px !important; top: 6px !important; right: 6px !important; }
 
     .sp-view-more {
       width: 100% !important;
@@ -330,6 +338,9 @@ function SchoolCard({ school }) {
         onTouchMove={onTouchMove}
         onTouchEnd={onTouchEnd}
       >
+        {/* Tag: minimal, top-right */}
+        <span className="sp-card-tag">{school.level}</span>
+
         <div className="sp-card-visual">
 
           {/* ── TOP: white logo zone ── */}
@@ -362,9 +373,8 @@ function SchoolCard({ school }) {
 
         </div>
 
-        {/* ── Name row ── */}
+        {/* ── Name (first, prominent) ── */}
         <div className="sp-card-body">
-          <span className="sp-card-level">{school.level}</span>
           <p className="sp-card-name">{school.name}</p>
         </div>
       </div>
@@ -395,7 +405,7 @@ export default function SchoolsPage() {
     <>
       <style>{GLOBAL_CSS}</style>
 
-      <main className="sp-root pt-20 pb-12 sm:pt-24 sm:pb-16">
+      <main className="sp-root pt-12 pb-12 sm:pt-14 sm:pb-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
           {/* ── Header ── */}
