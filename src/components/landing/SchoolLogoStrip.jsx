@@ -41,8 +41,8 @@ export default function SchoolLogoStrip() {
     return () => ro.disconnect();
   }, [schools.length]);
 
-  /* Scale duration so speed feels consistent regardless of logo count */
-  const duration = `${Math.max(14, shift / 38)}s`;
+  /* Scale duration so speed feels consistent regardless of logo count (lower = faster) */
+  const duration = `${Math.max(11, shift / 48)}s`;
 
   if (!schools.length) return null;
 
