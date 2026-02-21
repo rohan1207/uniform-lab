@@ -15,6 +15,51 @@ const CART_CSS = `
   .cart-scrollbar-hide { scrollbar-width: none; }
   .cart-scrollbar-hide::-webkit-scrollbar { display: none; }
 
+  /* ── Checkout CTA (pill, NewHero-style premium) ── */
+  .cart-checkout-btn {
+    border-radius: 9999px !important;
+    border: 1px solid #c97d00 !important;
+    background: linear-gradient(180deg, #fbbf24 0%, #f59e0b 62%, #d97706 100%) !important;
+    box-shadow: 0 1px 0 #b45309, 0 4px 14px rgba(245,158,11,0.24), inset 0 1px 0 rgba(255,255,255,0.45) !important;
+    font-family: 'Baloo 2', cursive !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.09em !important;
+    text-transform: uppercase !important;
+    color: #fff !important;
+    text-shadow: 0 1px 0 #9a5800, 0 2px 5px rgba(0,0,0,0.22) !important;
+    text-decoration: none !important;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease !important;
+  }
+  .cart-checkout-btn:hover {
+    transform: translateY(-2px) !important;
+    filter: brightness(1.04) !important;
+    box-shadow: 0 1px 0 #b45309, 0 8px 24px rgba(245,158,11,0.32), inset 0 1px 0 rgba(255,255,255,0.5) !important;
+  }
+  .cart-checkout-btn:active {
+    transform: translateY(1px) !important;
+    box-shadow: 0 1px 0 #b45309, 0 1px 6px rgba(245,158,11,0.16), inset 0 1px 0 rgba(255,255,255,0.35) !important;
+  }
+
+  /* ── Empty state / Browse Uniforms (pill, dark like NewHero secondary) ── */
+  .cart-btn-browse {
+    border-radius: 9999px !important;
+    border: 1px solid #1f314f !important;
+    background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%) !important;
+    box-shadow: 0 1px 0 #0b1220, 0 4px 14px rgba(15,23,42,0.22), inset 0 1px 0 rgba(255,255,255,0.18) !important;
+    font-family: 'Baloo 2', cursive !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.09em !important;
+    color: #fff !important;
+    text-decoration: none !important;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease !important;
+  }
+  .cart-btn-browse:hover {
+    transform: translateY(-2px) !important;
+    filter: brightness(1.06) !important;
+    box-shadow: 0 1px 0 #0b1220, 0 6px 20px rgba(37,99,235,0.28), inset 0 1px 0 rgba(255,255,255,0.2) !important;
+    background: linear-gradient(180deg, #2563eb 0%, #1e3a8a 100%) !important;
+  }
+
   /* ═══════════════════════════════════════════════════════════════════════
      MOBILE  (< 768 px)  — full-screen drawer
   ═══════════════════════════════════════════════════════════════════════ */
@@ -396,14 +441,8 @@ export function CartDrawer({ open, onClose }) {
                       </p>
                     </div>
                     <Link to="/schools" onClick={onClose}
-                      className="mt-1 inline-flex items-center gap-2 px-6 py-3 rounded-xl transition-all hover:opacity-90"
-                      style={{
-                        background: 'linear-gradient(180deg, #334155 0%, #0f172a 100%)',
-                        fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: '13px',
-                        color: '#fff', textDecoration: 'none',
-                        boxShadow: '0 4px 0 0 #0f172a, 0 6px 20px rgba(15,23,42,0.22)',
-                        letterSpacing: '0.04em',
-                      }}>
+                      className="cart-btn-browse mt-1 inline-flex items-center gap-2 px-6 py-3"
+                      style={{ fontSize: '13px' }}>
                       Browse Uniforms <ArrowRight size={14} strokeWidth={2.5} />
                     </Link>
                   </div>
@@ -546,27 +585,12 @@ export function CartDrawer({ open, onClose }) {
 
                   {/* Checkout CTA */}
                   <Link to="/checkout" onClick={onClose}
-                    className="cart-checkout-btn flex items-center justify-center gap-2.5 w-full rounded-2xl py-3.5 transition-all"
-                    style={{
-                      background: 'linear-gradient(160deg, #fcd34d 0%, #f59e0b 45%, #d97706 100%)',
-                      boxShadow: '0 4px 0 0 #b45309, 0 6px 20px rgba(245,158,11,0.32)',
-                      textDecoration: 'none',
-                      fontFamily: "'Baloo 2', cursive",
-                      fontWeight: 900,
-                      fontSize: '14px',
-                      letterSpacing: '0.07em',
-                      textTransform: 'uppercase',
-                      color: '#fff',
-                      textShadow: '0 1px 2px rgba(0,0,0,0.18)',
-                    }}
-                    onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 0 0 #b45309, 0 10px 30px rgba(245,158,11,0.42)'; }}
-                    onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 4px 0 0 #b45309, 0 6px 20px rgba(245,158,11,0.32)'; }}
-                    onMouseDown={e => { e.currentTarget.style.transform = 'translateY(3px)'; e.currentTarget.style.boxShadow = '0 1px 0 0 #b45309, 0 2px 8px rgba(245,158,11,0.18)'; }}
-                    onMouseUp={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 0 0 #b45309, 0 10px 30px rgba(245,158,11,0.42)'; }}
+                    className="cart-checkout-btn flex items-center justify-center gap-2.5 w-full py-3.5 px-6"
+                    style={{ fontSize: '14px' }}
                   >
                     <ShoppingBag size={16} strokeWidth={2.5} />
                     Proceed to Checkout
-            </Link>
+                  </Link>
 
                   <p className="text-center mt-3 m-0"
                     style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 600, fontSize: '11px', color: '#94a3b8' }}>

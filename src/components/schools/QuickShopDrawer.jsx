@@ -62,38 +62,43 @@ const QS_CSS = `
     box-shadow: 0 3px 10px rgba(15,23,42,0.18);
   }
 
-  /* ── Add to cart ── */
+  /* ── Add to cart (pill, NewHero-style premium) ── */
   .qs-btn-cart {
     flex: 1;
     height: 46px;
-    border: none; border-radius: 12px; cursor: pointer;
-    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 60%, #d97706 100%);
+    border: 1px solid #c97d00;
+    border-radius: 9999px;
+    cursor: pointer;
+    background: linear-gradient(180deg, #fbbf24 0%, #f59e0b 62%, #d97706 100%);
     color: #fff;
     font-family: 'Baloo 2', cursive; font-weight: 900; font-size: 12px;
-    letter-spacing: 0.07em; text-transform: uppercase;
+    letter-spacing: 0.09em; text-transform: uppercase;
     display: inline-flex; align-items: center; justify-content: center; gap: 7px;
-    box-shadow: 0 3px 0 0 #b45309, 0 4px 14px rgba(245,158,11,0.28);
-    text-shadow: 0 1px 2px rgba(0,0,0,0.18);
-    transition: transform 0.12s ease, box-shadow 0.12s ease;
+    box-shadow: 0 1px 0 #b45309, 0 4px 14px rgba(245,158,11,0.24), inset 0 1px 0 rgba(255,255,255,0.45);
+    text-shadow: 0 1px 0 #9a5800, 0 2px 5px rgba(0,0,0,0.22);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
   }
-  .qs-btn-cart:hover   { transform: translateY(-2px); box-shadow: 0 5px 0 0 #b45309, 0 8px 22px rgba(245,158,11,0.38); }
-  .qs-btn-cart:active  { transform: translateY(2px);  box-shadow: 0 1px 0 0 #b45309, 0 2px 6px rgba(245,158,11,0.18); }
+  .qs-btn-cart:hover   { transform: translateY(-2px); filter: brightness(1.04); box-shadow: 0 1px 0 #b45309, 0 8px 24px rgba(245,158,11,0.32), inset 0 1px 0 rgba(255,255,255,0.5); }
+  .qs-btn-cart:active  { transform: translateY(1px); box-shadow: 0 1px 0 #b45309, 0 1px 6px rgba(245,158,11,0.16), inset 0 1px 0 rgba(255,255,255,0.35); }
 
-  /* ── Buy now ── */
+  /* ── Buy now (pill, dark navy like NewHero secondary) ── */
   .qs-btn-buy {
     flex: 1;
     height: 46px;
-    border: none; border-radius: 12px; cursor: pointer;
-    background: #0f172a;
+    border: 1px solid #1f314f;
+    border-radius: 9999px;
+    cursor: pointer;
+    background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
     color: #94a3b8;
     font-family: 'Baloo 2', cursive; font-weight: 900; font-size: 12px;
-    letter-spacing: 0.07em; text-transform: uppercase;
+    letter-spacing: 0.09em; text-transform: uppercase;
     display: inline-flex; align-items: center; justify-content: center; gap: 7px;
-    box-shadow: none;
-    transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.12s ease;
+    box-shadow: 0 1px 0 #0b1220, 0 4px 14px rgba(15,23,42,0.22), inset 0 1px 0 rgba(255,255,255,0.18);
+    text-shadow: 0 1px 0 #0b1220, 0 2px 5px rgba(0,0,0,0.28);
+    transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
   }
-  .qs-btn-buy:hover  { background: #1e3a8a; color: #fff; box-shadow: 0 6px 22px rgba(37,99,235,0.28); transform: translateY(-2px); }
-  .qs-btn-buy:active { transform: translateY(1px); }
+  .qs-btn-buy:hover  { background: linear-gradient(180deg, #2563eb 0%, #1e3a8a 100%); color: #fff; transform: translateY(-2px); box-shadow: 0 1px 0 #0b1220, 0 6px 20px rgba(37,99,235,0.28), inset 0 1px 0 rgba(255,255,255,0.2); }
+  .qs-btn-buy:active { transform: translateY(1px); box-shadow: 0 1px 0 #0b1220, 0 1px 6px rgba(15,23,42,0.14), inset 0 1px 0 rgba(255,255,255,0.12); }
 
   /* ═══════════════════════════════════════════════════════════════════════
      MOBILE — bottom sheet (< 768 px)
