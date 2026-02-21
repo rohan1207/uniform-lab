@@ -23,7 +23,7 @@ function findProductInCatalog(catalog) {
     if (!catalog?.categories) return null;
     for (const cat of catalog.categories) {
       const p = cat.products.find((pr) => pr.id === productId);
-      if (p) return { product: p, categoryName: cat.name };
+      if (p) return { product: p, categoryId: cat.id, categoryName: cat.name };
     }
     return null;
   };
@@ -34,7 +34,7 @@ export function getProduct(productId, schoolSlug) {
     const catalog = getSchoolCatalog(schoolSlug);
     const found = findProductInCatalog(catalog)(productId);
     if (found) {
-      return { product: found.product, schoolName: catalog.name, schoolSlug };
+      return { product: found.product, schoolName: catalog.name, schoolSlug, categoryId: found.categoryId, categoryName: found.categoryName };
     }
   }
   const fromLatest = latestProducts.find((p) => p.id === productId);
@@ -49,10 +49,83 @@ export function getProduct(productId, schoolSlug) {
     for (const slug of getAllSchoolSlugs()) {
       const catalog = getSchoolCatalog(slug);
       const found = findProductInCatalog(catalog)(productId);
-      if (found) return { product: found.product, schoolName: catalog.name, schoolSlug: slug };
+      if (found) return { product: found.product, schoolName: catalog.name, schoolSlug: slug, categoryId: found.categoryId, categoryName: found.categoryName };
     }
   }
   return null;
+}
+
+/**
+ * Which catalog category IDs to recommend based on what's in the cart.
+ * Shirt/tops → pant, blazer, accessories (tie, socks), shoes.
+ * Sports T-Shirt → track pant (same color when available).
+ * Shoes → socks (accessories).
+ */
+function getRecommendedCategoryIds(categoryId, productName) {
+  const name = (productName || '').toLowerCase();
+  const cat = (categoryId || '').toLowerCase();
+
+  if (cat.includes('shoes')) {
+    return ['accessories', 'acc', 'accessory'];
+  }
+  if (cat.includes('sport')) {
+    if (name.includes('track') || name.includes('pant')) return [];
+    return ['pants-trousers', 'pants'];
+  }
+  if (cat.includes('shirt') || cat === 'shirts-tops' || cat === 'uniform') {
+    return ['pants-trousers', 'pants', 'accessories', 'acc', 'shoes', 'shirts-tops', 'uniform'];
+  }
+  if (cat.includes('pant') || cat.includes('trouser')) {
+    return ['shirts-tops', 'shirts', 'accessories', 'acc', 'shoes', 'uniform'];
+  }
+  return [];
+}
+
+/**
+ * Smart recommendations for cart: pant/shirt/tie/socks/shoes pairing, sport shirt → track pant, shoes → socks.
+ * Returns items from same school(s) as cart, not already in cart. Premium upsell, not "complete your kit" gimmick.
+ */
+export function getRecommendedForCart(cartItems, limit = 8) {
+  if (!cartItems?.length) return [];
+  const cartIds = new Set(cartItems.map((i) => i.productId));
+  const seen = new Set();
+  const out = [];
+
+  for (const item of cartItems) {
+    const resolved = getProduct(item.productId);
+    if (!resolved?.schoolSlug || !resolved.categoryId) continue;
+    const catalog = getSchoolCatalog(resolved.schoolSlug);
+    if (!catalog?.categories) continue;
+
+    const wantedIds = getRecommendedCategoryIds(resolved.categoryId, resolved.product?.name);
+    const wantedSet = new Set(wantedIds);
+
+    for (const cat of catalog.categories) {
+      const catId = (cat.id || '').toLowerCase();
+      const matches = wantedIds.some((w) => catId.includes(w) || w.includes(catId));
+      if (!matches) continue;
+      for (const p of cat.products) {
+        if (cartIds.has(p.id) || seen.has(p.id)) continue;
+        seen.add(p.id);
+        out.push({ product: p, schoolName: catalog.name, schoolSlug: resolved.schoolSlug });
+        if (out.length >= limit) break;
+      }
+      if (out.length >= limit) break;
+    }
+  }
+
+  const cartColors = new Set(cartItems.map((i) => i.color).filter(Boolean));
+  if (cartColors.size) {
+    out.sort((a, b) => {
+      const aMatch = a.product.colors?.some((c) => cartColors.has(c.name));
+      const bMatch = b.product.colors?.some((c) => cartColors.has(c.name));
+      if (aMatch && !bMatch) return -1;
+      if (!aMatch && bMatch) return 1;
+      return 0;
+    });
+  }
+
+  return out.slice(0, limit);
 }
 
 export function getRelatedProducts(productId, schoolSlug, limit = 6) {

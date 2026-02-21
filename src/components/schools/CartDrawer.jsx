@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Minus, Plus, ShoppingBag, Check, Zap, ArrowRight } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
-import { getProduct, getRelatedProducts } from '@/data/productLookup';
+import { getRecommendedForCart } from '@/data/productLookup';
 import { DETAIL_SIZES } from '@/data/schoolCatalog';
 
 /* ─────────────────────────────────────────────────────────────────────────
@@ -80,6 +80,15 @@ const CART_CSS = `
     font-weight: 800;
     font-size: 10.5px;
     box-shadow: 0 1px 3px rgba(0,76,153,0.08);
+  }
+
+  /* Desktop: start drawer below navbar (no overlap) */
+  @media (min-width: 768px) {
+    .cart-aside {
+      top: 84px !important;
+      height: calc(100vh - 84px) !important;
+      max-height: calc(100vh - 84px) !important;
+    }
   }
 
   /* ═══════════════════════════════════════════════════════════════════════
@@ -289,21 +298,11 @@ function MobileUpsellPill({ product: p, schoolSlug: ss, onClose }) {
 export function CartDrawer({ open, onClose }) {
   const { items, totalItems, totalAmount, removeItem, updateQuantity } = useCart();
 
-  const upsellItems = useMemo(() => {
-    if (!items.length) return [];
-    const last = items[items.length - 1];
-    const resolved = getProduct(last.productId);
-    const slug = resolved?.schoolSlug || null;
-    const cartIds = new Set(items.map(i => i.productId));
-    return getRelatedProducts(last.productId, slug, 6)
-      .filter(r => !cartIds.has(r.product.id))
-      .slice(0, 3);
+  const recommendedItems = useMemo(() => {
+    return getRecommendedForCart(items, 6);
   }, [items]);
 
-  const hasUpsell = upsellItems.length > 0;
-  const FREE_SHIPPING_THRESHOLD = 999;
-  const remaining = FREE_SHIPPING_THRESHOLD - totalAmount;
-  const shippingPct = Math.min(100, (totalAmount / FREE_SHIPPING_THRESHOLD) * 100);
+  const hasRecommendations = recommendedItems.length > 0;
 
   return (
     <>
@@ -329,7 +328,7 @@ export function CartDrawer({ open, onClose }) {
             key="drawer"
             className="cart-aside fixed top-0 right-0 h-full z-50 flex flex-row"
             style={{
-              width: hasUpsell ? 'min(780px, 96vw)' : 'min(440px, 96vw)',
+              width: hasRecommendations ? 'min(780px, 96vw)' : 'min(440px, 96vw)',
               boxShadow: '-8px 0 64px rgba(15,23,42,0.24)',
               fontFamily: "'Nunito', sans-serif",
             }}
@@ -341,46 +340,26 @@ export function CartDrawer({ open, onClose }) {
             aria-label="Shopping cart"
       >
 
-            {/* ══ LEFT: Upsell panel (desktop only) ══ */}
-            {hasUpsell && (
+            {/* ══ LEFT: Recommendations (desktop only) — premium, no gimmicks ══ */}
+            {hasRecommendations && (
               <div className="hidden lg:flex flex-col w-[320px] flex-shrink-0 overflow-y-auto cart-scrollbar-hide"
-                style={{ background: 'linear-gradient(180deg, #f8faff 0%, #f1f5f9 100%)', borderRight: '1px solid #e2e8f0' }}>
+                style={{ background: 'linear-gradient(180deg, #fafbff 0%, #f4f6fb 100%)', borderRight: '1px solid #e8ecf1' }}>
 
-                <div className="px-5 pt-6 pb-4" style={{ borderBottom: '1px solid #e2e8f0' }}>
-                  <div className="flex items-center gap-2.5 mb-1">
-                    <div className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
-                      style={{ background: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)', boxShadow: '0 3px 10px rgba(245,158,11,0.30)' }}>
-                      <Zap size={14} strokeWidth={2.5} style={{ color: '#fff' }} />
-        </div>
-                    <p className="m-0"
-                      style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: '17px', color: '#0f172a' }}>
-                      Complete your kit
-                    </p>
-                  </div>
-                  <p className="m-0 pl-[42px]"
-                    style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 600, fontSize: '12px', color: '#94a3b8' }}>
-                    Students who bought this also got
+                <div className="px-5 pt-6 pb-4" style={{ borderBottom: '1px solid #e8ecf1' }}>
+                  <p className="m-0 mb-0.5"
+                    style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: '17px', color: '#0f172a' }}>
+                    Recommended for you
+                  </p>
+                  <p className="m-0"
+                    style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 600, fontSize: '12px', color: '#64748b' }}>
+                    Pairs well with your selection
                   </p>
                 </div>
 
                 <div className="flex flex-col gap-2.5 p-4 flex-1">
-                  {upsellItems.map(({ product: p, schoolName: sn, schoolSlug: ss }) => (
+                  {recommendedItems.map(({ product: p, schoolName: sn, schoolSlug: ss }) => (
                     <UpsellCard key={p.id} product={p} schoolName={sn} schoolSlug={ss} onClose={onClose} />
                   ))}
-                </div>
-
-                <div className="px-4 pb-5">
-                  <div className="rounded-2xl px-4 py-3.5 text-center"
-                    style={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%)', boxShadow: '0 4px 20px rgba(15,23,42,0.22)' }}>
-                    <p className="m-0"
-                      style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: '11.5px', color: '#fbbf24', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-                      🚚 Free delivery on orders ₹999+
-                    </p>
-                    <p className="m-0 mt-1"
-                      style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 600, fontSize: '11px', color: 'rgba(255,255,255,0.45)' }}>
-                      Official school uniforms · Ships in 24 hrs
-                    </p>
-                  </div>
                 </div>
 
               </div>
@@ -416,26 +395,22 @@ export function CartDrawer({ open, onClose }) {
                 </button>
               </div>
 
-              {/* ── Mobile upsell strip ── */}
-              {hasUpsell && items.length > 0 && (
+              {/* ── Mobile recommendations strip ── */}
+              {hasRecommendations && items.length > 0 && (
                 <div className="cart-upsell-header lg:hidden" style={{ background: '#fff', borderBottom: '1px solid #e8ecf1' }}>
-                  {/* Strip heading */}
-                  <div className="px-4 pt-3.5 pb-2 flex items-center gap-2">
-                    <div className="w-6 h-6 rounded-lg flex items-center justify-center"
-                      style={{ background: 'linear-gradient(135deg, #fbbf24, #f59e0b)', boxShadow: '0 2px 6px rgba(245,158,11,0.28)' }}>
-                      <Zap size={11} strokeWidth={2.5} style={{ color: '#fff' }} />
-                    </div>
+                  <div className="px-4 pt-3.5 pb-2">
                     <p className="m-0"
-                      style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: '12px', color: '#0f172a', textTransform: 'uppercase', letterSpacing: '0.07em' }}>
-                      Complete your kit
+                      style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: '12px', color: '#0f172a', letterSpacing: '0.02em' }}>
+                      Recommended for you
                     </p>
-                    <span style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 600, fontSize: '11px', color: '#94a3b8', marginLeft: '2px' }}>
-                      · add more &amp; save
-                    </span>
+                    <p className="m-0 mt-0.5"
+                      style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 600, fontSize: '11px', color: '#64748b' }}>
+                      Pairs well with your selection
+                    </p>
                   </div>
                   {/* Scroll strip */}
                   <div className="cart-upsell-scroll flex gap-2.5 overflow-x-auto pb-3.5 px-4 cart-scrollbar-hide">
-                    {upsellItems.map(({ product: p, schoolSlug: ss }) => (
+                    {recommendedItems.map(({ product: p, schoolSlug: ss }) => (
                       <MobileUpsellPill key={p.id} product={p} schoolSlug={ss} onClose={onClose} />
                     ))}
                   </div>
@@ -567,31 +542,6 @@ export function CartDrawer({ open, onClose }) {
         {items.length > 0 && (
                 <div className="cart-footer px-5 py-4"
                   style={{ borderTop: '1.5px solid #e8ecf1', background: '#fff' }}>
-
-                  {/* Kit completion bar */}
-                  <div className="mb-4">
-                    {remaining > 0 ? (
-                      <p className="m-0 mb-2 flex items-center gap-1"
-                        style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: '12px', color: '#64748b' }}>
-                        Add{' '}
-                        <span style={{ color: '#0f172a', fontFamily: "'Baloo 2', cursive", fontWeight: 900 }}>₹{remaining}</span>
-                        {' '}more to complete your kit
-                      </p>
-                    ) : (
-                      <p className="m-0 mb-2 flex items-center gap-1.5"
-                        style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: '12px', color: '#16a34a' }}>
-                        <Check size={12} strokeWidth={2.5} /> You have completed the kit!
-                      </p>
-                    )}
-                    <div className="w-full rounded-full overflow-hidden" style={{ height: '6px', background: '#e2e8f0' }}>
-                      <motion.div className="h-full rounded-full"
-                        initial={{ width: 0 }}
-                        animate={{ width: `${shippingPct}%` }}
-                        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                        style={{ background: shippingPct >= 100 ? 'linear-gradient(90deg, #4ade80, #16a34a)' : 'linear-gradient(90deg, #fbbf24, #f59e0b)' }}
-                      />
-                    </div>
-                  </div>
 
                   {/* Total */}
                   <div className="flex items-center justify-between mb-4">

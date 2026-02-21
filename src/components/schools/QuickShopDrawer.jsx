@@ -30,6 +30,15 @@ const QS_CSS = `
   .qs-panel.qs-closed { transform: translateX(101%); pointer-events: none; }
   .qs-panel.qs-open  { transform: translateX(0);    pointer-events: all; }
 
+  /* Desktop: start panel below navbar (no overlap) */
+  @media (min-width: 768px) {
+    .qs-panel {
+      top: 84px !important;
+      height: calc(100vh - 84px) !important;
+      max-height: calc(100vh - 84px) !important;
+    }
+  }
+
   /* ── Backdrop ── */
   .qs-backdrop {
     position: fixed; inset: 0; z-index: 59;

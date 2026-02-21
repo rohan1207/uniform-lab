@@ -73,11 +73,15 @@ export default function Navbar() {
     { href: '/schoolenquiry', label: 'Contact Us', emoji: '💬' },
   ];
 
-  const headerBg = isAtTop
+  /* Transparent-at-top only on landing page; other pages always solid */
+  const isLandingPage = pathname === '/';
+  const useTransparentHeader = isLandingPage && isAtTop;
+
+  const headerBg = useTransparentHeader
     ? 'transparent'
     : 'rgba(255,255,255,1)';
 
-  const headerShadow = isAtTop
+  const headerShadow = useTransparentHeader
     ? 'none'
     : '0 2px 16px rgba(0,0,0,0.08)';
 
@@ -95,9 +99,9 @@ export default function Navbar() {
           zIndex: 1000,
           background: headerBg,
           boxShadow: headerShadow,
-          backdropFilter: isAtTop ? 'none' : 'blur(12px)',
-          WebkitBackdropFilter: isAtTop ? 'none' : 'blur(12px)',
-          borderBottom: isAtTop ? 'none' : '1px solid #f1f5f9',
+          backdropFilter: useTransparentHeader ? 'none' : 'blur(12px)',
+          WebkitBackdropFilter: useTransparentHeader ? 'none' : 'blur(12px)',
+          borderBottom: useTransparentHeader ? 'none' : '1px solid #f1f5f9',
           transition: 'box-shadow 0.3s, background 0.3s',
         }}
       >

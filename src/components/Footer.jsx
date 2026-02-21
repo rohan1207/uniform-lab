@@ -93,6 +93,10 @@ export default function Footer() {
             Proudly based in Baramati, India.
           </p>
         </div>
+
+        <p className="mt-6 text-center text-slate-500 text-sm">
+          Designed and developed by TheSocialKollab
+        </p>
       </div>
     </footer>
   );
