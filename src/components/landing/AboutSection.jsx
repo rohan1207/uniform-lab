@@ -36,20 +36,24 @@ const CSS = `
     overflow: hidden;
   }
 
+  .about-header-top {
+    text-align: center;
+    margin-bottom: 18px;
+  }
   .about-pill {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    padding: 5px 16px;
+    gap: 8px;
+    padding: 10px 24px;
     border-radius: 999px;
     background: linear-gradient(135deg, #eef5ff 0%, #ddeaff 100%);
     color: #2563eb;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    box-shadow: 0 1px 8px rgba(37,99,235,0.12);
-    margin-bottom: 14px;
+    font-family: 'Baloo 2', cursive;
+    font-size: clamp(18px, 2.2vw, 26px);
+    font-weight: 900;
+    letter-spacing: 0.02em;
+    box-shadow: 0 2px 12px rgba(37,99,235,0.14);
+    margin: 0 auto;
   }
   .about-h2 {
     font-family: 'Baloo 2', cursive;
@@ -261,9 +265,11 @@ export default function AboutSection() {
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="about-pill">
-              <Sparkles size={11} />
-              About Uniform Lab
+            <div className="about-header-top">
+              <div className="about-pill">
+                <Sparkles size={18} style={{ flexShrink: 0 }} />
+                About Uniform Lab
+              </div>
             </div>
             <h2 className="about-h2">
               Reliable Uniform Systems.

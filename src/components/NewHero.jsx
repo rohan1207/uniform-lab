@@ -94,6 +94,8 @@ const GLOBAL_CSS = `
       width: 100% !important;
       height: auto !important;
       overflow: visible !important;
+      margin-top: 16px !important;
+      margin-bottom: 24px !important;
     }
     .hero-img-scale { transform: scale(1.08) translateY(0%) !important; }
     .hero-btns-desktop { display: none !important; }
@@ -123,13 +125,28 @@ const GLOBAL_CSS = `
       padding-left: 0 !important;
       padding-bottom: 0 !important;
       margin-top: 16px !important;
+      justify-items: center !important;
+      text-align: center !important;
     }
     .hero-right-col .metric-sep { display: none !important; }
     .hero-metric-card {
-      background: linear-gradient(135deg, #fff5f0 0%, #fce8e0 100%);
-      border-radius: 14px;
-      padding: 12px 10px;
+      justify-content: center !important;
+      text-align: center !important;
+      background: transparent !important;
+      border-radius: 0 !important;
+      padding: 4px 0 !important;
+      box-shadow: none !important;
     }
+    .hero-metric-card > div:first-child {
+      width: 24px !important;
+      height: 24px !important;
+      min-width: 24px !important;
+      background: transparent !important;
+      box-shadow: none !important;
+    }
+    .hero-metric-card .hero-metric-sub { display: none !important; }
+    .hero-metric-card .hero-metric-title { font-size: 11px !important; }
+    .hero-metric-card > div:last-child { align-items: center !important; text-align: center !important; }
   }
 `;
 
@@ -186,19 +203,21 @@ const IconFit = () => (
 function GameButton({ to, label, emoji, peekEmoji, variant = 'gold' }) {
   const isGold = variant === 'gold';
 
+  /* Partner/Join us: #F7BE4F. Shop Now: #004C99. */
   const shadowOn = isGold
-    ? '0 1px 0 #b45309, 0 4px 14px rgba(245,158,11,0.24), inset 0 1px 0 rgba(255,255,255,0.45)'
-    : '0 1px 0 #0b1220, 0 4px 14px rgba(15,23,42,0.22), inset 0 1px 0 rgba(255,255,255,0.18)';
+    ? '0 2px 8px rgba(247,190,79,0.35), inset 0 1px 0 rgba(255,255,255,0.45)'
+    : '0 2px 8px rgba(0,76,153,0.25), inset 0 1px 0 rgba(255,255,255,0.15)';
   const shadowOff = isGold
-    ? '0 1px 0 #b45309, 0 1px 6px rgba(245,158,11,0.16), inset 0 1px 0 rgba(255,255,255,0.35)'
-    : '0 1px 0 #0b1220, 0 1px 6px rgba(15,23,42,0.14), inset 0 1px 0 rgba(255,255,255,0.12)';
+    ? '0 1px 4px rgba(247,190,79,0.25), inset 0 1px 0 rgba(255,255,255,0.35)'
+    : '0 1px 4px rgba(0,76,153,0.2), inset 0 1px 0 rgba(255,255,255,0.1)';
   const bg = isGold
-    ? 'linear-gradient(180deg, #fbbf24 0%, #f59e0b 62%, #d97706 100%)'
-    : 'linear-gradient(180deg, #1e293b 0%, #0f172a 100%)';
-  const border = isGold ? '1px solid #c97d00' : '1px solid #1f314f';
+    ? 'linear-gradient(180deg, #fcd88a 0%, #F7BE4F 50%, #e5a732 100%)'
+    : 'linear-gradient(180deg, #1a6bb8 0%, #004C99 50%, #003d7a 100%)';
+  const border = isGold ? '1px solid rgba(229,167,50,0.6)' : '1px solid rgba(0,76,153,0.6)';
+  const textColor = isGold ? '#5c3a0a' : '#fff';
   const txtShadow = isGold
-    ? '0 1px 0 #9a5800, 0 2px 5px rgba(0,0,0,0.22)'
-    : '0 1px 0 #0b1220, 0 2px 5px rgba(0,0,0,0.28)';
+    ? '0 1px 0 rgba(255,255,255,0.45)'
+    : '0 1px 0 rgba(0,0,0,0.2)';
 
   return (
     <Link to={to} style={{ textDecoration: 'none' }} className="select-none peek-wrap">
@@ -234,11 +253,12 @@ function GameButton({ to, label, emoji, peekEmoji, variant = 'gold' }) {
         }}
       >
         <span
-          className="font-black uppercase text-white text-center"
+          className="font-black uppercase text-center"
           style={{
             fontFamily: "'Baloo 2', cursive",
             fontSize: 'clamp(11px, 1vw, 13px)',
             letterSpacing: '0.11em',
+            color: textColor,
             textShadow: txtShadow,
           }}
         >
@@ -271,13 +291,13 @@ function Metric({ Icon, title, sub, iconColor = '#2563eb' }) {
       </div>
       <div>
         <p
-          className="m-0 font-black text-[#1a1a2e] leading-snug"
+          className="hero-metric-title m-0 font-black text-[#1a1a2e] leading-snug"
           style={{ fontFamily: "'Baloo 2', cursive", fontSize: 'clamp(11px, 1.1vw, 15px)' }}
         >
           {title}
         </p>
         <p
-          className="m-0 text-gray-400 font-semibold leading-snug"
+          className="hero-metric-sub m-0 text-gray-400 font-semibold leading-snug"
           style={{ fontSize: 'clamp(9px, 0.85vw, 12px)' }}
         >
           {sub}
@@ -319,12 +339,12 @@ export default function NewHero({
               paddingRight: 'clamp(14px, 2.2vw, 36px)',
             }}
           >
-            <img
-              src={logoSrc}
-              alt="Uniform Lab"
-              className="hero-logo-img"
-              style={{ height: 'clamp(100px, 16vh, 188px)', width: 'auto' }}
-            />
+             <p
+                className="m-0 font-black text-[#1a1a2e] leading-tight mt-10"
+                style={{ fontFamily: "'Baloo 2', cursive", fontSize: 'clamp(20px, 2.6vw, 36px)', letterSpacing: '-0.3px' }}
+              >
+                {lineOne}
+              </p>
           </div>
 
           {/* ── Main grid ── */}
@@ -355,12 +375,7 @@ export default function NewHero({
                   🏛️ Trusted by 500+ Schools
                 </span>
               </div>
-              <p
-                className="m-0 font-black text-[#1a1a2e] leading-tight"
-                style={{ fontFamily: "'Baloo 2', cursive", fontSize: 'clamp(20px, 2.6vw, 36px)', letterSpacing: '-0.3px' }}
-              >
-                {lineOne}
-              </p>
+             
               <p
                 className="m-0 font-semibold text-gray-400 leading-snug"
                 style={{ fontSize: 'clamp(11px, 1vw, 14px)', maxWidth: '28ch' }}

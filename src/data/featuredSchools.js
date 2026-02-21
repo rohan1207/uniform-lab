@@ -32,7 +32,7 @@ export const featuredSchools = [
   },
   {
     id: 'Indo Scots Global School',
-    name: 'Featured School Four',
+    name: 'Indo Scots Global School',
     level: 'CBSE',
     image: '/indo.png',
   
@@ -41,7 +41,7 @@ export const featuredSchools = [
   },
   {
     id: 'Magarpatta City Public School',
-    name: 'Featured School Five',
+    name: 'Magarpatta City Public School',
     level: 'ICSE',
     image: '/orbis.png',
     logo: '/magarpatta_logo.jpg',

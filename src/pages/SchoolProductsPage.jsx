@@ -26,6 +26,13 @@ const GLOBAL_CSS = `
     border-bottom: 1px solid rgba(15,23,42,0.07);
     box-shadow: 0 1px 12px rgba(0,0,0,0.05);
   }
+  /* Desktop: left padding matches sidebar (18px) so "All Schools" aligns with search input */
+  .spp-topbar-inner {
+    padding-left: 18px;
+    padding-right: 16px;
+  }
+  @media (min-width: 640px) { .spp-topbar-inner { padding-right: 24px; } }
+  @media (min-width: 1024px) { .spp-topbar-inner { padding-right: 40px; } }
 
   /* ── Left sidebar ── */
   .spp-sidebar {
@@ -389,10 +396,10 @@ export default function SchoolProductsPage() {
 
         {/* ══ Top bar ══ */}
         <div className="spp-topbar sticky top-0 z-30">
-          <div className="max-w-[1400px] mx-auto">
+          <div className="w-full">
 
-            {/* ── Desktop topbar ── */}
-            <div className="hidden md:flex items-center justify-between gap-4 px-4 sm:px-6 lg:px-10 py-4 pt-5">
+            {/* ── Desktop topbar: left padding matches sidebar (18px) so "All Schools" aligns with search ── */}
+            <div className="spp-topbar-inner hidden md:flex items-center justify-between gap-4 py-4 pt-5">
               <Link to="/schools"
                 className="inline-flex items-center gap-1.5 font-bold text-[#2563eb] hover:text-[#1d4ed8] transition-colors flex-shrink-0"
                 style={{ fontFamily:"'Nunito', sans-serif", fontSize:'clamp(12px, 0.9vw, 14px)' }}>

@@ -1,5 +1,6 @@
 'use client';
 
+import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useCallback } from 'react';
@@ -21,7 +22,7 @@ const CSS = `
 
 .sbl-sec {
   background: #FAF3F0;
-  padding: 80px 0 88px;
+  padding: 56px 0 88px;
   font-family: 'Nunito', sans-serif;
   position: relative;
   overflow: hidden;
@@ -47,15 +48,15 @@ const CSS = `
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0;
-  align-items: center;
+  align-items: start;
   min-height: 520px;
 }
 
-/* ── LEFT COLUMN ── */
+/* ── LEFT COLUMN (top-aligned with model) ── */
 .sbl-left {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   padding-right: 64px;
 }
 
@@ -217,13 +218,13 @@ const CSS = `
   transform: translateY(-50%) scale(0.97);
 }
 
-/* Model image */
+/* Model image (top-aligned with left heading) */
 .sbl-model-wrap {
   position: relative;
   width: 100%;
   max-width: 520px;
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
   justify-content: center;
 }
 
@@ -232,7 +233,7 @@ const CSS = `
   height: auto;
   max-height: 620px;
   object-fit: contain;
-  object-position: center bottom;
+  object-position: top center;
   display: block;
   /* Remove any bg / shadow on the PNG itself */
   filter: drop-shadow(0 8px 32px rgba(0,0,0,0.10));
@@ -286,16 +287,19 @@ const CSS = `
 
 @media (max-width: 640px) {
   .sbl-sec { padding: 28px 0 32px; }
-  .sbl-inner { padding: 0 16px; gap: 12px; }
-  .sbl-right { min-height: 300px; }
+  .sbl-inner { padding: 0 16px; gap: 12px; align-items: center !important; }
+  .sbl-right { min-height: 300px; display: flex !important; justify-content: center !important; align-items: center !important; width: 100%; }
+
+  /* Model link: fit content so it centers in .sbl-right */
+  .sbl-model-link { width: fit-content !important; max-width: 100%; margin-left: auto !important; margin-right: auto !important; }
 
   /* Arrows: at section edges, minimal and light on phone */
   .sbl-arrow-left { left: 0; width: 30px; height: 30px; border-width: 1px; border-color: #e2e8f0; background: rgba(255,255,255,0.85); color: #94a3b8; box-shadow: none; }
   .sbl-arrow-right { right: 0; width: 30px; height: 30px; border-width: 1px; border-color: #e2e8f0; background: rgba(255,255,255,0.85); color: #94a3b8; box-shadow: none; }
   .sbl-arrow-left:hover, .sbl-arrow-right:hover { color: #64748b; box-shadow: 0 1px 6px rgba(37,99,235,0.1); }
 
-  /* Model: scale downward from top so head isn't cropped, fills space below */
-  .sbl-model-wrap { max-width: 220px; overflow: visible; align-items: flex-start; }
+  /* Model wrap: center-aligned on phone */
+  .sbl-model-wrap { max-width: 220px; overflow: visible; align-items: center !important; justify-content: center !important; margin: 0 auto; }
   .sbl-model-img {
     max-height: 320px;
     object-fit: contain;
@@ -310,8 +314,9 @@ const CSS = `
   .sbl-heading .sbl-sub { font-size: 13px; margin-bottom: 12px; line-height: 1.5; }
   .sbl-heading .sbl-divider { margin-bottom: 12px; }
 
-  /* School card: slightly bigger, more noticeable, pushed down a bit on phone */
-  .sbl-left-rest { margin-top: 60px; }
+  /* School card: center-aligned on phone */
+  .sbl-left-rest { margin-top: 60px; align-items: center !important; width: 100%; }
+  .sbl-school-card-link { width: fit-content !important; margin-left: auto !important; margin-right: auto !important; display: block !important; }
   .sbl-school-card {
     padding: 14px 18px 12px;
     gap: 10px;
@@ -319,7 +324,12 @@ const CSS = `
     max-width: 92%;
     min-width: 260px;
     box-shadow: 0 6px 28px rgba(37,99,235,0.1);
+    margin-left: auto;
+    margin-right: auto;
+    align-items: center;
+    text-align: center;
   }
+  .sbl-school-card .sbl-school-logo-wrap { justify-content: center; }
   .sbl-school-logo { max-width: 120px; max-height: 48px; }
   .sbl-school-name { font-size: 18px; }
   .sbl-school-level { font-size: 12px; }
@@ -384,28 +394,34 @@ export default function ShopByLookSection() {
             </div>
 
             <div className="sbl-left-rest">
-            {/* Animated school card */}
+            {/* Animated school card — click goes to school page */}
             <AnimatePresence mode="wait" custom={direction}>
-              <motion.div
-                key={school.id}
-                className="sbl-school-card"
-                custom={direction}
-                variants={cardVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{ duration: 0.32, ease: [0.25, 0.46, 0.45, 0.94] }}
+              <Link
+                to={`/schools/${school.id}`}
+                className="sbl-school-card-link"
+                style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
               >
-                {school.logo && (
-                  <div className="sbl-school-logo-wrap">
-                    <img src={school.logo} alt={school.name} className="sbl-school-logo" />
+                <motion.div
+                  key={school.id}
+                  className="sbl-school-card"
+                  custom={direction}
+                  variants={cardVariants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{ duration: 0.32, ease: [0.25, 0.46, 0.45, 0.94] }}
+                >
+                  {school.logo && (
+                    <div className="sbl-school-logo-wrap">
+                      <img src={school.logo} alt={school.name} className="sbl-school-logo" />
+                    </div>
+                  )}
+                  <div>
+                    <p className="sbl-school-name">{school.shortName}</p>
+                    {school.level && <p className="sbl-school-level">{school.level}</p>}
                   </div>
-                )}
-                <div>
-                  <p className="sbl-school-name">{school.shortName}</p>
-                  {school.level && <p className="sbl-school-level">{school.level}</p>}
-                </div>
-              </motion.div>
+                </motion.div>
+              </Link>
             </AnimatePresence>
 
             {/* Dots */}
@@ -429,24 +445,30 @@ export default function ShopByLookSection() {
               <ChevronLeft size={20} strokeWidth={2} />
             </button>
 
-            {/* Model image */}
+            {/* Model image — click goes to school page */}
             <AnimatePresence mode="wait" custom={direction}>
-              <motion.div
-                key={school.id}
-                className="sbl-model-wrap"
-                custom={direction}
-                variants={variants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+              <Link
+                to={`/schools/${school.id}`}
+                style={{ display: 'block', textDecoration: 'none' }}
+                className="sbl-model-link"
               >
-                <img
-                  src={school.modelImage}
-                  alt={`${school.shortName} uniform look`}
-                  className="sbl-model-img"
-                />
-              </motion.div>
+                <motion.div
+                  key={school.id}
+                  className="sbl-model-wrap"
+                  custom={direction}
+                  variants={variants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+                >
+                  <img
+                    src={school.modelImage}
+                    alt={`${school.shortName} uniform look`}
+                    className="sbl-model-img"
+                  />
+                </motion.div>
+              </Link>
             </AnimatePresence>
 
             {/* Right arrow */}
