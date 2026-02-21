@@ -1,0 +1,51 @@
+/**
+ * Featured schools list – shared by FeaturedProducts section and Navbar dropdown.
+ * Keep in sync with schoolCatalog slugs where applicable.
+ *
+ * color  — brand accent used for the logo-zone gradient overlay
+ * logo   — path to logo PNG (transparent preferred). Set null to show initials badge.
+ */
+export const featuredSchools = [
+  {
+    id: 'nanded-city-public',
+    name: "Vidya Pratishthan's Nanded City Public School",
+    level: 'CBSE',
+    image: '/nanded.png',
+    logo: '/nanded_logo.png',
+    color: '#1e40af',   // deep navy blue
+  },
+  {
+    id: 'the-orbis-school',
+    name: 'The Orbis School',
+    level: 'CBSE',
+    image: '/orbis.png',
+    logo: '/orbis_logo.png',
+    color: '#b91c1c',   // deep red
+  },
+  {
+    id: 'bharati-rabindranath-tagore',
+    name: "Bharati Vidyapeeth's Rabindranath Tagore School of Excellence",
+    level: 'School of Excellence',
+    image: '/bvrtse.png',
+    logo: '/bvrtse_logo.png',
+    color: '#065f46',   // deep emerald
+  },
+  {
+    id: 'Indo Scots Global School',
+    name: 'Featured School Four',
+    level: 'CBSE',
+    image: '/indo.png',
+  
+    logo: '/indo_logo.png',
+    color: '#6d28d9',   // violet
+  },
+  {
+    id: 'Magarpatta City Public School',
+    name: 'Featured School Five',
+    level: 'ICSE',
+    image: '/orbis.png',
+    logo: '/magarpatta_logo.jpg',
+  
+    color: '#b45309',   // amber-brown
+  },
+];

@@ -1,0 +1,587 @@
+import { useState, useMemo } from 'react';
+import { Link } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { X, Minus, Plus, ShoppingBag, Check, Zap, ArrowRight } from 'lucide-react';
+import { useCart } from '@/contexts/CartContext';
+import { getProduct, getRelatedProducts } from '@/data/productLookup';
+import { DETAIL_SIZES } from '@/data/schoolCatalog';
+
+/* ─────────────────────────────────────────────────────────────────────────
+   STYLES
+────────────────────────────────────────────────────────────────────────── */
+const CART_CSS = `
+  @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800;900&family=Nunito:wght@400;600;700&display=swap');
+
+  .cart-scrollbar-hide { scrollbar-width: none; }
+  .cart-scrollbar-hide::-webkit-scrollbar { display: none; }
+
+  /* ═══════════════════════════════════════════════════════════════════════
+     MOBILE  (< 768 px)  — full-screen drawer
+  ═══════════════════════════════════════════════════════════════════════ */
+  @media (max-width: 767px) {
+
+    /* Force drawer to cover the entire phone screen */
+    .cart-aside {
+      width: 100vw !important;
+      width: 100dvw !important;
+      max-width: 100vw !important;
+    }
+
+    /* Header — slightly bigger hit target */
+    .cart-header {
+      padding: 18px 20px !important;
+    }
+
+    /* Upsell strip header */
+    .cart-upsell-header {
+      padding: 14px 16px 10px !important;
+    }
+
+    /* Upsell pills scroll area */
+    .cart-upsell-scroll {
+      padding: 0 16px 14px !important;
+      gap: 10px !important;
+    }
+
+    /* Items list */
+    .cart-items-list {
+      padding: 14px 14px !important;
+      gap: 10px !important;
+    }
+
+    /* Single cart item card */
+    .cart-item-card {
+      padding: 12px !important;
+      gap: 12px !important;
+      border-radius: 18px !important;
+    }
+    .cart-item-img {
+      width: 68px !important;
+      height: 68px !important;
+      border-radius: 12px !important;
+    }
+
+    /* Footer — account for iPhone home bar */
+    .cart-footer {
+      padding: 16px 20px !important;
+      padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px)) !important;
+    }
+
+    /* Checkout button — slightly taller */
+    .cart-checkout-btn {
+      padding-top: 15px !important;
+      padding-bottom: 15px !important;
+      font-size: 14px !important;
+    }
+  }
+`;
+
+/* ─────────────────────────────────────────────────────────────────────────
+   DESKTOP UPSELL CARD  (left panel)
+────────────────────────────────────────────────────────────────────────── */
+function UpsellCard({ product: p, schoolName: sn, schoolSlug: ss, onClose }) {
+  const { addItem } = useCart();
+  const [added, setAdded] = useState(false);
+
+  function handleAdd(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    addItem({
+      productId: p.id, name: p.name, price: p.price,
+      size: DETAIL_SIZES[0], quantity: 1, image: p.image || undefined,
+    });
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1800);
+  }
+
+  return (
+    <Link
+      to={`/product/${p.id}${ss ? `?school=${ss}` : ''}`}
+      onClick={onClose}
+      className="group flex items-center gap-3 p-2.5 rounded-xl transition-all duration-200"
+      style={{ background: '#fff', border: '1.5px solid #e2e8f0', textDecoration: 'none' }}
+      onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(37,99,235,0.28)'; e.currentTarget.style.boxShadow = '0 4px 18px rgba(37,99,235,0.10)'; }}
+      onMouseLeave={e => { e.currentTarget.style.borderColor = '#e2e8f0'; e.currentTarget.style.boxShadow = 'none'; }}
+    >
+      <div className="w-[60px] h-[60px] rounded-lg overflow-hidden flex-shrink-0"
+        style={{ background: 'linear-gradient(145deg, #f0f5ff, #e5edff)' }}>
+        {p.image
+          ? <img src={p.image} alt={p.name} className="w-full h-full object-contain" />
+          : <div className="w-full h-full flex items-center justify-center">
+              <ShoppingBag size={18} style={{ color: '#94a3b8' }} />
+            </div>
+        }
+      </div>
+      <div className="flex-1 min-w-0">
+        {sn && (
+          <p className="m-0 truncate"
+            style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: '9px', color: '#2563eb', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+            {sn}
+          </p>
+        )}
+        <p className="m-0 line-clamp-2 leading-snug group-hover:text-[#2563eb] transition-colors"
+          style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: '12.5px', color: '#0f172a' }}>
+          {p.name}
+        </p>
+        <p className="m-0"
+          style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: '13px', color: '#0f172a' }}>
+          ₹{p.price}
+        </p>
+      </div>
+      <button type="button" onClick={handleAdd}
+        className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-all ${
+          added
+            ? 'bg-gradient-to-br from-green-400 via-green-500 to-green-600 shadow-[0_2px_10px_rgba(16,185,129,0.30)]'
+            : 'bg-gradient-to-br from-amber-300 via-amber-500 to-amber-700 hover:shadow-[0_4px_16px_rgba(245,158,11,0.45)]'
+        }`}
+        style={{ border: 'none', cursor: 'pointer' }}>
+        {added
+          ? <Check size={13} strokeWidth={2.5} style={{ color: '#fff' }} />
+          : <Plus size={13} strokeWidth={2.5} style={{ color: '#fff' }} />
+        }
+      </button>
+    </Link>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   MOBILE UPSELL PILL  (horizontal scroll strip) — premium redesign
+────────────────────────────────────────────────────────────────────────── */
+function MobileUpsellPill({ product: p, schoolSlug: ss, onClose }) {
+  const { addItem } = useCart();
+  const [added, setAdded] = useState(false);
+
+  function handleAdd(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    addItem({
+      productId: p.id, name: p.name, price: p.price,
+      size: DETAIL_SIZES[0], quantity: 1, image: p.image || undefined,
+    });
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1800);
+  }
+
+  return (
+    <Link
+      to={`/product/${p.id}${ss ? `?school=${ss}` : ''}`}
+      onClick={onClose}
+      className="flex-shrink-0 flex flex-col rounded-2xl overflow-hidden"
+      style={{
+        width: '130px',
+        border: '1.5px solid #e2e8f0',
+        background: '#fff',
+        textDecoration: 'none',
+        boxShadow: '0 1px 6px rgba(0,0,0,0.05)',
+      }}>
+
+      {/* Image */}
+      <div className="w-full overflow-hidden" style={{ height: '86px', background: 'linear-gradient(145deg, #f4f7ff, #eaefff)' }}>
+        {p.image
+          ? <img src={p.image} alt={p.name} className="w-full h-full object-contain" />
+          : <div className="w-full h-full flex items-center justify-center">
+              <ShoppingBag size={20} style={{ color: '#c7d2fe' }} />
+            </div>
+        }
+      </div>
+
+      {/* Info */}
+      <div style={{ padding: '8px 9px 9px' }}>
+        <p className="m-0 leading-tight"
+          style={{
+            fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: '11.5px',
+            color: '#0f172a',
+            display: '-webkit-box', WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical', overflow: 'hidden',
+          }}>
+          {p.name}
+        </p>
+        <div className="flex items-center justify-between mt-1.5">
+          <span style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: '12.5px', color: '#0f172a' }}>
+            ₹{p.price}
+          </span>
+          <button type="button" onClick={handleAdd}
+            className={`w-[26px] h-[26px] rounded-lg flex items-center justify-center transition-all flex-shrink-0 ${
+              added ? 'bg-emerald-500' : 'bg-gradient-to-br from-amber-400 to-amber-600 hover:shadow-md'
+            }`}
+            style={{ border: 'none', cursor: 'pointer', boxShadow: added ? '0 2px 8px rgba(16,185,129,0.3)' : '0 2px 8px rgba(245,158,11,0.25)' }}>
+            {added
+              ? <Check size={11} strokeWidth={2.5} style={{ color: '#fff' }} />
+              : <Plus size={11} strokeWidth={2.5} style={{ color: '#fff' }} />
+            }
+          </button>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   MAIN EXPORT
+────────────────────────────────────────────────────────────────────────── */
+export function CartDrawer({ open, onClose }) {
+  const { items, totalItems, totalAmount, removeItem, updateQuantity } = useCart();
+
+  const upsellItems = useMemo(() => {
+    if (!items.length) return [];
+    const last = items[items.length - 1];
+    const resolved = getProduct(last.productId);
+    const slug = resolved?.schoolSlug || null;
+    const cartIds = new Set(items.map(i => i.productId));
+    return getRelatedProducts(last.productId, slug, 6)
+      .filter(r => !cartIds.has(r.product.id))
+      .slice(0, 3);
+  }, [items]);
+
+  const hasUpsell = upsellItems.length > 0;
+  const FREE_SHIPPING_THRESHOLD = 999;
+  const remaining = FREE_SHIPPING_THRESHOLD - totalAmount;
+  const shippingPct = Math.min(100, (totalAmount / FREE_SHIPPING_THRESHOLD) * 100);
+
+  return (
+    <>
+      <style>{CART_CSS}</style>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            key="backdrop"
+            className="fixed inset-0 z-40"
+            style={{ background: 'rgba(15,23,42,0.55)', backdropFilter: 'blur(4px)' }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+        onClick={onClose}
+        aria-hidden="true"
+      />
+        )}
+
+        {open && (
+          <motion.aside
+            key="drawer"
+            className="cart-aside fixed top-0 right-0 h-full z-50 flex flex-row"
+            style={{
+              width: hasUpsell ? 'min(780px, 96vw)' : 'min(440px, 96vw)',
+              boxShadow: '-8px 0 64px rgba(15,23,42,0.24)',
+              fontFamily: "'Nunito', sans-serif",
+            }}
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
+            transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+        aria-modal="true"
+            aria-label="Shopping cart"
+      >
+
+            {/* ══ LEFT: Upsell panel (desktop only) ══ */}
+            {hasUpsell && (
+              <div className="hidden lg:flex flex-col w-[320px] flex-shrink-0 overflow-y-auto cart-scrollbar-hide"
+                style={{ background: 'linear-gradient(180deg, #f8faff 0%, #f1f5f9 100%)', borderRight: '1px solid #e2e8f0' }}>
+
+                <div className="px-5 pt-6 pb-4" style={{ borderBottom: '1px solid #e2e8f0' }}>
+                  <div className="flex items-center gap-2.5 mb-1">
+                    <div className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
+                      style={{ background: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)', boxShadow: '0 3px 10px rgba(245,158,11,0.30)' }}>
+                      <Zap size={14} strokeWidth={2.5} style={{ color: '#fff' }} />
+        </div>
+                    <p className="m-0"
+                      style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: '17px', color: '#0f172a' }}>
+                      Complete your kit
+                    </p>
+                  </div>
+                  <p className="m-0 pl-[42px]"
+                    style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 600, fontSize: '12px', color: '#94a3b8' }}>
+                    Students who bought this also got
+                  </p>
+                </div>
+
+                <div className="flex flex-col gap-2.5 p-4 flex-1">
+                  {upsellItems.map(({ product: p, schoolName: sn, schoolSlug: ss }) => (
+                    <UpsellCard key={p.id} product={p} schoolName={sn} schoolSlug={ss} onClose={onClose} />
+                  ))}
+                </div>
+
+                <div className="px-4 pb-5">
+                  <div className="rounded-2xl px-4 py-3.5 text-center"
+                    style={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%)', boxShadow: '0 4px 20px rgba(15,23,42,0.22)' }}>
+                    <p className="m-0"
+                      style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: '11.5px', color: '#fbbf24', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+                      🚚 Free delivery on orders ₹999+
+                    </p>
+                    <p className="m-0 mt-1"
+                      style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 600, fontSize: '11px', color: 'rgba(255,255,255,0.45)' }}>
+                      Official school uniforms · Ships in 24 hrs
+                    </p>
+                  </div>
+                </div>
+
+              </div>
+            )}
+
+            {/* ══ RIGHT: Cart panel ══ */}
+            <div className="flex flex-col flex-1 min-w-0" style={{ background: '#f8f9fb' }}>
+
+              {/* ── Header ── */}
+              <div className="cart-header flex items-center justify-between px-5 py-4"
+                style={{ borderBottom: '1px solid #e8ecf1', background: '#fff' }}>
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-xl flex items-center justify-center"
+                    style={{ background: 'linear-gradient(135deg, #f1f5f9, #e2e8f0)' }}>
+                    <ShoppingBag size={16} strokeWidth={2} style={{ color: '#0f172a' }} />
+                  </div>
+                  <p className="m-0"
+                    style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: '19px', color: '#0f172a' }}>
+                    Your Cart
+                  </p>
+                  {totalItems > 0 && (
+                    <span className="px-2 py-0.5 rounded-full text-white"
+                      style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: '11px', background: 'linear-gradient(135deg, #2563eb, #1d4ed8)', lineHeight: 1.5, boxShadow: '0 2px 8px rgba(37,99,235,0.30)' }}>
+                      {totalItems}
+                    </span>
+                  )}
+                </div>
+                <button type="button" onClick={onClose}
+                  className="w-8 h-8 rounded-xl flex items-center justify-center transition-all hover:bg-[#f1f5f9]"
+                  style={{ border: '1.5px solid #e2e8f0', color: '#64748b', background: '#fff', cursor: 'pointer' }}
+                  aria-label="Close cart">
+                  <X size={15} strokeWidth={2} />
+                </button>
+              </div>
+
+              {/* ── Mobile upsell strip ── */}
+              {hasUpsell && items.length > 0 && (
+                <div className="cart-upsell-header lg:hidden" style={{ background: '#fff', borderBottom: '1px solid #e8ecf1' }}>
+                  {/* Strip heading */}
+                  <div className="px-4 pt-3.5 pb-2 flex items-center gap-2">
+                    <div className="w-6 h-6 rounded-lg flex items-center justify-center"
+                      style={{ background: 'linear-gradient(135deg, #fbbf24, #f59e0b)', boxShadow: '0 2px 6px rgba(245,158,11,0.28)' }}>
+                      <Zap size={11} strokeWidth={2.5} style={{ color: '#fff' }} />
+                    </div>
+                    <p className="m-0"
+                      style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: '12px', color: '#0f172a', textTransform: 'uppercase', letterSpacing: '0.07em' }}>
+                      Complete your kit
+                    </p>
+                    <span style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 600, fontSize: '11px', color: '#94a3b8', marginLeft: '2px' }}>
+                      · add more &amp; save
+                    </span>
+                  </div>
+                  {/* Scroll strip */}
+                  <div className="cart-upsell-scroll flex gap-2.5 overflow-x-auto pb-3.5 px-4 cart-scrollbar-hide">
+                    {upsellItems.map(({ product: p, schoolSlug: ss }) => (
+                      <MobileUpsellPill key={p.id} product={p} schoolSlug={ss} onClose={onClose} />
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* ── Cart items ── */}
+              <div className="flex-1 overflow-y-auto cart-scrollbar-hide">
+                {items.length === 0 ? (
+
+                  /* ── Empty state ── */
+                  <div className="flex flex-col items-center justify-center h-full py-16 gap-4 px-6">
+                    <div className="w-20 h-20 rounded-3xl flex items-center justify-center"
+                      style={{ background: 'linear-gradient(145deg, #f1f5f9, #e2e8f0)', border: '1.5px solid #e2e8f0' }}>
+                      <ShoppingBag size={32} strokeWidth={1.5} style={{ color: '#cbd5e1' }} />
+                    </div>
+                    <div className="text-center">
+                      <p className="m-0 mb-1"
+                        style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: '18px', color: '#0f172a' }}>
+                        Your cart is empty
+                      </p>
+                      <p className="m-0"
+                        style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 600, fontSize: '13px', color: '#94a3b8' }}>
+                        Add uniforms to get started ✦
+                      </p>
+                    </div>
+                    <Link to="/schools" onClick={onClose}
+                      className="mt-1 inline-flex items-center gap-2 px-6 py-3 rounded-xl transition-all hover:opacity-90"
+                      style={{
+                        background: 'linear-gradient(180deg, #334155 0%, #0f172a 100%)',
+                        fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: '13px',
+                        color: '#fff', textDecoration: 'none',
+                        boxShadow: '0 4px 0 0 #0f172a, 0 6px 20px rgba(15,23,42,0.22)',
+                        letterSpacing: '0.04em',
+                      }}>
+                      Browse Uniforms <ArrowRight size={14} strokeWidth={2.5} />
+                    </Link>
+                  </div>
+
+                ) : (
+
+                  /* ── Items list ── */
+                  <ul className="cart-items-list p-4 space-y-3 list-none m-0">
+                    <AnimatePresence initial={false}>
+                      {items.map((item) => {
+                        const key = [item.productId, item.size, item.color].filter(Boolean).join('-');
+                        return (
+                          <motion.li key={key}
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, x: 60, transition: { duration: 0.22 } }}
+                            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                            className="cart-item-card flex gap-3 p-3 rounded-2xl"
+                            style={{ background: '#fff', border: '1.5px solid #e8ecf1', boxShadow: '0 1px 4px rgba(0,0,0,0.04)' }}>
+
+                            {/* Image */}
+                            <div className="cart-item-img w-[72px] h-[72px] rounded-xl overflow-hidden flex-shrink-0"
+                              style={{ background: 'linear-gradient(145deg, #f4f7ff, #eaefff)', border: '1px solid #e2e8f0' }}>
+                              {item.image
+                                ? <img src={item.image} alt={item.name} className="w-full h-full object-contain" />
+                                : <div className="w-full h-full flex items-center justify-center">
+                                    <ShoppingBag size={22} style={{ color: '#cbd5e1' }} />
+                                  </div>
+                              }
+                            </div>
+
+                            {/* Info */}
+                            <div className="flex-1 min-w-0">
+                              <p className="m-0 leading-snug line-clamp-2"
+                                style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: '13.5px', color: '#0f172a' }}>
+                                {item.name}
+                              </p>
+                              <div className="flex flex-wrap items-center gap-x-1 mt-0.5">
+                                {item.size && (
+                                  <span className="inline-flex items-center px-1.5 py-0.5 rounded-md"
+                                    style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: '10.5px', color: '#475569', background: '#f1f5f9' }}>
+                                    Size: {item.size}
+                                  </span>
+                                )}
+                                {item.color && (
+                                  <span className="inline-flex items-center px-1.5 py-0.5 rounded-md"
+                                    style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: '10.5px', color: '#475569', background: '#f1f5f9' }}>
+                                    {item.color}
+                                  </span>
+                                )}
+                              </div>
+                              <p className="m-0 mt-1.5"
+                                style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: '14px', color: '#0f172a' }}>
+                                ₹{item.price}
+                                {item.quantity > 1 && (
+                                  <span style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 600, fontSize: '11px', color: '#94a3b8', marginLeft: '5px' }}>
+                                    × {item.quantity} = ₹{item.price * item.quantity}
+                                  </span>
+                                )}
+                              </p>
+                            </div>
+
+                            {/* Controls */}
+                            <div className="flex flex-col items-end justify-between flex-shrink-0">
+                              <button type="button"
+                                onClick={() => removeItem(item.productId, item.size, item.color)}
+                                className="w-6 h-6 rounded-lg flex items-center justify-center transition-all hover:bg-red-50"
+                                style={{ background: '#f8f9fb', border: '1px solid #e2e8f0', color: '#94a3b8', cursor: 'pointer' }}
+                                aria-label="Remove item">
+                                <X size={11} strokeWidth={2.5} />
+                              </button>
+                              <div className="flex items-center rounded-xl overflow-hidden"
+                                style={{ border: '1.5px solid #e2e8f0', background: '#fff' }}>
+                                <button type="button"
+                                  onClick={() => updateQuantity(item.productId, item.size, item.quantity - 1, item.color)}
+                                  className="w-7 h-7 flex items-center justify-center transition-colors hover:bg-[#f1f5f9]"
+                                  style={{ color: '#374151', cursor: 'pointer', border: 'none', background: 'transparent' }}>
+                                  <Minus size={11} strokeWidth={2.5} />
+                    </button>
+                                <span className="w-7 text-center"
+                                  style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: '13px', color: '#0f172a' }}>
+                      {item.quantity}
+                    </span>
+                                <button type="button"
+                                  onClick={() => updateQuantity(item.productId, item.size, item.quantity + 1, item.color)}
+                                  className="w-7 h-7 flex items-center justify-center transition-colors hover:bg-[#f1f5f9]"
+                                  style={{ color: '#374151', cursor: 'pointer', border: 'none', background: 'transparent' }}>
+                                  <Plus size={11} strokeWidth={2.5} />
+                    </button>
+                  </div>
+                            </div>
+
+                          </motion.li>
+                        );
+                      })}
+                    </AnimatePresence>
+            </ul>
+          )}
+        </div>
+
+              {/* ── Footer ── */}
+        {items.length > 0 && (
+                <div className="cart-footer px-5 py-4"
+                  style={{ borderTop: '1.5px solid #e8ecf1', background: '#fff' }}>
+
+                  {/* Free shipping bar */}
+                  <div className="mb-4">
+                    {remaining > 0 ? (
+                      <p className="m-0 mb-2 flex items-center gap-1"
+                        style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: '12px', color: '#64748b' }}>
+                        Add{' '}
+                        <span style={{ color: '#0f172a', fontFamily: "'Baloo 2', cursive", fontWeight: 900 }}>₹{remaining}</span>
+                        {' '}more for free delivery 🚚
+                      </p>
+                    ) : (
+                      <p className="m-0 mb-2 flex items-center gap-1.5"
+                        style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: '12px', color: '#16a34a' }}>
+                        <Check size={12} strokeWidth={2.5} /> You've unlocked free delivery! 🎉
+                      </p>
+                    )}
+                    <div className="w-full rounded-full overflow-hidden" style={{ height: '6px', background: '#e2e8f0' }}>
+                      <motion.div className="h-full rounded-full"
+                        initial={{ width: 0 }}
+                        animate={{ width: `${shippingPct}%` }}
+                        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                        style={{ background: shippingPct >= 100 ? 'linear-gradient(90deg, #4ade80, #16a34a)' : 'linear-gradient(90deg, #fbbf24, #f59e0b)' }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Total */}
+                  <div className="flex items-center justify-between mb-4">
+                    <span style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: '14px', color: '#64748b' }}>
+                      Total
+                    </span>
+                    <span style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: '26px', color: '#0f172a', letterSpacing: '-0.5px' }}>
+                      ₹{totalAmount}
+                    </span>
+            </div>
+
+                  {/* Checkout CTA */}
+                  <Link to="/checkout" onClick={onClose}
+                    className="cart-checkout-btn flex items-center justify-center gap-2.5 w-full rounded-2xl py-3.5 transition-all"
+                    style={{
+                      background: 'linear-gradient(160deg, #fcd34d 0%, #f59e0b 45%, #d97706 100%)',
+                      boxShadow: '0 4px 0 0 #b45309, 0 6px 20px rgba(245,158,11,0.32)',
+                      textDecoration: 'none',
+                      fontFamily: "'Baloo 2', cursive",
+                      fontWeight: 900,
+                      fontSize: '14px',
+                      letterSpacing: '0.07em',
+                      textTransform: 'uppercase',
+                      color: '#fff',
+                      textShadow: '0 1px 2px rgba(0,0,0,0.18)',
+                    }}
+                    onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 0 0 #b45309, 0 10px 30px rgba(245,158,11,0.42)'; }}
+                    onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 4px 0 0 #b45309, 0 6px 20px rgba(245,158,11,0.32)'; }}
+                    onMouseDown={e => { e.currentTarget.style.transform = 'translateY(3px)'; e.currentTarget.style.boxShadow = '0 1px 0 0 #b45309, 0 2px 8px rgba(245,158,11,0.18)'; }}
+                    onMouseUp={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 0 0 #b45309, 0 10px 30px rgba(245,158,11,0.42)'; }}
+                  >
+                    <ShoppingBag size={16} strokeWidth={2.5} />
+                    Proceed to Checkout
+            </Link>
+
+                  <p className="text-center mt-3 m-0"
+                    style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 600, fontSize: '11px', color: '#94a3b8' }}>
+                    🔒 Secure checkout · COD available
+                  </p>
+
+                </div>
+              )}
+
+          </div>
+            {/* ── end cart panel ── */}
+
+          </motion.aside>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
