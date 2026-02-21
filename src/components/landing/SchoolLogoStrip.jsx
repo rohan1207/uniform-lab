@@ -10,8 +10,8 @@ import { featuredSchools } from '@/data/featuredSchools';
  * Robust: re-measures on visibility change and after mount so animation never sticks.
  * Edge-fades via CSS mask. Pauses on hover.
  */
-const LOGO_HEIGHT = 68;
-const LOGO_WIDTH  = 140; /* fixed box so all same aspect-ratio container, object-contain inside */
+const LOGO_HEIGHT = 100;
+const LOGO_WIDTH  = 200; /* fixed box so all same aspect-ratio container, object-contain inside */
 
 export default function SchoolLogoStrip() {
   const wrapRef  = useRef(null);

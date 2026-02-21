@@ -222,7 +222,7 @@ export default function Navbar() {
             <img
               src="/logo.png"
               alt="Logo"
-              style={{ height: '68px', width: 'auto', display: 'block', objectFit: 'contain' }}
+              style={{ height: '80px', width: 'auto', display: 'block', objectFit: 'contain' }}
             />
           </Link>
 
@@ -367,7 +367,7 @@ export default function Navbar() {
               <img
                 src="/logo.png"
                 alt="Logo"
-                style={{ height: '50px', width: 'auto', display: 'block', objectFit: 'contain' }}
+                style={{ height: '58px', width: 'auto', display: 'block', objectFit: 'contain' }}
               />
             </Link>
           </div>
@@ -473,7 +473,7 @@ export default function Navbar() {
                   <img
                     src="/logo.png"
                     alt="Logo"
-                    style={{ height: '40px', width: 'auto', display: 'block', objectFit: 'contain' }}
+                    style={{ height: '48px', width: 'auto', display: 'block', objectFit: 'contain' }}
                   />
                 </Link>
                 <button

@@ -161,23 +161,35 @@ const CSS = `
     font-weight: 700;
     line-height: 1.5;
   }
+  /* CTA: NewHero-style pill — #004C99 blue */
   .why-cta {
     display: inline-flex;
     align-items: center;
-    gap: 7px;
+    gap: 8px;
     text-decoration: none;
     color: #fff;
-    background: #0f172a;
-    border-radius: 10px;
-    padding: 10px 14px;
-    font-size: 12px;
-    font-weight: 800;
+    font-family: 'Baloo 2', cursive;
+    font-weight: 900;
+    font-size: clamp(11px, 1vw, 13px);
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
     white-space: nowrap;
-    transition: background 0.2s ease, transform 0.2s ease;
+    padding: 12px 24px;
+    border-radius: 9999px;
+    border: 1px solid rgba(0,76,153,0.6);
+    background: linear-gradient(180deg, #1a6bb8 0%, #004C99 50%, #003d7a 100%);
+    box-shadow: 0 2px 8px rgba(0,76,153,0.25), inset 0 1px 0 rgba(255,255,255,0.15);
+    text-shadow: 0 1px 0 rgba(0,0,0,0.2);
+    transition: transform 0.1s ease, box-shadow 0.1s ease, filter 0.12s ease;
   }
   .why-cta:hover {
-    background: #1e3a8a;
+    filter: brightness(1.04);
     transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,76,153,0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+  }
+  .why-cta:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 4px rgba(0,76,153,0.2), inset 0 1px 0 rgba(255,255,255,0.1);
   }
 
   @media (max-width: 1023px) {

@@ -220,23 +220,35 @@ const CSS = `
     color: #64748b;
     margin: 4px 0 0 0;
   }
+  /* CTA: NewHero-style pill — #004C99 blue */
   .about-cta-btn {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 12px 22px;
-    border-radius: 12px;
-    background: #0f172a;
-    color: #fff;
-    font-size: 14px;
-    font-weight: 800;
     text-decoration: none;
-    transition: background 0.2s ease, transform 0.2s ease;
+    color: #fff;
+    font-family: 'Baloo 2', cursive;
+    font-weight: 900;
+    font-size: clamp(11px, 1vw, 13px);
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    padding: 12px 24px;
+    border-radius: 9999px;
+    border: 1px solid rgba(0,76,153,0.6);
+    background: linear-gradient(180deg, #1a6bb8 0%, #004C99 50%, #003d7a 100%);
+    box-shadow: 0 2px 8px rgba(0,76,153,0.25), inset 0 1px 0 rgba(255,255,255,0.15);
+    text-shadow: 0 1px 0 rgba(0,0,0,0.2);
+    transition: transform 0.1s ease, box-shadow 0.1s ease, filter 0.12s ease;
     flex-shrink: 0;
   }
   .about-cta-btn:hover {
-    background: #1e3a8a;
-    transform: translateY(-2px);
+    filter: brightness(1.04);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,76,153,0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+  }
+  .about-cta-btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 4px rgba(0,76,153,0.2), inset 0 1px 0 rgba(255,255,255,0.1);
   }
 
   @media (max-width: 767px) {

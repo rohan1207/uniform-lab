@@ -347,12 +347,40 @@ export default function ServicesSection() {
             </div>
             <Link
               to="/services"
-              className="group w-full sm:w-auto justify-center sm:justify-start flex-shrink-0 inline-flex items-center gap-2.5 px-5 sm:px-6 py-3 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 transition-all duration-300 shadow-lg shadow-blue-600/25 hover:shadow-blue-500/35 hover:-translate-y-0.5"
+              className="svc-cta-btn group w-full sm:w-auto justify-center sm:justify-start flex-shrink-0 inline-flex items-center gap-2.5 rounded-full font-black uppercase text-white transition-all duration-200"
+              style={{
+                padding: '12px 24px',
+                fontFamily: "'Baloo 2', cursive",
+                fontSize: 'clamp(12px, 1vw, 14px)',
+                letterSpacing: '0.11em',
+                background: 'linear-gradient(180deg, #1a6bb8 0%, #004C99 50%, #003d7a 100%)',
+                border: '1px solid rgba(0,76,153,0.6)',
+                boxShadow: '0 2px 8px rgba(0,76,153,0.25), inset 0 1px 0 rgba(255,255,255,0.15)',
+                textShadow: '0 1px 0 rgba(0,0,0,0.2)',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.filter = 'brightness(1.04)';
+                e.currentTarget.style.transform = 'translateY(-1px)';
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,76,153,0.3), inset 0 1px 0 rgba(255,255,255,0.2)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.filter = '';
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,76,153,0.25), inset 0 1px 0 rgba(255,255,255,0.15)';
+              }}
+              onMouseDown={(e) => {
+                e.currentTarget.style.transform = 'translateY(1px)';
+                e.currentTarget.style.boxShadow = '0 1px 4px rgba(0,76,153,0.2), inset 0 1px 0 rgba(255,255,255,0.1)';
+              }}
+              onMouseUp={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,76,153,0.25), inset 0 1px 0 rgba(255,255,255,0.15)';
+              }}
             >
               Explore All Services
               <ArrowRight
                 size={15}
-                className="transition-transform duration-200 group-hover:translate-x-1"
+                className="transition-transform duration-200 group-hover:translate-x-1 flex-shrink-0"
               />
             </Link>
           </motion.div>
