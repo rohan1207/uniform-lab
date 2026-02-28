@@ -6,16 +6,42 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useCallback } from 'react';
 import { featuredSchools } from '@/data/featuredSchools';
 
-const SHOP_BY_LOOK_SCHOOLS = featuredSchools
-  .filter((s) => s.id === 'bharati-rabindranath-tagore' || s.id === 'the-orbis-school')
-  .map((s) => ({
-    ...s,
-    shortName: s.id === 'bharati-rabindranath-tagore' ? 'BVRTSE' : 'The Orbis School',
-    modelImage:
-      s.id === 'bharati-rabindranath-tagore'
-        ? '/bvrtse_shopbylook.png'
-        : '/orbis_shopbylook.png',
-  }));
+// Configuration for "shop by look" schools – easy to extend
+const SHOP_BY_LOOK_CONFIG = [
+  {
+    id: 'The Kalyani School',
+    slug: 'the-kalyani-school',
+    shortName: 'The Kalyani School',
+    logo: '/kalyani_logo.png',
+    modelImage: '/kalyani_shopbylook.png',
+  },  
+  {
+    id: 'bharati-rabindranath-tagore',
+    shortName: 'BVRTSE',
+    logo: '/bvrtse_logo.png',
+    modelImage: '/bvrtse_shopbylook.png',
+  },
+  {
+    id: 'the-orbis-school',
+    shortName: 'The Orbis School',
+    logo: '/orbis_logo.png',
+    modelImage: '/orbis_shopbylook.png',
+  },
+];
+
+const SHOP_BY_LOOK_SCHOOLS = SHOP_BY_LOOK_CONFIG.map((cfg) => {
+  const base = featuredSchools.find((s) => s.id === cfg.id || s.slug === cfg.id);
+  const slug = base?.slug || cfg.slug || cfg.id;
+  return {
+    id: base?.id || cfg.id,
+    slug,
+    name: base?.name || cfg.shortName || cfg.id,
+    level: base?.level || cfg.level || '',
+    logo: cfg.logo || null,
+    shortName: cfg.shortName || base?.name || cfg.id,
+    modelImage: cfg.modelImage,
+  };
+});
 
 const CSS = `
 @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800;900&family=Nunito:wght@400;600;700;800&display=swap');
@@ -397,7 +423,7 @@ export default function ShopByLookSection() {
             {/* Animated school card — click goes to school page */}
             <AnimatePresence mode="wait" custom={direction}>
               <Link
-                to={`/schools/${school.id}`}
+                to={`/schools/${school.slug}`}
                 className="sbl-school-card-link"
                 style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
               >
@@ -448,7 +474,7 @@ export default function ShopByLookSection() {
             {/* Model image — click goes to school page */}
             <AnimatePresence mode="wait" custom={direction}>
               <Link
-                to={`/schools/${school.id}`}
+                to={`/schools/${school.slug}`}
                 style={{ display: 'block', textDecoration: 'none' }}
                 className="sbl-model-link"
               >

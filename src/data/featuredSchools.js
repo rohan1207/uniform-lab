@@ -8,6 +8,7 @@
 export const featuredSchools = [
   {
     id: 'nanded-city-public',
+    slug: 'nanded-city-public',
     name: "Vidya Pratishthan's Nanded City Public School",
     level: 'CBSE',
     image: '/nanded.png',
@@ -16,6 +17,7 @@ export const featuredSchools = [
   },
   {
     id: 'the-orbis-school',
+    slug: 'the-orbis-school',
     name: 'The Orbis School',
     level: 'CBSE',
     image: '/orbis.png',
@@ -24,6 +26,7 @@ export const featuredSchools = [
   },
   {
     id: 'bharati-rabindranath-tagore',
+    slug: 'bharati-rabindranath-tagore',
     name: "Bharati Vidyapeeth's Rabindranath Tagore School of Excellence",
     level: 'School of Excellence',
     image: '/bvrtse.png',
@@ -31,7 +34,8 @@ export const featuredSchools = [
     color: '#065f46',   // deep emerald
   },
   {
-    id: 'Indo Scots Global School',
+    id: 'indo-scots-global-school',
+    slug: 'indo-scots-global-school',
     name: 'Indo Scots Global School',
     level: 'CBSE',
     image: '/indo.png',
@@ -40,7 +44,8 @@ export const featuredSchools = [
     color: '#6d28d9',   // violet
   },
   {
-    id: 'Magarpatta City Public School',
+    id: 'magarpatta-city-public-school',
+    slug: 'magarpatta-city-public-school',
     name: 'Magarpatta City Public School',
     level: 'ICSE',
     image: '/orbis.png',

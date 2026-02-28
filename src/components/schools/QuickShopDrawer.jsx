@@ -203,8 +203,12 @@ export function QuickShopDrawer({ open, onClose, product, schoolName, schoolSlug
   const { addItem, openCart, closeCart } = useCart();
 
   const colors  = product ? getProductColors(product) : [];
+  const variantSizes = product && Array.isArray(product.variants)
+    ? [...new Set(product.variants.map((v) => (v.sizeLabel || '').trim()).filter(Boolean))]
+    : [];
+  const sizeOptions = variantSizes.length ? variantSizes : DETAIL_SIZES;
   const [selectedColor, setSelectedColor] = useState(colors[0] ?? null);
-  const [selectedSize,  setSelectedSize]  = useState(DETAIL_SIZES[0]);
+  const [selectedSize,  setSelectedSize]  = useState(sizeOptions[0] || DETAIL_SIZES[0]);
   const [quantity,      setQuantity]      = useState(1);
   const [addedFlash,    setAddedFlash]    = useState(false);
 
@@ -213,7 +217,11 @@ export function QuickShopDrawer({ open, onClose, product, schoolName, schoolSlug
     if (open && product) {
       const c = getProductColors(product);
       setSelectedColor(c[0] ?? null);
-      setSelectedSize(DETAIL_SIZES[0]);
+      const vs = Array.isArray(product.variants)
+        ? [...new Set(product.variants.map((v) => (v.sizeLabel || '').trim()).filter(Boolean))]
+        : [];
+      const opts = vs.length ? vs : DETAIL_SIZES;
+      setSelectedSize(opts[0] || DETAIL_SIZES[0]);
       setQuantity(1);
       setAddedFlash(false);
     }
@@ -238,9 +246,22 @@ export function QuickShopDrawer({ open, onClose, product, schoolName, schoolSlug
   const displayImage  = variantImages[0] || product.image;
   const productUrl    = schoolSlug ? `/product/${product.id}?school=${schoolSlug}` : `/product/${product.id}`;
 
+  const selectedVariant = Array.isArray(product.variants)
+    ? product.variants.find((v) => (v.sizeLabel || '').trim() === (selectedSize || '').trim()) || null
+    : null;
+  const effectivePrice = selectedVariant?.saleRate ?? product.price;
+
   function handleAddToCart() {
-    addItem({ productId: product.id, name: product.name, price: product.price,
-      size: selectedSize, quantity, color: selectedColor?.name, image: displayImage });
+    addItem({
+      productId: product.id,
+      name: product.name,
+      price: effectivePrice,
+      size: selectedSize,
+      quantity,
+      color: selectedColor?.name,
+      image: displayImage,
+      variantCode: selectedVariant?.code,
+    });
     setAddedFlash(true);
     setTimeout(() => {
       setAddedFlash(false);
@@ -250,8 +271,16 @@ export function QuickShopDrawer({ open, onClose, product, schoolName, schoolSlug
   }
 
   function handleBuyNow() {
-    addItem({ productId: product.id, name: product.name, price: product.price,
-      size: selectedSize, quantity, color: selectedColor?.name, image: displayImage });
+    addItem({
+      productId: product.id,
+      name: product.name,
+      price: effectivePrice,
+      size: selectedSize,
+      quantity,
+      color: selectedColor?.name,
+      image: displayImage,
+      variantCode: selectedVariant?.code,
+    });
     onClose();
     closeCart();
     navigate('/checkout');
@@ -318,7 +347,7 @@ export function QuickShopDrawer({ open, onClose, product, schoolName, schoolSlug
             </h2>
             <p className="m-0 mt-0.5"
               style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: '18px', color: '#0f172a' }}>
-              ₹{product.price}
+              ₹{effectivePrice}
             </p>
           </div>
           <button type="button" onClick={onClose}
@@ -442,7 +471,7 @@ export function QuickShopDrawer({ open, onClose, product, schoolName, schoolSlug
                 </span>
                 </p>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '7px' }}>
-                  {DETAIL_SIZES.map((s) => (
+                  {sizeOptions.map((s) => (
                   <button key={s} type="button"
                       onClick={() => setSelectedSize(s)}
                     className={`qs-size${selectedSize === s ? ' active' : ''}`}

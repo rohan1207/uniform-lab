@@ -1,7 +1,9 @@
-import { useState, useMemo, useRef, useCallback } from 'react';
+import { useState, useMemo, useRef, useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Search } from 'lucide-react';
-import { featuredSchools } from '@/data/featuredSchools';
+import { featuredSchools as staticFeaturedSchools } from '@/data/featuredSchools';
+
+const API_BASE = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
 
 /* ─────────────────────────────────────────────────────────────────────────────
    GLOBAL CSS
@@ -319,7 +321,7 @@ function SchoolCard({ school }) {
     : `translate(0px, 0px) scale(1)`;
 
   return (
-    <Link to={`/schools/${school.id}`} className="sp-card-link">
+    <Link to={`/schools/${school.slug || school.id}`} className="sp-card-link">
       <div
         ref={cardRef}
         className="sp-card-new"
@@ -388,14 +390,40 @@ function SchoolCard({ school }) {
 export default function SchoolsPage() {
   const [query,   setQuery]   = useState('');
   const [showAll, setShowAll] = useState(false);
+  const [schools, setSchools] = useState(staticFeaturedSchools);
+
+  // Load real schools from backend; fall back to static on error
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch(`${API_BASE}/api/public/schools`);
+        const data = await res.json().catch(() => ([]));
+        if (!res.ok || !Array.isArray(data) || cancelled) return;
+        const mapped = data.map((s) => ({
+          id: s._id || s.slug,
+          slug: s.slug,
+          name: s.name,
+          level: s.level || 'CBSE',
+          image: s.imageUrl || '/school-placeholder.png',
+          logo: s.logoUrl || null,
+          color: '#004C99',
+        }));
+        if (mapped.length) setSchools(mapped);
+      } catch {
+        // keep static fallback
+      }
+    })();
+    return () => { cancelled = true; };
+  }, []);
 
   const filtered = useMemo(() => {
-    if (!query.trim()) return featuredSchools;
+    if (!query.trim()) return schools;
     const q = query.trim().toLowerCase();
-    return featuredSchools.filter(
-      (s) => s.name.toLowerCase().includes(q) || s.level.toLowerCase().includes(q)
+    return schools.filter(
+      (s) => s.name.toLowerCase().includes(q) || (s.level || '').toLowerCase().includes(q)
     );
-  }, [query]);
+  }, [query, schools]);
 
   const visible     = showAll ? filtered : filtered.slice(0, INITIAL_VISIBLE);
   const hasMore     = filtered.length > INITIAL_VISIBLE;

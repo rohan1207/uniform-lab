@@ -1,9 +1,14 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ShoppingBag, User, Heart, Search, ChevronDown } from 'lucide-react';
+import {
+  Menu, X, ShoppingBag, User, Heart, Search, ChevronDown,
+  Home, Building2, Building, Settings, HelpCircle, Ruler, MessageCircle, GraduationCap, Users,
+} from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useCart } from '@/contexts/CartContext';
-import { featuredSchools } from '@/data/featuredSchools';
+import { featuredSchools as staticFeaturedSchools } from '@/data/featuredSchools';
+
+const API_BASE = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
 
 const NAV_CSS = `
   @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800;900&family=Nunito:wght@400;600;700&display=swap');
@@ -17,6 +22,7 @@ export default function Navbar() {
   const location = useLocation();
   const pathname = location.pathname;
   const { totalItems, openCart } = useCart();
+  const [schools, setSchools] = useState(staticFeaturedSchools);
 
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : '';
@@ -28,6 +34,28 @@ export default function Navbar() {
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  // Load real schools list for dropdowns, fallback to staticFeaturedSchools on error
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch(`${API_BASE}/api/public/schools`);
+        const data = await res.json().catch(() => ([]));
+        if (!res.ok || !Array.isArray(data) || cancelled) return;
+        const mapped = data.map((s) => ({
+          id: s._id || s.slug,
+          slug: s.slug,
+          name: s.name,
+          level: s.level || 'CBSE',
+        }));
+        if (mapped.length) setSchools(mapped);
+      } catch {
+        // ignore, keep static fallback
+      }
+    })();
+    return () => { cancelled = true; };
   }, []);
 
   useEffect(() => { setOpen(false); }, [pathname]);
@@ -64,13 +92,13 @@ export default function Navbar() {
   ];
 
   const mobileNavItems = [
-    { href: '/', label: 'Home', emoji: '🏠' },
-    { isSchools: true, label: 'Shop By Schools', emoji: '🏫' },
-    { href: '/about', label: 'About Us', emoji: '🏢' },
-    { href: '/services', label: 'Services', emoji: '⚙️' },
-    { href: '/faqs', label: 'FAQs', emoji: '❓' },
-    { href: '/size-guide', label: 'Size Guide', emoji: '📏' },
-    { href: '/schoolenquiry', label: 'Contact Us', emoji: '💬' },
+    { href: '/', label: 'Home', icon: Home },
+    { isSchools: true, label: 'Shop By Schools', icon: Building2 },
+    { href: '/about', label: 'About Us', icon: Building },
+    { href: '/services', label: 'Services', icon: Settings },
+    { href: '/faqs', label: 'FAQs', icon: HelpCircle },
+    { href: '/size-guide', label: 'Size Guide', icon: Ruler },
+    { href: '/schoolenquiry', label: 'Contact Us', icon: MessageCircle },
   ];
 
   /* Transparent-at-top only on landing page; other pages always solid */
@@ -186,10 +214,10 @@ export default function Navbar() {
                     <p style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 800, fontSize: '11px', color: '#94a3b8', letterSpacing: '0.1em', textTransform: 'uppercase', padding: '6px 10px 8px' }}>
                       Select your school
                     </p>
-                    {featuredSchools.map((school) => (
+                    {schools.map((school) => (
                       <Link
-                        key={school.name}
-                        to={`/schools/${school.slug || school.name.toLowerCase().replace(/\s+/g, '-')}`}
+                      key={school.slug || school.id || school.name}
+                      to={`/schools/${school.slug || school.id}`}
                         onClick={() => setShopOpen(false)}
                         style={{
                           display: 'flex',
@@ -258,13 +286,13 @@ export default function Navbar() {
             {/* Icons */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
               {[
-                { icon: User, label: 'Account', href: '#' },
-                { icon: Heart, label: 'Wishlist', href: '#' },
-                { icon: Search, label: 'Search', href: '#' },
+                { icon: User, label: 'Account', href: '/account' },
+                { icon: Heart, label: 'Wishlist', href: '/wishlist' },
+                { icon: Search, label: 'Search', href: '/search' },
               ].map(({ icon: Icon, label, href }) => (
-                <a
+                <Link
                   key={label}
-                  href={href}
+                  to={href}
                   aria-label={label}
                   style={{
                     display: 'flex',
@@ -281,7 +309,7 @@ export default function Navbar() {
                   onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#475569'; }}
                 >
                   <Icon size={18} />
-                </a>
+                </Link>
               ))}
 
               {/* Cart */}
@@ -444,7 +472,7 @@ export default function Navbar() {
               aria-hidden="true"
             />
 
-            {/* Panel */}
+            {/* Panel — full-screen on phone */}
             <motion.div
               initial={{ x: '-100%' }}
               animate={{ x: 0 }}
@@ -455,47 +483,49 @@ export default function Navbar() {
                 top: 0,
                 left: 0,
                 bottom: 0,
-                width: '300px',
-                maxWidth: '85vw',
+                right: 0,
+                width: '100%',
+                maxWidth: '100%',
                 background: '#fff',
                 zIndex: 1002,
                 display: 'flex',
                 flexDirection: 'column',
                 overflowY: 'auto',
-                boxShadow: '4px 0 32px rgba(0,0,0,0.12)',
               }}
             >
-              {/* Drawer header */}
+              {/* Drawer header — clean, premium */}
               <div style={{
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                padding: '16px 20px',
+                padding: '20px 20px 16px',
                 borderBottom: '1px solid #f1f5f9',
+                flexShrink: 0,
               }}>
                 <Link to="/" onClick={() => setOpen(false)} style={{ textDecoration: 'none' }}>
                   <img
                     src="/logo.png"
-                    alt="Logo"
-                    style={{ height: '48px', width: 'auto', display: 'block', objectFit: 'contain' }}
+                    alt="Uniform Lab"
+                    style={{ height: '44px', width: 'auto', display: 'block', objectFit: 'contain' }}
                   />
                 </Link>
                 <button
                   onClick={() => setOpen(false)}
                   style={{
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    width: '36px', height: '36px', borderRadius: '10px',
-                    border: '1.5px solid #e2e8f0', background: '#fff', cursor: 'pointer', color: '#64748b',
+                    width: '40px', height: '40px', borderRadius: '12px',
+                    border: '1px solid #e2e8f0', background: '#fafafa', cursor: 'pointer', color: '#64748b',
                   }}
                   aria-label="Close menu"
                 >
-                  <X size={18} />
+                  <X size={20} strokeWidth={2} />
                 </button>
               </div>
 
-              {/* Nav links */}
-              <nav style={{ padding: '8px 12px', flex: 1 }}>
+              {/* Nav links — professional icons, clear hierarchy */}
+              <nav style={{ padding: '12px 16px', flex: 1 }}>
                 {mobileNavItems.map((item) => {
+                  const NavIcon = item.icon;
                   if (item.isSchools) {
                     return (
                       <div key="schools">
@@ -505,8 +535,8 @@ export default function Navbar() {
                             width: '100%',
                             display: 'flex',
                             alignItems: 'center',
-                            gap: '12px',
-                            padding: '13px 10px',
+                            gap: '14px',
+                            padding: '14px 12px',
                             background: 'none',
                             border: 'none',
                             borderBottom: '1px solid #f1f5f9',
@@ -518,12 +548,16 @@ export default function Navbar() {
                             textAlign: 'left',
                           }}
                         >
-                          <span style={{ fontSize: '18px' }}>{item.emoji}</span>
+                          <span style={{ color: '#64748b', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <NavIcon size={20} strokeWidth={1.75} />
+                          </span>
                           <span style={{ flex: 1 }}>{item.label}</span>
                           <ChevronDown
-                            size={16}
+                            size={18}
+                            strokeWidth={2}
                             style={{
                               color: '#94a3b8',
+                              flexShrink: 0,
                               transition: 'transform 0.2s',
                               transform: schoolsAccordion ? 'rotate(180deg)' : 'rotate(0deg)',
                             }}
@@ -539,10 +573,10 @@ export default function Navbar() {
                               transition={{ duration: 0.2 }}
                               style={{ overflow: 'hidden', background: '#f8faff', borderRadius: '10px', margin: '4px 0 8px' }}
                             >
-                              {featuredSchools.map((school, i) => (
+                              {schools.map((school, i) => (
                                 <Link
-                                  key={school.name}
-                                  to={`/schools/${school.slug || school.name.toLowerCase().replace(/\s+/g, '-')}`}
+                                  key={school.slug || school.id || school.name}
+                                  to={`/schools/${school.slug || school.id}`}
                                   onClick={() => setOpen(false)}
                                   style={{
                                     display: 'flex',
@@ -554,7 +588,7 @@ export default function Navbar() {
                                     fontWeight: 600,
                                     fontSize: '13.5px',
                                     color: '#334155',
-                                    borderBottom: i < featuredSchools.length - 1 ? '1px solid #e8f0fe' : 'none',
+                                    borderBottom: i < schools.length - 1 ? '1px solid #e8f0fe' : 'none',
                                     transition: 'background 0.15s',
                                   }}
                                   onMouseEnter={(e) => { e.currentTarget.style.background = '#eff6ff'; }}
@@ -584,8 +618,8 @@ export default function Navbar() {
                       style={{
                         display: 'flex',
                         alignItems: 'center',
-                        gap: '12px',
-                        padding: '13px 10px',
+                        gap: '14px',
+                        padding: '14px 12px',
                         borderRadius: '10px',
                         textDecoration: 'none',
                         fontFamily: "'Nunito', sans-serif",
@@ -599,47 +633,50 @@ export default function Navbar() {
                       onMouseEnter={(e) => { if (!active) e.currentTarget.style.background = '#f8faff'; }}
                       onMouseLeave={(e) => { if (!active) e.currentTarget.style.background = 'transparent'; }}
                     >
-                      <span style={{ fontSize: '18px' }}>{item.emoji}</span>
+                      <span style={{ color: active ? '#0077e6' : '#64748b', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <NavIcon size={20} strokeWidth={1.75} />
+                      </span>
                       {item.label}
                     </Link>
                   );
                 })}
               </nav>
 
-              {/* Bottom actions */}
-              <div style={{ padding: '16px', borderTop: '1px solid #f1f5f9' }}>
-                {/* CTA buttons */}
-                <div style={{ display: 'flex', gap: '10px', marginBottom: '12px' }}>
+              {/* Bottom actions — pill CTAs + icon row */}
+              <div style={{ padding: '20px 16px 24px', borderTop: '1px solid #f1f5f9', flexShrink: 0, background: '#fafafa' }}>
+                {/* CTA buttons — NewHero-style pills, professional icons */}
+                <div style={{ display: 'flex', gap: '12px', marginBottom: '16px' }}>
                   <Link
                     to="/schoolenquiry"
                     onClick={() => setOpen(false)}
                     style={{
                       flex: 1,
-                      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
-                      padding: '12px',
-                      borderRadius: '14px',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                      padding: '14px 12px',
+                      borderRadius: '9999px',
                       fontFamily: "'Baloo 2', cursive",
                       fontWeight: 800,
                       fontSize: '12px',
                       letterSpacing: '0.08em',
                       textTransform: 'uppercase',
                       textDecoration: 'none',
-                      color: '#fff',
-                      background: 'linear-gradient(180deg, #ffe066 0%, #f5a800 55%, #e08c00 100%)',
-                      boxShadow: '0 4px 0 0 #7a4f00',
-                      textShadow: '0 1px 0 #7a4f0099',
+                      color: '#5c3a0a',
+                      background: 'linear-gradient(180deg, #fcd88a 0%, #F7BE4F 50%, #e5a732 100%)',
+                      border: '1px solid rgba(229,167,50,0.6)',
+                      boxShadow: '0 2px 8px rgba(247,190,79,0.35), inset 0 1px 0 rgba(255,255,255,0.45)',
                     }}
                   >
-                    🏫 School
+                    <GraduationCap size={18} strokeWidth={2} />
+                    School
                   </Link>
                   <Link
                     to="/"
                     onClick={() => setOpen(false)}
                     style={{
                       flex: 1,
-                      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
-                      padding: '12px',
-                      borderRadius: '14px',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                      padding: '14px 12px',
+                      borderRadius: '9999px',
                       fontFamily: "'Baloo 2', cursive",
                       fontWeight: 800,
                       fontSize: '12px',
@@ -647,56 +684,57 @@ export default function Navbar() {
                       textTransform: 'uppercase',
                       textDecoration: 'none',
                       color: '#fff',
-                      background: 'linear-gradient(180deg, #4db8ff 0%, #0077e6 55%, #005bbf 100%)',
-                      boxShadow: '0 4px 0 0 #003a7a',
-                      textShadow: '0 1px 0 #003a7a99',
+                      background: 'linear-gradient(180deg, #1a6bb8 0%, #004C99 50%, #003d7a 100%)',
+                      border: '1px solid rgba(0,76,153,0.6)',
+                      boxShadow: '0 2px 8px rgba(0,76,153,0.25), inset 0 1px 0 rgba(255,255,255,0.15)',
                     }}
                   >
-                    👨‍👧 Parent
+                    <Users size={18} strokeWidth={2} />
+                    Parent
                   </Link>
                 </div>
 
-                {/* Icon row */}
+                {/* Icon row — Account, Wishlist, Search, Cart (professional line icons) */}
                 <div style={{ display: 'flex', gap: '8px' }}>
                   {[
-                    { icon: User, label: 'Account', href: '#' },
-                    { icon: Heart, label: 'Wishlist', href: '#' },
-                    { icon: Search, label: 'Search', href: '#' },
+                    { icon: User, label: 'Account', href: '/account' },
+                    { icon: Heart, label: 'Wishlist', href: '/wishlist' },
+                    { icon: Search, label: 'Search', href: '/search' },
                   ].map(({ icon: Icon, label, href }) => (
-                    <a
+                    <Link
                       key={label}
-                      href={href}
+                      to={href}
                       onClick={() => setOpen(false)}
                       style={{
                         flex: 1,
-                        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px',
-                        padding: '10px 6px',
+                        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px',
+                        padding: '12px 8px',
                         borderRadius: '12px',
-                        border: '1.5px solid #e2e8f0',
+                        border: '1px solid #e2e8f0',
                         background: '#fff',
                         textDecoration: 'none',
                         color: '#475569',
                         fontFamily: "'Nunito', sans-serif",
                         fontSize: '11px',
                         fontWeight: 600,
-                        transition: 'background 0.15s',
+                        transition: 'background 0.15s, border-color 0.15s',
                       }}
-                      onMouseEnter={(e) => { e.currentTarget.style.background = '#f1f5f9'; }}
-                      onMouseLeave={(e) => { e.currentTarget.style.background = '#fff'; }}
+                      onMouseEnter={(e) => { e.currentTarget.style.background = '#f8fafc'; e.currentTarget.style.borderColor = '#cbd5e1'; }}
+                      onMouseLeave={(e) => { e.currentTarget.style.background = '#fff'; e.currentTarget.style.borderColor = '#e2e8f0'; }}
                     >
-                      <Icon size={18} />
+                      <Icon size={20} strokeWidth={1.75} />
                       {label}
-                    </a>
+                    </Link>
                   ))}
 
                   <button
                     onClick={() => { openCart(); setOpen(false); }}
                     style={{
                       flex: 1,
-                      display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px',
-                      padding: '10px 6px',
+                      display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px',
+                      padding: '12px 8px',
                       borderRadius: '12px',
-                      border: '1.5px solid #e2e8f0',
+                      border: '1px solid #e2e8f0',
                       background: '#fff',
                       cursor: 'pointer',
                       color: '#475569',
@@ -704,14 +742,14 @@ export default function Navbar() {
                       fontSize: '11px',
                       fontWeight: 600,
                       position: 'relative',
-                      transition: 'background 0.15s',
+                      transition: 'background 0.15s, border-color 0.15s',
                     }}
-                    onMouseEnter={(e) => { e.currentTarget.style.background = '#f1f5f9'; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.background = '#fff'; }}
+                    onMouseEnter={(e) => { e.currentTarget.style.background = '#f8fafc'; e.currentTarget.style.borderColor = '#cbd5e1'; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.background = '#fff'; e.currentTarget.style.borderColor = '#e2e8f0'; }}
                   >
                     {totalItems > 0 && (
                       <span style={{
-                        position: 'absolute', top: '6px', right: '18px',
+                        position: 'absolute', top: '6px', right: '50%', transform: 'translateX(6px)',
                         background: '#0077e6', color: '#fff',
                         borderRadius: '999px', fontSize: '9px', fontWeight: 800,
                         minWidth: '14px', height: '14px',
@@ -721,7 +759,7 @@ export default function Navbar() {
                         {totalItems}
                       </span>
                     )}
-                    <ShoppingBag size={18} />
+                    <ShoppingBag size={20} strokeWidth={1.75} />
                     Cart
                   </button>
                 </div>

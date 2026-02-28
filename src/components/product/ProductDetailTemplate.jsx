@@ -7,8 +7,8 @@ import {
   Check, Heart, Minus, Plus, BadgeCheck, Flame, Star, ArrowRight, ArrowLeft
 } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
+import { useWishlist } from '@/contexts/WishlistContext';
 import { getProductColors, getProductImages, DETAIL_SIZES } from '@/data/schoolCatalog';
-import { getRelatedProducts } from '@/data/productLookup';
 import { ProductCard } from '@/components/schools/ProductCard';
 import { QuickShopDrawer } from '@/components/schools/QuickShopDrawer';
 
@@ -370,14 +370,18 @@ function FaqRow({ item }) {
 /* ─────────────────────────────────────────────────────────────────────────
    MAIN EXPORT
 ────────────────────────────────────────────────────────────────────────── */
-export function ProductDetailTemplate({ product, schoolName, schoolSlug, initialColor }) {
+export function ProductDetailTemplate({ product, schoolName, schoolSlug, initialColor, relatedProducts = [] }) {
   const navigate = useNavigate();
   const { addItem, openCart } = useCart();
+  const { isInWishlist, toggleWishlist } = useWishlist();
 
   const colors = getProductColors(product);
-  const baseSizes = Array.from({ length: 15 }, (_, i) => String(18 + i * 2));
-  const sizesFromProduct = (product.sizes && product.sizes.length) ? product.sizes : DETAIL_SIZES;
-  const mergedSizes = Array.from(new Set([...baseSizes, ...sizesFromProduct]));
+  const variantSizes = Array.isArray(product.variants)
+    ? [...new Set(product.variants.map((v) => (v.sizeLabel || '').trim()).filter(Boolean))]
+    : [];
+  const sizeOptions = variantSizes.length
+    ? variantSizes
+    : (product.sizes && product.sizes.length ? product.sizes : DETAIL_SIZES);
 
   const [selectedColor, setSelectedColor] = useState(() => {
     const urlColor = initialColor?.trim();
@@ -387,10 +391,10 @@ export function ProductDetailTemplate({ product, schoolName, schoolSlug, initial
     }
     return colors[0];
   });
-  const [selectedSize, setSelectedSize] = useState(mergedSizes[0]);
+  const [selectedSize, setSelectedSize] = useState(sizeOptions[0] || DETAIL_SIZES[0]);
   const [quantity, setQuantity] = useState(1);
   const [customSize, setCustomSize] = useState('');
-  const [wishlist, setWishlist] = useState(false);
+  const [wishlist, setWishlist] = useState(isInWishlist(product.id));
   const [descTab, setDescTab] = useState('description');
   const [sliderIndex, setSliderIndex] = useState(0);
   const [quickShopProduct, setQuickShopProduct] = useState(null);
@@ -405,17 +409,39 @@ export function ProductDetailTemplate({ product, schoolName, schoolSlug, initial
     return Array.from(new Set(raw)).slice(0, 5);
   })();
 
-  const related = getRelatedProducts(product.id, schoolSlug, 8);
-  const youMayAlsoLike = related.slice(0, 4);
+  const youMayAlsoLike = (relatedProducts || []).slice(0, 4);
 
   const variantImage = gallery[0];
 
+  const selectedVariant = Array.isArray(product.variants)
+    ? product.variants.find((v) => (v.sizeLabel || '').trim() === (selectedSize || '').trim()) || null
+    : null;
+  const effectivePrice = selectedVariant?.saleRate ?? product.price;
+
   function handleAddToCart() {
-    addItem({ productId: product.id, name: product.name, price: product.price, size: selectedSize, quantity, color: selectedColor?.name, image: variantImage });
+    addItem({
+      productId: product.id,
+      name: product.name,
+      price: effectivePrice,
+      size: selectedSize,
+      quantity,
+      color: selectedColor?.name,
+      image: variantImage,
+      variantCode: selectedVariant?.code,
+    });
     openCart();
   }
   function handleBuyNow() {
-    addItem({ productId: product.id, name: product.name, price: product.price, size: selectedSize, quantity, color: selectedColor?.name, image: variantImage });
+    addItem({
+      productId: product.id,
+      name: product.name,
+      price: effectivePrice,
+      size: selectedSize,
+      quantity,
+      color: selectedColor?.name,
+      image: variantImage,
+      variantCode: selectedVariant?.code,
+    });
     navigate('/checkout');
   }
 
@@ -490,7 +516,7 @@ export function ProductDetailTemplate({ product, schoolName, schoolSlug, initial
             <div className="flex items-center gap-4 mb-4">
               <span className="font-black text-[#0f172a]"
                 style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: 'clamp(24px, 2.4vw, 30px)' }}>
-                ₹{product.price}
+                ₹{effectivePrice}
               </span>
               <div className="flex items-center gap-1">
                 {[1,2,3,4,5].map(i => <Star key={i} size={12} className="fill-[#f59e0b] text-[#f59e0b]" />)}
@@ -552,7 +578,7 @@ export function ProductDetailTemplate({ product, schoolName, schoolSlug, initial
                 </Link>
               </div>
               <div className="flex flex-wrap gap-2">
-                {mergedSizes.map(s => (
+                {sizeOptions.map(s => (
                   <button key={s} onClick={() => { setSelectedSize(s); setCustomSize(''); }}
                     className={`pdt-size ${selectedSize === s && !customSize ? 'active' : ''}`}>
                     {s}
@@ -588,7 +614,12 @@ export function ProductDetailTemplate({ product, schoolName, schoolSlug, initial
               </div>
 
               {/* Wishlist */}
-              <button onClick={() => setWishlist(v => !v)} aria-label="Wishlist"
+              <button
+                onClick={() => {
+                  setWishlist((v) => !v);
+                  toggleWishlist(product);
+                }}
+                aria-label="Wishlist"
                 className="w-10 h-10 flex items-center justify-center rounded-xl transition-all"
                 style={{ border: '1.5px solid #e2e8f0', background: wishlist ? '#fef2f2' : '#fff', color: wishlist ? '#dc2626' : '#94a3b8' }}>
                 <Heart size={15} strokeWidth={2} className={wishlist ? 'fill-current' : ''} />
@@ -676,27 +707,39 @@ export function ProductDetailTemplate({ product, schoolName, schoolSlug, initial
                     <motion.div key="desc"
                       initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.25 }}>
-                      <p className="leading-relaxed text-[#374151] mb-3"
-                        style={{ fontFamily: "'Nunito', sans-serif", fontSize: '14px', fontWeight: 600 }}>
-                        The <strong style={{ color: '#0f172a', fontFamily: "'Baloo 2', cursive", fontWeight: 900 }}>{product.name}</strong> is part of our official school uniform range, crafted to match your school's exact specifications.
-                      </p>
-                      <p className="leading-relaxed text-[#94a3b8] mb-6"
-                        style={{ fontFamily: "'Nunito', sans-serif", fontSize: '13px', fontWeight: 600 }}>
-                        We partner directly with schools to ensure colour and design match perfectly. Easy exchange if the size isn't right.
-                      </p>
+                      {product.description ? (
+                        <p className="leading-relaxed text-[#374151] mb-6 whitespace-pre-line"
+                          style={{ fontFamily: "'Nunito', sans-serif", fontSize: '14px', fontWeight: 600 }}>
+                          {product.description}
+                        </p>
+                      ) : (
+                        <>
+                          <p className="leading-relaxed text-[#374151] mb-3"
+                            style={{ fontFamily: "'Nunito', sans-serif", fontSize: '14px', fontWeight: 600 }}>
+                            The <strong style={{ color: '#0f172a', fontFamily: "'Baloo 2', cursive", fontWeight: 900 }}>{product.name}</strong> is part of our official school uniform range, crafted to match your school's exact specifications.
+                          </p>
+                          <p className="leading-relaxed text-[#94a3b8] mb-6"
+                            style={{ fontFamily: "'Nunito', sans-serif", fontSize: '13px', fontWeight: 600 }}>
+                            We partner directly with schools to ensure colour and design match perfectly. Easy exchange if the size isn't right.
+                          </p>
+                        </>
+                      )}
                       <div style={{ borderTop: '1px solid #e8ecf1', paddingTop: '20px' }}>
                         <p className="font-black uppercase tracking-wider mb-4"
                           style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: '12px', color: '#0f172a', letterSpacing: '0.08em' }}>
                           Key Features
                         </p>
                         <div className="space-y-3">
-                          {[
-                            'Premium soft fabric for warmth and comfort',
-                            'Designed to school exact colour specifications',
-                            'Durable construction for daily school wear',
-                            'Easy care — machine washable',
-                            'School-approved design and fit',
-                          ].map(feat => (
+                          {(Array.isArray(product.features) && product.features.length > 0
+                            ? product.features
+                            : [
+                                'Premium soft fabric for warmth and comfort',
+                                'Designed to school exact colour specifications',
+                                'Durable construction for daily school wear',
+                                'Easy care — machine washable',
+                                'School-approved design and fit',
+                              ]
+                          ).map((feat) => (
                             <div key={feat} className="flex items-start gap-3">
                               <div className="w-4 h-4 rounded-full flex items-center justify-center shrink-0 mt-1"
                                 style={{ background: '#f59e0b' }}>

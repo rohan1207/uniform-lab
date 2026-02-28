@@ -398,15 +398,49 @@ export function CartDrawer({ open, onClose }) {
               {/* ── Mobile recommendations strip ── */}
               {hasRecommendations && items.length > 0 && (
                 <div className="cart-upsell-header lg:hidden" style={{ background: '#fff', borderBottom: '1px solid #e8ecf1' }}>
-                  <div className="px-4 pt-3.5 pb-2">
-                    <p className="m-0"
-                      style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: '12px', color: '#0f172a', letterSpacing: '0.02em' }}>
-                      Recommended for you
-                    </p>
-                    <p className="m-0 mt-0.5"
-                      style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 600, fontSize: '11px', color: '#64748b' }}>
-                      Pairs well with your selection
-                    </p>
+                  <div className="px-4 pt-3.5 pb-2 flex items-center justify-between gap-2">
+                    <div>
+                      <p
+                        className="m-0"
+                        style={{
+                          fontFamily: "'Baloo 2', cursive",
+                          fontWeight: 900,
+                          fontSize: '12px',
+                          color: '#0f172a',
+                          letterSpacing: '0.02em',
+                        }}
+                      >
+                        Recommended for you
+                      </p>
+                      <p
+                        className="m-0 mt-0.5"
+                        style={{
+                          fontFamily: "'Nunito', sans-serif",
+                          fontWeight: 600,
+                          fontSize: '11px',
+                          color: '#64748b',
+                        }}
+                      >
+                        Pairs well with your selection
+                      </p>
+                    </div>
+                    {/* Extra close button for mobile, so users don't need to scroll */}
+                    <button
+                      type="button"
+                      onClick={onClose}
+                      className="flex items-center justify-center rounded-xl"
+                      style={{
+                        width: '32px',
+                        height: '32px',
+                        border: '1.5px solid #e2e8f0',
+                        background: '#fff',
+                        color: '#64748b',
+                        cursor: 'pointer',
+                      }}
+                      aria-label="Close cart"
+                    >
+                      <X size={15} strokeWidth={2} />
+                    </button>
                   </div>
                   {/* Scroll strip */}
                   <div className="cart-upsell-scroll flex gap-2.5 overflow-x-auto pb-3.5 px-4 cart-scrollbar-hide">

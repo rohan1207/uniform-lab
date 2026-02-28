@@ -1,5 +1,6 @@
 import NewHero from '@/components/NewHero';
 import SchoolLogoStrip from '@/components/landing/SchoolLogoStrip';
+import AssuranceStrip from '@/components/landing/AssuranceStrip';
 import AboutSection from '@/components/landing/AboutSection';
 import ServicesSection from '@/components/landing/ServicesSection';
 import WhyChooseSection from '@/components/landing/WhyChooseSection';
@@ -17,6 +18,7 @@ export default function HomePage() {
     >
       <NewHero />
       <SchoolLogoStrip />
+      {/* <AssuranceStrip /> */}
       <FeaturedSchools />
       <ShopByLookSection />
       <ServicesSection />

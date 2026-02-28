@@ -1,8 +1,9 @@
 import { useState, useMemo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '@/contexts/CartContext';
-import { getProductColors, getProductImages, DETAIL_SIZES } from '@/data/schoolCatalog';
-import { ShoppingBag, Check, Zap } from 'lucide-react';
+import { useWishlist } from '@/contexts/WishlistContext';
+import { getProductColors, getProductImages } from '@/data/schoolCatalog';
+import { ShoppingBag, Check, Zap, Heart } from 'lucide-react';
 
 /* ─────────────────────────────────────────────────────────────────────────
    STYLES
@@ -189,24 +190,55 @@ export function ProductCard({ product, schoolName, schoolSlug, onQuickShop }) {
   const [selectedColor, setSelectedColor] = useState(colors[0]);
   const [added, setAdded] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const { isInWishlist, toggleWishlist } = useWishlist();
   const productUrl = schoolSlug ? `/product/${product.id}?school=${schoolSlug}` : `/product/${product.id}`;
 
+  const variantPrices = Array.isArray(product.variants)
+    ? product.variants.map((v) => Number(v.saleRate)).filter((n) => Number.isFinite(n) && n > 0)
+    : [];
+  const displayPrice = variantPrices.length ? Math.min(...variantPrices) : product.price;
+
+  const sizeOptions = useMemo(() => {
+    if (Array.isArray(product.variants) && product.variants.length) {
+      return [...new Set(product.variants.map((v) => (v.sizeLabel || '').trim()).filter(Boolean))];
+    }
+    if (Array.isArray(product.sizes) && product.sizes.length) return product.sizes;
+    return [];
+  }, [product.variants, product.sizes]);
+
+  const defaultVariant = useMemo(() => {
+    if (Array.isArray(product.variants) && product.variants.length) {
+      return product.variants[0];
+    }
+    return null;
+  }, [product.variants]);
+
   const displayImage = useMemo(() => {
-    if (!product?.image) return null;
+    // Same behaviour as ProductDetailTemplate: prefer getProductImages (imagesByColor / images),
+    // then fall back to product.image
     const colorImages = getProductImages(product, selectedColor?.name);
     if (colorImages.length) return colorImages[0];
-    if (product.colors?.length && selectedColor?.name && schoolSlug)
-      return productImageForColor(product, schoolSlug, selectedColor.name) || product.image;
-    return product.image;
-  }, [product, selectedColor?.name, schoolSlug]);
+    if (product?.image && String(product.image).trim()) return String(product.image).trim();
+    if (Array.isArray(product?.images) && product.images[0] && String(product.images[0]).trim()) {
+      return String(product.images[0]).trim();
+    }
+    return null;
+  }, [product, selectedColor?.name]);
 
   useEffect(() => { setImageError(false); }, [displayImage]);
 
   const handleAddToCart = (e) => {
     e?.preventDefault?.();
+    const selectedSize = defaultVariant?.sizeLabel || sizeOptions[0] || null;
+    const price = defaultVariant?.saleRate ?? displayPrice;
+    const variantCode = defaultVariant?.code;
     addItem({
-      productId: product.id, name: product.name, price: product.price,
-      size: DETAIL_SIZES[0], quantity: 1,
+      productId: product.id,
+      name: product.name,
+      price,
+      size: selectedSize,
+      quantity: 1,
+      variantCode,
       color: selectedColor?.name || undefined,
       image: displayImage || undefined,
     });
@@ -232,43 +264,79 @@ export function ProductCard({ product, schoolName, schoolSlug, onQuickShop }) {
           <img
             src={displayImage}
             alt={product.name}
-                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block',
-                  transition: 'transform 0.55s cubic-bezier(0.25,0.46,0.45,0.94)' }}
-                className="group-hover:scale-[1.04]"
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              display: 'block',
+              transition: 'transform 0.55s cubic-bezier(0.25,0.46,0.45,0.94)',
+            }}
+            className="group-hover:scale-[1.04]"
             onError={() => setImageError(true)}
           />
         ) : (
-              <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <ShoppingBag style={{ width: 44, height: 44, color: '#94a3b8', opacity: 0.4, strokeWidth: 1 }} />
-              </div>
+          <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <ShoppingBag style={{ width: 44, height: 44, color: '#94a3b8', opacity: 0.4, strokeWidth: 1 }} />
+          </div>
         )}
-            {/* Frosted price chip */}
-            <div className="pc-price">₹{product.price}</div>
+            {/* Wishlist — pinned top-right on image */}
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                toggleWishlist(product);
+              }}
+              aria-label={isInWishlist(product.id) ? 'Remove from wishlist' : 'Add to wishlist'}
+              className="w-8 h-8 flex items-center justify-center rounded-full border border-slate-200 bg-white/90 hover:bg-rose-50 text-slate-400 hover:text-rose-500 transition-colors"
+              style={{ position: 'absolute', top: 10, right: 10, zIndex: 2 }}
+            >
+              <Heart
+                size={14}
+                className={isInWishlist(product.id) ? 'fill-current text-rose-500' : ''}
+              />
+            </button>
           </div>
       </Link>
 
         {/* ── Info ── */}
         <div className="pc-info">
 
-          {/* Name */}
-          <Link to={productUrl} style={{ textDecoration: 'none' }}>
-            <h3 style={{
-              margin: 0,
-              fontFamily: "'Baloo 2', cursive",
-              fontWeight: 900,
-              fontSize: 'clamp(14px, 1.15vw, 17px)',
-              color: '#0f172a',
-              lineHeight: 1.25,
-              display: '-webkit-box',
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: 'vertical',
-              overflow: 'hidden',
-              transition: 'color 0.18s ease',
-            }}
-            className="group-hover:text-[#2563eb]">
-            {product.name}
-          </h3>
-        </Link>
+          {/* Name + price row */}
+          <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '8px' }}>
+            <Link to={productUrl} style={{ textDecoration: 'none', flex: 1, minWidth: 0 }}>
+              <h3
+                style={{
+                  margin: 0,
+                  fontFamily: "'Baloo 2', cursive",
+                  fontWeight: 900,
+                  fontSize: 'clamp(14px, 1.15vw, 17px)',
+                  color: '#0f172a',
+                  lineHeight: 1.25,
+                  display: '-webkit-box',
+                  WebkitLineClamp: 2,
+                  WebkitBoxOrient: 'vertical',
+                  overflow: 'hidden',
+                  transition: 'color 0.18s ease',
+                }}
+                className="group-hover:text-[#2563eb]"
+              >
+                {product.name}
+              </h3>
+            </Link>
+            <span
+              style={{
+                marginLeft: '4px',
+                fontFamily: "'Baloo 2', cursive",
+                fontWeight: 900,
+                fontSize: 'clamp(13px, 1vw, 16px)',
+                color: '#0f172a',
+                whiteSpace: 'nowrap',
+                flexShrink: 0,
+              }}
+            >
+              ₹{displayPrice}
+            </span>
+          </div>
 
           {/* Swatches + color name */}
         {colors.length > 0 && (

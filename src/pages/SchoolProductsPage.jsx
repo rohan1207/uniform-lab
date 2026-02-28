@@ -1,10 +1,11 @@
-import { useMemo, useState, useCallback } from 'react';
+import { useMemo, useState, useCallback, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { getSchoolCatalog, GRADE_FILTER_OPTIONS, productMatchesGradeFilter } from '@/data/schoolCatalog';
 import { useCart } from '@/contexts/CartContext';
 import { ProductCard } from '@/components/schools/ProductCard';
 import { QuickShopDrawer } from '@/components/schools/QuickShopDrawer';
 import { ArrowLeft, ShoppingBag, Search, X } from 'lucide-react';
+
+const API_BASE = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
 
 /* ─────────────────────────────────────────────────────────────────────────
    STYLES
@@ -317,8 +318,10 @@ function matchesSearch(name, query) {
   if (!query.trim()) return true;
   return name.toLowerCase().includes(query.trim().toLowerCase());
 }
-function matchesGradeFilter(product, gradeFilterValue) {
-  return productMatchesGradeFilter(product, gradeFilterValue);
+function matchesGradeFilter(product, selectedGradeId) {
+  if (!selectedGradeId) return true;
+  const gradeId = product.gradeId ?? product.grade?._id;
+  return gradeId === selectedGradeId;
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
@@ -326,7 +329,8 @@ function matchesGradeFilter(product, gradeFilterValue) {
 ────────────────────────────────────────────────────────────────────────── */
 export default function SchoolProductsPage() {
   const { slug } = useParams();
-  const catalog = useMemo(() => getSchoolCatalog(slug), [slug]);
+  const [catalog, setCatalog] = useState(null);
+  const [loading, setLoading] = useState(true);
   const { totalItems, openCart } = useCart();
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -365,8 +369,117 @@ export default function SchoolProductsPage() {
   const hasActiveFilters = searchQuery.trim() || selectedGradeFilter || selectedCategoryIds.length > 0;
   const totalProducts = catalog?.categories?.reduce((acc, cat) => acc + cat.products.length, 0) ?? 0;
 
+  const gradeFilterOptions = useMemo(() => {
+    const all = { value: '', label: 'All grades' };
+    const list = catalog?.grades ?? [];
+    return [all, ...list.map((g) => ({ value: g._id, label: g.name }))];
+  }, [catalog?.grades]);
+
+  // Load school + categories + products from backend
+  useEffect(() => {
+    let cancelled = false;
+    async function load() {
+      setLoading(true);
+      try {
+        const res = await fetch(`${API_BASE}/api/public/schools/${slug}`);
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data || cancelled) {
+          setCatalog(null);
+          return;
+        }
+        const { school, categories = [], products = [] } = data;
+
+        if (process.env.NODE_ENV !== 'production' && products.length > 0) {
+          const first = products[0];
+          console.log('[SchoolProductsPage] First product from API:', {
+            _id: first._id,
+            name: first.name,
+            mainImageUrl: first.mainImageUrl,
+            galleryImageUrls: first.galleryImageUrls,
+            allKeys: Object.keys(first),
+          });
+        }
+
+        const byCategory = {};
+        products.forEach((p) => {
+          const catId = p.category?._id || p.category;
+          if (!catId) return;
+          if (!byCategory[catId]) byCategory[catId] = [];
+
+          // Same image logic as ProductPage (detail page) so card gets identical shape
+          const mainImage = p.mainImageUrl || (Array.isArray(p.galleryImageUrls) ? p.galleryImageUrls[0] : null);
+          const images = [p.mainImageUrl, ...(p.galleryImageUrls || [])].filter(Boolean);
+
+          if (process.env.NODE_ENV !== 'production' && p.name && !mainImage) {
+            console.warn('[SchoolProductsPage] Product has no image:', p.name, { mainImageUrl: p.mainImageUrl, galleryImageUrls: p.galleryImageUrls });
+          }
+
+          byCategory[catId].push({
+            id: p._id,
+            name: p.name,
+            price: p.price,
+            description: p.description || '',
+            sizes: Array.isArray(p.sizes) ? p.sizes : [],
+            sizeType: p.sizeType || 'none',
+            colors: Array.isArray(p.colors) ? p.colors : [],
+            image: mainImage,
+            images,
+            imagesByColor: p.imagesByColor || null,
+            variants: Array.isArray(p.variants) ? p.variants : [],
+            gradeId: p.grade?._id || null,
+          });
+        });
+        const gradesSeen = new Map();
+        products.forEach((p) => {
+          const g = p.grade;
+          if (g && g._id && g.name && !gradesSeen.has(g._id)) {
+            gradesSeen.set(g._id, { _id: g._id, name: g.name });
+          }
+        });
+        const schoolGrades = Array.from(gradesSeen.values()).sort((a, b) => a.name.localeCompare(b.name));
+        const mappedCatalog = {
+          id: school?._id || school?.slug,
+          slug: school?.slug || slug,
+          name: school?.name || slug,
+          categories: categories.map((c) => ({
+            id: c._id,
+            name: c.name,
+            products: byCategory[c._id] || [],
+          })),
+          grades: schoolGrades,
+        };
+        if (!cancelled) setCatalog(mappedCatalog);
+      } catch {
+        if (!cancelled) setCatalog(null);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+    load();
+    return () => { cancelled = true; };
+  }, [slug]);
+
+  /* ── Loading state ── */
+  if (loading) {
+    return (
+      <>
+        <style>{GLOBAL_CSS}</style>
+        <main className="spp-root flex items-center justify-center pt-24 px-6">
+          <div className="text-center py-16">
+            <p
+              className="mb-2 font-black text-[#1a1a2e]"
+              style={{ fontFamily: "'Baloo 2', cursive", fontSize: 'clamp(20px, 2.3vw, 28px)' }}
+            >
+              Loading school…
+            </p>
+          </div>
+        </main>
+      </>
+    );
+  }
+
   /* ── Not found ── */
-  if (!catalog) {
+  if (!catalog && !loading) {
     return (
       <>
         <style>{GLOBAL_CSS}</style>
@@ -481,7 +594,7 @@ export default function SchoolProductsPage() {
           <div className="spp-filter-scroll">
             <select value={selectedGradeFilter} onChange={(e) => setSelectedGradeFilter(e.target.value)}
               className="spp-mobile-grade" aria-label="Grade filter">
-              {GRADE_FILTER_OPTIONS.map((opt) => (
+              {gradeFilterOptions.map((opt) => (
                 <option key={opt.value || 'all'} value={opt.value}>{opt.label}</option>
               ))}
             </select>
@@ -534,11 +647,11 @@ export default function SchoolProductsPage() {
               <p className="spp-section-label">Grade</p>
               <select value={selectedGradeFilter} onChange={(e) => setSelectedGradeFilter(e.target.value)}
                 className="spp-select" aria-label="Grade filter">
-                  {GRADE_FILTER_OPTIONS.map((opt) => (
-                    <option key={opt.value || 'all'} value={opt.value}>{opt.label}</option>
-                  ))}
-                </select>
-              </div>
+                {gradeFilterOptions.map((opt) => (
+                  <option key={opt.value || 'all'} value={opt.value}>{opt.label}</option>
+                ))}
+              </select>
+            </div>
 
             <hr className="spp-divider" />
 

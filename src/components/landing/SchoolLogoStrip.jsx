@@ -1,7 +1,9 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { featuredSchools } from '@/data/featuredSchools';
+import { featuredSchools as staticFeaturedSchools } from '@/data/featuredSchools';
+
+const API_BASE = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
 
 /**
  * SchoolLogoStrip
@@ -18,9 +20,33 @@ export default function SchoolLogoStrip() {
   const trackRef = useRef(null);
   const [shift, setShift] = useState(200);
 
+  const [schoolsData, setSchoolsData] = useState(staticFeaturedSchools);
+
+  // Load real schools list; fall back to static on error
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch(`${API_BASE}/api/public/schools`);
+        const data = await res.json().catch(() => ([]));
+        if (!res.ok || !Array.isArray(data) || cancelled) return;
+        const mapped = data.map((s) => ({
+          id: s._id || s.slug,
+          slug: s.slug,
+          name: s.name,
+          logo: s.logoUrl || null,
+        }));
+        if (mapped.length) setSchoolsData(mapped);
+      } catch {
+        // ignore and keep static
+      }
+    })();
+    return () => { cancelled = true; };
+  }, []);
+
   const schools = useMemo(
-    () => featuredSchools.filter((s) => s?.logo || s?.name),
-    []
+    () => schoolsData.filter((s) => s?.logo || s?.name),
+    [schoolsData]
   );
   /* Always duplicate so track overflows on all viewports (phone included) */
   const marqueeSchools = useMemo(() => {

@@ -363,6 +363,8 @@ export default function NewHero({
           <div
             className="hero-logo-section flex-shrink-0 flex justify-center"
             style={{
+              position: 'relative',
+              zIndex: 20,
               paddingTop:   'clamp(52px, 6vh, 80px)',
               paddingLeft:  'clamp(14px, 2.2vw, 36px)',
               paddingRight: 'clamp(14px, 2.2vw, 36px)',

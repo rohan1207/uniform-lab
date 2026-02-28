@@ -1,6 +1,7 @@
 import { createContext, useContext, useReducer, useCallback, useState } from 'react';
 
 const CartContext = createContext(null);
+const CART_STORAGE_KEY = 'uniformlab_cart';
 
 function itemKey(item) {
   const parts = [item.productId];
@@ -12,8 +13,17 @@ function itemKey(item) {
 function cartReducer(state, action) {
   switch (action.type) {
     case 'ADD': {
-      const { productId, name, price, size, color, quantity = 1, image } = action.payload;
-      const newItem = { productId, name, price, size: size || null, color: color || null, quantity, image: image || null };
+      const { productId, name, price, size, color, quantity = 1, image, variantCode } = action.payload;
+      const newItem = {
+        productId,
+        name,
+        price,
+        size: size || null,
+        color: color || null,
+        quantity,
+        image: image || null,
+        variantCode: variantCode || null,
+      };
       const key = itemKey(newItem);
       const existing = state.items.find((i) => itemKey(i) === key);
       if (existing) {
@@ -54,7 +64,26 @@ function cartReducer(state, action) {
 }
 
 export function CartProvider({ children }) {
-  const [state, dispatch] = useReducer(cartReducer, { items: [] });
+  const [state, dispatch] = useReducer(
+    cartReducer,
+    undefined,
+    () => {
+      try {
+        if (typeof window !== 'undefined') {
+          const raw = window.localStorage.getItem(CART_STORAGE_KEY);
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (parsed && Array.isArray(parsed.items)) {
+              return { items: parsed.items };
+            }
+          }
+        }
+      } catch {
+        // ignore
+      }
+      return { items: [] };
+    }
+  );
   const [cartDrawerOpen, setCartDrawerOpen] = useState(false);
 
   const addItem = useCallback((item) => {
@@ -78,6 +107,15 @@ export function CartProvider({ children }) {
 
   const totalItems = state.items.reduce((sum, i) => sum + i.quantity, 0);
   const totalAmount = state.items.reduce((sum, i) => sum + i.price * i.quantity, 0);
+
+  // Persist cart to localStorage so it survives reloads
+  if (typeof window !== 'undefined') {
+    try {
+      window.localStorage.setItem(CART_STORAGE_KEY, JSON.stringify({ items: state.items }));
+    } catch {
+      // ignore
+    }
+  }
 
   return (
     <CartContext.Provider
