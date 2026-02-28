@@ -1061,7 +1061,7 @@ export default function AccountPage() {
     <main className="min-h-screen bg-[var(--page-bg)] pt-24 px-4 sm:px-6" style={FONT_BODY}>
       <style>{`@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700&display=swap');`}</style>
       <div className="max-w-5xl mx-auto">
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
           <div>
             <h1 className="text-2xl font-bold text-[#1a1a2e] mb-1" style={FONT_HEADING}>My Account</h1>
             <p className="text-sm text-[var(--color-text-muted)]">

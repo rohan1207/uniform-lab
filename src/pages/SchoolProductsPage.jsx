@@ -193,8 +193,8 @@ const GLOBAL_CSS = `
   ═══════════════════════════════════════════════════════════════════════ */
   @media (max-width: 767px) {
 
-    /* Root — pad for fixed navbar (88px = 5.5rem) */
-    .spp-root { padding-top: 88px !important; padding-bottom: 40px !important; }
+    /* Root — let global layout handle navbar padding; only control bottom spacing here */
+    .spp-root { padding-top: 0 !important; padding-bottom: 40px !important; }
 
     /* Force sidebar off — its own display:flex overrides Tailwind hidden */
     .spp-sidebar { display: none !important; }

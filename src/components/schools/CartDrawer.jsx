@@ -92,12 +92,15 @@ const CART_CSS = `
   }
 
   /* ═══════════════════════════════════════════════════════════════════════
-     MOBILE  (< 768 px)  — full-screen drawer
+     MOBILE  (< 768 px)  — full-width drawer below navbar
   ═══════════════════════════════════════════════════════════════════════ */
   @media (max-width: 767px) {
 
-    /* Force drawer to cover the entire phone screen */
+    /* Position just under the fixed mobile navbar (60px high) */
     .cart-aside {
+      top: 60px !important;
+      height: calc(100vh - 60px) !important;
+      max-height: calc(100vh - 60px) !important;
       width: 100vw !important;
       width: 100dvw !important;
       max-width: 100vw !important;
