@@ -386,7 +386,9 @@ export function ProductDetailTemplate({ product, schoolName, schoolSlug, initial
   const [selectedColor, setSelectedColor] = useState(() => {
     const urlColor = initialColor?.trim();
     if (urlColor && colors.length) {
-      const found = colors.find(c => c.name.toLowerCase() === urlColor.toLowerCase());
+      const found = colors.find(
+        (c) => c.name && c.name.toLowerCase() === urlColor.toLowerCase()
+      );
       if (found) return found;
     }
     return colors[0];
@@ -402,10 +404,26 @@ export function ProductDetailTemplate({ product, schoolName, schoolSlug, initial
   const closeQuickShop = useCallback(() => setQuickShopProduct(null), []);
 
   const gallery = (() => {
-    const colorImages = getProductImages(product, selectedColor?.name);
-    if (colorImages.length) return colorImages.slice(0, 5);
+    // Prefer explicit imagesByColor mapping from backend
+    if (product.imagesByColor && selectedColor?.name) {
+      const byColor = product.imagesByColor[selectedColor.name];
+      if (Array.isArray(byColor) && byColor.length) {
+        return byColor.slice(0, 5);
+      }
+    }
+
+    // Fallback: generic images array from API, if available
+    if (Array.isArray(product.images) && product.images.length) {
+      return product.images.slice(0, 5);
+    }
+
+    // Final fallback: legacy static images
     const mainImage = product.image || '/school1.png';
-    const raw = [mainImage, product.image || '/school2.png', product.image || '/school3.png'].filter(Boolean);
+    const raw = [
+      mainImage,
+      product.image || '/school2.png',
+      product.image || '/school3.png',
+    ].filter(Boolean);
     return Array.from(new Set(raw)).slice(0, 5);
   })();
 
@@ -554,12 +572,30 @@ export function ProductDetailTemplate({ product, schoolName, schoolSlug, initial
                   Colour — <span className="normal-case tracking-normal" style={{ color: '#f59e0b' }}>{selectedColor?.name}</span>
                 </p>
                 <div className="flex flex-wrap gap-3">
-                  {colors.map(c => (
-                    <button key={c.hex} title={c.name} onClick={() => setSelectedColor(c)}
-                      style={{ backgroundColor: c.hex, width: '26px', height: '26px', borderRadius: '50%', transition: 'all 0.2s ease',
-                        boxShadow: selectedColor?.hex === c.hex ? `0 0 0 2px #fff, 0 0 0 4px #2563eb` : '0 1px 4px rgba(0,0,0,0.18)',
-                        transform: selectedColor?.hex === c.hex ? 'scale(1.15)' : 'scale(1)',
-                        border: 'none', cursor: 'pointer' }} />
+                  {colors.map((c) => (
+                    <button
+                      key={c.hex}
+                      title={c.name}
+                      onClick={() => {
+                        setSelectedColor(c);
+                        setSliderIndex(0);
+                      }}
+                      style={{
+                        backgroundColor: c.hex,
+                        width: '26px',
+                        height: '26px',
+                        borderRadius: '50%',
+                        transition: 'all 0.2s ease',
+                        boxShadow:
+                          selectedColor?.hex === c.hex
+                            ? `0 0 0 2px #fff, 0 0 0 4px #2563eb`
+                            : '0 1px 4px rgba(0,0,0,0.18)',
+                        transform:
+                          selectedColor?.hex === c.hex ? 'scale(1.15)' : 'scale(1)',
+                        border: 'none',
+                        cursor: 'pointer',
+                      }}
+                    />
                   ))}
                 </div>
               </div>
