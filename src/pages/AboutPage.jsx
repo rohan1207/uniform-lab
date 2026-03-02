@@ -58,6 +58,25 @@ const STATS = [
   { value: '50K+', label: 'Units / Month' },
 ];
 
+const CERTIFICATES = [
+  {
+    id: 'gst',
+    badge: 'GST CERTIFICATION',
+    title: 'GST Registration Certificate',
+    subtitle: 'Registered under Goods and Services Tax, Government of India.',
+    image: '/certificate1.jpg',
+    alt: 'GST registration certificate for Primo Clothing Company',
+  },
+  {
+    id: 'udyam',
+    badge: 'REGISTRATION',
+    title: 'Udyam MSME Registration',
+    subtitle: 'Udyam registration as a manufacturing enterprise under MSME.',
+    image: '/certificate2.jpg',
+    alt: 'Udyam registration certificate for Primo Clothing Company',
+  },
+];
+
 /* Unsplash photos relevant to school/manufacturing/uniform */
 const GALLERY = [
   {
@@ -499,6 +518,95 @@ const CSS = `
   }
   .ab-quality-text { color: #475569; font-size: 14px; font-weight: 700; }
 
+  /* ── Certificates ── */
+  .ab-cert-section {
+    margin-top: 12px;
+    margin-bottom: 64px;
+  }
+  .ab-cert-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+  .ab-cert-card {
+    background: #fff;
+    border-radius: 20px;
+    border: 1px solid #e5edf9;
+    padding: 18px 18px 16px;
+    box-shadow: 0 10px 32px rgba(15,23,42,0.06);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .ab-cert-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    align-self: flex-start;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #eff6ff;
+    border: 1px solid #dbeafe;
+    color: #2563eb;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .ab-cert-title {
+    font-family: 'Baloo 2', cursive;
+    font-size: 18px;
+    font-weight: 800;
+    color: #111827;
+  }
+  .ab-cert-subtitle {
+    font-size: 13px;
+    font-weight: 600;
+    color: #6b7280;
+  }
+  .ab-cert-frame {
+    margin-top: 6px;
+    border-radius: 16px;
+    padding: 10px;
+    background: radial-gradient(circle at top left, #e0edff 0%, #f9fafb 55%, #e5edf9 100%);
+    border: 1px solid #e5edf9;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.7);
+    min-height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .ab-cert-img {
+    width: 100%;
+    max-height: 260px;
+    object-fit: contain;
+    display: block;
+    border-radius: 12px;
+  }
+
+  .ab-cert-carousel {
+    display: none;
+  }
+  .ab-cert-track {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    padding: 4px 2px 6px;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+  }
+  .ab-cert-track::-webkit-scrollbar {
+    height: 4px;
+  }
+  .ab-cert-track::-webkit-scrollbar-thumb {
+    background: rgba(148,163,184,0.6);
+    border-radius: 999px;
+  }
+  .ab-cert-slide {
+    scroll-snap-align: center;
+    min-width: min(86vw, 420px);
+  }
+
   /* Generic list toggle for mobile (specialisations, why-choose, quality) */
   .ab-list-toggle {
     margin-top: 14px;
@@ -621,6 +729,8 @@ const CSS = `
     }
     .ab-card-header .ab-sec-label { justify-content: center; }
     .ab-card-header .ab-h2 { text-align: center; }
+    .ab-cert-grid { display: none; }
+    .ab-cert-carousel { display: block; margin-top: 4px; }
   }
   @media (max-width: 480px) {
     .ab-spec-grid { grid-template-columns: 1fr; }
@@ -908,6 +1018,65 @@ export default function AboutPage() {
                 <ArrowRight size={15} />
               </Link>
             </div>
+          </Reveal>
+
+          {/* ── Certificates ── */}
+          <Reveal>
+            <section className="ab-cert-section">
+              <div className="ab-card-header">
+                <div>
+                  <div className="ab-sec-label">Certifications</div>
+                  <h2 className="ab-h2" style={{ marginBottom: 0 }}>
+                    Registered &amp; <span>Compliant</span>
+                  </h2>
+                </div>
+                <div className="ab-card-icon">
+                  <Files size={22} />
+                </div>
+              </div>
+
+              {/* Desktop / tablet: side-by-side cards */}
+              <div className="ab-cert-grid">
+                {CERTIFICATES.map((cert) => (
+                  <article key={cert.id} className="ab-cert-card">
+                    <span className="ab-cert-badge">{cert.badge}</span>
+                    <h3 className="ab-cert-title">{cert.title}</h3>
+                    <p className="ab-cert-subtitle">{cert.subtitle}</p>
+                    <div className="ab-cert-frame">
+                      <img
+                        src={cert.image}
+                        alt={cert.alt}
+                        loading="lazy"
+                        className="ab-cert-img"
+                      />
+                    </div>
+                  </article>
+                ))}
+              </div>
+
+              {/* Mobile: swipeable carousel */}
+              <div className="ab-cert-carousel">
+                <div className="ab-cert-track">
+                  {CERTIFICATES.map((cert) => (
+                    <article key={cert.id} className="ab-cert-slide">
+                      <div className="ab-cert-card">
+                        <span className="ab-cert-badge">{cert.badge}</span>
+                        <h3 className="ab-cert-title">{cert.title}</h3>
+                        <p className="ab-cert-subtitle">{cert.subtitle}</p>
+                        <div className="ab-cert-frame">
+                          <img
+                            src={cert.image}
+                            alt={cert.alt}
+                            loading="lazy"
+                            className="ab-cert-img"
+                          />
+                        </div>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              </div>
+            </section>
           </Reveal>
 
           {/* ── CTA ── */}

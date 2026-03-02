@@ -2,20 +2,16 @@ import { Link } from 'react-router-dom';
 import { MapPin, Mail, Phone } from 'lucide-react';
 
 const footerLinks = {
-  shop: [
-    { label: 'School Uniforms', href: '/shop/school' },
-    { label: 'Accessories', href: '/shop/accessories' },
-    { label: 'Corporate', href: '/shop/corporate' },
-  ],
-  company: [
+  navigation: [
+    { label: 'Home', href: '/' },
     { label: 'About Us', href: '/about' },
-    { label: 'Latest Collection', href: '/home#collection' },
-    { label: 'Our Services', href: '/services' },
+    { label: 'Services', href: '/services' },
     { label: 'FAQs', href: '/faqs' },
+    { label: 'Size Guide', href: '/size-guide' },
   ],
-  partners: [
-    { label: 'For Schools & Colleges', href: '/schoolenquiry' },
-    { label: 'For Parents', href: '/schools' },
+  schools: [
+    { label: 'Shop by Schools', href: '/schools' },
+    { label: 'Partner with Us', href: '/schoolenquiry' },
   ],
 };
 
@@ -50,33 +46,34 @@ export default function Footer() {
               The Uniform Lab
             </h3>
             <p className="text-slate-300 text-sm leading-relaxed max-w-sm">
-              Process-led uniform manufacturing for schools and institutions — built for consistency,
-              quality, and convenience across India.
+              Our aim is to make the child or person whoever is wearing the uniform look smart, feel
+              comfortable and take pride in it. Uniform must not be the cage of fabric but the
+              comfort of clothing.
             </p>
             <div className="space-y-2 text-sm text-slate-300">
               <p className="flex items-center gap-2">
                 <span className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center border border-white/10">
                   <MapPin size={16} />
                 </span>
-                <span>Baramati, Pune, Maharashtra</span>
+                <span>Pune, Maharashtra, India</span>
               </p>
               <a
-                href="mailto:info@theuniformlab.com"
+                href="mailto:help@theuniformlab.in"
                 className="flex items-center gap-2 hover:text-white transition-colors"
               >
                 <span className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center border border-white/10">
                   <Mail size={16} />
                 </span>
-                <span>info@theuniformlab.com</span>
+                <span>help@theuniformlab.in</span>
               </a>
               <a
-                href="tel:+91"
+                href="tel:+919028552855"
                 className="flex items-center gap-2 hover:text-white transition-colors"
               >
                 <span className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center border border-white/10">
                   <Phone size={16} />
                 </span>
-                <span>Contact for enquiries</span>
+                <span>+91 9028552855</span>
               </a>
             </div>
           </div>
@@ -87,10 +84,10 @@ export default function Footer() {
               className="text-xs font-extrabold uppercase tracking-[0.18em] text-slate-300 mb-4"
               style={FONT_BODY}
             >
-              Shop
+              Navigation
             </h4>
             <ul className="space-y-2">
-              {footerLinks.shop.map((link) => (
+              {footerLinks.navigation.map((link) => (
                 <li key={link.href}>
                   <Link
                     to={link.href}
@@ -108,31 +105,10 @@ export default function Footer() {
               className="text-xs font-extrabold uppercase tracking-[0.18em] text-slate-300 mb-4"
               style={FONT_BODY}
             >
-              Company
+              Schools
             </h4>
             <ul className="space-y-2">
-              {footerLinks.company.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    to={link.href}
-                    className="text-slate-300 hover:text-white transition-colors text-sm font-semibold"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h4
-              className="text-xs font-extrabold uppercase tracking-[0.18em] text-slate-300 mb-4"
-              style={FONT_BODY}
-            >
-              Partners
-            </h4>
-            <ul className="space-y-2">
-              {footerLinks.partners.map((link) => (
+              {footerLinks.schools.map((link) => (
                 <li key={link.href}>
                   <Link
                     to={link.href}
@@ -152,7 +128,7 @@ export default function Footer() {
             © {year} The Uniform Lab. All rights reserved.
           </p>
           <p className="m-0">
-            Proudly based in Baramati, India.
+            Serving schools and institutions across India.
           </p>
         </div>
 

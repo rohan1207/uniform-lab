@@ -12,7 +12,7 @@ const SERVICES = [
     accentBg: '#eff6ff',
     title: 'School Uniform Manufacturing',
     description: 'End-to-end uniform manufacturing tailored to your school\'s identity — from design to delivery.',
-    image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=700&q=80',
+    image: '/su.png',
     points: [
       'Custom uniform design aligned with school identity',
       'Fabric sourcing with colour stability control',
@@ -29,7 +29,7 @@ const SERVICES = [
     accentBg: '#f0f9ff',
     title: 'Corporate Uniform Solutions',
     description: 'Professional, role-based uniforms built for scalability, durability, and brand consistency.',
-    image: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=700&q=80',
+    image: '/corporate.avif',
     points: [
       'Role-based uniform design',
       'Logo embroidery and branding',
@@ -46,7 +46,7 @@ const SERVICES = [
     accentBg: '#f5f3ff',
     title: 'Bulk Uniform Manufacturing',
     description: 'High-volume production with tight consistency controls and on-time dispatch — every batch, every time.',
-    image: 'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=700&q=80',
+    image: '/bulk.png',
     points: [
       'Centralised production planning',
       'Batch consistency control',
