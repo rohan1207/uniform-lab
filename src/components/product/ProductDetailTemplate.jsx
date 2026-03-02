@@ -404,11 +404,17 @@ export function ProductDetailTemplate({ product, schoolName, schoolSlug, initial
   const closeQuickShop = useCallback(() => setQuickShopProduct(null), []);
 
   const gallery = (() => {
-    // Prefer explicit imagesByColor mapping from backend
+    // Prefer explicit imagesByColor mapping from backend (case-insensitive)
     if (product.imagesByColor && selectedColor?.name) {
-      const byColor = product.imagesByColor[selectedColor.name];
-      if (Array.isArray(byColor) && byColor.length) {
-        return byColor.slice(0, 5);
+      const colorName = selectedColor.name.toLowerCase();
+      const imagesByColorKeys = Object.keys(product.imagesByColor);
+      const matchingKey = imagesByColorKeys.find(k => k.toLowerCase() === colorName);
+
+      if (matchingKey) {
+        const byColor = product.imagesByColor[matchingKey];
+        if (Array.isArray(byColor) && byColor.length) {
+          return byColor.slice(0, 5);
+        }
       }
     }
 
