@@ -214,13 +214,11 @@ export function ProductCard({ product, schoolName, schoolSlug, onQuickShop }) {
   }, [product.variants]);
 
   const displayImage = useMemo(() => {
-    // Same behaviour as ProductDetailTemplate: prefer getProductImages (imagesByColor / images),
-    // then fall back to product.image
+    // Use shared helper which prefers product.imagesByColor[colorName],
+    // then product.images, then [product.image]
     const colorImages = getProductImages(product, selectedColor?.name);
-    if (colorImages.length) return colorImages[0];
-    if (product?.image && String(product.image).trim()) return String(product.image).trim();
-    if (Array.isArray(product?.images) && product.images[0] && String(product.images[0]).trim()) {
-      return String(product.images[0]).trim();
+    if (Array.isArray(colorImages) && colorImages.length) {
+      return String(colorImages[0]).trim();
     }
     return null;
   }, [product, selectedColor?.name]);

@@ -243,7 +243,9 @@ export function QuickShopDrawer({ open, onClose, product, schoolName, schoolSlug
   if (!product) return null;
 
   const variantImages = getProductImages(product, selectedColor?.name);
-  const displayImage  = variantImages[0] || product.image;
+  const displayImage  = Array.isArray(variantImages) && variantImages.length
+    ? variantImages[0]
+    : product.image;
   const productUrl    = schoolSlug ? `/product/${product.id}?school=${schoolSlug}` : `/product/${product.id}`;
 
   const selectedVariant = Array.isArray(product.variants)
