@@ -591,41 +591,47 @@ export function ProductDetailTemplate({ product, schoolName, schoolSlug, initial
               <div className="mb-5">
                 <p className="font-semibold uppercase tracking-wider mb-2.5"
                   style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: '11px', color: '#64748b', letterSpacing: '0.08em' }}>
-                  Colour — <span className="normal-case tracking-normal" style={{ color: '#f59e0b' }}>{selectedColor?.name}</span>
+                  Colour{selectedColor?.name ? ` — ` : ''}
+                  {selectedColor?.name && (
+                    <span className="normal-case tracking-normal" style={{ color: '#0f172a', fontWeight: 800 }}>{selectedColor.name}</span>
+                  )}
                 </p>
-                <div className="flex flex-wrap gap-3">
-                  {colors.map((c) => (
-                    <button
-                      key={c.hex}
-                      title={c.name}
-                      onClick={() => {
-                        if (typeof window !== 'undefined') {
-                          console.log('[ProductDetailTemplate] swatch click', {
-                            productId: product.id,
-                            name: product.name,
-                            clickedColor: c,
-                          });
-                        }
-                        setSelectedColor(c);
-                        setSliderIndex(0);
-                      }}
-                      style={{
-                        backgroundColor: c.hex,
-                        width: '26px',
-                        height: '26px',
-                        borderRadius: '50%',
-                        transition: 'all 0.2s ease',
-                        boxShadow:
-                          selectedColor?.hex === c.hex
-                            ? `0 0 0 2px #fff, 0 0 0 4px #2563eb`
-                            : '0 1px 4px rgba(0,0,0,0.18)',
-                        transform:
-                          selectedColor?.hex === c.hex ? 'scale(1.15)' : 'scale(1)',
-                        border: 'none',
-                        cursor: 'pointer',
-                      }}
-                    />
-                  ))}
+                <div className="flex flex-wrap gap-2.5">
+                  {colors.map((c) => {
+                    const isActive = selectedColor?.hex === c.hex;
+                    return (
+                      <button
+                        key={c.hex}
+                        title={c.name}
+                        onClick={() => {
+                          if (typeof window !== 'undefined') {
+                            console.log('[ProductDetailTemplate] swatch click', {
+                              productId: product.id,
+                              name: product.name,
+                              clickedColor: c,
+                            });
+                          }
+                          setSelectedColor(c);
+                          setSliderIndex(0);
+                        }}
+                        style={{
+                          backgroundColor: c.hex,
+                          width: '28px',
+                          height: '28px',
+                          borderRadius: '50%',
+                          transition: 'box-shadow 0.18s ease',
+                          boxShadow: isActive
+                            ? '0 0 0 2px #fff, 0 0 0 3.5px #2563eb'
+                            : 'inset 0 0 0 1px rgba(0,0,0,0.1)',
+                          border: 'none',
+                          cursor: 'pointer',
+                          position: 'relative',
+                        }}
+                        aria-pressed={isActive}
+                        aria-label={`Colour ${c.name}`}
+                      />
+                    );
+                  })}
                 </div>
               </div>
             )}

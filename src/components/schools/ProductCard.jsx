@@ -105,17 +105,18 @@ const CARD_CSS = `
 
   /* ── Swatch ── */
   .pc-swatch {
-    width: 15px; height: 15px;
+    width: 16px; height: 16px;
     border-radius: 50%;
-    border: none;
+    border: 1.5px solid rgba(0,0,0,0.08);
     cursor: pointer;
     flex-shrink: 0;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    transition: box-shadow 0.18s ease;
+    box-shadow: none;
   }
-  .pc-swatch:hover { transform: scale(1.18); }
+  .pc-swatch:hover { box-shadow: 0 0 0 2px rgba(37,99,235,0.18); }
   .pc-swatch.sel {
-    box-shadow: 0 0 0 2px #fff, 0 0 0 3.5px #2563eb;
-    transform: scale(1.18);
+    border-color: #2563eb;
+    box-shadow: 0 0 0 1.5px #fff, 0 0 0 3px #2563eb;
   }
 
   /* ── Card info body ── */
@@ -171,7 +172,7 @@ const CARD_CSS = `
     }
 
     /* Swatch dots — slightly smaller */
-    .pc-swatch { width: 13px; height: 13px; }
+    .pc-swatch { width: 14px; height: 14px; }
   }
 `;
 
@@ -349,9 +350,9 @@ export function ProductCard({ product, schoolName, schoolSlug, onQuickShop }) {
             </span>
           </div>
 
-          {/* Swatches + color name */}
+          {/* Swatches */}
         {colors.length > 0 && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px', flexWrap: 'wrap' }}>
               {colors.map((c) => (
                 <button
                   key={c.hex} type="button"
@@ -370,11 +371,6 @@ export function ProductCard({ product, schoolName, schoolSlug, onQuickShop }) {
                   title={c.name} aria-label={`Color ${c.name}`} aria-pressed={selectedColor?.hex === c.hex}
                 />
               ))}
-              {selectedColor?.name && (
-                <span style={{ fontFamily: "'Nunito', sans-serif", fontSize: '11px', fontWeight: 600, color: '#94a3b8' }}>
-                  {selectedColor.name}
-                </span>
-              )}
           </div>
         )}
 

@@ -454,28 +454,32 @@ export function QuickShopDrawer({ open, onClose, product, schoolName, schoolSlug
                 <div>
                 <p className="m-0 mb-2.5"
                   style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: '10.5px', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-                  Colour —{' '}
-                  <span style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, color: '#f59e0b', textTransform: 'none', letterSpacing: 'normal' }}>
-                    {selectedColor?.name}
-                  </span>
+                  Colour{selectedColor?.name ? ' — ' : ''}
+                  {selectedColor?.name && (
+                    <span style={{ fontWeight: 800, color: '#0f172a', textTransform: 'none', letterSpacing: 'normal' }}>
+                      {selectedColor.name}
+                    </span>
+                  )}
                   </p>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-                    {colors.map((c) => (
-                    <button key={c.hex} type="button" title={c.name}
-                        onClick={() => setSelectedColor(c)}
-                      style={{
-                        width: '26px', height: '26px', borderRadius: '50%',
-                        backgroundColor: c.hex, border: 'none', cursor: 'pointer',
-                        transition: 'all 0.18s ease',
-                        boxShadow: selectedColor?.hex === c.hex
-                          ? '0 0 0 2px #fff, 0 0 0 4px #2563eb'
-                          : '0 1px 4px rgba(0,0,0,0.16)',
-                        transform: selectedColor?.hex === c.hex ? 'scale(1.15)' : 'scale(1)',
-                      }}
-                      aria-label={`Colour ${c.name}`}
-                        aria-pressed={selectedColor?.hex === c.hex}
-                      />
-                    ))}
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                    {colors.map((c) => {
+                      const isActive = selectedColor?.hex === c.hex;
+                      return (
+                        <button key={c.hex} type="button" title={c.name}
+                          onClick={() => setSelectedColor(c)}
+                          style={{
+                            width: '26px', height: '26px', borderRadius: '50%',
+                            backgroundColor: c.hex, border: 'none', cursor: 'pointer',
+                            transition: 'box-shadow 0.18s ease',
+                            boxShadow: isActive
+                              ? '0 0 0 2px #fff, 0 0 0 3.5px #2563eb'
+                              : 'inset 0 0 0 1px rgba(0,0,0,0.1)',
+                          }}
+                          aria-label={`Colour ${c.name}`}
+                          aria-pressed={isActive}
+                        />
+                      );
+                    })}
                   </div>
                 </div>
               )}

@@ -205,20 +205,21 @@ const GLOBAL_CSS = `
     /* ── Sticky filter bar — sticks just below the fixed navbar ── */
     .spp-mobile-filters {
       position: sticky;
-      top: 88px;
+      top: 60px;
       z-index: 20;
-      background: rgba(255,255,255,0.97);
-      backdrop-filter: blur(12px);
+      background: #f4f6fb;
       border-bottom: 1px solid #e8ecf1;
       padding: 10px 16px;
       display: flex;
       flex-direction: column;
       gap: 8px;
+      /* Prevent gap above when sticking — extend bg upward behind navbar */
+      box-shadow: 0 -12px 0 0 #f4f6fb;
     }
 
     /* Search inside mobile filter bar */
     .spp-mobile-search {
-      font-size: 13px !important;
+      font-size: 16px !important;
       padding: 9px 36px 9px 38px !important;
       border-radius: 10px !important;
     }
