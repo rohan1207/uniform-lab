@@ -2,8 +2,7 @@ import { Suspense, useEffect, useState } from 'react';
 import { useParams, useSearchParams, Link } from 'react-router-dom';
 import { ProductDetailTemplate } from '@/components/product/ProductDetailTemplate';
 import { ArrowLeft } from 'lucide-react';
-
-const API_BASE = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+import { cachedFetch } from '@/lib/apiCache';
 
 const GLOBAL_CSS = `
   @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800;900&family=Nunito:wght@400;600;700&display=swap');
@@ -157,9 +156,8 @@ function ProductPageContent() {
         if (!cancelled) {
           setState((s) => ({ ...s, loading: true }));
         }
-        const res = await fetch(`${API_BASE}/api/public/products/${id}`);
-        const data = await res.json().catch(() => ({}));
-        if (!res.ok || !data || cancelled) {
+        const data = await cachedFetch(`/api/public/products/${id}`, { ttl: 60000 });
+        if (!data || cancelled) {
           if (!cancelled) {
             setState((s) => ({ ...s, loading: false, product: null }));
           }
@@ -190,9 +188,8 @@ function ProductPageContent() {
         let related = [];
         if (derivedSchoolSlug) {
           try {
-            const relRes = await fetch(`${API_BASE}/api/public/schools/${derivedSchoolSlug}`);
-            const relData = await relRes.json().catch(() => ({}));
-            if (relRes.ok && relData && Array.isArray(relData.products)) {
+            const relData = await cachedFetch(`/api/public/schools/${derivedSchoolSlug}`, { ttl: 60000 });
+            if (relData && Array.isArray(relData.products)) {
               const schoolNameFromApi = relData.school?.name || derivedSchoolName || '';
               const mapped = relData.products
                 .filter((rp) => String(rp._id) !== String(p._id))

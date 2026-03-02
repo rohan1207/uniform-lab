@@ -1,8 +1,7 @@
 import { useState, useMemo, useRef, useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Search } from 'lucide-react';
-
-const API_BASE = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+import { cachedFetch } from '@/lib/apiCache';
 
 /* ─────────────────────────────────────────────────────────────────────────────
    GLOBAL CSS
@@ -395,9 +394,8 @@ export default function FeaturedSchools() {
     let cancelled = false;
     (async () => {
       try {
-        const res = await fetch(`${API_BASE}/api/public/schools`);
-        const data = await res.json().catch(() => ([]));
-        if (!res.ok || !Array.isArray(data) || cancelled) return;
+        const data = await cachedFetch('/api/public/schools');
+        if (!Array.isArray(data) || cancelled) return;
         const mapped = data.map((s) => ({
           id: s._id || s.slug,
           slug: s.slug,

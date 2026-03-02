@@ -7,8 +7,7 @@ import {
 import { AnimatePresence, motion } from 'framer-motion';
 import { useCart } from '@/contexts/CartContext';
 import { featuredSchools as staticFeaturedSchools } from '@/data/featuredSchools';
-
-const API_BASE = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+import { cachedFetch } from '@/lib/apiCache';
 
 const NAV_CSS = `
   @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800;900&family=Nunito:wght@400;600;700&display=swap');
@@ -41,9 +40,8 @@ export default function Navbar() {
     let cancelled = false;
     (async () => {
       try {
-        const res = await fetch(`${API_BASE}/api/public/schools`);
-        const data = await res.json().catch(() => ([]));
-        if (!res.ok || !Array.isArray(data) || cancelled) return;
+        const data = await cachedFetch('/api/public/schools');
+        if (!Array.isArray(data) || cancelled) return;
         const mapped = data.map((s) => ({
           id: s._id || s.slug,
           slug: s.slug,

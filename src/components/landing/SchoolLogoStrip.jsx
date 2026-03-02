@@ -2,8 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { featuredSchools as staticFeaturedSchools } from '@/data/featuredSchools';
-
-const API_BASE = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+import { cachedFetch } from '@/lib/apiCache';
 
 /**
  * SchoolLogoStrip
@@ -27,9 +26,8 @@ export default function SchoolLogoStrip() {
     let cancelled = false;
     (async () => {
       try {
-        const res = await fetch(`${API_BASE}/api/public/schools`);
-        const data = await res.json().catch(() => ([]));
-        if (!res.ok || !Array.isArray(data) || cancelled) return;
+        const data = await cachedFetch('/api/public/schools');
+        if (!Array.isArray(data) || cancelled) return;
         const mapped = data.map((s) => ({
           id: s._id || s.slug,
           slug: s.slug,

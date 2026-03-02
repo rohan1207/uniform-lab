@@ -198,7 +198,7 @@ const QS_CSS = `
 /* ─────────────────────────────────────────────────────────────────────────
    COMPONENT
 ────────────────────────────────────────────────────────────────────────── */
-export function QuickShopDrawer({ open, onClose, product, schoolName, schoolSlug }) {
+export function QuickShopDrawer({ open, onClose, product, schoolName, schoolSlug, initialColor }) {
   const navigate = useNavigate();
   const { addItem, openCart, closeCart, setBuyNowItem } = useCart();
 
@@ -212,11 +212,16 @@ export function QuickShopDrawer({ open, onClose, product, schoolName, schoolSlug
   const [quantity,      setQuantity]      = useState(1);
   const [addedFlash,    setAddedFlash]    = useState(false);
 
-  /* Reset on product change */
+  /* Reset on product change — honour initialColor from card swatch */
   useEffect(() => {
     if (open && product) {
       const c = getProductColors(product);
-      setSelectedColor(c[0] ?? null);
+      let startColor = c[0] ?? null;
+      if (initialColor && c.length) {
+        const match = c.find(cl => cl.name && cl.name.toLowerCase() === initialColor.toLowerCase());
+        if (match) startColor = match;
+      }
+      setSelectedColor(startColor);
       const vs = Array.isArray(product.variants)
         ? [...new Set(product.variants.map((v) => (v.sizeLabel || '').trim()).filter(Boolean))]
         : [];
@@ -263,7 +268,14 @@ export function QuickShopDrawer({ open, onClose, product, schoolName, schoolSlug
       displayImage,
     });
   }
-  const productUrl    = schoolSlug ? `/product/${product.id}?school=${schoolSlug}` : `/product/${product.id}`;
+  const productUrl = (() => {
+    const base = `/product/${product.id}`;
+    const params = new URLSearchParams();
+    if (schoolSlug) params.set('school', schoolSlug);
+    if (selectedColor?.name) params.set('color', selectedColor.name);
+    const qs = params.toString();
+    return qs ? `${base}?${qs}` : base;
+  })();
 
   const selectedVariant = Array.isArray(product.variants)
     ? product.variants.find((v) => (v.sizeLabel || '').trim() === (selectedSize || '').trim()) || null

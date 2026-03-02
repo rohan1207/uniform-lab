@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect } from 'react'; // useMemo used for productUrl & sizeOptions
 import { Link } from 'react-router-dom';
 import { useCart } from '@/contexts/CartContext';
 import { useWishlist } from '@/contexts/WishlistContext';
@@ -192,7 +192,14 @@ export function ProductCard({ product, schoolName, schoolSlug, onQuickShop }) {
   const [added, setAdded] = useState(false);
   const [imageError, setImageError] = useState(false);
   const { isInWishlist, toggleWishlist } = useWishlist();
-  const productUrl = schoolSlug ? `/product/${product.id}?school=${schoolSlug}` : `/product/${product.id}`;
+  const productUrl = useMemo(() => {
+    const base = `/product/${product.id}`;
+    const params = new URLSearchParams();
+    if (schoolSlug) params.set('school', schoolSlug);
+    if (selectedColor?.name) params.set('color', selectedColor.name);
+    const qs = params.toString();
+    return qs ? `${base}?${qs}` : base;
+  }, [product.id, schoolSlug, selectedColor?.name]);
 
   const variantPrices = Array.isArray(product.variants)
     ? product.variants.map((v) => Number(v.saleRate)).filter((n) => Number.isFinite(n) && n > 0)
@@ -260,7 +267,7 @@ export function ProductCard({ product, schoolName, schoolSlug, onQuickShop }) {
 
   const handleQuickShop = (e) => {
     e?.preventDefault?.();
-    onQuickShop?.({ product, schoolName, schoolSlug });
+    onQuickShop?.({ product, schoolName, schoolSlug, selectedColor: selectedColor?.name });
   };
 
   return (

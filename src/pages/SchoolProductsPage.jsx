@@ -4,6 +4,7 @@ import { useCart } from '@/contexts/CartContext';
 import { ProductCard } from '@/components/schools/ProductCard';
 import { QuickShopDrawer } from '@/components/schools/QuickShopDrawer';
 import { ArrowLeft, ShoppingBag, Search, X } from 'lucide-react';
+import { cachedFetch } from '@/lib/apiCache';
 
 const API_BASE = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
 
@@ -382,9 +383,8 @@ export default function SchoolProductsPage() {
     async function load() {
       setLoading(true);
       try {
-        const res = await fetch(`${API_BASE}/api/public/schools/${slug}`);
-        const data = await res.json().catch(() => ({}));
-        if (!res.ok || !data || cancelled) {
+        const data = await cachedFetch(`/api/public/schools/${slug}`, { ttl: 60000 });
+        if (!data || cancelled) {
           setCatalog(null);
           return;
         }
@@ -757,6 +757,7 @@ export default function SchoolProductsPage() {
         product={quickShopProduct?.product ?? null}
         schoolName={quickShopProduct?.schoolName ?? null}
         schoolSlug={quickShopProduct?.schoolSlug ?? null}
+        initialColor={quickShopProduct?.selectedColor ?? null}
       />
 
     </main>
