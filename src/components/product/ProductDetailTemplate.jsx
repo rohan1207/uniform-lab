@@ -407,36 +407,39 @@ export function ProductDetailTemplate({ product, schoolName, schoolSlug, initial
     setSliderIndex(0);
   }, [selectedColor?.name]);
 
-  // Use useMemo with explicit dependencies to ensure gallery updates in production builds
-  const gallery = useMemo(() => {
-    // Prefer explicit imagesByColor mapping from backend (case-insensitive)
-    if (product.imagesByColor && selectedColor?.name) {
-      const colorName = selectedColor.name.toLowerCase();
-      const imagesByColorKeys = Object.keys(product.imagesByColor);
-      const matchingKey = imagesByColorKeys.find(k => k.toLowerCase() === colorName);
+  // Compute gallery based on selected color - must recalculate on every render
+  // (useMemo was not working correctly in production builds)
+  const currentColorName = selectedColor?.name || '';
+  let gallery = [];
+  
+  if (product.imagesByColor && currentColorName) {
+    const colorNameLower = currentColorName.toLowerCase();
+    const imagesByColorKeys = Object.keys(product.imagesByColor);
+    const matchingKey = imagesByColorKeys.find(k => k.toLowerCase() === colorNameLower);
 
-      if (matchingKey) {
-        const byColor = product.imagesByColor[matchingKey];
-        if (Array.isArray(byColor) && byColor.length) {
-          return byColor.slice(0, 5);
-        }
+    if (matchingKey) {
+      const byColor = product.imagesByColor[matchingKey];
+      if (Array.isArray(byColor) && byColor.length) {
+        gallery = byColor.slice(0, 5);
       }
     }
+  }
 
-    // Fallback: generic images array from API, if available
-    if (Array.isArray(product.images) && product.images.length) {
-      return product.images.slice(0, 5);
-    }
+  // Fallback: generic images array from API, if available
+  if (gallery.length === 0 && Array.isArray(product.images) && product.images.length) {
+    gallery = product.images.slice(0, 5);
+  }
 
-    // Final fallback: legacy static images
+  // Final fallback: legacy static images
+  if (gallery.length === 0) {
     const mainImage = product.image || '/school1.png';
     const raw = [
       mainImage,
       product.image || '/school2.png',
       product.image || '/school3.png',
     ].filter(Boolean);
-    return Array.from(new Set(raw)).slice(0, 5);
-  }, [product.imagesByColor, product.images, product.image, selectedColor?.name]);
+    gallery = Array.from(new Set(raw)).slice(0, 5);
+  }
 
   if (typeof window !== 'undefined') {
     console.log('[ProductDetailTemplate] render', {
