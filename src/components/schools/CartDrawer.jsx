@@ -299,7 +299,7 @@ function MobileUpsellPill({ product: p, schoolSlug: ss, onClose }) {
    MAIN EXPORT
 ────────────────────────────────────────────────────────────────────────── */
 export function CartDrawer({ open, onClose }) {
-  const { items, totalItems, totalAmount, removeItem, updateQuantity } = useCart();
+  const { items, totalItems, totalAmount, removeItem, updateQuantity, clearBuyNow } = useCart();
 
   const recommendedItems = useMemo(() => {
     return getRecommendedForCart(items, 6);
@@ -591,7 +591,7 @@ export function CartDrawer({ open, onClose }) {
             </div>
 
                   {/* Checkout CTA */}
-                  <Link to="/checkout" onClick={onClose}
+                  <Link to="/checkout" onClick={() => { clearBuyNow(); onClose(); }}
                     className="cart-checkout-btn flex items-center justify-center gap-2.5 w-full py-3.5 px-6"
                     style={{ fontSize: '14px' }}
                   >

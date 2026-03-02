@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '@/contexts/CartContext';
 import { useAuth } from '@/contexts/AuthContext';
@@ -8,36 +8,41 @@ const API_BASE = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
 
 export default function CheckoutPage() {
   const navigate = useNavigate();
-  const { items: cartItems, totalItems, addItem, clearCart, buyNowItem, clearBuyNow } = useCart();
+  const { items: cartItems, totalItems, addItem, removeItem, clearCart, buyNowItem, clearBuyNow } = useCart();
   const { user, token, isAuthenticated } = useAuth();
 
-  // "Include cart items" toggle — starts false (Buy Now = only that item)
-  const [includeCart, setIncludeCart] = useState(false);
+  // Per-item selection of which cart items to merge into this Buy Now checkout
+  const [selectedCartKeys, setSelectedCartKeys] = useState(new Set());
+  const [cartPickerOpen, setCartPickerOpen] = useState(false);
   // Once the user dismisses the card, don't show it again during this checkout session
   const [cartCardDismissed, setCartCardDismissed] = useState(false);
+
+  // Stable key generator for cart items
+  const cartItemKey = useCallback(
+    (item) => [item.productId, item.size, item.color].join('-'),
+    []
+  );
 
   // Determine which items to show in checkout
   const checkoutItems = useMemo(() => {
     if (buyNowItem) {
-      // Buy Now flow: show only the buy-now item, optionally merge cart
       const buyNowList = [{
         ...buyNowItem,
         size: buyNowItem.size || null,
         color: buyNowItem.color || null,
       }];
-      if (includeCart && cartItems.length > 0) {
-        // Merge: buy-now item first, then cart items (avoid duplicates)
-        const buyNowKey = [buyNowItem.productId, buyNowItem.size, buyNowItem.color].join('-');
-        const filtered = cartItems.filter(i =>
-          [i.productId, i.size, i.color].join('-') !== buyNowKey
+      if (selectedCartKeys.size > 0 && cartItems.length > 0) {
+        const buyNowKey = cartItemKey(buyNowItem);
+        const selected = cartItems.filter(i =>
+          cartItemKey(i) !== buyNowKey && selectedCartKeys.has(cartItemKey(i))
         );
-        return [...buyNowList, ...filtered];
+        return [...buyNowList, ...selected];
       }
       return buyNowList;
     }
     // Normal cart checkout
     return cartItems;
-  }, [buyNowItem, cartItems, includeCart]);
+  }, [buyNowItem, cartItems, selectedCartKeys, cartItemKey]);
 
   const items = checkoutItems;
   const totalAmount = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
@@ -190,10 +195,16 @@ export default function CheckoutPage() {
       }
 
       // Redirect to Instamojo hosted payment page
-      // Clear buyNowItem; if includeCart was selected, also clear cart
+      // Clear buyNowItem; remove only the selected cart items
       if (buyNowItem) {
         clearBuyNow();
-        if (includeCart) clearCart();
+        if (selectedCartKeys.size > 0) {
+          cartItems.forEach(item => {
+            if (selectedCartKeys.has(cartItemKey(item))) {
+              removeItem(item.productId, item.size, item.color);
+            }
+          });
+        }
       } else {
         clearCart();
       }
@@ -271,76 +282,184 @@ export default function CheckoutPage() {
             payment page.
           </p>
 
-          {/* ── Buy Now + Cart merge card ── */}
+          {/* ── Buy Now + Cart merge card with per-item picker ── */}
           {buyNowItem && cartItems.length > 0 && !cartCardDismissed && (
             <div
-              className="mb-5 rounded-2xl border bg-white p-4 flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4"
+              className="mb-5 rounded-2xl border bg-white overflow-hidden"
               style={{
                 borderColor: '#dbeafe',
                 background: 'linear-gradient(135deg, #f0f7ff 0%, #ffffff 100%)',
                 boxShadow: '0 2px 12px rgba(37,99,235,0.06)',
               }}
             >
-              <div className="flex items-center gap-3 flex-1 min-w-0">
-                <div
-                  className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
-                  style={{ background: '#dbeafe', color: '#2563eb' }}
-                >
-                  <ShoppingCart size={17} />
-                </div>
-                <div className="min-w-0">
-                  <p
-                    className="text-[#0f172a] m-0"
-                    style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 800, fontSize: '14px', lineHeight: 1.3 }}
+              {/* Header */}
+              <div className="p-4 flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
+                <div className="flex items-center gap-3 flex-1 min-w-0">
+                  <div
+                    className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+                    style={{ background: '#dbeafe', color: '#2563eb' }}
                   >
-                    You have {cartItems.length} item{cartItems.length !== 1 ? 's' : ''} in your cart
-                  </p>
-                  <p
-                    className="text-[#64748b] m-0"
-                    style={{ fontFamily: "'Nunito', sans-serif", fontSize: '12px', fontWeight: 600 }}
-                  >
-                    Want to add them to this order?
-                  </p>
+                    <ShoppingCart size={17} />
+                  </div>
+                  <div className="min-w-0">
+                    <p
+                      className="text-[#0f172a] m-0"
+                      style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 800, fontSize: '14px', lineHeight: 1.3 }}
+                    >
+                      You have {cartItems.length} item{cartItems.length !== 1 ? 's' : ''} in your cart
+                    </p>
+                    <p
+                      className="text-[#64748b] m-0"
+                      style={{ fontFamily: "'Nunito', sans-serif", fontSize: '12px', fontWeight: 600 }}
+                    >
+                      {cartPickerOpen ? 'Pick which ones to include' : 'Want to add them to this order?'}
+                    </p>
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-center gap-2 flex-shrink-0">
-                {!includeCart ? (
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  {!cartPickerOpen ? (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setCartPickerOpen(true);
+                        setSelectedCartKeys(new Set(cartItems.map(cartItemKey)));
+                      }}
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-black tracking-[0.08em] uppercase"
+                      style={{
+                        fontFamily: "'Baloo 2', cursive",
+                        background: 'linear-gradient(180deg,#60a5fa 0%,#2563eb 52%,#1d4ed8 100%)',
+                        color: '#fff',
+                        border: 'none',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      <Plus size={13} /> Add cart items
+                    </button>
+                  ) : (
+                    <span
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold"
+                      style={{
+                        fontFamily: "'Nunito', sans-serif",
+                        background: selectedCartKeys.size > 0 ? '#dcfce7' : '#f1f5f9',
+                        color: selectedCartKeys.size > 0 ? '#15803d' : '#64748b',
+                      }}
+                    >
+                      {selectedCartKeys.size > 0
+                        ? `✓ ${selectedCartKeys.size} item${selectedCartKeys.size !== 1 ? 's' : ''} added`
+                        : 'None selected'}
+                    </span>
+                  )}
                   <button
                     type="button"
-                    onClick={() => setIncludeCart(true)}
-                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-black tracking-[0.08em] uppercase"
-                    style={{
-                      fontFamily: "'Baloo 2', cursive",
-                      background: 'linear-gradient(180deg,#60a5fa 0%,#2563eb 52%,#1d4ed8 100%)',
-                      color: '#fff',
-                      border: 'none',
-                      cursor: 'pointer',
-                    }}
+                    onClick={() => { setCartCardDismissed(true); setSelectedCartKeys(new Set()); setCartPickerOpen(false); }}
+                    className="w-7 h-7 rounded-full flex items-center justify-center hover:bg-[#f1f5f9] transition-colors"
+                    style={{ color: '#94a3b8', border: 'none', cursor: 'pointer', background: 'transparent' }}
+                    aria-label="Dismiss"
                   >
-                    <Plus size={13} /> Add cart items
+                    <X size={14} />
                   </button>
-                ) : (
-                  <span
-                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold"
-                    style={{
-                      fontFamily: "'Nunito', sans-serif",
-                      background: '#dcfce7',
-                      color: '#15803d',
-                    }}
-                  >
-                    ✓ Cart items included
-                  </span>
-                )}
-                <button
-                  type="button"
-                  onClick={() => { setCartCardDismissed(true); setIncludeCart(false); }}
-                  className="w-7 h-7 rounded-full flex items-center justify-center hover:bg-[#f1f5f9] transition-colors"
-                  style={{ color: '#94a3b8', border: 'none', cursor: 'pointer', background: 'transparent' }}
-                  aria-label="Dismiss"
-                >
-                  <X size={14} />
-                </button>
+                </div>
               </div>
+
+              {/* Expandable per-item picker */}
+              {cartPickerOpen && (
+                <div className="border-t border-[#e8f0fe] px-4 pb-4 pt-3">
+                  {cartItems.length > 1 && (
+                    <div className="flex items-center justify-between mb-2">
+                      <button
+                        type="button"
+                        onClick={() => setSelectedCartKeys(new Set(cartItems.map(cartItemKey)))}
+                        className="text-[11px] font-bold text-[#2563eb] hover:underline"
+                        style={{ fontFamily: "'Nunito', sans-serif", background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+                      >
+                        Select all
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setSelectedCartKeys(new Set())}
+                        className="text-[11px] font-bold text-[#94a3b8] hover:underline"
+                        style={{ fontFamily: "'Nunito', sans-serif", background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+                      >
+                        Deselect all
+                      </button>
+                    </div>
+                  )}
+                  <div className="space-y-1.5 max-h-48 overflow-y-auto">
+                    {cartItems.map((item) => {
+                      const key = cartItemKey(item);
+                      const isSelected = selectedCartKeys.has(key);
+                      return (
+                        <div
+                          key={key}
+                          role="button"
+                          tabIndex={0}
+                          onClick={() => {
+                            setSelectedCartKeys(prev => {
+                              const next = new Set(prev);
+                              if (next.has(key)) next.delete(key); else next.add(key);
+                              return next;
+                            });
+                          }}
+                          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') e.currentTarget.click(); }}
+                          className="flex items-center gap-3 p-2.5 rounded-xl cursor-pointer transition-all"
+                          style={{
+                            background: isSelected ? 'rgba(37,99,235,0.04)' : '#f8fafc',
+                            border: `1.5px solid ${isSelected ? '#93c5fd' : 'transparent'}`,
+                          }}
+                        >
+                          {/* Custom checkbox */}
+                          <div
+                            className="w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 transition-colors"
+                            style={{
+                              background: isSelected ? '#2563eb' : '#fff',
+                              border: isSelected ? '1.5px solid #2563eb' : '1.5px solid #cbd5e1',
+                            }}
+                          >
+                            {isSelected && (
+                              <svg width="11" height="9" viewBox="0 0 11 9" fill="none">
+                                <path d="M1 4.5L4 7.5L10 1" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                              </svg>
+                            )}
+                          </div>
+                          {/* Thumbnail */}
+                          {item.image && (
+                            <img
+                              src={item.image}
+                              alt={item.name}
+                              className="w-10 h-10 rounded-lg object-cover flex-shrink-0"
+                              style={{ border: '1px solid #e2e8f0' }}
+                            />
+                          )}
+                          {/* Details */}
+                          <div className="flex-1 min-w-0">
+                            <p
+                              className="m-0 truncate"
+                              style={{ fontFamily: "'Nunito', sans-serif", fontSize: '13px', fontWeight: 700, color: '#0f172a' }}
+                            >
+                              {item.name}
+                            </p>
+                            <p
+                              className="m-0"
+                              style={{ fontFamily: "'Nunito', sans-serif", fontSize: '11px', fontWeight: 600, color: '#94a3b8' }}
+                            >
+                              Qty {item.quantity}
+                              {item.size && ` · ${item.size}`}
+                              {item.color && ` · ${item.color}`}
+                            </p>
+                          </div>
+                          {/* Price */}
+                          <p
+                            className="m-0 flex-shrink-0"
+                            style={{ fontFamily: "'Nunito', sans-serif", fontSize: '13px', fontWeight: 800, color: '#0f172a' }}
+                          >
+                            ₹{item.price * item.quantity}
+                          </p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
