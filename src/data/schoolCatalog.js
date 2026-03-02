@@ -235,11 +235,19 @@ export function getProductColors(product) {
 /**
  * Returns array of image URLs for a product. Uses imagesByColor when product has colors and colorName is set;
  * otherwise uses product.images or [product.image]. Used for gallery and for correct variant image in cart/detail.
+ * Case-insensitive color matching to handle differences between local and production environments.
  */
 export function getProductImages(product, colorName) {
   if (!product) return [];
-  if (product.imagesByColor && colorName && product.imagesByColor[colorName]?.length) {
-    return product.imagesByColor[colorName];
+  if (product.imagesByColor && colorName) {
+    // Case-insensitive lookup
+    const lowerColorName = colorName.toLowerCase();
+    const matchingKey = Object.keys(product.imagesByColor).find(
+      (k) => k.toLowerCase() === lowerColorName
+    );
+    if (matchingKey && product.imagesByColor[matchingKey]?.length) {
+      return product.imagesByColor[matchingKey];
+    }
   }
   if (Array.isArray(product.images) && product.images.length) return product.images;
   if (product.image) return [product.image];
