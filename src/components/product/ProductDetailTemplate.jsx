@@ -402,44 +402,41 @@ export function ProductDetailTemplate({ product, schoolName, schoolSlug, initial
   const openQuickShop = useCallback((payload) => setQuickShopProduct(payload), []);
   const closeQuickShop = useCallback(() => setQuickShopProduct(null), []);
 
-  // Reset slider index when color changes
-  useEffect(() => {
-    setSliderIndex(0);
-  }, [selectedColor?.name]);
+  // Helper function to compute gallery images for a given color
+  const computeGallery = useCallback((colorName) => {
+    if (product.imagesByColor && colorName) {
+      const colorNameLower = colorName.toLowerCase();
+      const imagesByColorKeys = Object.keys(product.imagesByColor);
+      const matchingKey = imagesByColorKeys.find(k => k.toLowerCase() === colorNameLower);
 
-  // Compute gallery based on selected color - must recalculate on every render
-  // (useMemo was not working correctly in production builds)
-  const currentColorName = selectedColor?.name || '';
-  let gallery = [];
-  
-  if (product.imagesByColor && currentColorName) {
-    const colorNameLower = currentColorName.toLowerCase();
-    const imagesByColorKeys = Object.keys(product.imagesByColor);
-    const matchingKey = imagesByColorKeys.find(k => k.toLowerCase() === colorNameLower);
-
-    if (matchingKey) {
-      const byColor = product.imagesByColor[matchingKey];
-      if (Array.isArray(byColor) && byColor.length) {
-        gallery = byColor.slice(0, 5);
+      if (matchingKey) {
+        const byColor = product.imagesByColor[matchingKey];
+        if (Array.isArray(byColor) && byColor.length) {
+          return byColor.slice(0, 5);
+        }
       }
     }
-  }
 
-  // Fallback: generic images array from API, if available
-  if (gallery.length === 0 && Array.isArray(product.images) && product.images.length) {
-    gallery = product.images.slice(0, 5);
-  }
+    // Fallback: generic images array from API
+    if (Array.isArray(product.images) && product.images.length) {
+      return product.images.slice(0, 5);
+    }
 
-  // Final fallback: legacy static images
-  if (gallery.length === 0) {
+    // Final fallback: legacy static images
     const mainImage = product.image || '/school1.png';
-    const raw = [
-      mainImage,
-      product.image || '/school2.png',
-      product.image || '/school3.png',
-    ].filter(Boolean);
-    gallery = Array.from(new Set(raw)).slice(0, 5);
-  }
+    const raw = [mainImage, product.image || '/school2.png', product.image || '/school3.png'].filter(Boolean);
+    return Array.from(new Set(raw)).slice(0, 5);
+  }, [product.imagesByColor, product.images, product.image]);
+
+  // Store gallery in state to ensure React tracks changes
+  const [gallery, setGallery] = useState(() => computeGallery(selectedColor?.name));
+
+  // Update gallery when selectedColor changes
+  useEffect(() => {
+    const newGallery = computeGallery(selectedColor?.name);
+    setGallery(newGallery);
+    setSliderIndex(0);
+  }, [selectedColor?.name, computeGallery]);
 
   if (typeof window !== 'undefined') {
     console.log('[ProductDetailTemplate] render', {
@@ -526,8 +523,8 @@ export function ProductDetailTemplate({ product, schoolName, schoolSlug, initial
           <motion.div className="order-1 lg:order-1"
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}>
-              <ImageSlider images={gallery} productName={product.name} current={sliderIndex} setCurrent={setSliderIndex} />
-            <ThumbnailStrip images={gallery} current={sliderIndex} setCurrent={setSliderIndex} />
+              <ImageSlider key={gallery[0] || 'default'} images={gallery} productName={product.name} current={sliderIndex} setCurrent={setSliderIndex} />
+            <ThumbnailStrip key={`thumb-${gallery[0] || 'default'}`} images={gallery} current={sliderIndex} setCurrent={setSliderIndex} />
           </motion.div>
 
           {/* RIGHT: Product Info — order-2 on mobile (comes after image) */}
