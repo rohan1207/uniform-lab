@@ -266,22 +266,16 @@ function FadeUp({ children, className, delay = 0 }) {
 /* ─────────────────────────────────────────────────────────────────────────
    IMAGE SLIDER
 ────────────────────────────────────────────────────────────────────────── */
-function ImageSlider({ images, productName }) {
-  const [current, setCurrent] = useState(0);
+function ImageSlider({ images, productName, current, setCurrent }) {
   const count = images.length;
   const prev = () => setCurrent(c => c === 0 ? count - 1 : c - 1);
   const next = () => setCurrent(c => c === count - 1 ? 0 : c + 1);
-
-  // Reset to first image when images array changes (e.g., color change)
-  useEffect(() => {
-    setCurrent(0);
-  }, [images]);
 
   return (
     <div className="relative w-full overflow-hidden rounded-2xl"
       style={{ aspectRatio: '4/5', background: '#ffffff' }}>
       <AnimatePresence mode="wait">
-        <motion.img key={current} src={images[current]} alt={`${productName} ${current + 1}`}
+        <motion.img key={`${images[current]}-${current}`} src={images[current]} alt={`${productName} ${current + 1}`}
           className="absolute inset-0 w-full h-full object-contain"
           initial={{ opacity: 0, scale: 1.03 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -408,6 +402,11 @@ export function ProductDetailTemplate({ product, schoolName, schoolSlug, initial
   const openQuickShop = useCallback((payload) => setQuickShopProduct(payload), []);
   const closeQuickShop = useCallback(() => setQuickShopProduct(null), []);
 
+  // Reset slider index when color changes
+  useEffect(() => {
+    setSliderIndex(0);
+  }, [selectedColor?.name]);
+
   // Use useMemo with explicit dependencies to ensure gallery updates in production builds
   const gallery = useMemo(() => {
     // Prefer explicit imagesByColor mapping from backend (case-insensitive)
@@ -524,8 +523,8 @@ export function ProductDetailTemplate({ product, schoolName, schoolSlug, initial
           <motion.div className="order-1 lg:order-1"
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}>
-              <ImageSlider key={selectedColor?.name || 'default'} images={gallery} productName={product.name} />
-            <ThumbnailStrip key={`thumb-${selectedColor?.name || 'default'}`} images={gallery} current={sliderIndex} setCurrent={setSliderIndex} />
+              <ImageSlider images={gallery} productName={product.name} current={sliderIndex} setCurrent={setSliderIndex} />
+            <ThumbnailStrip images={gallery} current={sliderIndex} setCurrent={setSliderIndex} />
           </motion.div>
 
           {/* RIGHT: Product Info — order-2 on mobile (comes after image) */}
