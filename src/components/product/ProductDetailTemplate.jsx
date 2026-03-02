@@ -427,6 +427,17 @@ export function ProductDetailTemplate({ product, schoolName, schoolSlug, initial
     return Array.from(new Set(raw)).slice(0, 5);
   })();
 
+  if (typeof window !== 'undefined') {
+    console.log('[ProductDetailTemplate] render', {
+      productId: product.id,
+      name: product.name,
+      colors,
+      selectedColor,
+      imagesByColor: product.imagesByColor,
+      gallery,
+    });
+  }
+
   const youMayAlsoLike = (relatedProducts || []).slice(0, 4);
 
   const variantImage = gallery[0];
@@ -577,6 +588,13 @@ export function ProductDetailTemplate({ product, schoolName, schoolSlug, initial
                       key={c.hex}
                       title={c.name}
                       onClick={() => {
+                        if (typeof window !== 'undefined') {
+                          console.log('[ProductDetailTemplate] swatch click', {
+                            productId: product.id,
+                            name: product.name,
+                            clickedColor: c,
+                          });
+                        }
                         setSelectedColor(c);
                         setSliderIndex(0);
                       }}

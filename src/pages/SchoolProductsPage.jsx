@@ -389,6 +389,20 @@ export default function SchoolProductsPage() {
         }
         const { school, categories = [], products = [] } = data;
 
+        if (typeof window !== 'undefined') {
+          console.log('[SchoolProductsPage] raw API data', {
+            slug,
+            school,
+            productsSample: products.slice(0, 2).map((p) => ({
+              _id: p._id,
+              name: p.name,
+              price: p.price,
+              colors: p.colors,
+              imagesByColor: p.imagesByColor,
+            })),
+          });
+        }
+
         if (process.env.NODE_ENV !== 'production' && products.length > 0) {
           const first = products[0];
           console.log('[SchoolProductsPage] First product from API:', {
@@ -448,6 +462,9 @@ export default function SchoolProductsPage() {
           })),
           grades: schoolGrades,
         };
+        if (typeof window !== 'undefined') {
+          console.log('[SchoolProductsPage] mapped catalog', mappedCatalog);
+        }
         if (!cancelled) setCatalog(mappedCatalog);
       } catch {
         if (!cancelled) setCatalog(null);

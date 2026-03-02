@@ -224,6 +224,14 @@ export function QuickShopDrawer({ open, onClose, product, schoolName, schoolSlug
       setSelectedSize(opts[0] || DETAIL_SIZES[0]);
       setQuantity(1);
       setAddedFlash(false);
+      if (typeof window !== 'undefined') {
+        console.log('[QuickShopDrawer] open/reset', {
+          productId: product.id,
+          name: product.name,
+          colors: c,
+          imagesByColor: product.imagesByColor,
+        });
+      }
     }
   }, [open, product]);
 
@@ -246,6 +254,15 @@ export function QuickShopDrawer({ open, onClose, product, schoolName, schoolSlug
   const displayImage  = Array.isArray(variantImages) && variantImages.length
     ? variantImages[0]
     : product.image;
+  if (typeof window !== 'undefined') {
+    console.log('[QuickShopDrawer] render', {
+      productId: product.id,
+      name: product.name,
+      selectedColor,
+      variantImages,
+      displayImage,
+    });
+  }
   const productUrl    = schoolSlug ? `/product/${product.id}?school=${schoolSlug}` : `/product/${product.id}`;
 
   const selectedVariant = Array.isArray(product.variants)

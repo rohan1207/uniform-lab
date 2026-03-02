@@ -223,6 +223,19 @@ export function ProductCard({ product, schoolName, schoolSlug, onQuickShop }) {
     return null;
   }, [product, selectedColor?.name]);
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      console.log('[ProductCard] render', {
+        productId: product.id,
+        name: product.name,
+        colors,
+        selectedColor,
+        imagesByColor: product.imagesByColor,
+        displayImage,
+      });
+    }
+  }, [product, colors, selectedColor, displayImage]);
+
   useEffect(() => { setImageError(false); }, [displayImage]);
 
   const handleAddToCart = (e) => {
@@ -344,7 +357,16 @@ export function ProductCard({ product, schoolName, schoolSlug, onQuickShop }) {
                   key={c.hex} type="button"
                   className={`pc-swatch${selectedColor?.hex === c.hex ? ' sel' : ''}`}
                   style={{ backgroundColor: c.hex }}
-                  onClick={() => setSelectedColor(c)}
+                  onClick={() => {
+                    if (typeof window !== 'undefined') {
+                      console.log('[ProductCard] swatch click', {
+                        productId: product.id,
+                        name: product.name,
+                        clickedColor: c,
+                      });
+                    }
+                    setSelectedColor(c);
+                  }}
                   title={c.name} aria-label={`Color ${c.name}`} aria-pressed={selectedColor?.hex === c.hex}
                 />
               ))}
