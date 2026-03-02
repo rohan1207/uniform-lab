@@ -1,15 +1,53 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '@/contexts/CartContext';
 import { useAuth } from '@/contexts/AuthContext';
-import { ArrowLeft, ShoppingBag } from 'lucide-react';
+import { ArrowLeft, ShoppingBag, ShoppingCart, Plus, X } from 'lucide-react';
 
 const API_BASE = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
 
 export default function CheckoutPage() {
   const navigate = useNavigate();
-  const { items, totalItems, totalAmount, clearCart } = useCart();
+  const { items: cartItems, totalItems, addItem, clearCart, buyNowItem, clearBuyNow } = useCart();
   const { user, token, isAuthenticated } = useAuth();
+
+  // "Include cart items" toggle — starts false (Buy Now = only that item)
+  const [includeCart, setIncludeCart] = useState(false);
+  // Once the user dismisses the card, don't show it again during this checkout session
+  const [cartCardDismissed, setCartCardDismissed] = useState(false);
+
+  // Determine which items to show in checkout
+  const checkoutItems = useMemo(() => {
+    if (buyNowItem) {
+      // Buy Now flow: show only the buy-now item, optionally merge cart
+      const buyNowList = [{
+        ...buyNowItem,
+        size: buyNowItem.size || null,
+        color: buyNowItem.color || null,
+      }];
+      if (includeCart && cartItems.length > 0) {
+        // Merge: buy-now item first, then cart items (avoid duplicates)
+        const buyNowKey = [buyNowItem.productId, buyNowItem.size, buyNowItem.color].join('-');
+        const filtered = cartItems.filter(i =>
+          [i.productId, i.size, i.color].join('-') !== buyNowKey
+        );
+        return [...buyNowList, ...filtered];
+      }
+      return buyNowList;
+    }
+    // Normal cart checkout
+    return cartItems;
+  }, [buyNowItem, cartItems, includeCart]);
+
+  const items = checkoutItems;
+  const totalAmount = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
+
+  // Clean up buyNowItem when navigating away
+  useEffect(() => {
+    return () => {
+      // Don't clear on unmount if we're going to payment — clearBuyNow is called after order
+    };
+  }, []);
 
   const [form, setForm] = useState({
     name: user?.name || '',
@@ -33,11 +71,11 @@ export default function CheckoutPage() {
 
   // Redirect unauthenticated users to account page before checkout
   useEffect(() => {
-    if (!items.length) return;
+    if (!items.length && !buyNowItem) return;
     if (!isAuthenticated) {
       navigate('/account?redirect=/checkout', { replace: true });
     }
-  }, [items.length, isAuthenticated, navigate]);
+  }, [items.length, buyNowItem, isAuthenticated, navigate]);
 
   // Prefill form from customer profile (addresses) if available
   useEffect(() => {
@@ -152,6 +190,13 @@ export default function CheckoutPage() {
       }
 
       // Redirect to Instamojo hosted payment page
+      // Clear buyNowItem; if includeCart was selected, also clear cart
+      if (buyNowItem) {
+        clearBuyNow();
+        if (includeCart) clearCart();
+      } else {
+        clearCart();
+      }
       window.location.href = data.paymentUrl;
     } catch (err) {
       // eslint-disable-next-line no-alert
@@ -225,6 +270,79 @@ export default function CheckoutPage() {
             Enter your details and delivery address. On the next step we&apos;ll take you to a secure
             payment page.
           </p>
+
+          {/* ── Buy Now + Cart merge card ── */}
+          {buyNowItem && cartItems.length > 0 && !cartCardDismissed && (
+            <div
+              className="mb-5 rounded-2xl border bg-white p-4 flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4"
+              style={{
+                borderColor: '#dbeafe',
+                background: 'linear-gradient(135deg, #f0f7ff 0%, #ffffff 100%)',
+                boxShadow: '0 2px 12px rgba(37,99,235,0.06)',
+              }}
+            >
+              <div className="flex items-center gap-3 flex-1 min-w-0">
+                <div
+                  className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+                  style={{ background: '#dbeafe', color: '#2563eb' }}
+                >
+                  <ShoppingCart size={17} />
+                </div>
+                <div className="min-w-0">
+                  <p
+                    className="text-[#0f172a] m-0"
+                    style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 800, fontSize: '14px', lineHeight: 1.3 }}
+                  >
+                    You have {cartItems.length} item{cartItems.length !== 1 ? 's' : ''} in your cart
+                  </p>
+                  <p
+                    className="text-[#64748b] m-0"
+                    style={{ fontFamily: "'Nunito', sans-serif", fontSize: '12px', fontWeight: 600 }}
+                  >
+                    Want to add them to this order?
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 flex-shrink-0">
+                {!includeCart ? (
+                  <button
+                    type="button"
+                    onClick={() => setIncludeCart(true)}
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-black tracking-[0.08em] uppercase"
+                    style={{
+                      fontFamily: "'Baloo 2', cursive",
+                      background: 'linear-gradient(180deg,#60a5fa 0%,#2563eb 52%,#1d4ed8 100%)',
+                      color: '#fff',
+                      border: 'none',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <Plus size={13} /> Add cart items
+                  </button>
+                ) : (
+                  <span
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold"
+                    style={{
+                      fontFamily: "'Nunito', sans-serif",
+                      background: '#dcfce7',
+                      color: '#15803d',
+                    }}
+                  >
+                    ✓ Cart items included
+                  </span>
+                )}
+                <button
+                  type="button"
+                  onClick={() => { setCartCardDismissed(true); setIncludeCart(false); }}
+                  className="w-7 h-7 rounded-full flex items-center justify-center hover:bg-[#f1f5f9] transition-colors"
+                  style={{ color: '#94a3b8', border: 'none', cursor: 'pointer', background: 'transparent' }}
+                  aria-label="Dismiss"
+                >
+                  <X size={14} />
+                </button>
+              </div>
+            </div>
+          )}
 
           {items.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-12 bg-white border border-[#e2e8f0] rounded-2xl text-[#94a3b8]">

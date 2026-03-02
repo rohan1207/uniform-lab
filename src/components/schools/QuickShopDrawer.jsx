@@ -200,7 +200,7 @@ const QS_CSS = `
 ────────────────────────────────────────────────────────────────────────── */
 export function QuickShopDrawer({ open, onClose, product, schoolName, schoolSlug }) {
   const navigate = useNavigate();
-  const { addItem, openCart, closeCart } = useCart();
+  const { addItem, openCart, closeCart, setBuyNowItem } = useCart();
 
   const colors  = product ? getProductColors(product) : [];
   const variantSizes = product && Array.isArray(product.variants)
@@ -290,7 +290,7 @@ export function QuickShopDrawer({ open, onClose, product, schoolName, schoolSlug
   }
 
   function handleBuyNow() {
-    addItem({
+    setBuyNowItem({
       productId: product.id,
       name: product.name,
       price: effectivePrice,

@@ -86,6 +86,17 @@ export function CartProvider({ children }) {
   );
   const [cartDrawerOpen, setCartDrawerOpen] = useState(false);
 
+  // Buy Now: a single item that bypasses the cart and goes straight to checkout
+  const [buyNowItem, setBuyNowItemRaw] = useState(null);
+
+  const setBuyNowItem = useCallback((item) => {
+    setBuyNowItemRaw(item);
+  }, []);
+
+  const clearBuyNow = useCallback(() => {
+    setBuyNowItemRaw(null);
+  }, []);
+
   const addItem = useCallback((item) => {
     dispatch({ type: 'ADD', payload: item });
   }, []);
@@ -130,6 +141,9 @@ export function CartProvider({ children }) {
         cartDrawerOpen,
         openCart,
         closeCart,
+        buyNowItem,
+        setBuyNowItem,
+        clearBuyNow,
       }}
     >
       {children}

@@ -371,7 +371,7 @@ function FaqRow({ item }) {
 ────────────────────────────────────────────────────────────────────────── */
 export function ProductDetailTemplate({ product, schoolName, schoolSlug, initialColor, relatedProducts = [] }) {
   const navigate = useNavigate();
-  const { addItem, openCart } = useCart();
+  const { addItem, openCart, setBuyNowItem } = useCart();
   const { isInWishlist, toggleWishlist } = useWishlist();
 
   const colors = getProductColors(product);
@@ -472,7 +472,7 @@ export function ProductDetailTemplate({ product, schoolName, schoolSlug, initial
     openCart();
   }
   function handleBuyNow() {
-    addItem({
+    setBuyNowItem({
       productId: product.id,
       name: product.name,
       price: effectivePrice,
