@@ -8,14 +8,14 @@ const FOUNDERS = [
     role: 'Founder',
     bio: 'Focus on systems, scale, and structured growth. Hands-on experience in manufacturing and retail operations.',
     initials: 'PM',
-    image: null, // set path when you have profile images, e.g. '/team/priyank.jpg'
+    image: '/pryank.png',
   },
   {
     name: 'Nivedita Mota',
     role: 'Co-Founder',
     bio: 'Strategic direction and customer-centric thinking. Ensures every touchpoint reflects clarity and professionalism.',
     initials: 'NM',
-    image: null,
+    image: '/nivedita.png',
   },
 ];
 
@@ -124,8 +124,8 @@ const CSS = `
     border-color: rgba(37,99,235,0.25);
   }
   .about-founder-photo {
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
     flex-shrink: 0;
     background: linear-gradient(135deg, #eef5ff 0%, #dbeafe 100%);
@@ -137,11 +137,14 @@ const CSS = `
     font-size: 24px;
     color: #2563eb;
     overflow: hidden;
+    border: 3px solid #fff;
+    box-shadow: 0 4px 16px rgba(37,99,235,0.15);
   }
   .about-founder-photo img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center top;
   }
   .about-founder-role {
     font-size: 10px;
@@ -256,7 +259,7 @@ const CSS = `
     .about-intro { font-size: 14px; margin-bottom: 28px; }
     .about-founders-grid { grid-template-columns: 1fr; gap: 14px; margin-bottom: 24px; }
     .about-founder-card { padding: 18px; gap: 16px; flex-direction: column; align-items: center; text-align: center; }
-    .about-founder-photo { width: 72px; height: 72px; font-size: 22px; }
+    .about-founder-photo { width: 90px; height: 90px; font-size: 22px; }
     .about-points-row { gap: 8px; margin-bottom: 22px; }
     .about-point-pill { padding: 8px 12px; font-size: 12px; }
     .about-cta-bar { flex-direction: column; align-items: stretch; text-align: center; padding: 16px; }

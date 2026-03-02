@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useState, useRef, useCallback, useEffect, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import {
@@ -408,7 +408,8 @@ export function ProductDetailTemplate({ product, schoolName, schoolSlug, initial
   const openQuickShop = useCallback((payload) => setQuickShopProduct(payload), []);
   const closeQuickShop = useCallback(() => setQuickShopProduct(null), []);
 
-  const gallery = (() => {
+  // Use useMemo with explicit dependencies to ensure gallery updates in production builds
+  const gallery = useMemo(() => {
     // Prefer explicit imagesByColor mapping from backend (case-insensitive)
     if (product.imagesByColor && selectedColor?.name) {
       const colorName = selectedColor.name.toLowerCase();
@@ -436,7 +437,7 @@ export function ProductDetailTemplate({ product, schoolName, schoolSlug, initial
       product.image || '/school3.png',
     ].filter(Boolean);
     return Array.from(new Set(raw)).slice(0, 5);
-  })();
+  }, [product.imagesByColor, product.images, product.image, selectedColor?.name]);
 
   if (typeof window !== 'undefined') {
     console.log('[ProductDetailTemplate] render', {

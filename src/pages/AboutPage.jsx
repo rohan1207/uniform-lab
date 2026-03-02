@@ -369,13 +369,22 @@ const CSS = `
   .ab-founder-card:hover { box-shadow: 0 12px 40px rgba(30,58,138,0.13); transform: translateY(-4px); }
   .ab-founder-card:hover::before { opacity: 1; }
   .ab-founder-avatar {
-    width: 54px; height: 54px;
+    width: 110px; height: 110px;
     border-radius: 50%;
     background: linear-gradient(135deg, #dbeafe, #bfdbfe);
     color: #1d4ed8;
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
     margin-bottom: 16px;
+    border: 3px solid #fff;
+    box-shadow: 0 4px 20px rgba(37,99,235,0.15);
+    overflow: hidden;
+  }
+  .ab-founder-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
   }
   .ab-founder-role {
     color: #2563eb;
@@ -718,6 +727,8 @@ const CSS = `
     .ab-split { grid-template-columns: 1fr; }
     .ab-mosaic { grid-template-columns: 1fr 1fr; grid-template-rows: 160px 160px 160px; }
     .ab-founders { grid-template-columns: 1fr; }
+    .ab-founder-avatar { width: 90px; height: 90px; }
+    .ab-founder-card { text-align: center; display: flex; flex-direction: column; align-items: center; }
     .ab-spec-grid { grid-template-columns: 1fr 1fr; }
     .ab-why-grid { grid-template-columns: 1fr 1fr; }
     .ab-cta-block { flex-direction: column; text-align: center; }
@@ -845,22 +856,28 @@ export default function AboutPage() {
           <div className="ab-founders" style={{ marginBottom: '72px' }}>
             {[
               {
+                image: '/pryank.png',
                 icon: Users,
                 role: 'Founder',
                 name: 'Priyank Mota',
                 bio: 'Visionary behind the systems and scale that power The Uniform Lab. Focus on operational integrity, structured processes, and long-term institutional partnerships.',
               },
               {
+                image: '/nivedita.png',
                 icon: Sparkles,
                 role: 'Co-Founder',
                 name: 'Nivedita Mota',
                 bio: 'Champion of experience design and customer-centric clarity. Ensures every interaction — from inquiry to delivery — is seamless and delightful.',
               },
-            ].map(({ icon: AvatarIcon, role, name, bio }, i) => (
+            ].map(({ image, icon: AvatarIcon, role, name, bio }, i) => (
               <Reveal key={name} delay={i * 0.1}>
                 <div className="ab-founder-card">
                   <div className="ab-founder-avatar">
-                    <AvatarIcon size={24} strokeWidth={2} />
+                    {image ? (
+                      <img src={image} alt={name} />
+                    ) : (
+                      <AvatarIcon size={24} strokeWidth={2} />
+                    )}
                   </div>
                   <div className="ab-founder-role">{role}</div>
                   <div className="ab-founder-name">{name}</div>
