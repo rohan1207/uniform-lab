@@ -4,6 +4,50 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ══════════════════════════════════════════════════════════════════════════
+   GLOBAL: Force light colour-scheme + prevent iOS zoom on input focus
+   ══════════════════════════════════════════════════════════════════════════ */
+html {
+  color-scheme: light only;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* All form controls: explicit light-mode colours so dark-mode browsers
+   never make text invisible, and font-size ≥ 16px prevents iOS zoom.  */
+input,
+textarea,
+select {
+  color: #0f172a !important;
+  -webkit-text-fill-color: #0f172a !important;
+  background-color: #ffffff;
+  caret-color: #0f172a;
+  font-size: 16px; /* prevents iOS Safari auto-zoom on focus */
+}
+/* Keep placeholder a visible but muted colour in all modes */
+input::placeholder,
+textarea::placeholder {
+  color: #94a3b8 !important;
+  -webkit-text-fill-color: #94a3b8 !important;
+  opacity: 1;
+}
+/* Disable autofill background colouring from turning text invisible */
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-text-fill-color: #0f172a !important;
+  -webkit-box-shadow: 0 0 0px 1000px #fff inset !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+@media (prefers-color-scheme: dark) {
+  input,
+  textarea,
+  select {
+    color: #0f172a !important;
+    -webkit-text-fill-color: #0f172a !important;
+    background-color: #ffffff;
+  }
+}
+
 /* The Uniform Lab – premium palette */
 :root {
   --page-bg: #fafaf9;

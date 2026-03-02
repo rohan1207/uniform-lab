@@ -61,7 +61,7 @@ const GLOBAL_CSS = `
     outline: none;
     color: #0f172a;
     font-family: 'Nunito', sans-serif;
-    font-size: 13px;
+    font-size: 16px;
     font-weight: 600;
     transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
     width: 100%;

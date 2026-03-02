@@ -26,7 +26,7 @@ const GLOBAL_CSS = `
     outline: none;
     color: #1a1a2e;
     font-family: 'Nunito', sans-serif;
-    font-size: clamp(13px, 1.1vw, 15px);
+    font-size: 16px;
     font-weight: 600;
     transition: border-color 0.18s ease, box-shadow 0.18s ease;
     box-shadow: 0 2px 12px rgba(37,99,235,0.06);
@@ -208,7 +208,7 @@ const GLOBAL_CSS = `
     .sp-subheading { font-size: 13px !important; }
 
     .sp-search {
-      font-size: 14px !important;
+      font-size: 16px !important;
       padding: 13px 16px 13px 44px !important;
     }
 

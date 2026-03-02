@@ -233,7 +233,7 @@ const CSS = `
     width: 100%; padding: 12px 16px;
     border: 1.5px solid #e5edf9; border-radius: 12px;
     background: #f8faff; font-family: 'Nunito', sans-serif;
-    font-size: 14px; font-weight: 600; color: #1e293b;
+    font-size: 16px; font-weight: 600; color: #1e293b;
     transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
     appearance: none; outline: none;
   }
