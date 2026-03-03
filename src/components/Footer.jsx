@@ -1,140 +1,153 @@
 import { Link } from 'react-router-dom';
-import { MapPin, Mail, Phone } from 'lucide-react';
-
-const footerLinks = {
-  navigation: [
-    { label: 'Home', href: '/' },
-    { label: 'About Us', href: '/about' },
-    { label: 'Services', href: '/services' },
-    { label: 'FAQs', href: '/faqs' },
-    { label: 'Size Guide', href: '/size-guide' },
-  ],
-  schools: [
-    { label: 'Shop by Schools', href: '/schools' },
-    { label: 'Partner with Us', href: '/schoolenquiry' },
-  ],
-};
+import { MapPin, Mail, Phone, Clock } from 'lucide-react';
 
 const FONT_HEADING = { fontFamily: "'Baloo 2', cursive" };
-const FONT_BODY = { fontFamily: "'Nunito', sans-serif" };
+const FONT_BODY    = { fontFamily: "'Nunito', sans-serif" };
+
+const NAV_LINKS = [
+  { label: 'Home',       href: '/' },
+  { label: 'About Us',   href: '/about' },
+  { label: 'Services',   href: '/services' },
+  { label: 'FAQs',       href: '/faqs' },
+  { label: 'Size Guide', href: '/size-guide' },
+];
+
+const SCHOOL_LINKS = [
+  { label: 'Shop by Schools', href: '/schools' },
+  { label: 'Partner with Us', href: '/schoolenquiry' },
+];
 
 export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="text-white" style={{ background: '#020617' }}>
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800;900&family=Nunito:wght@400;600;700&display=swap');`}</style>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12" style={FONT_BODY}>
-        {/* Top border accent */}
-        <div className="h-px w-full mb-8" style={{ background: 'linear-gradient(90deg, transparent, #1d4ed8 20%, #facc15 50%, transparent)' }} />
+    <footer style={{ background: '#060d1f', color: '#fff', fontFamily: "'Nunito', sans-serif" }}>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800;900&family=Nunito:wght@400;600;700&display=swap');
+        .ftl-link { color: #94a3b8; font-size: 13.5px; font-weight: 600; text-decoration: none; transition: color 0.15s; display: inline-block; }
+        .ftl-link:hover { color: #fff; }
+        .ftl-col-label {
+          font-size: 10px; font-weight: 800; letter-spacing: 0.15em;
+          text-transform: uppercase; color: #475569; margin-bottom: 14px;
+          padding-bottom: 8px; border-bottom: 1px solid #1e293b;
+        }
+        .ftl-contact-row { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+        .ftl-contact-row:last-child { margin-bottom: 0; }
+        .ftl-contact-ico { color: #3b82f6; margin-top: 2px; flex-shrink: 0; }
+        .ftl-contact-text { font-size: 13px; color: #94a3b8; line-height: 1.5; }
+        .ftl-contact-text a { color: #94a3b8; text-decoration: none; transition: color 0.15s; }
+        .ftl-contact-text a:hover { color: #fff; }
+        .ftl-contact-sub { font-size: 11.5px; color: #475569; margin-top: 1px; }
+      `}</style>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12">
-          {/* Brand / summary */}
-          <div className="lg:col-span-1 space-y-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10">
-              <span
-                className="text-[10px] font-semibold tracking-[0.16em] uppercase text-slate-300"
-                style={FONT_BODY}
-              >
-                Uniform Lab
-              </span>
+      {/* ── Accent line ── */}
+      <div style={{ height: '2px', background: 'linear-gradient(90deg, transparent 0%, #1d4ed8 30%, #facc15 55%, transparent 100%)' }} />
+
+      {/* ── Main content ── */}
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '52px 24px 36px' }}>
+
+        {/* 3-col grid */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+          gap: '48px 40px',
+          alignItems: 'start',
+        }}>
+
+          {/* ── Col 1 : Brand ── */}
+          <div>
+            <div style={{
+              display: 'inline-block', fontSize: 10, fontWeight: 800,
+              letterSpacing: '0.18em', textTransform: 'uppercase',
+              color: '#3b82f6', background: 'rgba(59,130,246,0.08)',
+              border: '1px solid rgba(59,130,246,0.18)',
+              borderRadius: 20, padding: '3px 10px', marginBottom: 12,
+            }}>
+              School Uniforms
             </div>
-            <h3
-              className="text-2xl sm:text-3xl font-black text-white"
-              style={FONT_HEADING}
-            >
+            <h3 style={{ ...FONT_HEADING, fontSize: 26, fontWeight: 900, color: '#fff', margin: '0 0 10px' }}>
               The Uniform Lab
             </h3>
-            <p className="text-slate-300 text-sm leading-relaxed max-w-sm">
-              Our aim is to make the child or person whoever is wearing the uniform look smart, feel
-              comfortable and take pride in it. Uniform must not be the cage of fabric but the
-              comfort of clothing.
+            <p style={{ fontSize: 13, color: '#64748b', lineHeight: 1.7, margin: '0 0 0', maxWidth: 280 }}>
+              Uniforms that make students look smart, feel comfortable, and wear with pride — crafted for schools across Pune & India.
             </p>
-            <div className="space-y-2 text-sm text-slate-300">
-              <p className="flex items-center gap-2">
-                <span className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center border border-white/10">
-                  <MapPin size={16} />
-                </span>
-                <span>Pune, Maharashtra, India</span>
-              </p>
-              <a
-                href="mailto:help@theuniformlab.in"
-                className="flex items-center gap-2 hover:text-white transition-colors"
-              >
-                <span className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center border border-white/10">
-                  <Mail size={16} />
-                </span>
-                <span>help@theuniformlab.in</span>
-              </a>
-              <a
-                href="tel:+919028552855"
-                className="flex items-center gap-2 hover:text-white transition-colors"
-              >
-                <span className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center border border-white/10">
-                  <Phone size={16} />
-                </span>
-                <span>+91 9028552855</span>
-              </a>
+          </div>
+
+          {/* ── Col 2 : Contact ── */}
+          <div>
+            <div className="ftl-col-label">Contact & Hours</div>
+
+            <div className="ftl-contact-row">
+              <MapPin size={14} className="ftl-contact-ico" />
+              <div className="ftl-contact-text">
+                23/24, Anusuya Enclave, Jagtap Chowk<br />
+                Wanowrie, Pune – 411040
+              </div>
+            </div>
+
+            <div className="ftl-contact-row">
+              <Phone size={14} className="ftl-contact-ico" />
+              <div className="ftl-contact-text">
+                <a href="tel:+919028552855">+91 9028552855</a>
+              </div>
+            </div>
+
+            <div className="ftl-contact-row">
+              <Mail size={14} className="ftl-contact-ico" />
+              <div className="ftl-contact-text">
+                <a href="mailto:help@theuniformlab.in">help@theuniformlab.in</a>
+              </div>
+            </div>
+
+            <div className="ftl-contact-row">
+              <Clock size={14} className="ftl-contact-ico" />
+              <div className="ftl-contact-text">
+                9:30 AM – 7:00 PM
+                <div className="ftl-contact-sub">Tue – Sun &nbsp;·&nbsp; Closed Mondays</div>
+              </div>
             </div>
           </div>
 
-          {/* Columns */}
-          <div>
-            <h4
-              className="text-xs font-extrabold uppercase tracking-[0.18em] text-slate-300 mb-4"
-              style={FONT_BODY}
-            >
-              Navigation
-            </h4>
-            <ul className="space-y-2">
-              {footerLinks.navigation.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    to={link.href}
-                    className="text-slate-300 hover:text-white transition-colors text-sm font-semibold"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+          {/* ── Col 3 : Links ── */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 24px' }}>
+            <div>
+              <div className="ftl-col-label">Explore</div>
+              <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 9 }}>
+                {NAV_LINKS.map(l => (
+                  <li key={l.href}><Link to={l.href} className="ftl-link">{l.label}</Link></li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <div className="ftl-col-label">Schools</div>
+              <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 9 }}>
+                {SCHOOL_LINKS.map(l => (
+                  <li key={l.href}><Link to={l.href} className="ftl-link">{l.label}</Link></li>
+                ))}
+              </ul>
+            </div>
           </div>
 
-          <div>
-            <h4
-              className="text-xs font-extrabold uppercase tracking-[0.18em] text-slate-300 mb-4"
-              style={FONT_BODY}
-            >
-              Schools
-            </h4>
-            <ul className="space-y-2">
-              {footerLinks.schools.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    to={link.href}
-                    className="text-slate-300 hover:text-white transition-colors text-sm font-semibold"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="mt-10 pt-6 border-t border-slate-700/60 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs sm:text-sm text-slate-500">
-          <p className="m-0">
-            © {year} The Uniform Lab. All rights reserved.
-          </p>
-          <p className="m-0">
-            Serving schools and institutions across India.
-          </p>
+        {/* ── Bottom bar ── */}
+        <div style={{
+          marginTop: 40,
+          paddingTop: 20,
+          borderTop: '1px solid #0f172a',
+          display: 'flex',
+          flexWrap: 'wrap',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          gap: '8px 24px',
+          fontSize: 12,
+          color: '#334155',
+        }}>
+          <span>© {year} The Uniform Lab. All rights reserved.</span>
+          <span>Serving schools &amp; institutions across India.</span>
+          <span>Designed &amp; developed by TheSocialKollab</span>
         </div>
 
-        <p className="mt-4 text-center text-[11px] sm:text-xs text-slate-600">
-          Designed &amp; developed by TheSocialKollab
-        </p>
       </div>
     </footer>
   );

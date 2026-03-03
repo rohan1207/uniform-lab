@@ -1,5 +1,5 @@
-import { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useRef, useEffect } from "react";
+import { Link } from "react-router-dom";
 import {
   CheckCircle2,
   ChevronRight,
@@ -16,7 +16,7 @@ import {
   Truck,
   ClipboardList,
   Handshake,
-} from 'lucide-react';
+} from "lucide-react";
 
 /* ─── REVEAL HOOK ─────────────────────────────────────────────────────── */
 function useReveal(threshold = 0.1) {
@@ -26,8 +26,13 @@ function useReveal(threshold = 0.1) {
     const el = ref.current;
     if (!el) return;
     const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } },
-      { threshold }
+      ([e]) => {
+        if (e.isIntersecting) {
+          setVisible(true);
+          obs.disconnect();
+        }
+      },
+      { threshold },
     );
     obs.observe(el);
     return () => obs.disconnect();
@@ -35,15 +40,19 @@ function useReveal(threshold = 0.1) {
   return [ref, visible];
 }
 
-function Reveal({ children, delay = 0, className = '', style = {} }) {
+function Reveal({ children, delay = 0, className = "", style = {} }) {
   const [ref, visible] = useReveal();
   return (
-    <div ref={ref} className={className} style={{
-      opacity: visible ? 1 : 0,
-      transform: visible ? 'translateY(0)' : 'translateY(32px)',
-      transition: `opacity 0.65s ease ${delay}s, transform 0.7s cubic-bezier(0.22,1,0.36,1) ${delay}s`,
-      ...style,
-    }}>
+    <div
+      ref={ref}
+      className={className}
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0)" : "translateY(32px)",
+        transition: `opacity 0.65s ease ${delay}s, transform 0.7s cubic-bezier(0.22,1,0.36,1) ${delay}s`,
+        ...style,
+      }}
+    >
       {children}
     </div>
   );
@@ -376,12 +385,12 @@ export default function SchoolEnquiryPage() {
 
   useEffect(() => {
     const update = () => {
-      if (typeof window === 'undefined') return;
+      if (typeof window === "undefined") return;
       setIsMobile(window.innerWidth <= 767);
     };
     update();
-    window.addEventListener('resize', update);
-    return () => window.removeEventListener('resize', update);
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
   }, []);
 
   /* ── Success ── */
@@ -397,8 +406,8 @@ export default function SchoolEnquiryPage() {
               </div>
               <h1 className="eq-success-title">Enquiry Received!</h1>
               <p className="eq-success-sub">
-                Thank you for reaching out. Our executive will get in touch with you shortly to understand
-                your school's uniform requirements.
+                Thank you for reaching out. Our executive will get in touch with
+                you shortly to understand your school's uniform requirements.
               </p>
               <Link to="/" className="eq-success-back">
                 Back to Home
@@ -416,7 +425,6 @@ export default function SchoolEnquiryPage() {
     <>
       <style>{CSS}</style>
       <div className="eq-root">
-
         {/* Hero */}
         <div className="eq-hero">
           <div className="eq-hero-dots" />
@@ -427,12 +435,14 @@ export default function SchoolEnquiryPage() {
               For Schools &amp; Colleges
             </div>
             <h1 className="eq-h1">
-              A uniform partner that<br />
+              A uniform partner that
+              <br />
               <em>thinks like a school.</em>
             </h1>
             <p className="eq-hero-sub">
-              We bring an organised, process-first approach to uniforms — from fabric sourcing
-              and patterning to branding and doorstep delivery for parents.
+              We bring an organised, process-first approach to uniforms — from
+              fabric sourcing and patterning to branding and doorstep delivery
+              for parents.
             </p>
           </div>
         </div>
@@ -440,34 +450,65 @@ export default function SchoolEnquiryPage() {
         {/* Main */}
         <div className="eq-main">
           <div className="eq-grid">
-
             {/* ── LEFT ── */}
             <div className="eq-left">
               <Reveal delay={0.05}>
                 <div className="eq-info-card">
                   <div className="eq-info-sec-label">What We Offer</div>
                   <h2 className="eq-info-h2">
-                    Everything your school<br />
+                    Everything your school
+                    <br />
                     <span>needs, handled.</span>
                   </h2>
                   <p className="eq-info-p">
-                    From day-wear to sports kits, accessories to custom branding — we manage the full
-                    uniform lifecycle so your administration doesn't have to.
+                    From day-wear to sports kits, accessories to custom branding
+                    — we manage the full uniform lifecycle so your
+                    administration doesn't have to.
                   </p>
 
                   {(() => {
                     const allFeatures = [
-                      { icon: Shirt, title: 'Full Uniform Range', sub: 'Day-wear, sports, winter & rain gear' },
-                      { icon: Palette, title: 'Custom Branding', sub: 'Embroidery, printing, custom trims' },
-                      { icon: Boxes, title: 'Bulk Production', sub: 'Scalable for any school size' },
-                      { icon: Truck, title: 'Parent Delivery', sub: 'Doorstep delivery & easy returns' },
-                      { icon: ClipboardList, title: 'Size Management', sub: 'Standardised measurement mapping' },
-                      { icon: Handshake, title: 'Long-Term Partner', sub: 'Process-driven, year-on-year' },
+                      {
+                        icon: Shirt,
+                        title: "Full Uniform Range",
+                        sub: "Day-wear, sports, winter & rain gear",
+                      },
+                      {
+                        icon: Palette,
+                        title: "Custom Branding",
+                        sub: "Embroidery, printing, custom trims",
+                      },
+                      {
+                        icon: Boxes,
+                        title: "Bulk Production",
+                        sub: "Scalable for any school size",
+                      },
+                      {
+                        icon: Truck,
+                        title: "Parent Delivery",
+                        sub: "Doorstep delivery & easy returns",
+                      },
+                      {
+                        icon: ClipboardList,
+                        title: "Size Management",
+                        sub: "Standardised measurement mapping",
+                      },
+                      {
+                        icon: Handshake,
+                        title: "Long-Term Partner",
+                        sub: "Process-driven, year-on-year",
+                      },
                     ];
-                    const visible = !isMobile || showAllFeatures ? allFeatures : allFeatures.slice(0, 3);
+                    const visible =
+                      !isMobile || showAllFeatures
+                        ? allFeatures
+                        : allFeatures.slice(0, 3);
                     return (
                       <>
-                        <div className="eq-feat-grid" style={{ marginBottom: 12 }}>
+                        <div
+                          className="eq-feat-grid"
+                          style={{ marginBottom: 12 }}
+                        >
                           {visible.map(({ icon: FeatIcon, title, sub }) => (
                             <div className="eq-feat-box" key={title}>
                               <span className="eq-feat-box-emoji">
@@ -482,9 +523,9 @@ export default function SchoolEnquiryPage() {
                           <button
                             type="button"
                             className="eq-feat-toggle"
-                            onClick={() => setShowAllFeatures(v => !v)}
+                            onClick={() => setShowAllFeatures((v) => !v)}
                           >
-                            {showAllFeatures ? 'Show less' : 'Show more'}
+                            {showAllFeatures ? "Show less" : "Show more"}
                           </button>
                         )}
                       </>
@@ -497,10 +538,26 @@ export default function SchoolEnquiryPage() {
               <Reveal delay={0.12}>
                 <div className="eq-contact-strip">
                   {[
-                    { icon: <Phone size={15} />, label: 'Call us', val: '+91 98765 43210' },
-                    { icon: <Mail size={15} />, label: 'Email us', val: 'hello@uniformlab.in' },
-                    { icon: <MapPin size={15} />, label: 'Based in', val: 'Baramati, Pune, Maharashtra' },
-                    { icon: <Clock size={15} />, label: 'Office hours', val: 'Mon–Sat, 9 AM – 6 PM' },
+                    {
+                      icon: <Phone size={15} />,
+                      label: "Call us",
+                      val: "+91 9028552855",
+                    },
+                    {
+                      icon: <Mail size={15} />,
+                      label: "Email us",
+                      val: "help@theuniformlab.in",
+                    },
+                    {
+                      icon: <MapPin size={15} />,
+                      label: "Visit us",
+                      val: "23/24, Anusuya Enclave, Jagtap Chowk, Wanowrie, Pune – 411040",
+                    },
+                    {
+                      icon: <Clock size={15} />,
+                      label: "Store hours",
+                      val: "Tue–Sun, 9:30 AM – 7:00 PM · Closed Mondays",
+                    },
                   ].map(({ icon, label, val }) => (
                     <div className="eq-contact-item" key={label}>
                       <div className="eq-contact-ico">{icon}</div>
@@ -518,42 +575,80 @@ export default function SchoolEnquiryPage() {
             <Reveal delay={0.08}>
               <div className="eq-form-card">
                 <div className="eq-form-top">
-                  <div className="eq-pill" style={{ marginBottom: 14, background: 'rgba(37,99,235,0.1)', border: '1px solid rgba(37,99,235,0.15)', color: '#2563eb' }}>
+                  <div
+                    className="eq-pill"
+                    style={{
+                      marginBottom: 14,
+                      background: "rgba(37,99,235,0.1)",
+                      border: "1px solid rgba(37,99,235,0.15)",
+                      color: "#2563eb",
+                    }}
+                  >
                     <Sparkles size={11} />
                     Quick response guaranteed
                   </div>
                   <div className="eq-form-title">Share your details</div>
-                  <div className="eq-form-subtitle">Fill in the form and we'll get back to you within 24 hours.</div>
+                  <div className="eq-form-subtitle">
+                    Fill in the form and we'll get back to you within 24 hours.
+                  </div>
                 </div>
 
                 <form
                   className="eq-form-body"
-                  onSubmit={e => { e.preventDefault(); setSubmitted(true); }}
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    setSubmitted(true);
+                  }}
                 >
                   <div className="eq-field">
                     <label className="eq-label">School / College Name *</label>
-                    <input required type="text" className="eq-input" placeholder="e.g. St. Mary's High School" />
+                    <input
+                      required
+                      type="text"
+                      className="eq-input"
+                      placeholder="e.g. St. Mary's High School"
+                    />
                   </div>
 
                   <div className="eq-field">
                     <label className="eq-label">Contact Person Name *</label>
-                    <input required type="text" className="eq-input" placeholder="Principal / Admin / Coordinator" />
+                    <input
+                      required
+                      type="text"
+                      className="eq-input"
+                      placeholder="Principal / Admin / Coordinator"
+                    />
                   </div>
 
                   <div className="eq-field eq-row">
                     <div>
                       <label className="eq-label">Email Address *</label>
-                      <input required type="email" className="eq-input" placeholder="admin@school.edu" />
+                      <input
+                        required
+                        type="email"
+                        className="eq-input"
+                        placeholder="admin@school.edu"
+                      />
                     </div>
                     <div>
                       <label className="eq-label">Contact Number *</label>
-                      <input required type="tel" className="eq-input" placeholder="+91 XXXXX XXXXX" />
+                      <input
+                        required
+                        type="tel"
+                        className="eq-input"
+                        placeholder="+91 XXXXX XXXXX"
+                      />
                     </div>
                   </div>
 
                   <div className="eq-field">
                     <label className="eq-label">City / Location *</label>
-                    <input required type="text" className="eq-input" placeholder="e.g. Pune, Maharashtra" />
+                    <input
+                      required
+                      type="text"
+                      className="eq-input"
+                      placeholder="e.g. Pune, Maharashtra"
+                    />
                   </div>
 
                   <div className="eq-field">
@@ -572,10 +667,10 @@ export default function SchoolEnquiryPage() {
 
                   <div className="eq-trust">
                     {[
-                      '500+ schools trust us',
-                      'No spam, ever',
-                      'Response within 24h',
-                    ].map(t => (
+                      "500+ schools trust us",
+                      "No spam, ever",
+                      "Response within 24h",
+                    ].map((t) => (
                       <div className="eq-trust-item" key={t}>
                         <CheckCircle2 size={13} strokeWidth={2.5} />
                         {t}
@@ -585,7 +680,6 @@ export default function SchoolEnquiryPage() {
                 </form>
               </div>
             </Reveal>
-
           </div>
         </div>
       </div>

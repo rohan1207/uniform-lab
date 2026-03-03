@@ -1,14 +1,22 @@
-import { useEffect, useState, useMemo, useCallback } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useCart } from '@/contexts/CartContext';
-import { useAuth } from '@/contexts/AuthContext';
-import { ArrowLeft, ShoppingBag, ShoppingCart, Plus, X } from 'lucide-react';
+import { useEffect, useState, useMemo, useCallback } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useCart } from "@/contexts/CartContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { ArrowLeft, ShoppingBag, ShoppingCart, Plus, X } from "lucide-react";
 
-const API_BASE = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+const API_BASE = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
 
 export default function CheckoutPage() {
   const navigate = useNavigate();
-  const { items: cartItems, totalItems, addItem, removeItem, clearCart, buyNowItem, clearBuyNow } = useCart();
+  const {
+    items: cartItems,
+    totalItems,
+    addItem,
+    removeItem,
+    clearCart,
+    buyNowItem,
+    clearBuyNow,
+  } = useCart();
   const { user, token, isAuthenticated } = useAuth();
 
   // Per-item selection of which cart items to merge into this Buy Now checkout
@@ -19,22 +27,26 @@ export default function CheckoutPage() {
 
   // Stable key generator for cart items
   const cartItemKey = useCallback(
-    (item) => [item.productId, item.size, item.color].join('-'),
-    []
+    (item) => [item.productId, item.size, item.color].join("-"),
+    [],
   );
 
   // Determine which items to show in checkout
   const checkoutItems = useMemo(() => {
     if (buyNowItem) {
-      const buyNowList = [{
-        ...buyNowItem,
-        size: buyNowItem.size || null,
-        color: buyNowItem.color || null,
-      }];
+      const buyNowList = [
+        {
+          ...buyNowItem,
+          size: buyNowItem.size || null,
+          color: buyNowItem.color || null,
+        },
+      ];
       if (selectedCartKeys.size > 0 && cartItems.length > 0) {
         const buyNowKey = cartItemKey(buyNowItem);
-        const selected = cartItems.filter(i =>
-          cartItemKey(i) !== buyNowKey && selectedCartKeys.has(cartItemKey(i))
+        const selected = cartItems.filter(
+          (i) =>
+            cartItemKey(i) !== buyNowKey &&
+            selectedCartKeys.has(cartItemKey(i)),
         );
         return [...buyNowList, ...selected];
       }
@@ -47,6 +59,12 @@ export default function CheckoutPage() {
   const items = checkoutItems;
   const totalAmount = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
 
+  // Frozen snapshot used for display during submission so clearBuyNow() doesn't flash cart items
+  const displayItems = frozenItems || items;
+  const displayTotal = frozenItems
+    ? frozenItems.reduce((sum, i) => sum + i.price * i.quantity, 0)
+    : totalAmount;
+
   // Clean up buyNowItem when navigating away
   useEffect(() => {
     return () => {
@@ -55,18 +73,19 @@ export default function CheckoutPage() {
   }, []);
 
   const [form, setForm] = useState({
-    name: user?.name || '',
-    email: user?.email || '',
-    phone: user?.phone || '',
-    line1: '',
-    line2: '',
-    city: '',
-    state: '',
-    pincode: '',
+    name: user?.name || "",
+    email: user?.email || "",
+    phone: user?.phone || "",
+    line1: "",
+    line2: "",
+    city: "",
+    state: "",
+    pincode: "",
   });
-  const [note, setNote] = useState('');
+  const [note, setNote] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [orderId, setOrderId] = useState('');
+  const [frozenItems, setFrozenItems] = useState(null);
+  const [orderId, setOrderId] = useState("");
   const [hasSavedAddress, setHasSavedAddress] = useState(false);
   const [saveAddress, setSaveAddress] = useState(false);
 
@@ -78,7 +97,7 @@ export default function CheckoutPage() {
   useEffect(() => {
     if (!items.length && !buyNowItem) return;
     if (!isAuthenticated) {
-      navigate('/account?redirect=/checkout', { replace: true });
+      navigate("/account?redirect=/checkout", { replace: true });
     }
   }, [items.length, buyNowItem, isAuthenticated, navigate]);
 
@@ -98,18 +117,19 @@ export default function CheckoutPage() {
         const hasAny = addrs.length > 0;
         setHasSavedAddress(hasAny);
         setSaveAddress(false);
-        const defaultAddr =
-          addrs.length ? addrs.find((a) => a.isDefault) || addrs[0] : null;
+        const defaultAddr = addrs.length
+          ? addrs.find((a) => a.isDefault) || addrs[0]
+          : null;
         setForm((prev) => ({
           ...prev,
-          name: data.name || prev.name || '',
-          email: data.email || prev.email || '',
-          phone: data.phone || prev.phone || '',
-          line1: defaultAddr?.line1 || prev.line1 || '',
-          line2: defaultAddr?.line2 || prev.line2 || '',
-          city: defaultAddr?.city || prev.city || '',
-          state: defaultAddr?.state || prev.state || '',
-          pincode: defaultAddr?.pincode || prev.pincode || '',
+          name: data.name || prev.name || "",
+          email: data.email || prev.email || "",
+          phone: data.phone || prev.phone || "",
+          line1: defaultAddr?.line1 || prev.line1 || "",
+          line2: defaultAddr?.line2 || prev.line2 || "",
+          city: defaultAddr?.city || prev.city || "",
+          state: defaultAddr?.state || prev.state || "",
+          pincode: defaultAddr?.pincode || prev.pincode || "",
         }));
       } catch {
         // ignore
@@ -124,6 +144,7 @@ export default function CheckoutPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!items.length) return;
+    setFrozenItems([...items]);
     setSubmitting(true);
 
     try {
@@ -152,14 +173,17 @@ export default function CheckoutPage() {
         totalAmount,
       };
 
-      const res = await fetch(`${API_BASE}/api/public/payments/instamojo/checkout`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
+      const res = await fetch(
+        `${API_BASE}/api/public/payments/instamojo/checkout`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        },
+      );
       const data = await res.json().catch(() => ({}));
       if (!res.ok || !data.paymentUrl) {
-        throw new Error(data?.error?.message || 'Could not start payment');
+        throw new Error(data?.error?.message || "Could not start payment");
       }
 
       // Persist address to customer profile:
@@ -169,13 +193,13 @@ export default function CheckoutPage() {
       if (shouldSaveAddress) {
         try {
           await fetch(`${API_BASE}/api/customer/addresses`, {
-            method: 'POST',
+            method: "POST",
             headers: {
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({
-              label: 'Default',
+              label: "Default",
               name: form.name,
               phone: form.phone,
               line1: form.line1,
@@ -199,7 +223,7 @@ export default function CheckoutPage() {
       if (buyNowItem) {
         clearBuyNow();
         if (selectedCartKeys.size > 0) {
-          cartItems.forEach(item => {
+          cartItems.forEach((item) => {
             if (selectedCartKeys.has(cartItemKey(item))) {
               removeItem(item.productId, item.size, item.color);
             }
@@ -211,7 +235,8 @@ export default function CheckoutPage() {
       window.location.href = data.paymentUrl;
     } catch (err) {
       // eslint-disable-next-line no-alert
-      alert(err.message || 'Could not start payment');
+      alert(err.message || "Could not start payment");
+      setFrozenItems(null);
       setSubmitting(false);
     }
   };
@@ -225,28 +250,40 @@ export default function CheckoutPage() {
           </div>
           <h1
             className="mb-2 text-[#0f172a]"
-            style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: 'clamp(22px,2.4vw,30px)' }}
+            style={{
+              fontFamily: "'Baloo 2', cursive",
+              fontWeight: 900,
+              fontSize: "clamp(22px,2.4vw,30px)",
+            }}
           >
             Thank you for your order
           </h1>
           <p
             className="mb-4 text-[#64748b]"
-            style={{ fontFamily: "'Nunito', sans-serif", fontSize: '14px', fontWeight: 600 }}
+            style={{
+              fontFamily: "'Nunito', sans-serif",
+              fontSize: "14px",
+              fontWeight: 600,
+            }}
           >
-            Your Uniform Lab order ID is{' '}
-            <span className="font-black text-[#0f172a]" style={{ fontFamily: "'Baloo 2', cursive" }}>
+            Your Uniform Lab order ID is{" "}
+            <span
+              className="font-black text-[#0f172a]"
+              style={{ fontFamily: "'Baloo 2', cursive" }}
+            >
               {orderId}
             </span>
             . We&apos;ll confirm your order and share delivery details shortly.
           </p>
           <button
             type="button"
-            onClick={() => navigate('/')}
+            onClick={() => navigate("/")}
             className="inline-flex items-center justify-center px-5 py-2.5 rounded-full text-xs font-black tracking-[0.12em] uppercase shadow-sm"
             style={{
               fontFamily: "'Baloo 2', cursive",
-              background: 'linear-gradient(180deg,#60a5fa 0%,#2563eb 52%,#1d4ed8 100%)',
-              color: '#fff',
+              background:
+                "linear-gradient(180deg,#60a5fa 0%,#2563eb 52%,#1d4ed8 100%)",
+              color: "#fff",
             }}
           >
             Back to home
@@ -270,16 +307,24 @@ export default function CheckoutPage() {
           </Link>
           <h1
             className="mb-1 text-[#0f172a]"
-            style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: 'clamp(22px,2.6vw,32px)' }}
+            style={{
+              fontFamily: "'Baloo 2', cursive",
+              fontWeight: 900,
+              fontSize: "clamp(22px,2.6vw,32px)",
+            }}
           >
             Checkout
           </h1>
           <p
             className="mb-6 text-[#64748b]"
-            style={{ fontFamily: "'Nunito', sans-serif", fontSize: '14px', fontWeight: 600 }}
+            style={{
+              fontFamily: "'Nunito', sans-serif",
+              fontSize: "14px",
+              fontWeight: 600,
+            }}
           >
-            Enter your details and delivery address. On the next step we&apos;ll take you to a secure
-            payment page.
+            Enter your details and delivery address. On the next step we&apos;ll
+            take you to a secure payment page.
           </p>
 
           {/* ── Buy Now + Cart merge card with per-item picker ── */}
@@ -287,9 +332,9 @@ export default function CheckoutPage() {
             <div
               className="mb-5 rounded-2xl border bg-white overflow-hidden"
               style={{
-                borderColor: '#dbeafe',
-                background: 'linear-gradient(135deg, #f0f7ff 0%, #ffffff 100%)',
-                boxShadow: '0 2px 12px rgba(37,99,235,0.06)',
+                borderColor: "#dbeafe",
+                background: "linear-gradient(135deg, #f0f7ff 0%, #ffffff 100%)",
+                boxShadow: "0 2px 12px rgba(37,99,235,0.06)",
               }}
             >
               {/* Header */}
@@ -297,22 +342,34 @@ export default function CheckoutPage() {
                 <div className="flex items-center gap-3 flex-1 min-w-0">
                   <div
                     className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
-                    style={{ background: '#dbeafe', color: '#2563eb' }}
+                    style={{ background: "#dbeafe", color: "#2563eb" }}
                   >
                     <ShoppingCart size={17} />
                   </div>
                   <div className="min-w-0">
                     <p
                       className="text-[#0f172a] m-0"
-                      style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 800, fontSize: '14px', lineHeight: 1.3 }}
+                      style={{
+                        fontFamily: "'Baloo 2', cursive",
+                        fontWeight: 800,
+                        fontSize: "14px",
+                        lineHeight: 1.3,
+                      }}
                     >
-                      You have {cartItems.length} item{cartItems.length !== 1 ? 's' : ''} in your cart
+                      You have {cartItems.length} item
+                      {cartItems.length !== 1 ? "s" : ""} in your cart
                     </p>
                     <p
                       className="text-[#64748b] m-0"
-                      style={{ fontFamily: "'Nunito', sans-serif", fontSize: '12px', fontWeight: 600 }}
+                      style={{
+                        fontFamily: "'Nunito', sans-serif",
+                        fontSize: "12px",
+                        fontWeight: 600,
+                      }}
                     >
-                      {cartPickerOpen ? 'Pick which ones to include' : 'Want to add them to this order?'}
+                      {cartPickerOpen
+                        ? "Pick which ones to include"
+                        : "Want to add them to this order?"}
                     </p>
                   </div>
                 </div>
@@ -322,15 +379,18 @@ export default function CheckoutPage() {
                       type="button"
                       onClick={() => {
                         setCartPickerOpen(true);
-                        setSelectedCartKeys(new Set(cartItems.map(cartItemKey)));
+                        setSelectedCartKeys(
+                          new Set(cartItems.map(cartItemKey)),
+                        );
                       }}
                       className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-black tracking-[0.08em] uppercase"
                       style={{
                         fontFamily: "'Baloo 2', cursive",
-                        background: 'linear-gradient(180deg,#60a5fa 0%,#2563eb 52%,#1d4ed8 100%)',
-                        color: '#fff',
-                        border: 'none',
-                        cursor: 'pointer',
+                        background:
+                          "linear-gradient(180deg,#60a5fa 0%,#2563eb 52%,#1d4ed8 100%)",
+                        color: "#fff",
+                        border: "none",
+                        cursor: "pointer",
                       }}
                     >
                       <Plus size={13} /> Add cart items
@@ -340,20 +400,31 @@ export default function CheckoutPage() {
                       className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold"
                       style={{
                         fontFamily: "'Nunito', sans-serif",
-                        background: selectedCartKeys.size > 0 ? '#dcfce7' : '#f1f5f9',
-                        color: selectedCartKeys.size > 0 ? '#15803d' : '#64748b',
+                        background:
+                          selectedCartKeys.size > 0 ? "#dcfce7" : "#f1f5f9",
+                        color:
+                          selectedCartKeys.size > 0 ? "#15803d" : "#64748b",
                       }}
                     >
                       {selectedCartKeys.size > 0
-                        ? `✓ ${selectedCartKeys.size} item${selectedCartKeys.size !== 1 ? 's' : ''} added`
-                        : 'None selected'}
+                        ? `✓ ${selectedCartKeys.size} item${selectedCartKeys.size !== 1 ? "s" : ""} added`
+                        : "None selected"}
                     </span>
                   )}
                   <button
                     type="button"
-                    onClick={() => { setCartCardDismissed(true); setSelectedCartKeys(new Set()); setCartPickerOpen(false); }}
+                    onClick={() => {
+                      setCartCardDismissed(true);
+                      setSelectedCartKeys(new Set());
+                      setCartPickerOpen(false);
+                    }}
                     className="w-7 h-7 rounded-full flex items-center justify-center hover:bg-[#f1f5f9] transition-colors"
-                    style={{ color: '#94a3b8', border: 'none', cursor: 'pointer', background: 'transparent' }}
+                    style={{
+                      color: "#94a3b8",
+                      border: "none",
+                      cursor: "pointer",
+                      background: "transparent",
+                    }}
                     aria-label="Dismiss"
                   >
                     <X size={14} />
@@ -368,9 +439,19 @@ export default function CheckoutPage() {
                     <div className="flex items-center justify-between mb-2">
                       <button
                         type="button"
-                        onClick={() => setSelectedCartKeys(new Set(cartItems.map(cartItemKey)))}
+                        onClick={() =>
+                          setSelectedCartKeys(
+                            new Set(cartItems.map(cartItemKey)),
+                          )
+                        }
                         className="text-[11px] font-bold text-[#2563eb] hover:underline"
-                        style={{ fontFamily: "'Nunito', sans-serif", background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+                        style={{
+                          fontFamily: "'Nunito', sans-serif",
+                          background: "none",
+                          border: "none",
+                          cursor: "pointer",
+                          padding: 0,
+                        }}
                       >
                         Select all
                       </button>
@@ -378,7 +459,13 @@ export default function CheckoutPage() {
                         type="button"
                         onClick={() => setSelectedCartKeys(new Set())}
                         className="text-[11px] font-bold text-[#94a3b8] hover:underline"
-                        style={{ fontFamily: "'Nunito', sans-serif", background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+                        style={{
+                          fontFamily: "'Nunito', sans-serif",
+                          background: "none",
+                          border: "none",
+                          cursor: "pointer",
+                          padding: 0,
+                        }}
                       >
                         Deselect all
                       </button>
@@ -394,30 +481,49 @@ export default function CheckoutPage() {
                           role="button"
                           tabIndex={0}
                           onClick={() => {
-                            setSelectedCartKeys(prev => {
+                            setSelectedCartKeys((prev) => {
                               const next = new Set(prev);
-                              if (next.has(key)) next.delete(key); else next.add(key);
+                              if (next.has(key)) next.delete(key);
+                              else next.add(key);
                               return next;
                             });
                           }}
-                          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') e.currentTarget.click(); }}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter" || e.key === " ")
+                              e.currentTarget.click();
+                          }}
                           className="flex items-center gap-3 p-2.5 rounded-xl cursor-pointer transition-all"
                           style={{
-                            background: isSelected ? 'rgba(37,99,235,0.04)' : '#f8fafc',
-                            border: `1.5px solid ${isSelected ? '#93c5fd' : 'transparent'}`,
+                            background: isSelected
+                              ? "rgba(37,99,235,0.04)"
+                              : "#f8fafc",
+                            border: `1.5px solid ${isSelected ? "#93c5fd" : "transparent"}`,
                           }}
                         >
                           {/* Custom checkbox */}
                           <div
                             className="w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 transition-colors"
                             style={{
-                              background: isSelected ? '#2563eb' : '#fff',
-                              border: isSelected ? '1.5px solid #2563eb' : '1.5px solid #cbd5e1',
+                              background: isSelected ? "#2563eb" : "#fff",
+                              border: isSelected
+                                ? "1.5px solid #2563eb"
+                                : "1.5px solid #cbd5e1",
                             }}
                           >
                             {isSelected && (
-                              <svg width="11" height="9" viewBox="0 0 11 9" fill="none">
-                                <path d="M1 4.5L4 7.5L10 1" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                              <svg
+                                width="11"
+                                height="9"
+                                viewBox="0 0 11 9"
+                                fill="none"
+                              >
+                                <path
+                                  d="M1 4.5L4 7.5L10 1"
+                                  stroke="#fff"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
                               </svg>
                             )}
                           </div>
@@ -427,20 +533,30 @@ export default function CheckoutPage() {
                               src={item.image}
                               alt={item.name}
                               className="w-10 h-10 rounded-lg object-cover flex-shrink-0"
-                              style={{ border: '1px solid #e2e8f0' }}
+                              style={{ border: "1px solid #e2e8f0" }}
                             />
                           )}
                           {/* Details */}
                           <div className="flex-1 min-w-0">
                             <p
                               className="m-0 truncate"
-                              style={{ fontFamily: "'Nunito', sans-serif", fontSize: '13px', fontWeight: 700, color: '#0f172a' }}
+                              style={{
+                                fontFamily: "'Nunito', sans-serif",
+                                fontSize: "13px",
+                                fontWeight: 700,
+                                color: "#0f172a",
+                              }}
                             >
                               {item.name}
                             </p>
                             <p
                               className="m-0"
-                              style={{ fontFamily: "'Nunito', sans-serif", fontSize: '11px', fontWeight: 600, color: '#94a3b8' }}
+                              style={{
+                                fontFamily: "'Nunito', sans-serif",
+                                fontSize: "11px",
+                                fontWeight: 600,
+                                color: "#94a3b8",
+                              }}
                             >
                               Qty {item.quantity}
                               {item.size && ` · ${item.size}`}
@@ -450,7 +566,12 @@ export default function CheckoutPage() {
                           {/* Price */}
                           <p
                             className="m-0 flex-shrink-0"
-                            style={{ fontFamily: "'Nunito', sans-serif", fontSize: '13px', fontWeight: 800, color: '#0f172a' }}
+                            style={{
+                              fontFamily: "'Nunito', sans-serif",
+                              fontSize: "13px",
+                              fontWeight: 800,
+                              color: "#0f172a",
+                            }}
                           >
                             ₹{item.price * item.quantity}
                           </p>
@@ -470,13 +591,22 @@ export default function CheckoutPage() {
               </div>
               <p
                 className="mb-2"
-                style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: '16px', color: '#0f172a' }}
+                style={{
+                  fontFamily: "'Baloo 2', cursive",
+                  fontWeight: 900,
+                  fontSize: "16px",
+                  color: "#0f172a",
+                }}
               >
                 Your cart is empty
               </p>
               <p
                 className="mb-4 text-center"
-                style={{ fontFamily: "'Nunito', sans-serif", fontSize: '13px', fontWeight: 600 }}
+                style={{
+                  fontFamily: "'Nunito', sans-serif",
+                  fontSize: "13px",
+                  fontWeight: 600,
+                }}
               >
                 Add some uniforms to your bag before checking out.
               </p>
@@ -485,8 +615,9 @@ export default function CheckoutPage() {
                 className="text-xs font-black tracking-[0.12em] uppercase px-4 py-2 rounded-full"
                 style={{
                   fontFamily: "'Baloo 2', cursive",
-                  background: 'linear-gradient(180deg,#60a5fa 0%,#2563eb 52%,#1d4ed8 100%)',
-                  color: '#fff',
+                  background:
+                    "linear-gradient(180deg,#60a5fa 0%,#2563eb 52%,#1d4ed8 100%)",
+                  color: "#fff",
                 }}
               >
                 Browse schools
@@ -507,38 +638,47 @@ export default function CheckoutPage() {
                 </h2>
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
-                    <label className="block mb-1 text-xs font-semibold text-slate-500" style={{ fontFamily: "'Nunito', sans-serif" }}>
+                    <label
+                      className="block mb-1 text-xs font-semibold text-slate-500"
+                      style={{ fontFamily: "'Nunito', sans-serif" }}
+                    >
                       Full name
                     </label>
                     <input
                       type="text"
                       required
                       value={form.name}
-                      onChange={(e) => handleChange('name', e.target.value)}
+                      onChange={(e) => handleChange("name", e.target.value)}
                       className="w-full px-3 py-2 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2563eb]"
                     />
                   </div>
                   <div>
-                    <label className="block mb-1 text-xs font-semibold text-slate-500" style={{ fontFamily: "'Nunito', sans-serif" }}>
+                    <label
+                      className="block mb-1 text-xs font-semibold text-slate-500"
+                      style={{ fontFamily: "'Nunito', sans-serif" }}
+                    >
                       Phone
                     </label>
                     <input
                       type="tel"
                       required
                       value={form.phone}
-                      onChange={(e) => handleChange('phone', e.target.value)}
+                      onChange={(e) => handleChange("phone", e.target.value)}
                       className="w-full px-3 py-2 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2563eb]"
                     />
                   </div>
                   <div>
-                    <label className="block mb-1 text-xs font-semibold text-slate-500" style={{ fontFamily: "'Nunito', sans-serif" }}>
+                    <label
+                      className="block mb-1 text-xs font-semibold text-slate-500"
+                      style={{ fontFamily: "'Nunito', sans-serif" }}
+                    >
                       Email
                     </label>
                     <input
                       type="email"
                       required
                       value={form.email}
-                      onChange={(e) => handleChange('email', e.target.value)}
+                      onChange={(e) => handleChange("email", e.target.value)}
                       className="w-full px-3 py-2 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2563eb]"
                     />
                   </div>
@@ -555,68 +695,88 @@ export default function CheckoutPage() {
                 </h2>
                 <div className="space-y-3">
                   <div>
-                    <label className="block mb-1 text-xs font-semibold text-slate-500" style={{ fontFamily: "'Nunito', sans-serif" }}>
+                    <label
+                      className="block mb-1 text-xs font-semibold text-slate-500"
+                      style={{ fontFamily: "'Nunito', sans-serif" }}
+                    >
                       Address line 1
                     </label>
                     <input
                       type="text"
                       required
                       value={form.line1}
-                      onChange={(e) => handleChange('line1', e.target.value)}
+                      onChange={(e) => handleChange("line1", e.target.value)}
                       className="w-full px-3 py-2 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2563eb]"
                     />
                   </div>
                   <div>
-                    <label className="block mb-1 text-xs font-semibold text-slate-500" style={{ fontFamily: "'Nunito', sans-serif" }}>
+                    <label
+                      className="block mb-1 text-xs font-semibold text-slate-500"
+                      style={{ fontFamily: "'Nunito', sans-serif" }}
+                    >
                       Address line 2 (optional)
                     </label>
                     <input
                       type="text"
                       value={form.line2}
-                      onChange={(e) => handleChange('line2', e.target.value)}
+                      onChange={(e) => handleChange("line2", e.target.value)}
                       className="w-full px-3 py-2 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2563eb]"
                     />
                   </div>
                   <div className="grid gap-4 sm:grid-cols-3">
                     <div>
-                      <label className="block mb-1 text-xs font-semibold text-slate-500" style={{ fontFamily: "'Nunito', sans-serif" }}>
+                      <label
+                        className="block mb-1 text-xs font-semibold text-slate-500"
+                        style={{ fontFamily: "'Nunito', sans-serif" }}
+                      >
                         City
                       </label>
                       <input
                         type="text"
                         required
                         value={form.city}
-                        onChange={(e) => handleChange('city', e.target.value)}
+                        onChange={(e) => handleChange("city", e.target.value)}
                         className="w-full px-3 py-2 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2563eb]"
                       />
                     </div>
                     <div>
-                      <label className="block mb-1 text-xs font-semibold text-slate-500" style={{ fontFamily: "'Nunito', sans-serif" }}>
+                      <label
+                        className="block mb-1 text-xs font-semibold text-slate-500"
+                        style={{ fontFamily: "'Nunito', sans-serif" }}
+                      >
                         State
                       </label>
                       <input
                         type="text"
                         required
                         value={form.state}
-                        onChange={(e) => handleChange('state', e.target.value)}
+                        onChange={(e) => handleChange("state", e.target.value)}
                         className="w-full px-3 py-2 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2563eb]"
                       />
                     </div>
                     <div>
-                      <label className="block mb-1 text-xs font-semibold text-slate-500" style={{ fontFamily: "'Nunito', sans-serif" }}>
+                      <label
+                        className="block mb-1 text-xs font-semibold text-slate-500"
+                        style={{ fontFamily: "'Nunito', sans-serif" }}
+                      >
                         Pincode
                       </label>
                       <input
                         type="text"
                         required
                         value={form.pincode}
-                        onChange={(e) => handleChange('pincode', e.target.value)}
+                        onChange={(e) =>
+                          handleChange("pincode", e.target.value)
+                        }
                         className="w-full px-3 py-2 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2563eb]"
                       />
                     </div>
                   </div>
                   <div>
-                    <label className="block mb-1 text-xs font-semibold text-slate-500" style={{ fontFamily: "'Nunito', sans-serif" }}>
+                    <label
+                      className="block mb-1 text-xs font-semibold text-slate-500"
+                      style={{ fontFamily: "'Nunito', sans-serif" }}
+                    >
                       Note for delivery (optional)
                     </label>
                     <textarea
@@ -646,10 +806,13 @@ export default function CheckoutPage() {
               <div className="pt-4 border-t border-[#e2e8f0] flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
                 <p
                   className="text-[11px] text-[#94a3b8]"
-                  style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 600 }}
+                  style={{
+                    fontFamily: "'Nunito', sans-serif",
+                    fontWeight: 600,
+                  }}
                 >
-                  You&apos;ll be securely redirected to a payment page. We never store your card or UPI
-                  details.
+                  You&apos;ll be securely redirected to a payment page. We never
+                  store your card or UPI details.
                 </p>
                 <button
                   type="submit"
@@ -657,11 +820,12 @@ export default function CheckoutPage() {
                   className="inline-flex items-center justify-center px-6 py-2.5 rounded-full text-xs font-black tracking-[0.14em] uppercase disabled:opacity-60"
                   style={{
                     fontFamily: "'Baloo 2', cursive",
-                    background: 'linear-gradient(180deg,#fcd88a 0%,#F7BE4F 50%,#e5a732 100%)',
-                    color: '#5c3a0a',
+                    background:
+                      "linear-gradient(180deg,#fcd88a 0%,#F7BE4F 50%,#e5a732 100%)",
+                    color: "#5c3a0a",
                   }}
                 >
-                  {submitting ? 'Processing…' : 'Place order'}
+                  {submitting ? "Processing…" : "Place order"}
                 </button>
               </div>
             </form>
@@ -673,11 +837,15 @@ export default function CheckoutPage() {
           <div className="rounded-2xl border border-[#e2e8f0] bg-white p-5 shadow-sm">
             <h2
               className="mb-3 text-[#0f172a]"
-              style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: '16px' }}
+              style={{
+                fontFamily: "'Baloo 2', cursive",
+                fontWeight: 900,
+                fontSize: "16px",
+              }}
             >
               Order summary
             </h2>
-            {items.length === 0 ? (
+            {displayItems.length === 0 ? (
               <p
                 className="text-sm text-[#94a3b8]"
                 style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 600 }}
@@ -690,8 +858,11 @@ export default function CheckoutPage() {
                   className="mb-3 space-y-3 text-sm max-h-60 overflow-y-auto"
                   style={{ fontFamily: "'Nunito', sans-serif" }}
                 >
-                  {items.map((i) => (
-                    <li key={`${i.productId}-${i.size}-${i.color}`} className="flex justify-between gap-3">
+                  {displayItems.map((i) => (
+                    <li
+                      key={`${i.productId}-${i.size}-${i.color}`}
+                      className="flex justify-between gap-3"
+                    >
                       <div className="flex-1">
                         <p className="font-semibold text-[#0f172a]">{i.name}</p>
                         <p className="text-xs text-[#94a3b8]">
@@ -700,7 +871,9 @@ export default function CheckoutPage() {
                           {i.color && ` · ${i.color}`}
                         </p>
                       </div>
-                      <p className="text-sm font-bold text-[#0f172a]">₹{i.price * i.quantity}</p>
+                      <p className="text-sm font-bold text-[#0f172a]">
+                        ₹{i.price * i.quantity}
+                      </p>
                     </li>
                   ))}
                 </ul>
@@ -710,15 +883,21 @@ export default function CheckoutPage() {
                 >
                   <div className="flex justify-between">
                     <span className="text-[#94a3b8]">Items total</span>
-                    <span className="font-semibold text-[#0f172a]">₹{totalAmount}</span>
+                    <span className="font-semibold text-[#0f172a]">
+                      ₹{displayTotal}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-[#94a3b8]">Delivery</span>
                     <span className="font-semibold text-emerald-700">Free</span>
                   </div>
                   <div className="flex justify-between pt-1">
-                    <span className="font-extrabold text-[#0f172a]">Total payable</span>
-                    <span className="font-extrabold text-[#0f172a]">₹{totalAmount}</span>
+                    <span className="font-extrabold text-[#0f172a]">
+                      Total payable
+                    </span>
+                    <span className="font-extrabold text-[#0f172a]">
+                      ₹{displayTotal}
+                    </span>
                   </div>
                 </div>
               </>
@@ -726,10 +905,14 @@ export default function CheckoutPage() {
           </div>
           <div
             className="p-4 text-xs rounded-2xl border border-[#e2e8f0] bg-white space-y-2"
-            style={{ fontFamily: "'Nunito', sans-serif", color: '#94a3b8' }}
+            style={{ fontFamily: "'Nunito', sans-serif", color: "#94a3b8" }}
           >
-            <p className="font-semibold text-sm text-[#0f172a]">Secure payment</p>
-            <p>UPI, netbanking and cards are processed by our payment partner.</p>
+            <p className="font-semibold text-sm text-[#0f172a]">
+              Secure payment
+            </p>
+            <p>
+              UPI, netbanking and cards are processed by our payment partner.
+            </p>
             <p>Uniform Lab never stores your payment credentials.</p>
           </div>
         </aside>

@@ -1,8 +1,21 @@
-import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { X, ShoppingBag, ExternalLink, Minus, Plus, Check, ArrowRight, Zap } from 'lucide-react';
-import { useCart } from '@/contexts/CartContext';
-import { getProductColors, getProductImages, DETAIL_SIZES } from '@/data/schoolCatalog';
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  X,
+  ShoppingBag,
+  ExternalLink,
+  Minus,
+  Plus,
+  Check,
+  ArrowRight,
+  Zap,
+} from "lucide-react";
+import { useCart } from "@/contexts/CartContext";
+import {
+  getProductColors,
+  getProductImages,
+  DETAIL_SIZES,
+} from "@/data/schoolCatalog";
 
 /* ─────────────────────────────────────────────────────────────────────────
    STYLES
@@ -198,19 +211,35 @@ const QS_CSS = `
 /* ─────────────────────────────────────────────────────────────────────────
    COMPONENT
 ────────────────────────────────────────────────────────────────────────── */
-export function QuickShopDrawer({ open, onClose, product, schoolName, schoolSlug, initialColor }) {
+export function QuickShopDrawer({
+  open,
+  onClose,
+  product,
+  schoolName,
+  schoolSlug,
+  initialColor,
+}) {
   const navigate = useNavigate();
   const { addItem, openCart, closeCart, setBuyNowItem } = useCart();
 
-  const colors  = product ? getProductColors(product) : [];
-  const variantSizes = product && Array.isArray(product.variants)
-    ? [...new Set(product.variants.map((v) => (v.sizeLabel || '').trim()).filter(Boolean))]
-    : [];
+  const colors = product ? getProductColors(product) : [];
+  const variantSizes =
+    product && Array.isArray(product.variants)
+      ? [
+          ...new Set(
+            product.variants
+              .map((v) => (v.sizeLabel || "").trim())
+              .filter(Boolean),
+          ),
+        ]
+      : [];
   const sizeOptions = variantSizes.length ? variantSizes : DETAIL_SIZES;
   const [selectedColor, setSelectedColor] = useState(colors[0] ?? null);
-  const [selectedSize,  setSelectedSize]  = useState(sizeOptions[0] || DETAIL_SIZES[0]);
-  const [quantity,      setQuantity]      = useState(1);
-  const [addedFlash,    setAddedFlash]    = useState(false);
+  const [selectedSize, setSelectedSize] = useState(
+    sizeOptions[0] || DETAIL_SIZES[0],
+  );
+  const [quantity, setQuantity] = useState(1);
+  const [addedFlash, setAddedFlash] = useState(false);
 
   /* Reset on product change — honour initialColor from card swatch */
   useEffect(() => {
@@ -218,19 +247,28 @@ export function QuickShopDrawer({ open, onClose, product, schoolName, schoolSlug
       const c = getProductColors(product);
       let startColor = c[0] ?? null;
       if (initialColor && c.length) {
-        const match = c.find(cl => cl.name && cl.name.toLowerCase() === initialColor.toLowerCase());
+        const match = c.find(
+          (cl) =>
+            cl.name && cl.name.toLowerCase() === initialColor.toLowerCase(),
+        );
         if (match) startColor = match;
       }
       setSelectedColor(startColor);
       const vs = Array.isArray(product.variants)
-        ? [...new Set(product.variants.map((v) => (v.sizeLabel || '').trim()).filter(Boolean))]
+        ? [
+            ...new Set(
+              product.variants
+                .map((v) => (v.sizeLabel || "").trim())
+                .filter(Boolean),
+            ),
+          ]
         : [];
       const opts = vs.length ? vs : DETAIL_SIZES;
       setSelectedSize(opts[0] || DETAIL_SIZES[0]);
       setQuantity(1);
       setAddedFlash(false);
-      if (typeof window !== 'undefined') {
-        console.log('[QuickShopDrawer] open/reset', {
+      if (typeof window !== "undefined") {
+        console.log("[QuickShopDrawer] open/reset", {
           productId: product.id,
           name: product.name,
           colors: c,
@@ -242,25 +280,26 @@ export function QuickShopDrawer({ open, onClose, product, schoolName, schoolSlug
 
   /* Keyboard + scroll lock */
   useEffect(() => {
-    const handleEscape = (e) => e.key === 'Escape' && onClose();
+    const handleEscape = (e) => e.key === "Escape" && onClose();
     if (open) {
-      document.addEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'hidden';
+      document.addEventListener("keydown", handleEscape);
+      document.body.style.overflow = "hidden";
     }
     return () => {
-      document.removeEventListener('keydown', handleEscape);
-      document.body.style.overflow = '';
+      document.removeEventListener("keydown", handleEscape);
+      document.body.style.overflow = "";
     };
   }, [open, onClose]);
 
   if (!product) return null;
 
   const variantImages = getProductImages(product, selectedColor?.name);
-  const displayImage  = Array.isArray(variantImages) && variantImages.length
-    ? variantImages[0]
-    : product.image;
-  if (typeof window !== 'undefined') {
-    console.log('[QuickShopDrawer] render', {
+  const displayImage =
+    Array.isArray(variantImages) && variantImages.length
+      ? variantImages[0]
+      : product.image;
+  if (typeof window !== "undefined") {
+    console.log("[QuickShopDrawer] render", {
       productId: product.id,
       name: product.name,
       selectedColor,
@@ -271,14 +310,16 @@ export function QuickShopDrawer({ open, onClose, product, schoolName, schoolSlug
   const productUrl = (() => {
     const base = `/product/${product.id}`;
     const params = new URLSearchParams();
-    if (schoolSlug) params.set('school', schoolSlug);
-    if (selectedColor?.name) params.set('color', selectedColor.name);
+    if (schoolSlug) params.set("school", schoolSlug);
+    if (selectedColor?.name) params.set("color", selectedColor.name);
     const qs = params.toString();
     return qs ? `${base}?${qs}` : base;
   })();
 
   const selectedVariant = Array.isArray(product.variants)
-    ? product.variants.find((v) => (v.sizeLabel || '').trim() === (selectedSize || '').trim()) || null
+    ? product.variants.find(
+        (v) => (v.sizeLabel || "").trim() === (selectedSize || "").trim(),
+      ) || null
     : null;
   const effectivePrice = selectedVariant?.saleRate ?? product.price;
 
@@ -296,8 +337,8 @@ export function QuickShopDrawer({ open, onClose, product, schoolName, schoolSlug
     setAddedFlash(true);
     setTimeout(() => {
       setAddedFlash(false);
-    onClose();
-    openCart();
+      onClose();
+      openCart();
     }, 700);
   }
 
@@ -314,7 +355,7 @@ export function QuickShopDrawer({ open, onClose, product, schoolName, schoolSlug
     });
     onClose();
     closeCart();
-    navigate('/checkout');
+    navigate("/checkout");
   }
 
   return (
@@ -324,272 +365,583 @@ export function QuickShopDrawer({ open, onClose, product, schoolName, schoolSlug
       {/* Backdrop */}
       <div
         role="presentation"
-        className={`qs-backdrop ${open ? 'qs-open' : 'qs-closed'}`}
+        className={`qs-backdrop ${open ? "qs-open" : "qs-closed"}`}
         onClick={onClose}
         aria-hidden="true"
       />
 
       {/* Panel */}
       <div
-        className={`qs-panel ${open ? 'qs-open' : 'qs-closed'}`}
+        className={`qs-panel ${open ? "qs-open" : "qs-closed"}`}
         aria-modal="true"
         aria-label="Quick Shop"
         role="dialog"
       >
-
         {/* ── Drag handle (mobile only) ── */}
         <div className="qs-drag-handle hidden w-full pt-3 pb-1 justify-center flex-shrink-0">
-          <div style={{ width: '36px', height: '4px', borderRadius: '99px', background: '#e2e8f0' }} />
+          <div
+            style={{
+              width: "36px",
+              height: "4px",
+              borderRadius: "99px",
+              background: "#e2e8f0",
+            }}
+          />
         </div>
 
         {/* ── Desktop header ── */}
-        <div className="hidden md:flex items-center justify-between px-5 py-4 flex-shrink-0"
-          style={{ borderBottom: '1px solid #e8ecf1' }}>
+        <div
+          className="hidden md:flex items-center justify-between px-5 py-4 flex-shrink-0"
+          style={{ borderBottom: "1px solid #e8ecf1" }}
+        >
           <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-lg flex items-center justify-center"
-              style={{ background: 'linear-gradient(135deg, #fbbf24, #f59e0b)', boxShadow: '0 2px 8px rgba(245,158,11,0.28)' }}>
-              <Zap size={13} strokeWidth={2.5} style={{ color: '#fff' }} />
+            <div
+              className="w-7 h-7 rounded-lg flex items-center justify-center"
+              style={{
+                background: "linear-gradient(135deg, #fbbf24, #f59e0b)",
+                boxShadow: "0 2px 8px rgba(245,158,11,0.28)",
+              }}
+            >
+              <Zap size={13} strokeWidth={2.5} style={{ color: "#fff" }} />
             </div>
-            <h2 style={{ margin: 0, fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: '18px', color: '#0f172a' }}>
+            <h2
+              style={{
+                margin: 0,
+                fontFamily: "'Baloo 2', cursive",
+                fontWeight: 900,
+                fontSize: "18px",
+                color: "#0f172a",
+              }}
+            >
               Quick Shop
             </h2>
           </div>
-          <button type="button" onClick={onClose}
+          <button
+            type="button"
+            onClick={onClose}
             className="w-8 h-8 rounded-xl flex items-center justify-center transition-all hover:bg-[#f1f5f9]"
-            style={{ border: '1.5px solid #e2e8f0', color: '#64748b', background: '#fff', cursor: 'pointer' }}
-            aria-label="Close">
+            style={{
+              border: "1.5px solid #e2e8f0",
+              color: "#64748b",
+              background: "#fff",
+              cursor: "pointer",
+            }}
+            aria-label="Close"
+          >
             <X size={15} strokeWidth={2} />
           </button>
         </div>
 
         {/* ── Mobile header (name + close) ── */}
-        <div className="md:hidden flex items-start justify-between px-5 pt-2 pb-3 flex-shrink-0"
-          style={{ borderBottom: '1px solid #e8ecf1' }}>
+        <div
+          className="md:hidden flex items-start justify-between px-5 pt-2 pb-3 flex-shrink-0"
+          style={{ borderBottom: "1px solid #e8ecf1" }}
+        >
           <div className="flex-1 min-w-0 pr-3">
             {schoolName && (
-              <Link to={schoolSlug ? `/schools/${schoolSlug}` : '/schools'} onClick={onClose}
-                className="qs-school-badge inline-block mb-2">
+              <Link
+                to={schoolSlug ? `/schools/${schoolSlug}` : "/schools"}
+                onClick={onClose}
+                className="qs-school-badge inline-block mb-2"
+              >
                 🏫 {schoolName}
               </Link>
             )}
-            <h2 className="m-0 leading-snug line-clamp-2"
-              style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: '16px', color: '#0f172a' }}>
+            <h2
+              className="m-0 leading-snug line-clamp-2"
+              style={{
+                fontFamily: "'Baloo 2', cursive",
+                fontWeight: 900,
+                fontSize: "16px",
+                color: "#0f172a",
+              }}
+            >
               {product.name}
             </h2>
-            <p className="m-0 mt-0.5"
-              style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: '18px', color: '#0f172a' }}>
+            <p
+              className="m-0 mt-0.5"
+              style={{
+                fontFamily: "'Baloo 2', cursive",
+                fontWeight: 900,
+                fontSize: "18px",
+                color: "#0f172a",
+              }}
+            >
               ₹{effectivePrice}
             </p>
           </div>
-          <button type="button" onClick={onClose}
+          <button
+            type="button"
+            onClick={onClose}
             className="w-8 h-8 rounded-xl flex items-center justify-center transition-all hover:bg-[#f1f5f9] flex-shrink-0 mt-0.5"
-            style={{ border: '1.5px solid #e2e8f0', color: '#64748b', background: '#fff', cursor: 'pointer' }}
-            aria-label="Close">
+            style={{
+              border: "1.5px solid #e2e8f0",
+              color: "#64748b",
+              background: "#fff",
+              cursor: "pointer",
+            }}
+            aria-label="Close"
+          >
             <X size={15} strokeWidth={2} />
-            </button>
+          </button>
         </div>
 
         {/* ── Scrollable content ── */}
         <div className="flex-1 overflow-y-auto qs-scroll">
-
           {/* Desktop image */}
-          <div className="qs-desktop-image hidden md:block"
-            style={{ aspectRatio: '4/5', background: 'linear-gradient(145deg, #f4f7ff, #eaefff)', flexShrink: 0 }}>
+          <div
+            className="qs-desktop-image hidden md:block"
+            style={{
+              aspectRatio: "4/5",
+              background: "linear-gradient(145deg, #f4f7ff, #eaefff)",
+              flexShrink: 0,
+            }}
+          >
             {displayImage ? (
-              <img src={displayImage} alt={product.name}
-                style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }} />
+              <img
+                src={displayImage}
+                alt={product.name}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "contain",
+                  display: "block",
+                }}
+              />
             ) : (
-              <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <ShoppingBag style={{ width: 40, height: 40, color: '#c7d2fe', strokeWidth: 1 }} />
+              <div
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <ShoppingBag
+                  style={{
+                    width: 40,
+                    height: 40,
+                    color: "#c7d2fe",
+                    strokeWidth: 1,
+                  }}
+                />
               </div>
             )}
           </div>
 
           {/* Mobile: compact image strip */}
-          <div className="qs-mobile-strip md:hidden flex gap-3 items-center px-5 py-3 flex-shrink-0"
-            style={{ background: '#f8f9fb', borderBottom: '1px solid #e8ecf1' }}>
-            <div className="flex-shrink-0 rounded-xl overflow-hidden"
-              style={{ width: '86px', height: '86px', background: 'linear-gradient(145deg, #f4f7ff, #eaefff)', border: '1px solid #e2e8f0' }}>
+          <div
+            className="qs-mobile-strip md:hidden flex gap-3 items-center px-5 py-3 flex-shrink-0"
+            style={{ background: "#f8f9fb", borderBottom: "1px solid #e8ecf1" }}
+          >
+            <div
+              className="flex-shrink-0 rounded-xl overflow-hidden"
+              style={{
+                width: "86px",
+                height: "86px",
+                background: "linear-gradient(145deg, #f4f7ff, #eaefff)",
+                border: "1px solid #e2e8f0",
+              }}
+            >
               {displayImage ? (
-                <img src={displayImage} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                <img
+                  src={displayImage}
+                  alt={product.name}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "contain",
+                  }}
+                />
               ) : (
-                <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <ShoppingBag style={{ width: 24, height: 24, color: '#c7d2fe', strokeWidth: 1 }} />
+                <div
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <ShoppingBag
+                    style={{
+                      width: 24,
+                      height: 24,
+                      color: "#c7d2fe",
+                      strokeWidth: 1,
+                    }}
+                  />
                 </div>
               )}
             </div>
             {/* Quick size / color summary */}
             <div className="flex-1 min-w-0">
-              <p className="m-0 mb-1" style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: '11px', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+              <p
+                className="m-0 mb-1"
+                style={{
+                  fontFamily: "'Nunito', sans-serif",
+                  fontWeight: 700,
+                  fontSize: "11px",
+                  color: "#94a3b8",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.06em",
+                }}
+              >
                 Selected
               </p>
-              <p className="m-0" style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: '12.5px', color: '#475569' }}>
-                Size: <span style={{ color: '#0f172a', fontFamily: "'Baloo 2', cursive", fontWeight: 900 }}>{selectedSize}</span>
+              <p
+                className="m-0"
+                style={{
+                  fontFamily: "'Nunito', sans-serif",
+                  fontWeight: 700,
+                  fontSize: "12.5px",
+                  color: "#475569",
+                }}
+              >
+                Size:{" "}
+                <span
+                  style={{
+                    color: "#0f172a",
+                    fontFamily: "'Baloo 2', cursive",
+                    fontWeight: 900,
+                  }}
+                >
+                  {selectedSize}
+                </span>
               </p>
               {selectedColor?.name && (
-                <p className="m-0 mt-0.5" style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: '12.5px', color: '#475569' }}>
-                  Colour: <span style={{ color: '#f59e0b', fontFamily: "'Baloo 2', cursive", fontWeight: 900 }}>{selectedColor.name}</span>
+                <p
+                  className="m-0 mt-0.5"
+                  style={{
+                    fontFamily: "'Nunito', sans-serif",
+                    fontWeight: 700,
+                    fontSize: "12.5px",
+                    color: "#475569",
+                  }}
+                >
+                  Colour:{" "}
+                  <span
+                    style={{
+                      color: "#f59e0b",
+                      fontFamily: "'Baloo 2', cursive",
+                      fontWeight: 900,
+                    }}
+                  >
+                    {selectedColor.name}
+                  </span>
                 </p>
               )}
-              <p className="m-0 mt-0.5" style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: '12.5px', color: '#475569' }}>
-                Qty: <span style={{ color: '#0f172a', fontFamily: "'Baloo 2', cursive", fontWeight: 900 }}>{quantity}</span>
+              <p
+                className="m-0 mt-0.5"
+                style={{
+                  fontFamily: "'Nunito', sans-serif",
+                  fontWeight: 700,
+                  fontSize: "12.5px",
+                  color: "#475569",
+                }}
+              >
+                Qty:{" "}
+                <span
+                  style={{
+                    color: "#0f172a",
+                    fontFamily: "'Baloo 2', cursive",
+                    fontWeight: 900,
+                  }}
+                >
+                  {quantity}
+                </span>
               </p>
             </div>
           </div>
 
           {/* ── Info + selectors ── */}
           <div className="qs-body p-5 space-y-5">
-
             {/* Desktop-only: product name + price + school */}
             <div className="hidden md:block">
               {schoolName && (
-                <Link to={schoolSlug ? `/schools/${schoolSlug}` : '/schools'} onClick={onClose}
-                  className="qs-school-badge mb-3">
+                <Link
+                  to={schoolSlug ? `/schools/${schoolSlug}` : "/schools"}
+                  onClick={onClose}
+                  className="qs-school-badge mb-3"
+                >
                   🏫 {schoolName}
                 </Link>
               )}
-              <h3 className="m-0 leading-tight mb-1"
-                style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: 'clamp(17px, 1.5vw, 21px)', color: '#0f172a' }}>
-                  {product.name}
-                </h3>
-              <p className="m-0"
-                style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: '22px', color: '#0f172a', letterSpacing: '-0.3px' }}>
+              <h3
+                className="m-0 leading-tight mb-1"
+                style={{
+                  fontFamily: "'Baloo 2', cursive",
+                  fontWeight: 900,
+                  fontSize: "clamp(17px, 1.5vw, 21px)",
+                  color: "#0f172a",
+                }}
+              >
+                {product.name}
+              </h3>
+              <p
+                className="m-0"
+                style={{
+                  fontFamily: "'Baloo 2', cursive",
+                  fontWeight: 900,
+                  fontSize: "22px",
+                  color: "#0f172a",
+                  letterSpacing: "-0.3px",
+                }}
+              >
                 ₹{product.price}
               </p>
-              </div>
+            </div>
 
             {/* Divider (desktop only) */}
-            <div className="hidden md:block" style={{ height: '1px', background: '#e8ecf1' }} />
+            <div
+              className="hidden md:block"
+              style={{ height: "1px", background: "#e8ecf1" }}
+            />
 
             {/* ── Colour picker ── */}
-              {colors.length > 0 && (
-                <div>
-                <p className="m-0 mb-2.5"
-                  style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: '10.5px', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-                  Colour{selectedColor?.name ? ' — ' : ''}
+            {colors.length > 0 && (
+              <div>
+                <p
+                  className="m-0 mb-2.5"
+                  style={{
+                    fontFamily: "'Nunito', sans-serif",
+                    fontWeight: 700,
+                    fontSize: "10.5px",
+                    color: "#64748b",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.08em",
+                  }}
+                >
+                  Colour{selectedColor?.name ? " — " : ""}
                   {selectedColor?.name && (
-                    <span style={{ fontWeight: 800, color: '#0f172a', textTransform: 'none', letterSpacing: 'normal' }}>
+                    <span
+                      style={{
+                        fontWeight: 800,
+                        color: "#0f172a",
+                        textTransform: "none",
+                        letterSpacing: "normal",
+                      }}
+                    >
                       {selectedColor.name}
                     </span>
                   )}
-                  </p>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                    {colors.map((c) => {
-                      const isActive = selectedColor?.hex === c.hex;
-                      return (
-                        <button key={c.hex} type="button" title={c.name}
-                          onClick={() => setSelectedColor(c)}
-                          style={{
-                            width: '26px', height: '26px', borderRadius: '50%',
-                            backgroundColor: c.hex, border: 'none', cursor: 'pointer',
-                            transition: 'box-shadow 0.18s ease',
-                            boxShadow: isActive
-                              ? '0 0 0 2px #fff, 0 0 0 3.5px #2563eb'
-                              : 'inset 0 0 0 1px rgba(0,0,0,0.1)',
-                          }}
-                          aria-label={`Colour ${c.name}`}
-                          aria-pressed={isActive}
-                        />
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-
-            {/* ── Size picker ── */}
-              <div>
-              <p className="m-0 mb-2.5"
-                style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: '10.5px', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-                Size —{' '}
-                <span style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, color: '#f59e0b', textTransform: 'none', letterSpacing: 'normal' }}>
-                  {selectedSize}
-                </span>
                 </p>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '7px' }}>
-                  {sizeOptions.map((s) => (
-                  <button key={s} type="button"
-                      onClick={() => setSelectedSize(s)}
-                    className={`qs-size${selectedSize === s ? ' active' : ''}`}
-                    aria-pressed={selectedSize === s}>
-                      {s}
-                    </button>
-                  ))}
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                  {colors.map((c) => {
+                    const isActive = selectedColor?.hex === c.hex;
+                    return (
+                      <button
+                        key={c.hex}
+                        type="button"
+                        title={c.name}
+                        onClick={() => setSelectedColor(c)}
+                        style={{
+                          width: "26px",
+                          height: "26px",
+                          borderRadius: "50%",
+                          backgroundColor: c.hex,
+                          border: "none",
+                          cursor: "pointer",
+                          transition: "box-shadow 0.18s ease",
+                          boxShadow: isActive
+                            ? "0 0 0 2px #fff, 0 0 0 3.5px #2563eb"
+                            : "inset 0 0 0 1px rgba(0,0,0,0.1)",
+                        }}
+                        aria-label={`Colour ${c.name}`}
+                        aria-pressed={isActive}
+                      />
+                    );
+                  })}
                 </div>
               </div>
+            )}
+
+            {/* ── Size picker ── */}
+            <div>
+              <p
+                className="m-0 mb-2.5"
+                style={{
+                  fontFamily: "'Nunito', sans-serif",
+                  fontWeight: 700,
+                  fontSize: "10.5px",
+                  color: "#64748b",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.08em",
+                }}
+              >
+                Size —{" "}
+                <span
+                  style={{
+                    fontFamily: "'Baloo 2', cursive",
+                    fontWeight: 900,
+                    color: "#f59e0b",
+                    textTransform: "none",
+                    letterSpacing: "normal",
+                  }}
+                >
+                  {selectedSize}
+                </span>
+              </p>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "7px" }}>
+                {sizeOptions.map((s) => (
+                  <button
+                    key={s}
+                    type="button"
+                    onClick={() => setSelectedSize(s)}
+                    className={`qs-size${selectedSize === s ? " active" : ""}`}
+                    aria-pressed={selectedSize === s}
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
+            </div>
 
             {/* ── Quantity ── */}
-              <div>
-              <p className="m-0 mb-2.5"
-                style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: '10.5px', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-                  Quantity
-                </p>
-              <div className="inline-flex items-center rounded-xl overflow-hidden"
-                style={{ border: '1.5px solid #e2e8f0', background: '#fff' }}>
-                <button type="button"
-                    onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+            <div>
+              <p
+                className="m-0 mb-2.5"
+                style={{
+                  fontFamily: "'Nunito', sans-serif",
+                  fontWeight: 700,
+                  fontSize: "10.5px",
+                  color: "#64748b",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.08em",
+                }}
+              >
+                Quantity
+              </p>
+              <div
+                className="inline-flex items-center rounded-xl overflow-hidden"
+                style={{ border: "1.5px solid #e2e8f0", background: "#fff" }}
+              >
+                <button
+                  type="button"
+                  onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                   className="w-10 h-10 flex items-center justify-center transition-colors hover:bg-[#f8f9fb]"
-                  style={{ color: '#374151', cursor: 'pointer', border: 'none', background: 'transparent' }}
-                  aria-label="Decrease quantity">
+                  style={{
+                    color: "#374151",
+                    cursor: "pointer",
+                    border: "none",
+                    background: "transparent",
+                  }}
+                  aria-label="Decrease quantity"
+                >
                   <Minus size={13} strokeWidth={2.5} />
-                  </button>
-                <span className="w-9 text-center"
-                  style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: '15px', color: '#0f172a' }}>
-                    {quantity}
-                  </span>
-                <button type="button"
-                    onClick={() => setQuantity((q) => q + 1)}
+                </button>
+                <span
+                  className="w-9 text-center"
+                  style={{
+                    fontFamily: "'Baloo 2', cursive",
+                    fontWeight: 900,
+                    fontSize: "15px",
+                    color: "#0f172a",
+                  }}
+                >
+                  {quantity}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setQuantity((q) => q + 1)}
                   className="w-10 h-10 flex items-center justify-center transition-colors hover:bg-[#f8f9fb]"
-                  style={{ color: '#374151', cursor: 'pointer', border: 'none', background: 'transparent' }}
-                  aria-label="Increase quantity">
+                  style={{
+                    color: "#374151",
+                    cursor: "pointer",
+                    border: "none",
+                    background: "transparent",
+                  }}
+                  aria-label="Increase quantity"
+                >
                   <Plus size={13} strokeWidth={2.5} />
                 </button>
               </div>
-              </div>
-
-            {/* ── View full details ── */}
-            <div style={{ borderTop: '1px solid #e8ecf1', paddingTop: '16px' }}>
-              <Link to={productUrl} onClick={onClose}
-                className="inline-flex items-center gap-1.5 transition-colors hover:text-[#2563eb]"
-                style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: '12.5px', color: '#94a3b8', textDecoration: 'none' }}>
-                <ExternalLink size={13} strokeWidth={2} />
-                View full product details
-                </Link>
             </div>
 
+            {/* ── View full details ── */}
+            <div style={{ borderTop: "1px solid #e8ecf1", paddingTop: "16px" }}>
+              <Link
+                to={productUrl}
+                onClick={onClose}
+                className="inline-flex items-center gap-1.5 transition-colors hover:text-[#2563eb]"
+                style={{
+                  fontFamily: "'Nunito', sans-serif",
+                  fontWeight: 700,
+                  fontSize: "12.5px",
+                  color: "#94a3b8",
+                  textDecoration: "none",
+                }}
+              >
+                <ExternalLink size={13} strokeWidth={2} />
+                View full product details
+              </Link>
+            </div>
           </div>
           {/* ── end body ── */}
         </div>
 
         {/* ── Sticky footer: CTA buttons ── */}
-        <div className="qs-footer flex-shrink-0 px-5 py-4"
-          style={{ borderTop: '1.5px solid #e8ecf1', background: '#fff' }}>
-
+        <div
+          className="qs-footer flex-shrink-0 px-5 py-4"
+          style={{ borderTop: "1.5px solid #e8ecf1", background: "#fff" }}
+        >
           {/* Trust row */}
           <div className="flex items-center justify-center gap-4 mb-3">
-            {['✓ Official uniform', '✓ 7-day exchange', '✓ COD available'].map((t) => (
-              <span key={t} style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: '10px', color: '#94a3b8' }}>
-                {t}
-              </span>
-            ))}
+            {["✓ Official uniform", "✓ 7-day exchange", "✓ COD available"].map(
+              (t) => (
+                <span
+                  key={t}
+                  style={{
+                    fontFamily: "'Nunito', sans-serif",
+                    fontWeight: 700,
+                    fontSize: "10px",
+                    color: "#94a3b8",
+                  }}
+                >
+                  {t}
+                </span>
+              ),
+            )}
           </div>
 
-          <div style={{ display: 'flex', gap: '10px' }}>
-            <button type="button" onClick={handleAddToCart} className="qs-btn-cart"
+          <div style={{ display: "flex", gap: "10px" }}>
+            <button
+              type="button"
+              onClick={handleAddToCart}
+              className="qs-btn-cart"
               aria-label="Add to cart"
-              style={addedFlash ? { background: 'linear-gradient(135deg, #34d399, #10b981, #059669)', boxShadow: '0 3px 0 0 #047857, 0 4px 14px rgba(16,185,129,0.30)' } : {}}>
-              {addedFlash
-                ? <><Check size={15} strokeWidth={2.5} /> Added!</>
-                : <><ShoppingBag size={14} strokeWidth={2} /> Add to Cart</>
+              style={
+                addedFlash
+                  ? {
+                      background:
+                        "linear-gradient(135deg, #34d399, #10b981, #059669)",
+                      boxShadow:
+                        "0 3px 0 0 #047857, 0 4px 14px rgba(16,185,129,0.30)",
+                    }
+                  : {}
               }
+            >
+              {addedFlash ? (
+                <>
+                  <Check size={15} strokeWidth={2.5} /> Added!
+                </>
+              ) : (
+                <>
+                  <ShoppingBag size={14} strokeWidth={2} /> Add to Cart
+                </>
+              )}
             </button>
-            <button type="button" onClick={handleBuyNow} className="qs-btn-buy"
-              aria-label="Buy now">
+            <button
+              type="button"
+              onClick={handleBuyNow}
+              className="qs-btn-buy"
+              aria-label="Buy now"
+            >
               Buy Now <ArrowRight size={13} strokeWidth={2.5} />
             </button>
           </div>
-
         </div>
-
       </div>
     </>
   );

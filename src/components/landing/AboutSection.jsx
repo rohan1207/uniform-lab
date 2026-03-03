@@ -1,28 +1,34 @@
-import { Link } from 'react-router-dom';
-import { ArrowRight, Sparkles, ShieldCheck, Factory, Users } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Link } from "react-router-dom";
+import {
+  ArrowRight,
+  Sparkles,
+  ShieldCheck,
+  Factory,
+  Users,
+} from "lucide-react";
+import { motion } from "framer-motion";
 
 const FOUNDERS = [
   {
-    name: 'Priyank Mota',
-    role: 'Founder',
-    bio: 'Focus on systems, scale, and structured growth. Hands-on experience in manufacturing and retail operations.',
-    initials: 'PM',
-    image: '/pryank.png',
+    name: "Priyank Mota",
+    role: "Founder",
+    bio: "Focus on systems, scale, and structured growth. Hands-on experience in manufacturing and retail operations.",
+    initials: "PM",
+    image: "/pryank.png",
   },
   {
-    name: 'Nivedita Mota',
-    role: 'Co-Founder',
-    bio: 'Strategic direction and customer-centric thinking. Ensures every touchpoint reflects clarity and professionalism.',
-    initials: 'NM',
-    image: '/nivedita.png',
+    name: "Nivedita Mota",
+    role: "Co-Founder",
+    bio: "Strategic direction and customer-centric thinking. Ensures every touchpoint reflects clarity and professionalism.",
+    initials: "NM",
+    image: "/nivedita.png",
   },
 ];
 
 const MINI_POINTS = [
-  { icon: ShieldCheck, label: 'System-led operations' },
-  { icon: Factory, label: 'In-house control' },
-  { icon: Users, label: 'Long-term partnership' },
+  { icon: ShieldCheck, label: "System-led operations" },
+  { icon: Factory, label: "In-house control" },
+  { icon: Users, label: "Long-term partnership" },
 ];
 
 const CSS = `
@@ -291,8 +297,9 @@ export default function AboutSection() {
               <span> Human-Centered Execution.</span>
             </h2>
             <p className="about-sub">
-              A system-driven school and corporate uniform manufacturer in Pune — we deliver consistency,
-              quality, and reliability at scale. Full story and process depth on our About page.
+              A system-driven school and corporate uniform manufacturer in Pune
+              — we deliver consistency, quality, and reliability at scale. Full
+              story and process depth on our About page.
             </p>
             <div className="about-divider" />
           </motion.div>
@@ -305,10 +312,12 @@ export default function AboutSection() {
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.5, delay: 0.06 }}
           >
-            The Uniform Lab specialises in designing, manufacturing, and distributing uniforms for schools,
-            corporates, and institutions across India. With in-house production and structured quality control,
-            we ensure fabric consistency, fit standardisation, and timely deliveries year after year. We are
-            long-term uniform partners for schools and parents alike.
+            The Uniform Lab specialises in designing, manufacturing, and
+            distributing uniforms for schools, corporates, and institutions
+            across India. With in-house production and structured quality
+            control, we ensure fabric consistency, fit standardisation, and
+            timely deliveries year after year. We are long-term uniform partners
+            for schools and parents alike.
           </motion.p>
 
           {/* ── Leadership ── */}
@@ -360,7 +369,9 @@ export default function AboutSection() {
           >
             <div>
               <p className="about-cta-text">Want the full picture?</p>
-              <p className="about-cta-sub">Our story, Mota Group legacy, and how we work.</p>
+              <p className="about-cta-sub">
+                Our story, Mota Group legacy, and how we work.
+              </p>
             </div>
             <Link to="/about" className="about-cta-btn">
               Read Our Full Story

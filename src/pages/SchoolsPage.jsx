@@ -1,8 +1,8 @@
-import { useState, useMemo, useRef, useCallback, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Search } from 'lucide-react';
-import { featuredSchools as staticFeaturedSchools } from '@/data/featuredSchools';
-import { cachedFetch } from '@/lib/apiCache';
+import { useState, useMemo, useRef, useCallback, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { Search } from "lucide-react";
+import { featuredSchools as staticFeaturedSchools } from "@/data/featuredSchools";
+import { cachedFetch } from "@/lib/apiCache";
 
 /* ─────────────────────────────────────────────────────────────────────────────
    GLOBAL CSS
@@ -246,8 +246,8 @@ const INITIAL_VISIBLE = 8;
 ───────────────────────────────────────────────────────────────────────────── */
 function SchoolCard({ school }) {
   const cardRef = useRef(null);
-  const rafRef  = useRef(null);
-  const [tilt,   setTilt]   = useState({ x: 0, y: 0 });
+  const rafRef = useRef(null);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const [active, setActive] = useState(false);
 
   /* ── Mouse ── */
@@ -256,9 +256,9 @@ function SchoolCard({ school }) {
     if (rafRef.current) cancelAnimationFrame(rafRef.current);
     rafRef.current = requestAnimationFrame(() => {
       if (!cardRef.current) return;
-      const r  = cardRef.current.getBoundingClientRect();
-      const dx = (e.clientX - r.left - r.width  / 2) / (r.width  / 2);
-      const dy = (e.clientY - r.top  - r.height / 2) / (r.height / 2);
+      const r = cardRef.current.getBoundingClientRect();
+      const dx = (e.clientX - r.left - r.width / 2) / (r.width / 2);
+      const dy = (e.clientY - r.top - r.height / 2) / (r.height / 2);
       setTilt({ x: dx, y: dy });
     });
   }, []);
@@ -273,9 +273,9 @@ function SchoolCard({ school }) {
   /* ── Touch ── */
   const onTouchMove = useCallback((e) => {
     if (!cardRef.current || !e.touches[0]) return;
-    const r  = cardRef.current.getBoundingClientRect();
-    const dx = (e.touches[0].clientX - r.left - r.width  / 2) / (r.width  / 2);
-    const dy = (e.touches[0].clientY - r.top  - r.height / 2) / (r.height / 2);
+    const r = cardRef.current.getBoundingClientRect();
+    const dx = (e.touches[0].clientX - r.left - r.width / 2) / (r.width / 2);
+    const dy = (e.touches[0].clientY - r.top - r.height / 2) / (r.height / 2);
     setActive(true);
     setTilt({ x: dx, y: dy });
   }, []);
@@ -287,23 +287,25 @@ function SchoolCard({ school }) {
 
   /* Initials placeholder */
   const initials = school.name
-    .replace(/[^a-zA-Z ]/g, '')
-    .split(' ')
+    .replace(/[^a-zA-Z ]/g, "")
+    .split(" ")
     .filter(Boolean)
     .slice(0, 2)
     .map((w) => w[0].toUpperCase())
-    .join('');
+    .join("");
 
   /* ── 3-D parallax values
        Card  → slight whole-card perspective tilt
        Logo  → shifts gently OPPOSITE direction (feels closer / foreground)
        Image → shifts more in the SAME direction (feels deeper / background)
   */
-  const CARD_ROT   = 7;
+  const CARD_ROT = 7;
   const LOGO_SHIFT = 4;
-  const IMG_SHIFT  = 10;
-  const easeOut    = 'cubic-bezier(0.22, 1, 0.36, 1)';
-  const transition = active ? 'transform 0.07s linear' : `transform 0.5s ${easeOut}`;
+  const IMG_SHIFT = 10;
+  const easeOut = "cubic-bezier(0.22, 1, 0.36, 1)";
+  const transition = active
+    ? "transform 0.07s linear"
+    : `transform 0.5s ${easeOut}`;
 
   const cardTransform = active
     ? `perspective(900px) rotateX(${tilt.y * -CARD_ROT}deg) rotateY(${tilt.x * CARD_ROT}deg) scale(1.03)`
@@ -325,12 +327,12 @@ function SchoolCard({ school }) {
         ref={cardRef}
         className="sp-card-new"
         style={{
-          transform:  cardTransform,
-          boxShadow:  active
-            ? '0 22px 52px rgba(0,0,0,0.16), 0 6px 18px rgba(0,0,0,0.09)'
-            : '0 4px 24px rgba(0,0,0,0.08)',
+          transform: cardTransform,
+          boxShadow: active
+            ? "0 22px 52px rgba(0,0,0,0.16), 0 6px 18px rgba(0,0,0,0.09)"
+            : "0 4px 24px rgba(0,0,0,0.08)",
           transition: active
-            ? 'transform 0.07s linear, box-shadow 0.07s linear'
+            ? "transform 0.07s linear, box-shadow 0.07s linear"
             : `transform 0.5s ${easeOut}, box-shadow 0.35s ease`,
         }}
         onMouseMove={onMouseMove}
@@ -343,7 +345,6 @@ function SchoolCard({ school }) {
         <span className="sp-card-tag">{school.level}</span>
 
         <div className="sp-card-visual">
-
           {/* ── TOP: white logo zone ── */}
           <div
             className="sp-card-logo-zone"
@@ -371,7 +372,6 @@ function SchoolCard({ school }) {
               draggable={false}
             />
           </div>
-
         </div>
 
         {/* ── Name (first, prominent) ── */}
@@ -387,7 +387,7 @@ function SchoolCard({ school }) {
    Page
 ───────────────────────────────────────────────────────────────────────────── */
 export default function SchoolsPage() {
-  const [query,   setQuery]   = useState('');
+  const [query, setQuery] = useState("");
   const [showAll, setShowAll] = useState(false);
   const [schools, setSchools] = useState(staticFeaturedSchools);
 
@@ -396,35 +396,39 @@ export default function SchoolsPage() {
     let cancelled = false;
     (async () => {
       try {
-        const data = await cachedFetch('/api/public/schools');
+        const data = await cachedFetch("/api/public/schools");
         if (!Array.isArray(data) || cancelled) return;
         const mapped = data.map((s) => ({
           id: s._id || s.slug,
           slug: s.slug,
           name: s.name,
-          level: s.level || 'CBSE',
-          image: s.imageUrl || '/school-placeholder.png',
+          level: s.level || "CBSE",
+          image: s.imageUrl || "/school-placeholder.png",
           logo: s.logoUrl || null,
-          color: '#004C99',
+          color: "#004C99",
         }));
         if (mapped.length) setSchools(mapped);
       } catch {
         // keep static fallback
       }
     })();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const filtered = useMemo(() => {
     if (!query.trim()) return schools;
     const q = query.trim().toLowerCase();
     return schools.filter(
-      (s) => s.name.toLowerCase().includes(q) || (s.level || '').toLowerCase().includes(q)
+      (s) =>
+        s.name.toLowerCase().includes(q) ||
+        (s.level || "").toLowerCase().includes(q),
     );
   }, [query, schools]);
 
-  const visible     = showAll ? filtered : filtered.slice(0, INITIAL_VISIBLE);
-  const hasMore     = filtered.length > INITIAL_VISIBLE;
+  const visible = showAll ? filtered : filtered.slice(0, INITIAL_VISIBLE);
+  const hasMore = filtered.length > INITIAL_VISIBLE;
   const isCollapsed = !showAll && hasMore;
 
   return (
@@ -432,18 +436,18 @@ export default function SchoolsPage() {
       <style>{GLOBAL_CSS}</style>
 
       <main className="sp-root pt-12 pb-12 sm:pt-14 sm:pb-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* ── Header ── */}
           <header className="sp-header text-center mb-8 sm:mb-9">
             <div className="flex justify-center mb-4">
               <span
                 className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full font-bold uppercase tracking-widest"
                 style={{
-                  background: 'linear-gradient(135deg, #eef5ff 0%, #ddeaff 100%)',
-                  color: '#2563eb',
-                  fontSize: 'clamp(9px, 0.8vw, 11px)',
-                  boxShadow: '0 1px 8px rgba(37,99,235,0.14)',
+                  background:
+                    "linear-gradient(135deg, #eef5ff 0%, #ddeaff 100%)",
+                  color: "#2563eb",
+                  fontSize: "clamp(9px, 0.8vw, 11px)",
+                  boxShadow: "0 1px 8px rgba(37,99,235,0.14)",
                   fontFamily: "'Nunito', sans-serif",
                 }}
               >
@@ -455,78 +459,83 @@ export default function SchoolsPage() {
               className="sp-heading m-0 font-black text-[#1a1a2e] leading-tight mb-3"
               style={{
                 fontFamily: "'Baloo 2', cursive",
-                fontSize: 'clamp(28px, 4vw, 54px)',
-                letterSpacing: '-0.5px',
+                fontSize: "clamp(28px, 4vw, 54px)",
+                letterSpacing: "-0.5px",
               }}
             >
               Find Your School
-          </h1>
+            </h1>
 
             <p
               className="sp-subheading m-0 font-semibold text-gray-400 max-w-xl mx-auto leading-snug"
-              style={{ fontSize: 'clamp(13px, 1.1vw, 16px)' }}
+              style={{ fontSize: "clamp(13px, 1.1vw, 16px)" }}
             >
-            Choose your school and shop uniforms, blazers, ties, socks and accessories — all in one place.
-          </p>
+              Choose your school and shop uniforms, blazers, ties, socks and
+              accessories — all in one place.
+            </p>
 
             <div
               className="mx-auto mt-5"
               style={{
-                height: '2px', width: '60px', borderRadius: '99px',
-                background: 'linear-gradient(to right, #2563eb, #0ea5e9)',
+                height: "2px",
+                width: "60px",
+                borderRadius: "99px",
+                background: "linear-gradient(to right, #2563eb, #0ea5e9)",
               }}
             />
-        </header>
+          </header>
 
           {/* ── Search ── */}
           <div className="relative mb-7 max-w-md mx-auto">
-          <Search
+            <Search
               className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5"
-              style={{ color: '#2563eb' }}
+              style={{ color: "#2563eb" }}
               strokeWidth={2}
-          />
-          <input
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search your school..."
+            />
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search your school..."
               className="sp-search w-full pl-12 pr-4 py-3.5"
-            aria-label="Search school"
-          />
-        </div>
+              aria-label="Search school"
+            />
+          </div>
 
           {/* ── Cards grid ── */}
           <div className="sp-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 mb-7">
-          {visible.map((school) => (
+            {visible.map((school) => (
               <SchoolCard key={school.id} school={school} />
-          ))}
-        </div>
+            ))}
+          </div>
 
           {/* ── Empty state ── */}
-        {filtered.length === 0 && (
+          {filtered.length === 0 && (
             <p
               className="text-center py-8 font-semibold text-gray-400"
-              style={{ fontFamily: "'Nunito', sans-serif", fontSize: 'clamp(14px, 1.1vw, 16px)' }}
+              style={{
+                fontFamily: "'Nunito', sans-serif",
+                fontSize: "clamp(14px, 1.1vw, 16px)",
+              }}
             >
-            No school found. Try a different search.
-          </p>
-        )}
+              No school found. Try a different search.
+            </p>
+          )}
 
           {/* ── View more ── */}
-        {isCollapsed && (
+          {isCollapsed && (
             <div className="text-center mt-2">
-            <button
-              type="button"
-              onClick={() => setShowAll(true)}
+              <button
+                type="button"
+                onClick={() => setShowAll(true)}
                 className="sp-view-more"
-            >
+              >
                 View {filtered.length - INITIAL_VISIBLE} more schools ✦
-            </button>
-          </div>
-        )}
-
-      </div>
-    </main>
+              </button>
+            </div>
+          )}
+        </div>
+      </main>
     </>
   );
 }

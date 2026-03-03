@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { featuredSchools as staticFeaturedSchools } from '@/data/featuredSchools';
-import { cachedFetch } from '@/lib/apiCache';
+import { useEffect, useMemo, useRef, useState } from "react";
+import { featuredSchools as staticFeaturedSchools } from "@/data/featuredSchools";
+import { cachedFetch } from "@/lib/apiCache";
 
 /**
  * SchoolLogoStrip
@@ -12,10 +12,10 @@ import { cachedFetch } from '@/lib/apiCache';
  * Edge-fades via CSS mask. Pauses on hover.
  */
 const LOGO_HEIGHT = 100;
-const LOGO_WIDTH  = 200; /* fixed box so all same aspect-ratio container, object-contain inside */
+const LOGO_WIDTH = 200; /* fixed box so all same aspect-ratio container, object-contain inside */
 
 export default function SchoolLogoStrip() {
-  const wrapRef  = useRef(null);
+  const wrapRef = useRef(null);
   const trackRef = useRef(null);
   const [shift, setShift] = useState(200);
 
@@ -26,7 +26,7 @@ export default function SchoolLogoStrip() {
     let cancelled = false;
     (async () => {
       try {
-        const data = await cachedFetch('/api/public/schools');
+        const data = await cachedFetch("/api/public/schools");
         if (!Array.isArray(data) || cancelled) return;
         const mapped = data.map((s) => ({
           id: s._id || s.slug,
@@ -39,12 +39,14 @@ export default function SchoolLogoStrip() {
         // ignore and keep static
       }
     })();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const schools = useMemo(
     () => schoolsData.filter((s) => s?.logo || s?.name),
-    [schoolsData]
+    [schoolsData],
   );
   /* Always duplicate so track overflows on all viewports (phone included) */
   const marqueeSchools = useMemo(() => {
@@ -55,7 +57,7 @@ export default function SchoolLogoStrip() {
   /* Measure on mount, resize, and when page becomes visible (robust after redirect / tab switch) */
   useEffect(() => {
     const measure = () => {
-      const wrap  = wrapRef.current;
+      const wrap = wrapRef.current;
       const track = trackRef.current;
       if (!wrap || !track) return;
       const overflow = Math.max(100, track.scrollWidth - wrap.clientWidth);
@@ -70,16 +72,16 @@ export default function SchoolLogoStrip() {
     if (wrapRef.current) ro.observe(wrapRef.current);
 
     const onVisible = () => {
-      if (document.visibilityState === 'visible') {
+      if (document.visibilityState === "visible") {
         requestAnimationFrame(measure);
         setTimeout(measure, 80);
       }
     };
-    document.addEventListener('visibilitychange', onVisible);
+    document.addEventListener("visibilitychange", onVisible);
 
     return () => {
       ro.disconnect();
-      document.removeEventListener('visibilitychange', onVisible);
+      document.removeEventListener("visibilitychange", onVisible);
       clearTimeout(t1);
       clearTimeout(t2);
     };
@@ -132,25 +134,28 @@ export default function SchoolLogoStrip() {
         className="logo-strip-wrap w-full overflow-hidden py-4 sm:py-5"
         style={{
           WebkitMaskImage:
-            'linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%)',
+            "linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%)",
           maskImage:
-            'linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%)',
+            "linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%)",
         }}
       >
         <div
           ref={trackRef}
           className="logo-animated inline-flex items-center gap-8 px-2"
           style={{
-            '--logo-shift': `${shift}px`,
-            '--logo-dur': duration,
+            "--logo-shift": `${shift}px`,
+            "--logo-dur": duration,
           }}
         >
           {marqueeSchools.map((school, i) => (
-            <div key={`${school.name ?? 'school'}-${i}`} className="logo-strip-cell">
+            <div
+              key={`${school.name ?? "school"}-${i}`}
+              className="logo-strip-cell"
+            >
               {school.logo ? (
                 <img
                   src={school.logo}
-                  alt={school.name ?? 'School logo'}
+                  alt={school.name ?? "School logo"}
                   draggable={false}
                   className="select-none opacity-80 hover:opacity-100 transition-opacity duration-200"
                 />

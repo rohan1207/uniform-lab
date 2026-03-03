@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import {
   Building2,
   Users,
@@ -21,79 +21,115 @@ import {
   ClipboardList,
   Files,
   Handshake,
-} from 'lucide-react';
+} from "lucide-react";
 
 /* ─── DATA ─────────────────────────────────────────────────────────────── */
 const SPECIALISATIONS = [
-  { icon: Shirt, text: 'School uniform manufacturing with consistent fabric and colour control' },
-  { icon: BriefcaseBusiness, text: 'Corporate uniform supply for offices, factories, and institutional teams' },
-  { icon: Boxes, text: 'Bulk uniform production and distribution with scalable processes' },
-  { icon: MapPin, text: 'On-campus uniform camps during admissions and reopening seasons' },
-  { icon: Store, text: 'Retail and e-commerce uniform distribution models' },
-  { icon: PencilRuler, text: 'Custom design and role-based uniform solutions' },
+  {
+    icon: Shirt,
+    text: "School uniform manufacturing with consistent fabric and colour control",
+  },
+  {
+    icon: BriefcaseBusiness,
+    text: "Corporate uniform supply for offices, factories, and institutional teams",
+  },
+  {
+    icon: Boxes,
+    text: "Bulk uniform production and distribution with scalable processes",
+  },
+  {
+    icon: MapPin,
+    text: "On-campus uniform camps during admissions and reopening seasons",
+  },
+  { icon: Store, text: "Retail and e-commerce uniform distribution models" },
+  { icon: PencilRuler, text: "Custom design and role-based uniform solutions" },
 ];
 
 const WHY_CHOOSE = [
-  { icon: Settings, title: 'System-Driven', sub: 'Year-on-year operational consistency' },
-  { icon: Factory, title: 'In-House Manufacturing', sub: 'Stronger accountability and control' },
-  { icon: TrendingUp, title: 'Scalable Production', sub: 'Single and multi-campus rollouts' },
-  { icon: ClipboardList, title: 'Less Admin Burden', sub: 'Structured fulfilment models' },
-  { icon: Files, title: 'Transparent Processes', sub: 'Tracking and documentation clarity' },
-  { icon: Handshake, title: 'Long-Term Partnership', sub: 'Institutions choose us for years' },
+  {
+    icon: Settings,
+    title: "System-Driven",
+    sub: "Year-on-year operational consistency",
+  },
+  {
+    icon: Factory,
+    title: "In-House Manufacturing",
+    sub: "Stronger accountability and control",
+  },
+  {
+    icon: TrendingUp,
+    title: "Scalable Production",
+    sub: "Single and multi-campus rollouts",
+  },
+  {
+    icon: ClipboardList,
+    title: "Less Admin Burden",
+    sub: "Structured fulfilment models",
+  },
+  {
+    icon: Files,
+    title: "Transparent Processes",
+    sub: "Tracking and documentation clarity",
+  },
+  {
+    icon: Handshake,
+    title: "Long-Term Partnership",
+    sub: "Institutions choose us for years",
+  },
 ];
 
 const QUALITY_POINTS = [
-  'Fabric sourcing and standardisation for composition and colour stability',
-  'Structured production workflow: pattern, cutting, stitching, finishing',
-  'Multi-level quality checks: pre-production, mid-production, final stage',
-  'Fit and size consistency through standardised measurement mapping',
-  'Timely production planning aligned to academic and corporate cycles',
-  'Traceability and accountability through documented production cycles',
+  "Fabric sourcing and standardisation for composition and colour stability",
+  "Structured production workflow: pattern, cutting, stitching, finishing",
+  "Multi-level quality checks: pre-production, mid-production, final stage",
+  "Fit and size consistency through standardised measurement mapping",
+  "Timely production planning aligned to academic and corporate cycles",
+  "Traceability and accountability through documented production cycles",
 ];
 
 const STATS = [
-  { value: '500+', label: 'Schools Served' },
-  { value: '15+', label: 'Years Experience' },
-  { value: '98%', label: 'Reorder Rate' },
-  { value: '50K+', label: 'Units / Month' },
+  { value: "500+", label: "Schools Served" },
+  { value: "15+", label: "Years Experience" },
+  { value: "98%", label: "Reorder Rate" },
+  { value: "50K+", label: "Units / Month" },
 ];
 
 const CERTIFICATES = [
   {
-    id: 'gst',
-    badge: 'GST CERTIFICATION',
-    title: 'GST Registration Certificate',
-    subtitle: 'Registered under Goods and Services Tax, Government of India.',
-    image: '/certificate1.jpg',
-    alt: 'GST registration certificate for Primo Clothing Company',
+    id: "gst",
+    badge: "GST CERTIFICATION",
+    title: "GST Registration Certificate",
+    subtitle: "Registered under Goods and Services Tax, Government of India.",
+    image: "/certificate1.jpg",
+    alt: "GST registration certificate for Primo Clothing Company",
   },
   {
-    id: 'udyam',
-    badge: 'REGISTRATION',
-    title: 'Udyam MSME Registration',
-    subtitle: 'Udyam registration as a manufacturing enterprise under MSME.',
-    image: '/certificate2.jpg',
-    alt: 'Udyam registration certificate for Primo Clothing Company',
+    id: "udyam",
+    badge: "REGISTRATION",
+    title: "Udyam MSME Registration",
+    subtitle: "Udyam registration as a manufacturing enterprise under MSME.",
+    image: "/certificate2.jpg",
+    alt: "Udyam registration certificate for Primo Clothing Company",
   },
 ];
 
 /* Unsplash photos relevant to school/manufacturing/uniform */
 const GALLERY = [
   {
-    src: '/fabric4.jpg',
-    alt: 'School children in uniforms',
+    src: "/fabric4.jpg",
+    alt: "School children in uniforms",
   },
   {
-    src: '/fabric3.avif',
-    alt: 'Fabric manufacturing',
+    src: "/fabric3.avif",
+    alt: "Fabric manufacturing",
   },
   {
-    src: '/fabric2.jpg',
-    alt: 'Students at school',
+    src: "/fabric2.jpg",
+    alt: "Students at school",
   },
   {
-    src: '/fabric1.jpg',
-    alt: 'Quality fabric rolls',
+    src: "/fabric1.jpg",
+    alt: "Quality fabric rolls",
   },
 ];
 
@@ -105,8 +141,13 @@ function useReveal(threshold = 0.15) {
     const el = ref.current;
     if (!el) return;
     const obs = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setVisible(true); obs.disconnect(); } },
-      { threshold }
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          obs.disconnect();
+        }
+      },
+      { threshold },
     );
     obs.observe(el);
     return () => obs.disconnect();
@@ -115,12 +156,12 @@ function useReveal(threshold = 0.15) {
 }
 
 /* ─── ANIMATED COUNTER ──────────────────────────────────────────────────── */
-function Counter({ target, suffix = '' }) {
+function Counter({ target, suffix = "" }) {
   const [count, setCount] = useState(0);
   const [ref, visible] = useReveal(0.3);
   useEffect(() => {
     if (!visible) return;
-    const num = parseInt(target.replace(/\D/g, ''), 10);
+    const num = parseInt(target.replace(/\D/g, ""), 10);
     let start = 0;
     const step = Math.ceil(num / 50);
     const timer = setInterval(() => {
@@ -130,11 +171,16 @@ function Counter({ target, suffix = '' }) {
     }, 28);
     return () => clearInterval(timer);
   }, [visible, target]);
-  return <span ref={ref}>{count}{target.replace(/[\d]/g, '')}</span>;
+  return (
+    <span ref={ref}>
+      {count}
+      {target.replace(/[\d]/g, "")}
+    </span>
+  );
 }
 
 /* ─── REVEAL WRAPPER ────────────────────────────────────────────────────── */
-function Reveal({ children, delay = 0, className = '', style = {} }) {
+function Reveal({ children, delay = 0, className = "", style = {} }) {
   const [ref, visible] = useReveal();
   return (
     <div
@@ -142,7 +188,7 @@ function Reveal({ children, delay = 0, className = '', style = {} }) {
       className={className}
       style={{
         opacity: visible ? 1 : 0,
-        transform: visible ? 'translateY(0)' : 'translateY(36px)',
+        transform: visible ? "translateY(0)" : "translateY(36px)",
         transition: `opacity 0.65s ease ${delay}s, transform 0.65s cubic-bezier(0.22,1,0.36,1) ${delay}s`,
         ...style,
       }}
@@ -339,52 +385,48 @@ const CSS = `
     filter: brightness(1) saturate(1.15);
   }
 
-  /* ── Founder strip ── */
+  /* ── Founder rows (alternating image / text) ── */
   .ab-founders {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
     margin-bottom: 72px;
   }
-  .ab-founder-card {
+  .ab-founder-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     background: #fff;
     border: 1px solid #e5edf9;
-    border-radius: 20px;
-    padding: 28px 28px 24px;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(15,23,42,0.06);
+    transition: box-shadow 0.3s ease;
+    min-height: 300px;
+  }
+  .ab-founder-row:hover { box-shadow: 0 14px 44px rgba(30,58,138,0.13); }
+  /* image cell */
+  .ab-founder-photo-wrap {
     position: relative;
     overflow: hidden;
-    transition: box-shadow 0.28s ease, transform 0.28s ease;
-    cursor: default;
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+    transform-style: preserve-3d;
+    will-change: transform;
   }
-  .ab-founder-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #1e3a8a, #3b82f6);
-    border-radius: 20px 20px 0 0;
-    opacity: 0;
-    transition: opacity 0.28s ease;
-  }
-  .ab-founder-card:hover { box-shadow: 0 12px 40px rgba(30,58,138,0.13); transform: translateY(-4px); }
-  .ab-founder-card:hover::before { opacity: 1; }
-  .ab-founder-avatar {
-    width: 110px; height: 110px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #dbeafe, #bfdbfe);
-    color: #1d4ed8;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-    margin-bottom: 16px;
-    border: 3px solid #fff;
-    box-shadow: 0 4px 20px rgba(37,99,235,0.15);
-    overflow: hidden;
-  }
-  .ab-founder-avatar img {
-    width: 100%;
-    height: 100%;
+  .ab-founder-photo-wrap img {
+    width: 100%; height: 100%;
     object-fit: cover;
     object-position: center top;
+    display: block;
+    will-change: transform;
+    pointer-events: none;
+    user-select: none;
+  }
+  /* text cell */
+  .ab-founder-text-panel {
+    padding: clamp(28px, 4vw, 48px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
   .ab-founder-role {
     color: #2563eb;
@@ -396,16 +438,18 @@ const CSS = `
   }
   .ab-founder-name {
     font-family: 'Baloo 2', cursive;
-    font-size: 22px;
+    font-size: clamp(22px, 2.2vw, 30px);
     font-weight: 800;
     color: #1e293b;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
+    line-height: 1.15;
   }
   .ab-founder-bio {
     color: #64748b;
     font-size: 14px;
     font-weight: 600;
-    line-height: 1.6;
+    line-height: 1.7;
+    margin: 0;
   }
 
   /* ── Wide card ── */
@@ -726,9 +770,12 @@ const CSS = `
     .ab-stat:nth-child(3), .ab-stat:nth-child(4) { border-bottom: none; }
     .ab-split { grid-template-columns: 1fr; }
     .ab-mosaic { grid-template-columns: 1fr 1fr; grid-template-rows: 160px 160px 160px; }
-    .ab-founders { grid-template-columns: 1fr; }
-    .ab-founder-avatar { width: 90px; height: 90px; }
-    .ab-founder-card { text-align: center; display: flex; flex-direction: column; align-items: center; }
+    .ab-founders { gap: 18px; margin-bottom: 44px; }
+    .ab-founder-row { grid-template-columns: 1fr; min-height: unset; }
+    .ab-founder-photo-wrap { aspect-ratio: 4 / 3; }
+    /* reverse row: on mobile always show image on top */
+    .ab-founder-row.ab-row-reverse .ab-founder-photo-wrap { order: -1; }
+    .ab-founder-text-panel { padding: 24px 20px; }
     .ab-spec-grid { grid-template-columns: 1fr 1fr; }
     .ab-why-grid { grid-template-columns: 1fr 1fr; }
     .ab-cta-block { flex-direction: column; text-align: center; }
@@ -754,6 +801,53 @@ const CSS = `
   }
 `;
 
+/* ─── 3-D tilt image card (same logic as FeaturedSchools SchoolCard) ── */
+function FounderPhotoCard({ src, alt }) {
+  const ref = useRef(null);
+  const rafRef = useRef(null);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const [active, setActive] = useState(false);
+
+  const onMouseMove = useCallback((e) => {
+    if (!ref.current) return;
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    rafRef.current = requestAnimationFrame(() => {
+      if (!ref.current) return;
+      const r = ref.current.getBoundingClientRect();
+      const dx = (e.clientX - r.left - r.width / 2) / (r.width / 2);
+      const dy = (e.clientY - r.top - r.height / 2) / (r.height / 2);
+      setTilt({ x: dx, y: dy });
+    });
+  }, []);
+
+  const onMouseEnter = useCallback(() => setActive(true), []);
+  const onMouseLeave = useCallback(() => {
+    setActive(false);
+    setTilt({ x: 0, y: 0 });
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+  }, []);
+
+  const ROT = 8;
+  const easeOut = "cubic-bezier(0.22, 1, 0.36, 1)";
+  const cardTransform = active
+    ? `perspective(700px) rotateX(${tilt.y * -ROT}deg) rotateY(${tilt.x * ROT}deg) scale(1.04)`
+    : `perspective(700px) rotateX(0deg) rotateY(0deg) scale(1)`;
+  const transition = active ? "transform 0.07s linear" : `transform 0.5s ${easeOut}`;
+
+  return (
+    <div
+      ref={ref}
+      className="ab-founder-photo-wrap"
+      style={{ transform: cardTransform, transition }}
+      onMouseMove={onMouseMove}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
+      <img src={src} alt={alt} draggable={false} />
+    </div>
+  );
+}
+
 /* ─── COMPONENT ──────────────────────────────────────────────────────── */
 export default function AboutPage() {
   const [isMobile, setIsMobile] = useState(false);
@@ -763,12 +857,12 @@ export default function AboutPage() {
 
   useEffect(() => {
     const update = () => {
-      if (typeof window === 'undefined') return;
+      if (typeof window === "undefined") return;
       setIsMobile(window.innerWidth <= 767);
     };
     update();
-    window.addEventListener('resize', update);
-    return () => window.removeEventListener('resize', update);
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
   }, []);
 
   return (
@@ -786,13 +880,16 @@ export default function AboutPage() {
               About Uniform Lab
             </div>
             <h1 className="ab-h1">
-              Process-Led Uniform<br />
-              Manufacturing for<br />
+              Process-Led Uniform
+              <br />
+              Manufacturing for
+              <br />
               <em>Long-Term Reliability</em>
             </h1>
             <p className="ab-hero-sub">
-              The Uniform Lab is a system-driven school and corporate uniform manufacturer in Pune,
-              built to deliver consistency, quality, and reliability at scale across India.
+              The Uniform Lab is a system-driven school and corporate uniform
+              manufacturer in Pune, built to deliver consistency, quality, and
+              reliability at scale across India.
             </p>
           </div>
         </div>
@@ -813,25 +910,27 @@ export default function AboutPage() {
 
         {/* ══ MAIN ═══════════════════════════════════════════════════════ */}
         <div className="ab-main">
-
           {/* ── About Us + Photo Mosaic ── */}
-          <div className="ab-split" style={{ marginBottom: '72px' }}>
+          <div className="ab-split" style={{ marginBottom: "72px" }}>
             <Reveal delay={0}>
               <div className="ab-split-text">
                 <div className="ab-sec-label">Who We Are</div>
                 <h2 className="ab-h2">
-                  Built on Systems,<br />
+                  Built on Systems,
+                  <br />
                   <span>Not on Promises</span>
                 </h2>
                 <p className="ab-body">
-                  We specialise in designing, manufacturing, and distributing uniforms for schools,
-                  corporates, and institutions. With in-house production capabilities and structured
-                  quality control processes, we ensure fabric consistency, fit standardisation, and
-                  timely deliveries year after year.
+                  We specialise in designing, manufacturing, and distributing
+                  uniforms for schools, corporates, and institutions. With
+                  in-house production capabilities and structured quality
+                  control processes, we ensure fabric consistency, fit
+                  standardisation, and timely deliveries year after year.
                 </p>
-                <p className="ab-body" style={{ marginTop: '16px' }}>
-                  Our goal is to eliminate uniform-related stress for administrators, parents, and
-                  employees — through process, not just promises.
+                <p className="ab-body" style={{ marginTop: "16px" }}>
+                  Our goal is to eliminate uniform-related stress for
+                  administrators, parents, and employees — through process, not
+                  just promises.
                 </p>
               </div>
             </Reveal>
@@ -839,7 +938,12 @@ export default function AboutPage() {
               <div className="ab-mosaic">
                 {GALLERY.map((img, i) => (
                   <div key={i}>
-                    <img className="ab-mosaic-img" src={img.src} alt={img.alt} loading="lazy" />
+                    <img
+                      className="ab-mosaic-img"
+                      src={img.src}
+                      alt={img.alt}
+                      loading="lazy"
+                    />
                   </div>
                 ))}
               </div>
@@ -849,42 +953,44 @@ export default function AboutPage() {
           {/* ── Mota Group + Founders ── */}
           <Reveal>
             <div className="ab-sec-label">Our Legacy</div>
-            <h2 className="ab-h2" style={{ marginBottom: '28px' }}>
+            <h2 className="ab-h2" style={{ marginBottom: "28px" }}>
               The <span>Mota Group</span> Heritage
             </h2>
           </Reveal>
-          <div className="ab-founders" style={{ marginBottom: '72px' }}>
-            {[
-              {
-                image: '/pryank.png',
-                icon: Users,
-                role: 'Founder',
-                name: 'Priyank Mota',
-                bio: 'Visionary behind the systems and scale that power The Uniform Lab. Focus on operational integrity, structured processes, and long-term institutional partnerships.',
-              },
-              {
-                image: '/nivedita.png',
-                icon: Sparkles,
-                role: 'Co-Founder',
-                name: 'Nivedita Mota',
-                bio: 'Champion of experience design and customer-centric clarity. Ensures every interaction — from inquiry to delivery — is seamless and delightful.',
-              },
-            ].map(({ image, icon: AvatarIcon, role, name, bio }, i) => (
-              <Reveal key={name} delay={i * 0.1}>
-                <div className="ab-founder-card">
-                  <div className="ab-founder-avatar">
-                    {image ? (
-                      <img src={image} alt={name} />
-                    ) : (
-                      <AvatarIcon size={24} strokeWidth={2} />
-                    )}
-                  </div>
-                  <div className="ab-founder-role">{role}</div>
-                  <div className="ab-founder-name">{name}</div>
-                  <p className="ab-founder-bio">{bio}</p>
+          <div className="ab-founders" style={{ marginBottom: "72px" }}>
+
+            {/* ── Founder 1: image LEFT · text RIGHT ── */}
+            <Reveal delay={0}>
+              <div className="ab-founder-row">
+                <FounderPhotoCard src="/pryank.png" alt="Priyank Mota" />
+                <div className="ab-founder-text-panel">
+                  <div className="ab-founder-role">Founder</div>
+                  <div className="ab-founder-name">Priyank Mota</div>
+                  <p className="ab-founder-bio">
+                    Visionary behind the systems and scale that power The Uniform Lab.
+                    Focus on operational integrity, structured processes, and long-term
+                    institutional partnerships.
+                  </p>
                 </div>
-              </Reveal>
-            ))}
+              </div>
+            </Reveal>
+
+            {/* ── Founder 2: text LEFT · image RIGHT ── */}
+            <Reveal delay={0.1}>
+              <div className="ab-founder-row ab-row-reverse">
+                <div className="ab-founder-text-panel">
+                  <div className="ab-founder-role">Co-Founder</div>
+                  <div className="ab-founder-name">Nivedita Mota</div>
+                  <p className="ab-founder-bio">
+                    Champion of experience design and customer-centric clarity. Ensures
+                    every interaction — from inquiry to delivery — is seamless and
+                    delightful.
+                  </p>
+                </div>
+                <FounderPhotoCard src="/nivedita.png" alt="Nivedita Mota" />
+              </div>
+            </Reveal>
+
           </div>
 
           {/* ── Specialisations ── */}
@@ -893,7 +999,9 @@ export default function AboutPage() {
               <div className="ab-card-header">
                 <div>
                   <div className="ab-sec-label">What We Do</div>
-                  <h2 className="ab-h2" style={{ marginBottom: 0 }}>Our Specialisations</h2>
+                  <h2 className="ab-h2" style={{ marginBottom: 0 }}>
+                    Our Specialisations
+                  </h2>
                 </div>
                 <div className="ab-card-icon">
                   <Globe2 size={22} />
@@ -901,7 +1009,8 @@ export default function AboutPage() {
               </div>
               {(() => {
                 const all = SPECIALISATIONS;
-                const visible = !isMobile || showAllSpecs ? all : all.slice(0, 3);
+                const visible =
+                  !isMobile || showAllSpecs ? all : all.slice(0, 3);
                 return (
                   <>
                     <div className="ab-spec-grid">
@@ -918,9 +1027,9 @@ export default function AboutPage() {
                       <button
                         type="button"
                         className="ab-list-toggle"
-                        onClick={() => setShowAllSpecs(v => !v)}
+                        onClick={() => setShowAllSpecs((v) => !v)}
                       >
-                        {showAllSpecs ? 'Show less' : 'Show more'}
+                        {showAllSpecs ? "Show less" : "Show more"}
                       </button>
                     )}
                   </>
@@ -963,9 +1072,9 @@ export default function AboutPage() {
                       <button
                         type="button"
                         className="ab-list-toggle"
-                        onClick={() => setShowAllWhy(v => !v)}
+                        onClick={() => setShowAllWhy((v) => !v)}
                       >
-                        {showAllWhy ? 'Show less' : 'Show more'}
+                        {showAllWhy ? "Show less" : "Show more"}
                       </button>
                     )}
                   </>
@@ -990,7 +1099,8 @@ export default function AboutPage() {
               </div>
               {(() => {
                 const all = QUALITY_POINTS;
-                const visible = !isMobile || showAllQuality ? all : all.slice(0, 3);
+                const visible =
+                  !isMobile || showAllQuality ? all : all.slice(0, 3);
                 return (
                   <>
                     <div className="ab-quality-list">
@@ -1007,9 +1117,9 @@ export default function AboutPage() {
                       <button
                         type="button"
                         className="ab-list-toggle"
-                        onClick={() => setShowAllQuality(v => !v)}
+                        onClick={() => setShowAllQuality((v) => !v)}
                       >
-                        {showAllQuality ? 'Show less' : 'Show more'}
+                        {showAllQuality ? "Show less" : "Show more"}
                       </button>
                     )}
                   </>
@@ -1018,18 +1128,18 @@ export default function AboutPage() {
               <Link
                 to="/faqs"
                 style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
+                  display: "inline-flex",
+                  alignItems: "center",
                   gap: 8,
                   marginTop: 28,
-                  color: '#2563eb',
+                  color: "#2563eb",
                   fontWeight: 800,
                   fontSize: 14,
-                  textDecoration: 'none',
-                  transition: 'gap 0.2s',
+                  textDecoration: "none",
+                  transition: "gap 0.2s",
                 }}
-                onMouseEnter={e => e.currentTarget.style.gap = '12px'}
-                onMouseLeave={e => e.currentTarget.style.gap = '8px'}
+                onMouseEnter={(e) => (e.currentTarget.style.gap = "12px")}
+                onMouseLeave={(e) => (e.currentTarget.style.gap = "8px")}
               >
                 Explore all FAQs
                 <ArrowRight size={15} />
@@ -1101,7 +1211,9 @@ export default function AboutPage() {
             <div className="ab-cta-block">
               <div className="ab-cta-text">
                 <div className="ab-cta-title">Ready to Partner with Us?</div>
-                <p className="ab-cta-sub">Join 500+ schools that trust The Uniform Lab year after year.</p>
+                <p className="ab-cta-sub">
+                  Join 500+ schools that trust The Uniform Lab year after year.
+                </p>
               </div>
               <Link to="/schoolenquiry" className="ab-cta-btn">
                 Start an Enquiry
@@ -1109,7 +1221,6 @@ export default function AboutPage() {
               </Link>
             </div>
           </Reveal>
-
         </div>
       </div>
     </>

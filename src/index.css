@@ -77,18 +77,27 @@ select:-webkit-autofill {
 
 /* Hero – light gradient, clean like logo background */
 .hero-section {
-  background: linear-gradient(180deg, var(--hero-bg) 0%, var(--hero-bg-end) 100%) !important;
+  background: linear-gradient(
+    180deg,
+    var(--hero-bg) 0%,
+    var(--hero-bg-end) 100%
+  ) !important;
 }
 
 /* Hero left – premium sans-serif, luxury typography (layout unchanged) */
 .hero-left {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
 }
 .hero-left .hero-label {
   font-size: clamp(14px, 2.5vw, 16px);
   font-weight: 500;
   letter-spacing: 0.15em;
-  color: #F59E0B;
+  color: #f59e0b;
   line-height: 1.2;
 }
 .hero-left .hero-heading {
@@ -118,17 +127,17 @@ select:-webkit-autofill {
   font-size: clamp(16px, 2vw, 20px);
   font-weight: 400;
   line-height: 1.55;
-  color: #4A4A4A;
+  color: #4a4a4a;
 }
 .hero-left .hero-trust-icon {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: #F3F4F6;
+  background: #f3f4f6;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: #1D4ED8;
+  color: #1d4ed8;
 }
 .hero-left .hero-trust-icon svg {
   stroke-width: 1.5px;
@@ -146,14 +155,17 @@ select:-webkit-autofill {
 
 /* Hero CTA – premium gradient, shadow, hover lift */
 .hero-cta {
-  background: linear-gradient(180deg, #1D4ED8 0%, #1E40AF 100%);
-  color: #FFFFFF;
+  background: linear-gradient(180deg, #1d4ed8 0%, #1e40af 100%);
+  color: #ffffff;
   font-size: 16px;
   font-weight: 600;
   padding: 14px 28px;
   border-radius: 9999px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
-  transition: filter 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    filter 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 @media (min-width: 640px) {
   .hero-cta {
@@ -162,7 +174,7 @@ select:-webkit-autofill {
   }
 }
 .hero-cta:hover {
-  color: #FFFFFF;
+  color: #ffffff;
   filter: brightness(1.08);
   transform: translateY(-1px);
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
@@ -170,13 +182,18 @@ select:-webkit-autofill {
 
 /* Choose Path section – same premium typography & palette as hero */
 .choose-path-section {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
 }
 .choose-path-section .choose-path-label {
   font-size: clamp(14px, 2.5vw, 16px);
   font-weight: 500;
   letter-spacing: 0.15em;
-  color: #F59E0B;
+  color: #f59e0b;
   line-height: 1.2;
 }
 .choose-path-section .choose-path-heading {
@@ -198,10 +215,10 @@ select:-webkit-autofill {
   font-size: 14px;
   font-weight: 500;
   letter-spacing: 0.15em;
-  color: #4A4A4A;
+  color: #4a4a4a;
 }
 .character-card-premium .card-title {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: clamp(1.25rem, 2.5vw, 1.5rem);
   font-weight: 700;
   line-height: 1.2;
@@ -211,20 +228,23 @@ select:-webkit-autofill {
   font-size: 16px;
   font-weight: 400;
   line-height: 1.55;
-  color: #4A4A4A;
+  color: #4a4a4a;
 }
 .character-card-premium .card-cta {
-  background: linear-gradient(180deg, #1D4ED8 0%, #1E40AF 100%);
-  color: #FFFFFF;
+  background: linear-gradient(180deg, #1d4ed8 0%, #1e40af 100%);
+  color: #ffffff;
   font-size: 14px;
   font-weight: 600;
   padding: 14px 28px;
   border-radius: 9999px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
-  transition: filter 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    filter 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 .character-card-premium .card-cta:hover {
-  color: #FFFFFF;
+  color: #ffffff;
   filter: brightness(1.08);
   transform: translateY(-1px);
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
@@ -232,7 +252,12 @@ select:-webkit-autofill {
 
 /* Schools page – same premium typography & palette as hero / choose-path */
 .schools-page-premium {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
 }
 .schools-page-premium .schools-page-heading {
   font-family: inherit;
@@ -246,7 +271,7 @@ select:-webkit-autofill {
   font-size: clamp(16px, 2vw, 20px);
   font-weight: 400;
   line-height: 1.55;
-  color: #4A4A4A;
+  color: #4a4a4a;
 }
 .schools-page-premium .schools-page-label {
   font-size: 15px;
@@ -255,7 +280,7 @@ select:-webkit-autofill {
 }
 .schools-page-premium .schools-page-search {
   border-color: #e5e7eb;
-  background: #FFFFFF;
+  background: #ffffff;
   color: #111111;
   font-size: 16px;
   font-weight: 400;
@@ -265,14 +290,14 @@ select:-webkit-autofill {
 }
 .schools-page-premium .schools-page-search:focus {
   outline: none;
-  border-color: #1D4ED8;
+  border-color: #1d4ed8;
   box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.15);
 }
 .schools-page-premium .schools-card-level {
   font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.15em;
-  color: #4A4A4A;
+  color: #4a4a4a;
 }
 .schools-page-premium .schools-card-name {
   font-family: inherit;
@@ -287,20 +312,23 @@ select:-webkit-autofill {
   }
 }
 .schools-page-premium .schools-card-name:hover {
-  color: #1D4ED8;
+  color: #1d4ed8;
 }
 .schools-page-premium .schools-view-more {
-  background: linear-gradient(180deg, #1D4ED8 0%, #1E40AF 100%);
-  color: #FFFFFF;
+  background: linear-gradient(180deg, #1d4ed8 0%, #1e40af 100%);
+  color: #ffffff;
   font-size: 16px;
   font-weight: 600;
   padding: 14px 28px;
   border-radius: 9999px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
-  transition: filter 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    filter 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 .schools-page-premium .schools-view-more:hover {
-  color: #FFFFFF;
+  color: #ffffff;
   filter: brightness(1.08);
   transform: translateY(-1px);
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
@@ -308,25 +336,30 @@ select:-webkit-autofill {
 .schools-page-premium .schools-empty {
   font-size: 16px;
   font-weight: 400;
-  color: #4A4A4A;
+  color: #4a4a4a;
 }
 
 /* Product detail page – premium typography & palette */
 .product-detail-premium {
-  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family:
+    "Poppins",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
 }
 .product-detail-premium .product-detail-breadcrumb {
   font-size: 14px;
   font-weight: 400;
-  color: #4A4A4A;
+  color: #4a4a4a;
 }
 .product-detail-premium .product-detail-breadcrumb a:hover {
-  color: #1D4ED8;
+  color: #1d4ed8;
 }
 .product-detail-premium .product-detail-school-link {
   font-size: 14px;
   font-weight: 500;
-  color: #1D4ED8;
+  color: #1d4ed8;
 }
 .product-detail-premium .product-detail-title {
   font-family: inherit;
@@ -338,50 +371,55 @@ select:-webkit-autofill {
 .product-detail-premium .product-detail-price {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #1D4ED8;
+  color: #1d4ed8;
 }
 .product-detail-premium .product-detail-label {
   font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.15em;
-  color: #4A4A4A;
+  color: #4a4a4a;
 }
 .product-detail-premium .product-detail-btn-primary {
-  background: linear-gradient(180deg, #1D4ED8 0%, #1E40AF 100%);
-  color: #FFFFFF;
+  background: linear-gradient(180deg, #1d4ed8 0%, #1e40af 100%);
+  color: #ffffff;
   font-size: 15px;
   font-weight: 600;
   padding: 14px 24px;
   border-radius: 9999px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
-  transition: filter 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    filter 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 .product-detail-premium .product-detail-btn-primary:hover {
-  color: #FFFFFF;
+  color: #ffffff;
   filter: brightness(1.08);
   transform: translateY(-1px);
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
 }
 .product-detail-premium .product-detail-btn-secondary {
-  border: 2px solid #1D4ED8;
-  color: #1D4ED8;
+  border: 2px solid #1d4ed8;
+  color: #1d4ed8;
   font-size: 15px;
   font-weight: 600;
   padding: 14px 24px;
   border-radius: 9999px;
-  transition: background 0.2s ease, color 0.2s ease;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
 }
 .product-detail-premium .product-detail-btn-secondary:hover {
-  background: #1D4ED8;
-  color: #FFFFFF;
+  background: #1d4ed8;
+  color: #ffffff;
 }
 .product-detail-premium .product-detail-tab-active {
   color: #111111;
-  border-bottom-color: #1D4ED8;
+  border-bottom-color: #1d4ed8;
   font-weight: 600;
 }
 .product-detail-premium .product-detail-tab-inactive {
-  color: #4A4A4A;
+  color: #4a4a4a;
 }
 .product-detail-premium .product-detail-tab-inactive:hover {
   color: #111111;
@@ -390,7 +428,7 @@ select:-webkit-autofill {
   font-size: 15px;
   font-weight: 400;
   line-height: 1.55;
-  color: #4A4A4A;
+  color: #4a4a4a;
 }
 .product-detail-premium .product-detail-section-heading {
   font-family: inherit;
@@ -399,13 +437,13 @@ select:-webkit-autofill {
   color: #111111;
 }
 .product-detail-premium .product-detail-size-selected {
-  background: #1D4ED8 !important;
-  color: #FFFFFF !important;
+  background: #1d4ed8 !important;
+  color: #ffffff !important;
 }
 .product-detail-premium .product-detail-trust-text {
   font-size: 13px;
   font-weight: 500;
-  color: #4A4A4A;
+  color: #4a4a4a;
 }
 .product-detail-premium .product-detail-related-title {
   font-family: inherit;
@@ -414,22 +452,22 @@ select:-webkit-autofill {
   color: #111111;
 }
 .product-detail-premium .product-detail-related-title:hover {
-  color: #1D4ED8;
+  color: #1d4ed8;
 }
 .product-detail-premium .product-detail-related-price {
   font-weight: 600;
-  color: #1D4ED8;
+  color: #1d4ed8;
 }
 
 /* Quick shop drawer – same premium styling */
 .quick-shop-premium .quick-shop-title {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 1.125rem;
   font-weight: 700;
   color: #111111;
 }
 .quick-shop-premium .quick-shop-product-name {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 1.125rem;
   font-weight: 700;
   color: #111111;
@@ -437,75 +475,79 @@ select:-webkit-autofill {
 .quick-shop-premium .quick-shop-school {
   font-size: 14px;
   font-weight: 400;
-  color: #4A4A4A;
+  color: #4a4a4a;
 }
 .quick-shop-premium .quick-shop-price {
   font-size: 1.125rem;
   font-weight: 700;
-  color: #1D4ED8;
+  color: #1d4ed8;
 }
 .quick-shop-premium .quick-shop-label {
   font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.15em;
-  color: #4A4A4A;
+  color: #4a4a4a;
 }
 .quick-shop-premium .quick-shop-btn-primary {
-  background: linear-gradient(180deg, #1D4ED8 0%, #1E40AF 100%);
-  color: #FFFFFF;
+  background: linear-gradient(180deg, #1d4ed8 0%, #1e40af 100%);
+  color: #ffffff;
   font-size: 14px;
   font-weight: 600;
   padding: 14px 20px;
   border-radius: 9999px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
-  transition: filter 0.2s ease, transform 0.2s ease;
+  transition:
+    filter 0.2s ease,
+    transform 0.2s ease;
 }
 .quick-shop-premium .quick-shop-btn-primary:hover {
-  color: #FFFFFF;
+  color: #ffffff;
   filter: brightness(1.08);
   transform: translateY(-1px);
 }
 .quick-shop-premium .quick-shop-btn-secondary {
-  border: 2px solid #1D4ED8;
-  color: #1D4ED8;
+  border: 2px solid #1d4ed8;
+  color: #1d4ed8;
   font-size: 14px;
   font-weight: 600;
   padding: 14px 20px;
   border-radius: 9999px;
-  transition: background 0.2s ease, color 0.2s ease;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
 }
 .quick-shop-premium .quick-shop-btn-secondary:hover {
-  background: #1D4ED8;
-  color: #FFFFFF;
+  background: #1d4ed8;
+  color: #ffffff;
 }
 .quick-shop-premium .quick-shop-link {
   font-size: 14px;
   font-weight: 600;
-  color: #1D4ED8;
+  color: #1d4ed8;
 }
 .quick-shop-premium .quick-shop-link:hover {
-  color: #1E40AF;
+  color: #1e40af;
   text-decoration: underline;
 }
 .quick-shop-premium .quick-shop-size-selected {
-  background: #1D4ED8 !important;
-  color: #FFFFFF !important;
+  background: #1d4ed8 !important;
+  color: #ffffff !important;
 }
 
 /* Product card (school catalog) – premium text & buttons */
 .product-card-premium .product-card-name {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 0.9375rem;
   font-weight: 700;
   color: #111111;
   line-height: 1.25;
 }
 .product-card-premium .product-card-name:hover {
-  color: #1D4ED8;
+  color: #1d4ed8;
 }
 .product-card-premium .product-card-price {
   font-weight: 600;
-  color: #1D4ED8;
+  color: #1d4ed8;
 }
 .product-card-premium .product-card-quick-shop {
   font-size: 14px;
@@ -514,14 +556,14 @@ select:-webkit-autofill {
   color: #111111;
 }
 .product-card-premium .product-card-quick-shop:hover {
-  border-color: #1D4ED8;
+  border-color: #1d4ed8;
 }
 .product-card-premium .product-card-quick-shop .product-card-quick-shop-fill {
-  background: #1D4ED8;
+  background: #1d4ed8;
 }
 .product-card-premium .product-card-add-btn:hover {
-  border-color: #1D4ED8;
-  color: #1D4ED8;
+  border-color: #1d4ed8;
+  color: #1d4ed8;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -534,7 +576,11 @@ select:-webkit-autofill {
 body {
   background: var(--page-bg);
   color: var(--foreground);
-  font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+  font-family:
+    "DM Sans",
+    system-ui,
+    -apple-system,
+    sans-serif;
   overflow-x: hidden;
   text-rendering: optimizeLegibility;
   overscroll-behavior: none;
@@ -550,7 +596,10 @@ body::-webkit-scrollbar {
   height: 0;
 }
 
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   font-family: "Instrument Serif", Georgia, serif;
   letter-spacing: 0.02em;
 }
@@ -560,29 +609,54 @@ h1, h2, h3, h4 {
 }
 
 @keyframes fade-in {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes twinkle {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 1; }
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 @keyframes shine {
-  0% { background-position: -200% center; }
-  50% { background-position: 200% center; }
-  100% { background-position: -200% center; }
+  0% {
+    background-position: -200% center;
+  }
+  50% {
+    background-position: 200% center;
+  }
+  100% {
+    background-position: -200% center;
+  }
 }
 
 @keyframes wavy-flow {
-  from { transform: translateY(-32px); }
-  to { transform: translateY(0); }
+  from {
+    transform: translateY(-32px);
+  }
+  to {
+    transform: translateY(0);
+  }
 }
 
 .animate-wavy-flow {
@@ -590,10 +664,18 @@ h1, h2, h3, h4 {
 }
 
 @keyframes colorSplash {
-  0% { background-position: 0% 50%; }
-  33% { background-position: 100% 50%; }
-  66% { background-position: 50% 100%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  33% {
+    background-position: 100% 50%;
+  }
+  66% {
+    background-position: 50% 100%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .uniformlab-heading-gradient {

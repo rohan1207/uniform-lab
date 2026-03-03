@@ -1,9 +1,9 @@
-import { useState, useMemo, useEffect } from 'react'; // useMemo used for productUrl & sizeOptions
-import { Link } from 'react-router-dom';
-import { useCart } from '@/contexts/CartContext';
-import { useWishlist } from '@/contexts/WishlistContext';
-import { getProductColors, getProductImages } from '@/data/schoolCatalog';
-import { ShoppingBag, Check, Zap, Heart } from 'lucide-react';
+import { useState, useMemo, useEffect } from "react"; // useMemo used for productUrl & sizeOptions
+import { Link } from "react-router-dom";
+import { useCart } from "@/contexts/CartContext";
+import { useWishlist } from "@/contexts/WishlistContext";
+import { getProductColors, getProductImages } from "@/data/schoolCatalog";
+import { ShoppingBag, Check, Zap, Heart } from "lucide-react";
 
 /* ─────────────────────────────────────────────────────────────────────────
    STYLES
@@ -19,6 +19,8 @@ const CARD_CSS = `
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    max-width: 260px;
+    margin: 0 auto;
     box-shadow: 0 1px 4px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
     transition: box-shadow 0.32s cubic-bezier(0.25,0.46,0.45,0.94),
                 transform   0.32s cubic-bezier(0.34,1.4,0.64,1),
@@ -119,6 +121,19 @@ const CARD_CSS = `
     box-shadow: 0 0 0 1.5px #fff, 0 0 0 3px #2563eb;
   }
 
+  /* ── Image wrapper ── */
+  .pc-img-wrap {
+    aspect-ratio: 3 / 4;
+  }
+
+  /* ── Product image — full visibility, no cropping ── */
+  .pc-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: top center;
+  }
+
   /* ── Card info body ── */
   .pc-info {
     padding: 14px 15px 15px;
@@ -136,8 +151,8 @@ const CARD_CSS = `
     /* Subtle lift only — no big jump on tiny cards */
     .pc-card:hover { transform: translateY(-2px); }
 
-    /* Tighter rounded corners */
-    .pc-card { border-radius: 14px; }
+    /* Full-width on mobile — no max-width cap */
+    .pc-card { border-radius: 14px; max-width: none; }
 
     /* Price chip — smaller, less obtrusive */
     .pc-price {
@@ -147,6 +162,15 @@ const CARD_CSS = `
       right: 6px;
       border-radius: 6px;
       box-shadow: 0 1px 5px rgba(0,0,0,0.08);
+    }
+
+    /* Image — square crop on mobile (already looks perfect) */
+    .pc-img-wrap {
+      aspect-ratio: 1 / 1;
+    }
+    .pc-img {
+      object-fit: cover;
+      object-position: center;
     }
 
     /* Info body — tighter padding */
@@ -178,10 +202,17 @@ const CARD_CSS = `
 
 function productImageForColor(product, schoolSlug, colorName) {
   if (!product?.image || !schoolSlug || !colorName) return product?.image;
-  const base = product.image.replace(/\/[^/]+\.(jpg|jpeg|png)$/i, '');
-  const slug = (product.name || '').toLowerCase().replace(/\s*\([^)]*\)/g, '').replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
-  const colorSlug = (colorName || '').toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
-  const ext = (product.image.match(/\.(jpg|jpeg|png)$/i) || ['', 'jpg'])[1];
+  const base = product.image.replace(/\/[^/]+\.(jpg|jpeg|png)$/i, "");
+  const slug = (product.name || "")
+    .toLowerCase()
+    .replace(/\s*\([^)]*\)/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9-]/g, "");
+  const colorSlug = (colorName || "")
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9-]/g, "");
+  const ext = (product.image.match(/\.(jpg|jpeg|png)$/i) || ["", "jpg"])[1];
   return `${base}/${slug}-${colorSlug}.${ext}`;
 }
 
@@ -195,22 +226,33 @@ export function ProductCard({ product, schoolName, schoolSlug, onQuickShop }) {
   const productUrl = useMemo(() => {
     const base = `/product/${product.id}`;
     const params = new URLSearchParams();
-    if (schoolSlug) params.set('school', schoolSlug);
-    if (selectedColor?.name) params.set('color', selectedColor.name);
+    if (schoolSlug) params.set("school", schoolSlug);
+    if (selectedColor?.name) params.set("color", selectedColor.name);
     const qs = params.toString();
     return qs ? `${base}?${qs}` : base;
   }, [product.id, schoolSlug, selectedColor?.name]);
 
   const variantPrices = Array.isArray(product.variants)
-    ? product.variants.map((v) => Number(v.saleRate)).filter((n) => Number.isFinite(n) && n > 0)
+    ? product.variants
+        .map((v) => Number(v.saleRate))
+        .filter((n) => Number.isFinite(n) && n > 0)
     : [];
-  const displayPrice = variantPrices.length ? Math.min(...variantPrices) : product.price;
+  const displayPrice = variantPrices.length
+    ? Math.min(...variantPrices)
+    : product.price;
 
   const sizeOptions = useMemo(() => {
     if (Array.isArray(product.variants) && product.variants.length) {
-      return [...new Set(product.variants.map((v) => (v.sizeLabel || '').trim()).filter(Boolean))];
+      return [
+        ...new Set(
+          product.variants
+            .map((v) => (v.sizeLabel || "").trim())
+            .filter(Boolean),
+        ),
+      ];
     }
-    if (Array.isArray(product.sizes) && product.sizes.length) return product.sizes;
+    if (Array.isArray(product.sizes) && product.sizes.length)
+      return product.sizes;
     return [];
   }, [product.variants, product.sizes]);
 
@@ -232,8 +274,8 @@ export function ProductCard({ product, schoolName, schoolSlug, onQuickShop }) {
   }, [product, selectedColor?.name]);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      console.log('[ProductCard] render', {
+    if (typeof window !== "undefined") {
+      console.log("[ProductCard] render", {
         productId: product.id,
         name: product.name,
         colors,
@@ -244,7 +286,9 @@ export function ProductCard({ product, schoolName, schoolSlug, onQuickShop }) {
     }
   }, [product, colors, selectedColor, displayImage]);
 
-  useEffect(() => { setImageError(false); }, [displayImage]);
+  useEffect(() => {
+    setImageError(false);
+  }, [displayImage]);
 
   const handleAddToCart = (e) => {
     e?.preventDefault?.();
@@ -267,7 +311,12 @@ export function ProductCard({ product, schoolName, schoolSlug, onQuickShop }) {
 
   const handleQuickShop = (e) => {
     e?.preventDefault?.();
-    onQuickShop?.({ product, schoolName, schoolSlug, selectedColor: selectedColor?.name });
+    onQuickShop?.({
+      product,
+      schoolName,
+      schoolSlug,
+      selectedColor: selectedColor?.name,
+    });
   };
 
   return (
@@ -275,29 +324,52 @@ export function ProductCard({ product, schoolName, schoolSlug, onQuickShop }) {
       <style>{CARD_CSS}</style>
 
       <div className="pc-card group">
-
         {/* ── Image ── */}
-        <Link to={productUrl} style={{ textDecoration: 'none', display: 'block', flexShrink: 0 }}>
-          <div style={{ position: 'relative', overflow: 'hidden', aspectRatio: '1/1', background: '#f1f5f9' }}>
-        {displayImage && !imageError ? (
-          <img
-            src={displayImage}
-            alt={product.name}
+        <Link
+          to={productUrl}
+          style={{ textDecoration: "none", display: "block", flexShrink: 0 }}
+        >
+          <div
+            className="pc-img-wrap"
             style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              display: 'block',
-              transition: 'transform 0.55s cubic-bezier(0.25,0.46,0.45,0.94)',
+              position: "relative",
+              overflow: "hidden",
+              background: "#f8fafc",
             }}
-            className="group-hover:scale-[1.04]"
-            onError={() => setImageError(true)}
-          />
-        ) : (
-          <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <ShoppingBag style={{ width: 44, height: 44, color: '#94a3b8', opacity: 0.4, strokeWidth: 1 }} />
-          </div>
-        )}
+          >
+            {displayImage && !imageError ? (
+              <img
+                src={displayImage}
+                alt={product.name}
+                className="pc-img group-hover:scale-[1.04]"
+                style={{
+                  display: "block",
+                  transition:
+                    "transform 0.55s cubic-bezier(0.25,0.46,0.45,0.94)",
+                }}
+                onError={() => setImageError(true)}
+              />
+            ) : (
+              <div
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <ShoppingBag
+                  style={{
+                    width: 44,
+                    height: 44,
+                    color: "#94a3b8",
+                    opacity: 0.4,
+                    strokeWidth: 1,
+                  }}
+                />
+              </div>
+            )}
             {/* Wishlist — pinned top-right on image */}
             <button
               type="button"
@@ -305,37 +377,52 @@ export function ProductCard({ product, schoolName, schoolSlug, onQuickShop }) {
                 e.preventDefault();
                 toggleWishlist(product);
               }}
-              aria-label={isInWishlist(product.id) ? 'Remove from wishlist' : 'Add to wishlist'}
+              aria-label={
+                isInWishlist(product.id)
+                  ? "Remove from wishlist"
+                  : "Add to wishlist"
+              }
               className="w-8 h-8 flex items-center justify-center rounded-full border border-slate-200 bg-white/90 hover:bg-rose-50 text-slate-400 hover:text-rose-500 transition-colors"
-              style={{ position: 'absolute', top: 10, right: 10, zIndex: 2 }}
+              style={{ position: "absolute", top: 10, right: 10, zIndex: 2 }}
             >
               <Heart
                 size={14}
-                className={isInWishlist(product.id) ? 'fill-current text-rose-500' : ''}
+                className={
+                  isInWishlist(product.id) ? "fill-current text-rose-500" : ""
+                }
               />
             </button>
           </div>
-      </Link>
+        </Link>
 
         {/* ── Info ── */}
         <div className="pc-info">
-
           {/* Name + price row */}
-          <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '8px' }}>
-            <Link to={productUrl} style={{ textDecoration: 'none', flex: 1, minWidth: 0 }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "flex-start",
+              justifyContent: "space-between",
+              gap: "8px",
+            }}
+          >
+            <Link
+              to={productUrl}
+              style={{ textDecoration: "none", flex: 1, minWidth: 0 }}
+            >
               <h3
                 style={{
                   margin: 0,
                   fontFamily: "'Baloo 2', cursive",
                   fontWeight: 900,
-                  fontSize: 'clamp(14px, 1.15vw, 17px)',
-                  color: '#0f172a',
+                  fontSize: "clamp(14px, 1.15vw, 17px)",
+                  color: "#0f172a",
                   lineHeight: 1.25,
-                  display: '-webkit-box',
+                  display: "-webkit-box",
                   WebkitLineClamp: 2,
-                  WebkitBoxOrient: 'vertical',
-                  overflow: 'hidden',
-                  transition: 'color 0.18s ease',
+                  WebkitBoxOrient: "vertical",
+                  overflow: "hidden",
+                  transition: "color 0.18s ease",
                 }}
                 className="group-hover:text-[#2563eb]"
               >
@@ -344,12 +431,12 @@ export function ProductCard({ product, schoolName, schoolSlug, onQuickShop }) {
             </Link>
             <span
               style={{
-                marginLeft: '4px',
+                marginLeft: "4px",
                 fontFamily: "'Baloo 2', cursive",
                 fontWeight: 900,
-                fontSize: 'clamp(13px, 1vw, 16px)',
-                color: '#0f172a',
-                whiteSpace: 'nowrap',
+                fontSize: "clamp(13px, 1vw, 16px)",
+                color: "#0f172a",
+                whiteSpace: "nowrap",
                 flexShrink: 0,
               }}
             >
@@ -358,16 +445,24 @@ export function ProductCard({ product, schoolName, schoolSlug, onQuickShop }) {
           </div>
 
           {/* Swatches */}
-        {colors.length > 0 && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '5px', flexWrap: 'wrap' }}>
+          {colors.length > 0 && (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "5px",
+                flexWrap: "wrap",
+              }}
+            >
               {colors.map((c) => (
                 <button
-                  key={c.hex} type="button"
-                  className={`pc-swatch${selectedColor?.hex === c.hex ? ' sel' : ''}`}
+                  key={c.hex}
+                  type="button"
+                  className={`pc-swatch${selectedColor?.hex === c.hex ? " sel" : ""}`}
                   style={{ backgroundColor: c.hex }}
                   onClick={() => {
-                    if (typeof window !== 'undefined') {
-                      console.log('[ProductCard] swatch click', {
+                    if (typeof window !== "undefined") {
+                      console.log("[ProductCard] swatch click", {
                         productId: product.id,
                         name: product.name,
                         clickedColor: c,
@@ -375,29 +470,58 @@ export function ProductCard({ product, schoolName, schoolSlug, onQuickShop }) {
                     }
                     setSelectedColor(c);
                   }}
-                  title={c.name} aria-label={`Color ${c.name}`} aria-pressed={selectedColor?.hex === c.hex}
+                  title={c.name}
+                  aria-label={`Color ${c.name}`}
+                  aria-pressed={selectedColor?.hex === c.hex}
                 />
               ))}
-          </div>
-        )}
+            </div>
+          )}
 
           {/* Separator */}
-          <div style={{ height: '1px', background: 'linear-gradient(to right, #e2e8f0 60%, transparent)', borderRadius: 99 }} />
+          <div
+            style={{
+              height: "1px",
+              background: "linear-gradient(to right, #e2e8f0 60%, transparent)",
+              borderRadius: 99,
+            }}
+          />
 
           {/* Buttons */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: 'auto' }}>
-            <button type="button" onClick={handleQuickShop} className="pc-btn-quick" aria-label="Quick shop">
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              marginTop: "auto",
+            }}
+          >
+            <button
+              type="button"
+              onClick={handleQuickShop}
+              className="pc-btn-quick"
+              aria-label="Quick shop"
+            >
               <Zap size={11} strokeWidth={2.5} />
               Quick Shop
-          </button>
-            <button type="button" onClick={handleAddToCart} className={`pc-btn-cart${added ? ' added' : ''}`} aria-label="Add to cart">
-              {added
-                ? <Check size={15} strokeWidth={2.5} style={{ color: '#fff' }} />
-                : <ShoppingBag size={14} strokeWidth={2} style={{ color: '#fff' }} />
-              }
-          </button>
+            </button>
+            <button
+              type="button"
+              onClick={handleAddToCart}
+              className={`pc-btn-cart${added ? " added" : ""}`}
+              aria-label="Add to cart"
+            >
+              {added ? (
+                <Check size={15} strokeWidth={2.5} style={{ color: "#fff" }} />
+              ) : (
+                <ShoppingBag
+                  size={14}
+                  strokeWidth={2}
+                  style={{ color: "#fff" }}
+                />
+              )}
+            </button>
           </div>
-
         </div>
       </div>
     </>
