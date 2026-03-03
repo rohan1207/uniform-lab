@@ -126,12 +126,12 @@ const CARD_CSS = `
     aspect-ratio: 3 / 4;
   }
 
-  /* ── Product image — full visibility, no cropping ── */
+  /* ── Product image — cover + center for consistent card fill ── */
   .pc-img {
     width: 100%;
     height: 100%;
-    object-fit: contain;
-    object-position: top center;
+    object-fit: cover;
+    object-position: center;
   }
 
   /* ── Card info body ── */
