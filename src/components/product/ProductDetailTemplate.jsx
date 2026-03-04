@@ -512,7 +512,6 @@ export function ProductDetailTemplate({
     sizeOptions[0] || DETAIL_SIZES[0],
   );
   const [quantity, setQuantity] = useState(1);
-  const [customSize, setCustomSize] = useState("");
   const [wishlist, setWishlist] = useState(isInWishlist(product.id));
   const [descTab, setDescTab] = useState("description");
   const [sliderIndex, setSliderIndex] = useState(0);
@@ -942,46 +941,13 @@ export function ProductDetailTemplate({
                     key={s}
                     onClick={() => {
                       setSelectedSize(s);
-                      setCustomSize("");
                     }}
-                    className={`pdt-size ${selectedSize === s && !customSize ? "active" : ""}`}
+                    className={`pdt-size ${selectedSize === s ? "active" : ""}`}
                   >
                     {s}
                   </button>
                 ))}
               </div>
-              <input
-                type="text"
-                value={customSize}
-                onChange={(e) => {
-                  const v = e.target.value.trim();
-                  setCustomSize(v);
-                  if (v) setSelectedSize(v);
-                }}
-                placeholder="Custom size? Type here"
-                className="mt-3"
-                style={{
-                  width: "180px",
-                  border: "1.5px solid #e2e8f0",
-                  borderRadius: "10px",
-                  padding: "7px 14px",
-                  fontSize: "13px",
-                  fontFamily: "'Nunito', sans-serif",
-                  fontWeight: 600,
-                  color: "#0f172a",
-                  outline: "none",
-                  background: "#fff",
-                  display: "block",
-                }}
-                onFocus={(e) => {
-                  e.target.style.borderColor = "#2563eb";
-                  e.target.style.boxShadow = "0 0 0 3px rgba(37,99,235,0.10)";
-                }}
-                onBlur={(e) => {
-                  e.target.style.borderColor = "#e2e8f0";
-                  e.target.style.boxShadow = "none";
-                }}
-              />
             </div>
 
             {/* Quantity */}
