@@ -45,6 +45,11 @@ export default function AccountPage() {
   const [authStep, setAuthStep] = useState('email'); // 'email' | 'password' | 'signup'
   const [emailCheckValue, setEmailCheckValue] = useState('');
   const [checkingEmail, setCheckingEmail] = useState(false);
+  const [forgotMode, setForgotMode] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState('');
+  const [forgotLoading, setForgotLoading] = useState(false);
+  const [forgotSent, setForgotSent] = useState(false);
+  const [forgotError, setForgotError] = useState('');
   const [loginForm, setLoginForm] = useState({ email: '', password: '' });
   const [signupForm, setSignupForm] = useState({ name: '', email: '', phone: '', password: '' });
   const [profileForm, setProfileForm] = useState({
@@ -246,7 +251,30 @@ export default function AccountPage() {
   const goBackToEmail = () => {
     setAuthStep('email');
     setError('');
+    setForgotMode(false);
+    setForgotSent(false);
+    setForgotError('');
     setLoginForm((prev) => ({ ...prev, password: '' }));
+  };
+
+  const handleForgotPassword = async (e) => {
+    e.preventDefault();
+    setForgotError('');
+    setForgotLoading(true);
+    try {
+      const emailToReset = (forgotEmail || loginForm.email).trim().toLowerCase();
+      // Fire-and-forget: the backend always responds 200 to avoid enumeration
+      await fetch(`${API_BASE}/api/public/auth/forgot-password`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: emailToReset }),
+      });
+      setForgotSent(true);
+    } catch {
+      setForgotError('Something went wrong. Please try again.');
+    } finally {
+      setForgotLoading(false);
+    }
   };
 
   const handleProfileSave = (e) => {
@@ -444,6 +472,72 @@ export default function AccountPage() {
 
     /* ── Step 2a: Returning user — just show password ── */
     if (authStep === 'password') {
+      /* ── Forgot-password sub-mode ── */
+      if (forgotMode) {
+        return (
+          <div className="max-w-md mx-auto">
+            <div className="rounded-xl border border-[var(--color-border)] bg-white p-6 shadow-sm">
+              <button
+                type="button"
+                onClick={() => { setForgotMode(false); setForgotSent(false); setForgotError(''); }}
+                className="text-xs text-[#2563eb] font-semibold flex items-center gap-1 hover:underline mb-4"
+              >
+                ← Back to sign in
+              </button>
+
+              {forgotSent ? (
+                <div className="text-center py-2 space-y-3">
+                  <div className="text-5xl">📬</div>
+                  <h2 className="text-lg font-bold text-[#1a1a2e]" style={FONT_HEADING}>Check your email</h2>
+                  <p className="text-sm text-slate-600 leading-relaxed">
+                    If an account exists for{' '}
+                    <span className="font-semibold text-slate-800">{forgotEmail || loginForm.email}</span>,
+                    we&apos;ve sent a password reset link. Check your inbox (and spam folder).
+                  </p>
+                  <p className="text-xs text-slate-400">The link expires in 1 hour.</p>
+                  <button
+                    type="button"
+                    onClick={() => { setForgotMode(false); setForgotSent(false); setForgotError(''); }}
+                    className="mt-3 w-full inline-flex items-center justify-center py-2.5 rounded-full font-bold hover:brightness-105 transition"
+                    style={{ ...BTN_PRIMARY, ...FONT_HEADING }}
+                  >
+                    Back to sign in
+                  </button>
+                </div>
+              ) : (
+                <form onSubmit={handleForgotPassword} className="space-y-4">
+                  <div>
+                    <h2 className="text-lg font-bold text-[#1a1a2e]" style={FONT_HEADING}>Reset your password</h2>
+                    <p className="text-xs text-slate-500 mt-1">We&apos;ll send a reset link to your email.</p>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-500 mb-1">Email address</label>
+                    <input
+                      type="email"
+                      value={forgotEmail || loginForm.email}
+                      onChange={(e) => setForgotEmail(e.target.value)}
+                      className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
+                      autoFocus
+                      required
+                    />
+                  </div>
+                  {forgotError && <p className="text-xs text-red-600">{forgotError}</p>}
+                  <button
+                    type="submit"
+                    disabled={forgotLoading}
+                    className="w-full inline-flex items-center justify-center py-2.5 rounded-full font-bold disabled:opacity-60 hover:brightness-105 transition"
+                    style={{ ...BTN_PRIMARY, ...FONT_HEADING }}
+                  >
+                    {forgotLoading ? 'Sending…' : 'Send reset link'}
+                  </button>
+                </form>
+              )}
+            </div>
+          </div>
+        );
+      }
+
+      /* ── Normal password login ── */
       return (
         <div className="max-w-md mx-auto">
           <form
@@ -471,6 +565,18 @@ export default function AccountPage() {
                 autoFocus
                 required
               />
+              <button
+                type="button"
+                onClick={() => {
+                  setForgotMode(true);
+                  setForgotEmail(loginForm.email);
+                  setForgotError('');
+                  setForgotSent(false);
+                }}
+                className="text-xs text-[#2563eb] hover:underline mt-1.5 font-semibold block text-right w-full"
+              >
+                Forgot password?
+              </button>
             </div>
             {error && <p className="text-xs text-red-600">{error}</p>}
             <button

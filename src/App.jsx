@@ -22,6 +22,7 @@ import AboutPage from '@/pages/AboutPage';
 import ServicesPage from '@/pages/ServicesPage';
 import FAQPage from '@/pages/FAQPage';
 import HomePage from '@/pages/HomePage';
+import ResetPasswordPage from '@/pages/ResetPasswordPage';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -58,6 +59,7 @@ function LayoutContent() {
           <Route path="/services" element={<ServicesPage />} />
           <Route path="/faqs" element={<FAQPage />} />
           <Route path="/search" element={<SearchPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
         </Routes>
       </main>
       <Footer />

@@ -389,8 +389,8 @@ const CSS = `
   .ab-founders {
     display: flex;
     flex-direction: column;
-    gap: 28px;
-    margin-bottom: 72px;
+    gap: 20px;
+    margin-bottom: 48px;
   }
   .ab-founder-row {
     display: grid;
@@ -401,7 +401,6 @@ const CSS = `
     overflow: hidden;
     box-shadow: 0 4px 24px rgba(15,23,42,0.06);
     transition: box-shadow 0.3s ease;
-    min-height: 300px;
   }
   .ab-founder-row:hover { box-shadow: 0 14px 44px rgba(30,58,138,0.13); }
   /* image cell */
@@ -413,6 +412,8 @@ const CSS = `
     will-change: transform;
   }
   .ab-founder-photo-wrap img {
+    position: absolute;
+    inset: 0;
     width: 100%; height: 100%;
     object-fit: cover;
     object-position: center top;
@@ -423,7 +424,7 @@ const CSS = `
   }
   /* text cell */
   .ab-founder-text-panel {
-    padding: clamp(28px, 4vw, 48px);
+    padding: clamp(20px, 2.8vw, 32px);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -438,36 +439,36 @@ const CSS = `
   }
   .ab-founder-name {
     font-family: 'Baloo 2', cursive;
-    font-size: clamp(22px, 2.2vw, 30px);
+    font-size: clamp(20px, 2vw, 26px);
     font-weight: 800;
     color: #1e293b;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
     line-height: 1.15;
   }
   .ab-founder-bio {
     color: #64748b;
-    font-size: 14px;
+    font-size: 13.5px;
     font-weight: 600;
-    line-height: 1.7;
-    margin: 0 0 14px 0;
+    line-height: 1.65;
+    margin: 0 0 10px 0;
   }
   .ab-founder-bio + .ab-founder-bio { margin-top: 0; }
   .ab-founder-quote {
     border-left: 3px solid #2563eb;
-    margin: 16px 0 16px 0;
-    padding: 10px 0 10px 16px;
+    margin: 10px 0 10px 0;
+    padding: 8px 0 8px 14px;
     font-family: 'Baloo 2', cursive;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 700;
     color: #1e3a8a;
-    line-height: 1.55;
+    line-height: 1.5;
     font-style: italic;
   }
   .ab-founder-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 7px;
-    margin-top: 18px;
+    gap: 6px;
+    margin-top: 12px;
   }
   .ab-founder-tag {
     background: #eff6ff;
@@ -1066,11 +1067,10 @@ export default function AboutPage() {
                   <div className="ab-founder-role">Co-Founder</div>
                   <div className="ab-founder-name">Nivedita Mota</div>
                   <p className="ab-founder-bio">
-                    Nivedita brings a sharp eye for design and an unwavering focus on the
-                    customer's experience. With a deep understanding of what institutions —
-                    and the students and staff within them — actually need, she joined the
-                    founding journey to ensure The Uniform Lab wasn't just operationally
-                    sound, but genuinely pleasant to work with.
+                    Nivedita brings a sharp eye for design and an unwavering focus on
+                    the customer experience. She joined the founding journey to ensure
+                    The Uniform Lab wasn't just operationally sound, but genuinely
+                    pleasant and reliable to work with at every touchpoint.
                   </p>
 
                   {/* extra content — collapsed on mobile until expanded */}
@@ -1084,8 +1084,8 @@ export default function AboutPage() {
                     </p>
                    
                     <blockquote className="ab-founder-quote">
-                      "A school coordinator shouldn't have to chase us for updates. That's
-                      not a delivery system — that's a burden we've made someone else carry."
+                      "A coordinator shouldn't have to chase us — that's a burden
+                      we should never pass on."
                     </blockquote>
                     <div className="ab-founder-tags">
                       {["Product Design","Brand Identity","Customer Experience","School Partnerships","Operations Communication"].map(t => (
