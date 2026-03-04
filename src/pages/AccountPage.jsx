@@ -68,6 +68,9 @@ export default function AccountPage() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [exchangeSubmitting, setExchangeSubmitting] = useState(false);
+  const [exchangeSuccess, setExchangeSuccess] = useState('');
+  const [exchangeError, setExchangeError] = useState('');
   const [trackId, setTrackId] = useState('');
   const [trackedOrder, setTrackedOrder] = useState(null);
   const [trackError, setTrackError] = useState('');
@@ -143,6 +146,7 @@ export default function AccountPage() {
         if (!cancelled && ordersRes.ok && Array.isArray(ordersData)) {
           const mappedOrders = ordersData.map((o) => ({
             id: o.uniqueOrderId || o._id,
+            mongoId: o._id,
             createdAt: o.createdAt,
             total: o.totalAmount,
             schoolName: o.school && o.school.name ? o.school.name : '',
@@ -325,24 +329,39 @@ export default function AccountPage() {
     }
   };
 
-  const submitReturnRequest = (e) => {
+  const submitReturnRequest = async (e) => {
     e.preventDefault();
     if (!returnForm.orderId || !returnForm.itemKey || !returnForm.reason.trim()) return;
+    setExchangeSubmitting(true);
+    setExchangeError('');
+    setExchangeSuccess('');
     try {
-      const raw = window.localStorage.getItem(RETURN_STORAGE_KEY);
-      const current = raw ? JSON.parse(raw) : [];
-      const newReq = {
-        id: `RR-${Date.now()}`,
-        orderId: returnForm.orderId,
-        type: 'exchange', // Uniform Lab policy: exchange / size change only
-        itemKey: returnForm.itemKey,
-        reason: returnForm.reason,
-        createdAt: new Date().toISOString(),
-      };
-      window.localStorage.setItem(RETURN_STORAGE_KEY, JSON.stringify([...current, newReq]));
+      // itemKey format: "<displayOrderId>:<itemIndex>"
+      const [, itemIdxStr] = returnForm.itemKey.split(':');
+      const selectedOrder = orders.find((o) => o.id === returnForm.orderId);
+      const mongoId = selectedOrder?.mongoId;
+      if (!mongoId) throw new Error('Could not resolve order. Please refresh and try again.');
+
+      const res = await fetch(`${API_BASE}/api/customer/exchange-requests`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          orderId: mongoId,
+          itemIndex: Number(itemIdxStr),
+          reason: returnForm.reason.trim(),
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data?.error?.message || 'Submission failed');
+      setExchangeSuccess('Exchange request submitted! We\'ll reach out to you soon.');
       setReturnForm({ orderId: '', itemKey: '', reason: '' });
-    } catch {
-      // ignore
+    } catch (err) {
+      setExchangeError(err.message || 'Something went wrong. Please try again.');
+    } finally {
+      setExchangeSubmitting(false);
     }
   };
 
@@ -912,11 +931,21 @@ export default function AccountPage() {
           className="rounded-xl border border-[var(--color-border)] bg-white p-6 space-y-4"
         >
           <h2 className="text-lg font-bold text-[#1a1a2e] mb-1" style={FONT_HEADING}>
-            Exchange request (size change only)
+            Exchange request
           </h2>
           <p className="text-xs text-[var(--color-text-muted)]">
-            As per Uniform Lab policy, only exchanges for size change are allowed. No refunds.
+            Select the order and item you'd like to exchange, then describe the reason. Our team will get back to you.
           </p>
+          {exchangeSuccess && (
+            <p className="text-xs text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2">
+              {exchangeSuccess}
+            </p>
+          )}
+          {exchangeError && (
+            <p className="text-xs text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+              {exchangeError}
+            </p>
+          )}
 
           <div className="space-y-3 text-xs">
             <div>
@@ -998,17 +1027,18 @@ export default function AccountPage() {
 
           <button
             type="submit"
-            className="inline-flex items-center justify-center py-2.5 px-5 rounded-full font-bold hover:brightness-105 transition"
+            disabled={exchangeSubmitting}
+            className="inline-flex items-center justify-center py-2.5 px-5 rounded-full font-bold hover:brightness-105 transition disabled:opacity-60"
             style={{ ...BTN_PRIMARY, ...FONT_HEADING }}
           >
-            Submit exchange request (local)
+            {exchangeSubmitting ? 'Submitting…' : 'Submit exchange request'}
           </button>
         </form>
 
         {/* Right: policy (scrollable) */}
         <aside className="rounded-xl border border-[var(--color-border)] bg-white p-5 max-h-[460px] overflow-y-auto text-xs leading-relaxed text-slate-700">
           <h3 className="text-sm font-bold text-[#1a1a2e] mb-2" style={FONT_HEADING}>
-            Uniform Lab Exchange &amp; Return Policy
+            Uniform Lab Exchange Policy
           </h3>
           <p className="mb-2">
             At Uniform Lab, we ensure you a hassle-free shopping experience, where you can
@@ -1097,7 +1127,7 @@ export default function AccountPage() {
                 {tab === 'profile' && 'Profile'}
                 {tab === 'addresses' && 'Addresses'}
                 {tab === 'orders' && 'Orders'}
-                {tab === 'returns' && 'Exchange / returns'}
+                {tab === 'returns' && 'Exchange'}
                 {tab === 'track' && 'Track order'}
               </button>
             ))}
