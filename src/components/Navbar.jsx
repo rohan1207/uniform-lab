@@ -556,7 +556,7 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Right: Wishlist + Cart */}
+          {/* Right: Account + Cart */}
           <div
             style={{
               marginLeft: "auto",
@@ -565,10 +565,10 @@ export default function Navbar() {
               gap: "4px",
             }}
           >
-            {/* Wishlist icon with badge */}
+            {/* Account icon */}
             <Link
-              to="/wishlist"
-              aria-label="Wishlist"
+              to="/account"
+              aria-label="Account"
               style={{
                 position: "relative",
                 display: "flex",
@@ -579,12 +579,12 @@ export default function Navbar() {
                 borderRadius: "10px",
                 background: "none",
                 border: "1.5px solid #e2e8f0",
-                color: wishlistCount > 0 ? "#e11d48" : "#475569",
+                color: "#475569",
                 textDecoration: "none",
               }}
             >
-              <Heart size={20} fill={wishlistCount > 0 ? "#e11d48" : "none"} stroke={wishlistCount > 0 ? "#e11d48" : "currentColor"} />
-              {wishlistCount > 0 && (
+              <User size={20} />
+              {false && (
                 <span
                   style={{
                     position: "absolute",
@@ -605,7 +605,7 @@ export default function Navbar() {
                     lineHeight: 1,
                   }}
                 >
-                  {wishlistCount > 99 ? "99+" : wishlistCount}
+                  0
                 </span>
               )}
             </Link>
