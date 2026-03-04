@@ -59,19 +59,6 @@ export default function CheckoutPage() {
   const items = checkoutItems;
   const totalAmount = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
 
-  // Frozen snapshot used for display during submission so clearBuyNow() doesn't flash cart items
-  const displayItems = frozenItems || items;
-  const displayTotal = frozenItems
-    ? frozenItems.reduce((sum, i) => sum + i.price * i.quantity, 0)
-    : totalAmount;
-
-  // Clean up buyNowItem when navigating away
-  useEffect(() => {
-    return () => {
-      // Don't clear on unmount if we're going to payment — clearBuyNow is called after order
-    };
-  }, []);
-
   const [form, setForm] = useState({
     name: user?.name || "",
     email: user?.email || "",
@@ -85,6 +72,19 @@ export default function CheckoutPage() {
   const [note, setNote] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [frozenItems, setFrozenItems] = useState(null);
+
+  // Frozen snapshot used for display during submission so clearBuyNow() doesn't flash cart items
+  const displayItems = frozenItems || items;
+  const displayTotal = frozenItems
+    ? frozenItems.reduce((sum, i) => sum + i.price * i.quantity, 0)
+    : totalAmount;
+
+  // Clean up buyNowItem when navigating away
+  useEffect(() => {
+    return () => {
+      // Don't clear on unmount if we're going to payment — clearBuyNow is called after order
+    };
+  }, []);
   const [orderId, setOrderId] = useState("");
   const [hasSavedAddress, setHasSavedAddress] = useState(false);
   const [saveAddress, setSaveAddress] = useState(false);

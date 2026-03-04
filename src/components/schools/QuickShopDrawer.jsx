@@ -689,7 +689,7 @@ export function QuickShopDrawer({
                   letterSpacing: "-0.3px",
                 }}
               >
-                ₹{product.price}
+                ₹{effectivePrice}
               </p>
             </div>
 
