@@ -36,7 +36,14 @@ export function WishlistProvider({ children }) {
           productId: product.id,
           name: product.name,
           price: product.price,
-          image: product.image || product.mainImageUrl || null,
+          image:
+            product.image ||
+            product.mainImageUrl ||
+            (product.imagesByColor
+              ? Object.values(product.imagesByColor)[0]?.[0] ?? null
+              : null) ||
+            (Array.isArray(product.images) ? product.images[0] ?? null : null) ||
+            null,
           meta: product,
           addedAt: new Date().toISOString(),
         },

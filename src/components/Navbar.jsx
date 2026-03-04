@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCart } from "@/contexts/CartContext";
+import { useWishlist } from "@/contexts/WishlistContext";
 import { featuredSchools as staticFeaturedSchools } from "@/data/featuredSchools";
 import { cachedFetch } from "@/lib/apiCache";
 
@@ -35,6 +36,8 @@ export default function Navbar() {
   const location = useLocation();
   const pathname = location.pathname;
   const { totalItems, openCart } = useCart();
+  const { items: wishlistItems } = useWishlist();
+  const wishlistCount = wishlistItems.length;
   const [schools, setSchools] = useState(staticFeaturedSchools);
 
   useEffect(() => {
@@ -374,14 +377,15 @@ export default function Navbar() {
             <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
               {[
                 { icon: User, label: "Account", href: "/account" },
-                { icon: Heart, label: "Wishlist", href: "/wishlist" },
+                { icon: Heart, label: "Wishlist", href: "/wishlist", badge: wishlistCount },
                 { icon: Search, label: "Search", href: "/search" },
-              ].map(({ icon: Icon, label, href }) => (
+              ].map(({ icon: Icon, label, href, badge }) => (
                 <Link
                   key={label}
                   to={href}
                   aria-label={label}
                   style={{
+                    position: "relative",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -402,6 +406,30 @@ export default function Navbar() {
                   }}
                 >
                   <Icon size={18} />
+                  {badge > 0 && (
+                    <span
+                      style={{
+                        position: "absolute",
+                        top: "4px",
+                        right: "4px",
+                        background: "#e11d48",
+                        color: "#fff",
+                        borderRadius: "999px",
+                        fontSize: "10px",
+                        fontWeight: 800,
+                        minWidth: "16px",
+                        height: "16px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        padding: "0 3px",
+                        fontFamily: "'Nunito', sans-serif",
+                        lineHeight: 1,
+                      }}
+                    >
+                      {badge > 99 ? "99+" : badge}
+                    </span>
+                  )}
                 </Link>
               ))}
 
@@ -528,7 +556,7 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Right: Cart */}
+          {/* Right: Wishlist + Cart */}
           <div
             style={{
               marginLeft: "auto",
@@ -537,6 +565,50 @@ export default function Navbar() {
               gap: "4px",
             }}
           >
+            {/* Wishlist icon with badge */}
+            <Link
+              to="/wishlist"
+              aria-label="Wishlist"
+              style={{
+                position: "relative",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "40px",
+                height: "40px",
+                borderRadius: "10px",
+                background: "none",
+                border: "1.5px solid #e2e8f0",
+                color: wishlistCount > 0 ? "#e11d48" : "#475569",
+                textDecoration: "none",
+              }}
+            >
+              <Heart size={20} fill={wishlistCount > 0 ? "#e11d48" : "none"} stroke={wishlistCount > 0 ? "#e11d48" : "currentColor"} />
+              {wishlistCount > 0 && (
+                <span
+                  style={{
+                    position: "absolute",
+                    top: "5px",
+                    right: "5px",
+                    background: "#e11d48",
+                    color: "#fff",
+                    borderRadius: "999px",
+                    fontSize: "10px",
+                    fontWeight: 800,
+                    minWidth: "16px",
+                    height: "16px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    padding: "0 3px",
+                    fontFamily: "'Nunito', sans-serif",
+                    lineHeight: 1,
+                  }}
+                >
+                  {wishlistCount > 99 ? "99+" : wishlistCount}
+                </span>
+              )}
+            </Link>
             <button
               onClick={openCart}
               aria-label={`Cart${totalItems > 0 ? ` – ${totalItems} items` : ""}`}
@@ -918,14 +990,15 @@ export default function Navbar() {
                 <div style={{ display: "flex", gap: "8px" }}>
                   {[
                     { icon: User, label: "Account", href: "/account" },
-                    { icon: Heart, label: "Wishlist", href: "/wishlist" },
+                    { icon: Heart, label: "Wishlist", href: "/wishlist", badge: wishlistCount },
                     { icon: Search, label: "Search", href: "/search" },
-                  ].map(({ icon: Icon, label, href }) => (
+                  ].map(({ icon: Icon, label, href, badge }) => (
                     <Link
                       key={label}
                       to={href}
                       onClick={() => setOpen(false)}
                       style={{
+                        position: "relative",
                         flex: 1,
                         display: "flex",
                         flexDirection: "column",
@@ -951,6 +1024,30 @@ export default function Navbar() {
                         e.currentTarget.style.borderColor = "#e2e8f0";
                       }}
                     >
+                      {badge > 0 && (
+                        <span
+                          style={{
+                            position: "absolute",
+                            top: "6px",
+                            right: "50%",
+                            transform: "translateX(6px)",
+                            background: "#e11d48",
+                            color: "#fff",
+                            borderRadius: "999px",
+                            fontSize: "9px",
+                            fontWeight: 800,
+                            minWidth: "14px",
+                            height: "14px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            padding: "0 3px",
+                            lineHeight: 1,
+                          }}
+                        >
+                          {badge > 99 ? "99+" : badge}
+                        </span>
+                      )}
                       <Icon size={20} strokeWidth={1.75} />
                       {label}
                     </Link>

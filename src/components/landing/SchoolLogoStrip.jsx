@@ -108,7 +108,13 @@ export default function SchoolLogoStrip() {
         }
 
         .logo-strip-wrap:hover .logo-animated {
-          animation-play-state: paused;
+          animation-play-state: running;
+        }
+
+        @media (hover: hover) and (pointer: fine) {
+          .logo-strip-wrap:hover .logo-animated {
+            animation-play-state: paused;
+          }
         }
 
         .logo-strip-cell {

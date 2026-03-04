@@ -378,10 +378,55 @@ const CSS = `
 `;
 
 /* ─── COMPONENT ──────────────────────────────────────────────────────── */
+
+const WHATSAPP_NUMBER = "919028552855"; // no + or spaces
+
+function buildWhatsAppMessage(f) {
+  const lines = [
+    "🏫 *New School Enquiry — The Uniform Lab*",
+    "─────────────────────────────",
+    `🏛️ *School / College:* ${f.school}`,
+    `👤 *Contact Person:* ${f.contact}`,
+    `📧 *Email:* ${f.email}`,
+    `📞 *Phone:* ${f.phone}`,
+    `📍 *City / Location:* ${f.city}`,
+  ];
+  if (f.message && f.message.trim()) {
+    lines.push("─────────────────────────────");
+    lines.push(`💬 *Message:*\n${f.message.trim()}`);
+  }
+  lines.push("─────────────────────────────");
+  lines.push("_Sent via theuniformlab.in_");
+  return lines.join("\n");
+}
+
+function openWhatsApp(text) {
+  // wa.me is the canonical deep-link supported on iOS, Android, WhatsApp Desktop & WhatsApp Web.
+  // encodeURIComponent handles all special chars, emojis, newlines robustly.
+  const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+  // Use window.open with _blank so it works on desktop browsers too.
+  // On mobile, browsers hand the wa.me scheme to the WhatsApp app automatically.
+  const win = window.open(url, "_blank", "noopener,noreferrer");
+  // Fallback: if popup was blocked, navigate in same tab
+  if (!win || win.closed || typeof win.closed === "undefined") {
+    window.location.href = url;
+  }
+}
+
 export default function SchoolEnquiryPage() {
   const [submitted, setSubmitted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [showAllFeatures, setShowAllFeatures] = useState(false);
+  const [form, setForm] = useState({
+    school: "",
+    contact: "",
+    email: "",
+    phone: "",
+    city: "",
+    message: "",
+  });
+
+  const set = (field) => (e) => setForm((prev) => ({ ...prev, [field]: e.target.value }));
 
   useEffect(() => {
     const update = () => {
@@ -392,6 +437,13 @@ export default function SchoolEnquiryPage() {
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);
   }, []);
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const msg = buildWhatsAppMessage(form);
+    openWhatsApp(msg);
+    setSubmitted(true);
+  }
 
   /* ── Success ── */
   if (submitted) {
@@ -404,10 +456,20 @@ export default function SchoolEnquiryPage() {
               <div className="eq-success-icon">
                 <CheckCircle2 size={36} strokeWidth={2} />
               </div>
-              <h1 className="eq-success-title">Enquiry Received!</h1>
+              <h1 className="eq-success-title">Opening WhatsApp!</h1>
               <p className="eq-success-sub">
-                Thank you for reaching out. Our executive will get in touch with
-                you shortly to understand your school's uniform requirements.
+                Your enquiry details have been pre-filled in WhatsApp. Just hit
+                <strong> Send</strong> to connect with our team directly.
+                <br /><br />
+                If WhatsApp didn't open,{" "}
+                <a
+                  href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(buildWhatsAppMessage(form))}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: "#2563eb", fontWeight: 700 }}
+                >
+                  click here
+                </a>.
               </p>
               <Link to="/" className="eq-success-back">
                 Back to Home
@@ -595,10 +657,7 @@ export default function SchoolEnquiryPage() {
 
                 <form
                   className="eq-form-body"
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    setSubmitted(true);
-                  }}
+                  onSubmit={handleSubmit}
                 >
                   <div className="eq-field">
                     <label className="eq-label">School / College Name *</label>
@@ -607,6 +666,8 @@ export default function SchoolEnquiryPage() {
                       type="text"
                       className="eq-input"
                       placeholder="e.g. St. Mary's High School"
+                      value={form.school}
+                      onChange={set("school")}
                     />
                   </div>
 
@@ -617,6 +678,8 @@ export default function SchoolEnquiryPage() {
                       type="text"
                       className="eq-input"
                       placeholder="Principal / Admin / Coordinator"
+                      value={form.contact}
+                      onChange={set("contact")}
                     />
                   </div>
 
@@ -628,6 +691,8 @@ export default function SchoolEnquiryPage() {
                         type="email"
                         className="eq-input"
                         placeholder="admin@school.edu"
+                        value={form.email}
+                        onChange={set("email")}
                       />
                     </div>
                     <div>
@@ -637,6 +702,8 @@ export default function SchoolEnquiryPage() {
                         type="tel"
                         className="eq-input"
                         placeholder="+91 XXXXX XXXXX"
+                        value={form.phone}
+                        onChange={set("phone")}
                       />
                     </div>
                   </div>
@@ -648,6 +715,8 @@ export default function SchoolEnquiryPage() {
                       type="text"
                       className="eq-input"
                       placeholder="e.g. Pune, Maharashtra"
+                      value={form.city}
+                      onChange={set("city")}
                     />
                   </div>
 
@@ -657,11 +726,13 @@ export default function SchoolEnquiryPage() {
                       className="eq-input"
                       rows={4}
                       placeholder="Share approximate student strength, current uniform setup, and what you're looking for..."
+                      value={form.message}
+                      onChange={set("message")}
                     />
                   </div>
 
                   <button type="submit" className="eq-submit">
-                    Submit Enquiry
+                    Send via WhatsApp
                     <ArrowRight size={18} />
                   </button>
 

@@ -449,8 +449,58 @@ const CSS = `
     font-size: 14px;
     font-weight: 600;
     line-height: 1.7;
-    margin: 0;
+    margin: 0 0 14px 0;
   }
+  .ab-founder-bio + .ab-founder-bio { margin-top: 0; }
+  .ab-founder-quote {
+    border-left: 3px solid #2563eb;
+    margin: 16px 0 16px 0;
+    padding: 10px 0 10px 16px;
+    font-family: 'Baloo 2', cursive;
+    font-size: 15px;
+    font-weight: 700;
+    color: #1e3a8a;
+    line-height: 1.55;
+    font-style: italic;
+  }
+  .ab-founder-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 18px;
+  }
+  .ab-founder-tag {
+    background: #eff6ff;
+    color: #1d4ed8;
+    border: 1px solid #bfdbfe;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 4px 12px;
+    white-space: nowrap;
+  }
+  .ab-founder-readmore {
+    background: none;
+    border: none;
+    padding: 0;
+    margin-top: 10px;
+    color: #2563eb;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    letter-spacing: 0.02em;
+  }
+  .ab-founder-readmore:hover { text-decoration: underline; }
+  .ab-founder-extra {
+    overflow: hidden;
+    transition: max-height 0.35s ease, opacity 0.3s ease;
+  }
+  .ab-founder-extra.collapsed { max-height: 0; opacity: 0; pointer-events: none; }
+  .ab-founder-extra.expanded  { max-height: 600px; opacity: 1; }
 
   /* ── Wide card ── */
   .ab-wide-card {
@@ -854,6 +904,8 @@ export default function AboutPage() {
   const [showAllSpecs, setShowAllSpecs] = useState(false);
   const [showAllWhy, setShowAllWhy] = useState(false);
   const [showAllQuality, setShowAllQuality] = useState(false);
+  const [priyankExpanded, setPriyankExpanded] = useState(false);
+  const [niveditaExpanded, setNiveditaExpanded] = useState(false);
 
   useEffect(() => {
     const update = () => {
@@ -962,15 +1014,47 @@ export default function AboutPage() {
             {/* ── Founder 1: image LEFT · text RIGHT ── */}
             <Reveal delay={0}>
               <div className="ab-founder-row">
-                <FounderPhotoCard src="/pryank.png" alt="Priyank Mota" />
+                <FounderPhotoCard src="/priyank.jpeg" alt="Priyank Mota" />
                 <div className="ab-founder-text-panel">
                   <div className="ab-founder-role">Founder</div>
                   <div className="ab-founder-name">Priyank Mota</div>
                   <p className="ab-founder-bio">
-                    Visionary behind the systems and scale that power The Uniform Lab.
-                    Focus on operational integrity, structured processes, and long-term
-                    institutional partnerships.
+                    Priyank comes from the Mota Group — a family business with deep roots
+                    in fabric and manufacturing. Growing up around the trade gave him an
+                    instinctive understanding of supply chains, quality control, and the
+                    discipline required to run institutional-scale operations.
                   </p>
+
+                  {/* extra content — collapsed on mobile until expanded */}
+                  <div className={`ab-founder-extra ${isMobile && !priyankExpanded ? "collapsed" : "expanded"}`}>
+                    <p className="ab-founder-bio">
+                      Over more than 15 years, he built the operational backbone of The
+                      Uniform Lab — from standardising fabric sourcing to designing production
+                      workflows that handle tens of thousands of units every month without
+                      compromising on consistency. His approach treats every school or
+                      corporate partnership as a long-term system, not a one-off order.
+                    </p>
+                   
+                    <blockquote className="ab-founder-quote">
+                      "When a school calls us in Year 4, it means our systems worked —
+                      not just our product."
+                    </blockquote>
+                    <div className="ab-founder-tags">
+                      {["Manufacturing Operations","Supply Chain","Institutional Sales","Quality Systems","Scale & Growth"].map(t => (
+                        <span key={t} className="ab-founder-tag">{t}</span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {isMobile && (
+                    <button
+                      type="button"
+                      className="ab-founder-readmore"
+                      onClick={() => setPriyankExpanded(v => !v)}
+                    >
+                      {priyankExpanded ? "Show less ↑" : "Read more ↓"}
+                    </button>
+                  )}
                 </div>
               </div>
             </Reveal>
@@ -982,10 +1066,43 @@ export default function AboutPage() {
                   <div className="ab-founder-role">Co-Founder</div>
                   <div className="ab-founder-name">Nivedita Mota</div>
                   <p className="ab-founder-bio">
-                    Champion of experience design and customer-centric clarity. Ensures
-                    every interaction — from inquiry to delivery — is seamless and
-                    delightful.
+                    Nivedita brings a sharp eye for design and an unwavering focus on the
+                    customer's experience. With a deep understanding of what institutions —
+                    and the students and staff within them — actually need, she joined the
+                    founding journey to ensure The Uniform Lab wasn't just operationally
+                    sound, but genuinely pleasant to work with.
                   </p>
+
+                  {/* extra content — collapsed on mobile until expanded */}
+                  <div className={`ab-founder-extra ${isMobile && !niveditaExpanded ? "collapsed" : "expanded"}`}>
+                    <p className="ab-founder-bio">
+                      She leads everything that touches the customer — from how enquiries are
+                      handled and orders communicated, to the design language of the products
+                      themselves. Under her direction, the brand evolved from a manufacturer
+                      into a trusted uniform partner that institutions feel confident
+                      recommending to parents.
+                    </p>
+                   
+                    <blockquote className="ab-founder-quote">
+                      "A school coordinator shouldn't have to chase us for updates. That's
+                      not a delivery system — that's a burden we've made someone else carry."
+                    </blockquote>
+                    <div className="ab-founder-tags">
+                      {["Product Design","Brand Identity","Customer Experience","School Partnerships","Operations Communication"].map(t => (
+                        <span key={t} className="ab-founder-tag">{t}</span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {isMobile && (
+                    <button
+                      type="button"
+                      className="ab-founder-readmore"
+                      onClick={() => setNiveditaExpanded(v => !v)}
+                    >
+                      {niveditaExpanded ? "Show less ↑" : "Read more ↓"}
+                    </button>
+                  )}
                 </div>
                 <FounderPhotoCard src="/nivedita.png" alt="Nivedita Mota" />
               </div>
