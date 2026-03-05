@@ -377,7 +377,12 @@ export default function Navbar() {
             <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
               {[
                 { icon: User, label: "Account", href: "/account" },
-                { icon: Heart, label: "Wishlist", href: "/wishlist", badge: wishlistCount },
+                {
+                  icon: Heart,
+                  label: "Wishlist",
+                  href: "/wishlist",
+                  badge: wishlistCount,
+                },
                 { icon: Search, label: "Search", href: "/search" },
               ].map(({ icon: Icon, label, href, badge }) => (
                 <Link
@@ -990,7 +995,12 @@ export default function Navbar() {
                 <div style={{ display: "flex", gap: "8px" }}>
                   {[
                     { icon: User, label: "Account", href: "/account" },
-                    { icon: Heart, label: "Wishlist", href: "/wishlist", badge: wishlistCount },
+                    {
+                      icon: Heart,
+                      label: "Wishlist",
+                      href: "/wishlist",
+                      badge: wishlistCount,
+                    },
                     { icon: Search, label: "Search", href: "/search" },
                   ].map(({ icon: Icon, label, href, badge }) => (
                     <Link

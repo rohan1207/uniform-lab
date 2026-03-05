@@ -1,91 +1,101 @@
-import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 
 /* Match NewHero.jsx: Baloo 2 (headings), Nunito (body). Pill buttons: blue/gold gradients. */
 const FONT_HEADING = { fontFamily: "'Baloo 2', cursive" };
 const FONT_BODY = { fontFamily: "'Nunito', sans-serif" };
 const BTN_PRIMARY = {
-  background: 'linear-gradient(180deg, #1a6bb8 0%, #004C99 50%, #003d7a 100%)',
-  border: '1px solid rgba(0,76,153,0.6)',
-  boxShadow: '0 2px 8px rgba(0,76,153,0.25), inset 0 1px 0 rgba(255,255,255,0.15)',
-  color: '#fff',
-  borderRadius: '9999px',
-  padding: '0.5rem 1.25rem',
-  fontSize: '0.8125rem',
+  background: "linear-gradient(180deg, #1a6bb8 0%, #004C99 50%, #003d7a 100%)",
+  border: "1px solid rgba(0,76,153,0.6)",
+  boxShadow:
+    "0 2px 8px rgba(0,76,153,0.25), inset 0 1px 0 rgba(255,255,255,0.15)",
+  color: "#fff",
+  borderRadius: "9999px",
+  padding: "0.5rem 1.25rem",
+  fontSize: "0.8125rem",
   fontWeight: 700,
-  letterSpacing: '0.02em',
+  letterSpacing: "0.02em",
 };
 const BTN_GOLD = {
-  background: 'linear-gradient(180deg, #fcd88a 0%, #F7BE4F 50%, #e5a732 100%)',
-  border: '1px solid rgba(229,167,50,0.6)',
-  boxShadow: '0 2px 8px rgba(247,190,79,0.35), inset 0 1px 0 rgba(255,255,255,0.45)',
-  color: '#5c3a0a',
-  borderRadius: '9999px',
-  padding: '0.5rem 1.25rem',
-  fontSize: '0.8125rem',
+  background: "linear-gradient(180deg, #fcd88a 0%, #F7BE4F 50%, #e5a732 100%)",
+  border: "1px solid rgba(229,167,50,0.6)",
+  boxShadow:
+    "0 2px 8px rgba(247,190,79,0.35), inset 0 1px 0 rgba(255,255,255,0.45)",
+  color: "#5c3a0a",
+  borderRadius: "9999px",
+  padding: "0.5rem 1.25rem",
+  fontSize: "0.8125rem",
   fontWeight: 700,
 };
-const PILL_TOGGLE_BG = { background: 'linear-gradient(135deg, #eef5ff 0%, #ddeaff 100%)' };
-const API_BASE = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+const PILL_TOGGLE_BG = {
+  background: "linear-gradient(135deg, #eef5ff 0%, #ddeaff 100%)",
+};
+const API_BASE = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
 
 export default function AccountPage() {
-  const { user, token, isAuthenticated, login, signup, logout, updateProfile } = useAuth();
+  const { user, token, isAuthenticated, login, signup, logout, updateProfile } =
+    useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const searchParams = new URLSearchParams(location.search);
-  const redirectTo = searchParams.get('redirect');
-  const validTabs = ['profile', 'addresses', 'orders', 'returns', 'track'];
+  const redirectTo = searchParams.get("redirect");
+  const validTabs = ["profile", "addresses", "orders", "returns", "track"];
   const [activeTab, setActiveTab] = useState(() => {
-    if (!isAuthenticated) return 'login';
-    const tabParam = searchParams.get('tab');
-    return validTabs.includes(tabParam) ? tabParam : 'profile';
+    if (!isAuthenticated) return "login";
+    const tabParam = searchParams.get("tab");
+    return validTabs.includes(tabParam) ? tabParam : "profile";
   });
-  const [authMode, setAuthMode] = useState('login');
-  const [authStep, setAuthStep] = useState('email'); // 'email' | 'password' | 'signup'
-  const [emailCheckValue, setEmailCheckValue] = useState('');
+  const [authMode, setAuthMode] = useState("login");
+  const [authStep, setAuthStep] = useState("email"); // 'email' | 'password' | 'signup'
+  const [emailCheckValue, setEmailCheckValue] = useState("");
   const [checkingEmail, setCheckingEmail] = useState(false);
   const [forgotMode, setForgotMode] = useState(false);
-  const [forgotEmail, setForgotEmail] = useState('');
+  const [forgotEmail, setForgotEmail] = useState("");
   const [forgotLoading, setForgotLoading] = useState(false);
   const [forgotSent, setForgotSent] = useState(false);
-  const [forgotError, setForgotError] = useState('');
-  const [loginForm, setLoginForm] = useState({ email: '', password: '' });
-  const [signupForm, setSignupForm] = useState({ name: '', email: '', phone: '', password: '' });
+  const [forgotError, setForgotError] = useState("");
+  const [loginForm, setLoginForm] = useState({ email: "", password: "" });
+  const [signupForm, setSignupForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    password: "",
+  });
   const [profileForm, setProfileForm] = useState({
-    name: user?.name || '',
-    email: user?.email || '',
-    phone: user?.phone || '',
+    name: user?.name || "",
+    email: user?.email || "",
+    phone: user?.phone || "",
   });
   const [addresses, setAddresses] = useState([]);
   const [addressForm, setAddressForm] = useState({
-    label: '',
-    name: '',
-    phone: '',
-    line1: '',
-    line2: '',
-    city: '',
-    state: '',
-    pincode: '',
+    label: "",
+    name: "",
+    phone: "",
+    line1: "",
+    line2: "",
+    city: "",
+    state: "",
+    pincode: "",
   });
   const [orders, setOrders] = useState([]);
   const [returnForm, setReturnForm] = useState({
-    orderId: '',
-    itemKey: '',
-    reason: '',
+    orderId: "",
+    itemKey: "",
+    reason: "",
   });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [exchangeSubmitting, setExchangeSubmitting] = useState(false);
-  const [exchangeSuccess, setExchangeSuccess] = useState('');
-  const [exchangeError, setExchangeError] = useState('');
-  const [trackId, setTrackId] = useState('');
+  const [exchangeSuccess, setExchangeSuccess] = useState("");
+  const [exchangeError, setExchangeError] = useState("");
+  const [trackId, setTrackId] = useState("");
   const [trackedOrder, setTrackedOrder] = useState(null);
-  const [trackError, setTrackError] = useState('');
+  const [trackError, setTrackError] = useState("");
 
-  const ADDRESS_STORAGE_KEY = 'uniformlab_addresses';
-  const ORDER_STORAGE_KEY = 'uniformlab_orders';
-  const RETURN_STORAGE_KEY = 'uniformlab_returns';
+  const ADDRESS_STORAGE_KEY = "uniformlab_addresses";
+  const ORDER_STORAGE_KEY = "uniformlab_orders";
+  const RETURN_STORAGE_KEY = "uniformlab_returns";
 
   useEffect(() => {
     try {
@@ -105,11 +115,11 @@ export default function AccountPage() {
   // Keep active tab in sync with URL and auth status
   useEffect(() => {
     if (!isAuthenticated) {
-      setActiveTab('login');
+      setActiveTab("login");
       return;
     }
     const params = new URLSearchParams(location.search);
-    const tabParam = params.get('tab');
+    const tabParam = params.get("tab");
     if (validTabs.includes(tabParam)) {
       setActiveTab(tabParam);
     }
@@ -117,7 +127,10 @@ export default function AccountPage() {
 
   useEffect(() => {
     try {
-      window.localStorage.setItem(ADDRESS_STORAGE_KEY, JSON.stringify(addresses));
+      window.localStorage.setItem(
+        ADDRESS_STORAGE_KEY,
+        JSON.stringify(addresses),
+      );
     } catch {
       // ignore
     }
@@ -138,13 +151,13 @@ export default function AccountPage() {
         ]);
 
         const profileData = await profileRes.json().catch(() => ({}));
-        const ordersData = await ordersRes.json().catch(() => ([]));
+        const ordersData = await ordersRes.json().catch(() => []);
 
         if (!cancelled && profileRes.ok && profileData && profileData.id) {
           setProfileForm({
-            name: profileData.name || '',
-            email: profileData.email || '',
-            phone: profileData.phone || '',
+            name: profileData.name || "",
+            email: profileData.email || "",
+            phone: profileData.phone || "",
           });
           if (Array.isArray(profileData.addresses)) {
             setAddresses(profileData.addresses);
@@ -157,7 +170,7 @@ export default function AccountPage() {
             mongoId: o._id,
             createdAt: o.createdAt,
             total: o.totalAmount,
-            schoolName: o.school && o.school.name ? o.school.name : '',
+            schoolName: o.school && o.school.name ? o.school.name : "",
             fulfillmentStatus: o.fulfillmentStatus,
             deliveryStatus: o.deliveryStatus,
             deliveryReason: o.deliveryReason,
@@ -185,17 +198,17 @@ export default function AccountPage() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setLoading(true);
     try {
       await login(loginForm);
       if (redirectTo) {
         navigate(redirectTo);
       } else {
-        setActiveTab('profile');
+        setActiveTab("profile");
       }
     } catch (err) {
-      setError(err.message || 'Could not log in');
+      setError(err.message || "Could not log in");
     } finally {
       setLoading(false);
     }
@@ -203,17 +216,17 @@ export default function AccountPage() {
 
   const handleSignup = async (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setLoading(true);
     try {
       await signup(signupForm);
       if (redirectTo) {
         navigate(redirectTo);
       } else {
-        setActiveTab('profile');
+        setActiveTab("profile");
       }
     } catch (err) {
-      setError(err.message || 'Could not sign up');
+      setError(err.message || "Could not sign up");
     } finally {
       setLoading(false);
     }
@@ -221,57 +234,60 @@ export default function AccountPage() {
 
   const handleEmailCheck = async (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setCheckingEmail(true);
     try {
       const res = await fetch(`${API_BASE}/api/public/auth/check-email`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: emailCheckValue.trim() }),
       });
       const data = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(data?.error?.message || 'Could not check email');
+      if (!res.ok)
+        throw new Error(data?.error?.message || "Could not check email");
       const normalised = emailCheckValue.trim().toLowerCase();
       if (data.exists) {
         setLoginForm((prev) => ({ ...prev, email: normalised }));
-        setAuthMode('login');
-        setAuthStep('password');
+        setAuthMode("login");
+        setAuthStep("password");
       } else {
         setSignupForm((prev) => ({ ...prev, email: normalised }));
-        setAuthMode('signup');
-        setAuthStep('signup');
+        setAuthMode("signup");
+        setAuthStep("signup");
       }
     } catch (err) {
-      setError(err.message || 'Something went wrong. Please try again.');
+      setError(err.message || "Something went wrong. Please try again.");
     } finally {
       setCheckingEmail(false);
     }
   };
 
   const goBackToEmail = () => {
-    setAuthStep('email');
-    setError('');
+    setAuthStep("email");
+    setError("");
     setForgotMode(false);
     setForgotSent(false);
-    setForgotError('');
-    setLoginForm((prev) => ({ ...prev, password: '' }));
+    setForgotError("");
+    setLoginForm((prev) => ({ ...prev, password: "" }));
   };
 
   const handleForgotPassword = async (e) => {
     e.preventDefault();
-    setForgotError('');
+    setForgotError("");
     setForgotLoading(true);
     try {
-      const emailToReset = (forgotEmail || loginForm.email).trim().toLowerCase();
+      const emailToReset = (forgotEmail || loginForm.email)
+        .trim()
+        .toLowerCase();
       // Fire-and-forget: the backend always responds 200 to avoid enumeration
       await fetch(`${API_BASE}/api/public/auth/forgot-password`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: emailToReset }),
       });
       setForgotSent(true);
     } catch {
-      setForgotError('Something went wrong. Please try again.');
+      setForgotError("Something went wrong. Please try again.");
     } finally {
       setForgotLoading(false);
     }
@@ -285,7 +301,14 @@ export default function AccountPage() {
   const addAddress = async (e) => {
     e.preventDefault();
     const trimmed = { ...addressForm };
-    if (!trimmed.name || !trimmed.phone || !trimmed.line1 || !trimmed.city || !trimmed.state || !trimmed.pincode) {
+    if (
+      !trimmed.name ||
+      !trimmed.phone ||
+      !trimmed.line1 ||
+      !trimmed.city ||
+      !trimmed.state ||
+      !trimmed.pincode
+    ) {
       return;
     }
 
@@ -314,14 +337,14 @@ export default function AccountPage() {
     } else {
       try {
         const res = await fetch(`${API_BASE}/api/customer/addresses`, {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(newAddress),
         });
-        const data = await res.json().catch(() => ([]));
+        const data = await res.json().catch(() => []);
         if (res.ok && Array.isArray(data)) {
           setAddresses(data);
         }
@@ -339,14 +362,14 @@ export default function AccountPage() {
     }
 
     setAddressForm({
-      label: '',
-      name: '',
-      phone: '',
-      line1: '',
-      line2: '',
-      city: '',
-      state: '',
-      pincode: '',
+      label: "",
+      name: "",
+      phone: "",
+      line1: "",
+      line2: "",
+      city: "",
+      state: "",
+      pincode: "",
     });
   };
 
@@ -356,7 +379,7 @@ export default function AccountPage() {
     if (!token) return;
     try {
       await fetch(`${API_BASE}/api/customer/addresses/${id}`, {
-        method: 'DELETE',
+        method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -371,7 +394,7 @@ export default function AccountPage() {
       prev.map((a) => ({
         ...a,
         isDefault: a.id === id || a._id === id,
-      }))
+      })),
     );
 
     if (!token) return;
@@ -379,14 +402,14 @@ export default function AccountPage() {
       const current = addresses.find((a) => a.id === id || a._id === id);
       if (!current) return;
       const res = await fetch(`${API_BASE}/api/customer/addresses/${id}`, {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ ...current, isDefault: true }),
       });
-      const data = await res.json().catch(() => ([]));
+      const data = await res.json().catch(() => []);
       if (res.ok && Array.isArray(data)) {
         setAddresses(data);
       }
@@ -397,21 +420,25 @@ export default function AccountPage() {
 
   const submitReturnRequest = async (e) => {
     e.preventDefault();
-    if (!returnForm.orderId || !returnForm.itemKey || !returnForm.reason.trim()) return;
+    if (!returnForm.orderId || !returnForm.itemKey || !returnForm.reason.trim())
+      return;
     setExchangeSubmitting(true);
-    setExchangeError('');
-    setExchangeSuccess('');
+    setExchangeError("");
+    setExchangeSuccess("");
     try {
       // itemKey format: "<displayOrderId>:<itemIndex>"
-      const [, itemIdxStr] = returnForm.itemKey.split(':');
+      const [, itemIdxStr] = returnForm.itemKey.split(":");
       const selectedOrder = orders.find((o) => o.id === returnForm.orderId);
       const mongoId = selectedOrder?.mongoId;
-      if (!mongoId) throw new Error('Could not resolve order. Please refresh and try again.');
+      if (!mongoId)
+        throw new Error(
+          "Could not resolve order. Please refresh and try again.",
+        );
 
       const res = await fetch(`${API_BASE}/api/customer/exchange-requests`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
@@ -421,11 +448,15 @@ export default function AccountPage() {
         }),
       });
       const data = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(data?.error?.message || 'Submission failed');
-      setExchangeSuccess('Exchange request submitted! We\'ll reach out to you soon.');
-      setReturnForm({ orderId: '', itemKey: '', reason: '' });
+      if (!res.ok) throw new Error(data?.error?.message || "Submission failed");
+      setExchangeSuccess(
+        "Exchange request submitted! We'll reach out to you soon.",
+      );
+      setReturnForm({ orderId: "", itemKey: "", reason: "" });
     } catch (err) {
-      setExchangeError(err.message || 'Something went wrong. Please try again.');
+      setExchangeError(
+        err.message || "Something went wrong. Please try again.",
+      );
     } finally {
       setExchangeSubmitting(false);
     }
@@ -433,7 +464,7 @@ export default function AccountPage() {
 
   const renderLoginSignup = () => {
     /* ── Step 1: Ask for email ── */
-    if (authStep === 'email') {
+    if (authStep === "email") {
       return (
         <div className="max-w-md mx-auto">
           <form
@@ -441,11 +472,20 @@ export default function AccountPage() {
             className="rounded-xl border border-[var(--color-border)] bg-white p-6 space-y-4 shadow-sm"
           >
             <div className="text-center mb-2">
-              <h2 className="text-xl font-bold text-[#1a1a2e]" style={FONT_HEADING}>Welcome</h2>
-              <p className="text-xs text-slate-500 mt-1">Enter your email to sign in or create an account</p>
+              <h2
+                className="text-xl font-bold text-[#1a1a2e]"
+                style={FONT_HEADING}
+              >
+                Welcome
+              </h2>
+              <p className="text-xs text-slate-500 mt-1">
+                Enter your email to sign in or create an account
+              </p>
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-500 mb-1">Email address</label>
+              <label className="block text-xs font-semibold text-slate-500 mb-1">
+                Email address
+              </label>
               <input
                 type="email"
                 value={emailCheckValue}
@@ -463,7 +503,7 @@ export default function AccountPage() {
               className="w-full mt-2 inline-flex items-center justify-center gap-2 py-2.5 rounded-full font-bold disabled:opacity-60 hover:brightness-105 transition"
               style={{ ...BTN_PRIMARY, ...FONT_HEADING }}
             >
-              {checkingEmail ? 'Checking…' : 'Continue →'}
+              {checkingEmail ? "Checking…" : "Continue →"}
             </button>
           </form>
         </div>
@@ -471,7 +511,7 @@ export default function AccountPage() {
     }
 
     /* ── Step 2a: Returning user — just show password ── */
-    if (authStep === 'password') {
+    if (authStep === "password") {
       /* ── Forgot-password sub-mode ── */
       if (forgotMode) {
         return (
@@ -479,7 +519,11 @@ export default function AccountPage() {
             <div className="rounded-xl border border-[var(--color-border)] bg-white p-6 shadow-sm">
               <button
                 type="button"
-                onClick={() => { setForgotMode(false); setForgotSent(false); setForgotError(''); }}
+                onClick={() => {
+                  setForgotMode(false);
+                  setForgotSent(false);
+                  setForgotError("");
+                }}
                 className="text-xs text-[#2563eb] font-semibold flex items-center gap-1 hover:underline mb-4"
               >
                 ← Back to sign in
@@ -488,16 +532,30 @@ export default function AccountPage() {
               {forgotSent ? (
                 <div className="text-center py-2 space-y-3">
                   <div className="text-5xl">📬</div>
-                  <h2 className="text-lg font-bold text-[#1a1a2e]" style={FONT_HEADING}>Check your email</h2>
+                  <h2
+                    className="text-lg font-bold text-[#1a1a2e]"
+                    style={FONT_HEADING}
+                  >
+                    Check your email
+                  </h2>
                   <p className="text-sm text-slate-600 leading-relaxed">
-                    If an account exists for{' '}
-                    <span className="font-semibold text-slate-800">{forgotEmail || loginForm.email}</span>,
-                    we&apos;ve sent a password reset link. Check your inbox (and spam folder).
+                    If an account exists for{" "}
+                    <span className="font-semibold text-slate-800">
+                      {forgotEmail || loginForm.email}
+                    </span>
+                    , we&apos;ve sent a password reset link. Check your inbox
+                    (and spam folder).
                   </p>
-                  <p className="text-xs text-slate-400">The link expires in 1 hour.</p>
+                  <p className="text-xs text-slate-400">
+                    The link expires in 1 hour.
+                  </p>
                   <button
                     type="button"
-                    onClick={() => { setForgotMode(false); setForgotSent(false); setForgotError(''); }}
+                    onClick={() => {
+                      setForgotMode(false);
+                      setForgotSent(false);
+                      setForgotError("");
+                    }}
                     className="mt-3 w-full inline-flex items-center justify-center py-2.5 rounded-full font-bold hover:brightness-105 transition"
                     style={{ ...BTN_PRIMARY, ...FONT_HEADING }}
                   >
@@ -507,11 +565,20 @@ export default function AccountPage() {
               ) : (
                 <form onSubmit={handleForgotPassword} className="space-y-4">
                   <div>
-                    <h2 className="text-lg font-bold text-[#1a1a2e]" style={FONT_HEADING}>Reset your password</h2>
-                    <p className="text-xs text-slate-500 mt-1">We&apos;ll send a reset link to your email.</p>
+                    <h2
+                      className="text-lg font-bold text-[#1a1a2e]"
+                      style={FONT_HEADING}
+                    >
+                      Reset your password
+                    </h2>
+                    <p className="text-xs text-slate-500 mt-1">
+                      We&apos;ll send a reset link to your email.
+                    </p>
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold text-slate-500 mb-1">Email address</label>
+                    <label className="block text-xs font-semibold text-slate-500 mb-1">
+                      Email address
+                    </label>
                     <input
                       type="email"
                       value={forgotEmail || loginForm.email}
@@ -521,14 +588,16 @@ export default function AccountPage() {
                       required
                     />
                   </div>
-                  {forgotError && <p className="text-xs text-red-600">{forgotError}</p>}
+                  {forgotError && (
+                    <p className="text-xs text-red-600">{forgotError}</p>
+                  )}
                   <button
                     type="submit"
                     disabled={forgotLoading}
                     className="w-full inline-flex items-center justify-center py-2.5 rounded-full font-bold disabled:opacity-60 hover:brightness-105 transition"
                     style={{ ...BTN_PRIMARY, ...FONT_HEADING }}
                   >
-                    {forgotLoading ? 'Sending…' : 'Send reset link'}
+                    {forgotLoading ? "Sending…" : "Send reset link"}
                   </button>
                 </form>
               )}
@@ -552,15 +621,26 @@ export default function AccountPage() {
               ← Use a different email
             </button>
             <div>
-              <h2 className="text-lg font-bold text-[#1a1a2e]" style={FONT_HEADING}>Welcome back 👋</h2>
-              <p className="text-xs text-slate-500 mt-0.5 font-semibold">{loginForm.email}</p>
+              <h2
+                className="text-lg font-bold text-[#1a1a2e]"
+                style={FONT_HEADING}
+              >
+                Welcome back 👋
+              </h2>
+              <p className="text-xs text-slate-500 mt-0.5 font-semibold">
+                {loginForm.email}
+              </p>
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-500 mb-1">Password</label>
+              <label className="block text-xs font-semibold text-slate-500 mb-1">
+                Password
+              </label>
               <input
                 type="password"
                 value={loginForm.password}
-                onChange={(e) => setLoginForm({ ...loginForm, password: e.target.value })}
+                onChange={(e) =>
+                  setLoginForm({ ...loginForm, password: e.target.value })
+                }
                 className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
                 autoFocus
                 required
@@ -570,7 +650,7 @@ export default function AccountPage() {
                 onClick={() => {
                   setForgotMode(true);
                   setForgotEmail(loginForm.email);
-                  setForgotError('');
+                  setForgotError("");
                   setForgotSent(false);
                 }}
                 className="text-xs text-[#2563eb] hover:underline mt-1.5 font-semibold block text-right w-full"
@@ -585,7 +665,7 @@ export default function AccountPage() {
               className="w-full mt-2 inline-flex items-center justify-center gap-2 py-2.5 rounded-full font-bold disabled:opacity-60 hover:brightness-105 transition"
               style={{ ...BTN_PRIMARY, ...FONT_HEADING }}
             >
-              {loading ? 'Signing in…' : 'Sign in'}
+              {loading ? "Signing in…" : "Sign in"}
             </button>
           </form>
         </div>
@@ -607,38 +687,58 @@ export default function AccountPage() {
             ← Use a different email
           </button>
           <div>
-            <h2 className="text-lg font-bold text-[#1a1a2e]" style={FONT_HEADING}>Create your account</h2>
+            <h2
+              className="text-lg font-bold text-[#1a1a2e]"
+              style={FONT_HEADING}
+            >
+              Create your account
+            </h2>
             <p className="text-xs text-slate-500 mt-0.5">
-              Signing up as <span className="font-semibold text-slate-700">{signupForm.email}</span>
+              Signing up as{" "}
+              <span className="font-semibold text-slate-700">
+                {signupForm.email}
+              </span>
             </p>
           </div>
           <div className="grid gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-500 mb-1">Full name</label>
+              <label className="block text-xs font-semibold text-slate-500 mb-1">
+                Full name
+              </label>
               <input
                 type="text"
                 value={signupForm.name}
-                onChange={(e) => setSignupForm({ ...signupForm, name: e.target.value })}
+                onChange={(e) =>
+                  setSignupForm({ ...signupForm, name: e.target.value })
+                }
                 className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
                 autoFocus
                 required
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-500 mb-1">Phone</label>
+              <label className="block text-xs font-semibold text-slate-500 mb-1">
+                Phone
+              </label>
               <input
                 type="tel"
                 value={signupForm.phone}
-                onChange={(e) => setSignupForm({ ...signupForm, phone: e.target.value })}
+                onChange={(e) =>
+                  setSignupForm({ ...signupForm, phone: e.target.value })
+                }
                 className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-500 mb-1">Password</label>
+              <label className="block text-xs font-semibold text-slate-500 mb-1">
+                Password
+              </label>
               <input
                 type="password"
                 value={signupForm.password}
-                onChange={(e) => setSignupForm({ ...signupForm, password: e.target.value })}
+                onChange={(e) =>
+                  setSignupForm({ ...signupForm, password: e.target.value })
+                }
                 className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
                 required
               />
@@ -651,7 +751,7 @@ export default function AccountPage() {
             className="w-full mt-2 inline-flex items-center justify-center gap-2 py-2.5 rounded-full font-bold disabled:opacity-60 hover:brightness-105 transition"
             style={{ ...BTN_PRIMARY, ...FONT_HEADING }}
           >
-            {loading ? 'Creating…' : 'Create account'}
+            {loading ? "Creating…" : "Create account"}
           </button>
         </form>
       </div>
@@ -663,35 +763,52 @@ export default function AccountPage() {
       onSubmit={handleProfileSave}
       className="rounded-xl border border-[var(--color-border)] bg-white p-6 space-y-4 max-w-xl"
     >
-      <h2 className="text-lg font-bold text-[#1a1a2e] mb-1" style={FONT_HEADING}>Profile</h2>
+      <h2
+        className="text-lg font-bold text-[#1a1a2e] mb-1"
+        style={FONT_HEADING}
+      >
+        Profile
+      </h2>
       <p className="text-xs text-[var(--color-text-muted)] mb-3">
         Manage your basic details. We’ll use this to pre-fill checkout.
       </p>
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label className="block text-xs font-semibold text-slate-500 mb-1">Full name</label>
+          <label className="block text-xs font-semibold text-slate-500 mb-1">
+            Full name
+          </label>
           <input
             type="text"
             value={profileForm.name}
-            onChange={(e) => setProfileForm({ ...profileForm, name: e.target.value })}
+            onChange={(e) =>
+              setProfileForm({ ...profileForm, name: e.target.value })
+            }
             className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
           />
         </div>
         <div>
-          <label className="block text-xs font-semibold text-slate-500 mb-1">Email</label>
+          <label className="block text-xs font-semibold text-slate-500 mb-1">
+            Email
+          </label>
           <input
             type="email"
             value={profileForm.email}
-            onChange={(e) => setProfileForm({ ...profileForm, email: e.target.value })}
+            onChange={(e) =>
+              setProfileForm({ ...profileForm, email: e.target.value })
+            }
             className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
           />
         </div>
         <div>
-          <label className="block text-xs font-semibold text-slate-500 mb-1">Phone</label>
+          <label className="block text-xs font-semibold text-slate-500 mb-1">
+            Phone
+          </label>
           <input
             type="tel"
             value={profileForm.phone}
-            onChange={(e) => setProfileForm({ ...profileForm, phone: e.target.value })}
+            onChange={(e) =>
+              setProfileForm({ ...profileForm, phone: e.target.value })
+            }
             className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
           />
         </div>
@@ -710,62 +827,69 @@ export default function AccountPage() {
   const renderAddresses = () => (
     <div className="grid gap-6 md:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]">
       <div className="rounded-xl border border-[var(--color-border)] bg-white p-6 max-w-xl">
-        <h2 className="text-lg font-bold text-[#1a1a2e] mb-1" style={FONT_HEADING}>Saved addresses</h2>
+        <h2
+          className="text-lg font-bold text-[#1a1a2e] mb-1"
+          style={FONT_HEADING}
+        >
+          Saved addresses
+        </h2>
         {addresses.length === 0 ? (
           <p className="text-xs text-[var(--color-text-muted)]">
-            You haven&apos;t added any addresses yet. Use the form on the right to save your first
-            address. We&apos;ll connect this to backend later.
+            You haven&apos;t added any addresses yet. Use the form on the right
+            to save your first address. We&apos;ll connect this to backend
+            later.
           </p>
         ) : (
           <div className="mt-3 space-y-3 text-sm">
             {addresses.map((addr) => {
               const addrId = addr.id || addr._id;
               return (
-              <div
-                key={addrId}
-                className="border border-slate-200 rounded-lg p-3 flex items-start justify-between gap-3"
-              >
-                <div className="space-y-0.5">
-                  <p className="font-semibold text-slate-900 flex items-center gap-2">
-                    {addr.label || 'Address'}
-                    {addr.isDefault && (
-                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100">
-                        Default
-                      </span>
+                <div
+                  key={addrId}
+                  className="border border-slate-200 rounded-lg p-3 flex items-start justify-between gap-3"
+                >
+                  <div className="space-y-0.5">
+                    <p className="font-semibold text-slate-900 flex items-center gap-2">
+                      {addr.label || "Address"}
+                      {addr.isDefault && (
+                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100">
+                          Default
+                        </span>
+                      )}
+                    </p>
+                    <p className="text-xs text-slate-600">
+                      {addr.name} · {addr.phone}
+                    </p>
+                    <p className="text-xs text-slate-600">
+                      {addr.line1}
+                      {addr.line2 && `, ${addr.line2}`}
+                    </p>
+                    <p className="text-xs text-slate-600">
+                      {addr.city}, {addr.state} – {addr.pincode}
+                    </p>
+                  </div>
+                  <div className="flex flex-col gap-1 text-[10px]">
+                    {!addr.isDefault && (
+                      <button
+                        type="button"
+                        onClick={() => setDefaultAddress(addrId)}
+                        className="px-2.5 py-1 rounded-full border border-slate-200 hover:opacity-90 text-slate-700 text-[10px] font-semibold"
+                        style={PILL_TOGGLE_BG}
+                      >
+                        Make default
+                      </button>
                     )}
-                  </p>
-                  <p className="text-xs text-slate-600">
-                    {addr.name} · {addr.phone}
-                  </p>
-                  <p className="text-xs text-slate-600">
-                    {addr.line1}
-                    {addr.line2 && `, ${addr.line2}`}
-                  </p>
-                  <p className="text-xs text-slate-600">
-                    {addr.city}, {addr.state} – {addr.pincode}
-                  </p>
-                </div>
-                <div className="flex flex-col gap-1 text-[10px]">
-                  {!addr.isDefault && (
                     <button
                       type="button"
-                      onClick={() => setDefaultAddress(addrId)}
-                      className="px-2.5 py-1 rounded-full border border-slate-200 hover:opacity-90 text-slate-700 text-[10px] font-semibold"
-                      style={PILL_TOGGLE_BG}
+                      onClick={() => removeAddress(addrId)}
+                      className="px-2.5 py-1 rounded-full border border-rose-200 hover:bg-rose-50 text-rose-600 text-[10px] font-semibold"
                     >
-                      Make default
+                      Remove
                     </button>
-                  )}
-                  <button
-                    type="button"
-                    onClick={() => removeAddress(addrId)}
-                    className="px-2.5 py-1 rounded-full border border-rose-200 hover:bg-rose-50 text-rose-600 text-[10px] font-semibold"
-                  >
-                    Remove
-                  </button>
+                  </div>
                 </div>
-              </div>
-            ); })}
+              );
+            })}
           </div>
         )}
       </div>
@@ -774,10 +898,14 @@ export default function AccountPage() {
         onSubmit={addAddress}
         className="rounded-xl border border-[var(--color-border)] bg-white p-6 space-y-3"
       >
-        <h3 className="text-sm font-bold text-[#1a1a2e]" style={FONT_HEADING}>Add new address</h3>
+        <h3 className="text-sm font-bold text-[#1a1a2e]" style={FONT_HEADING}>
+          Add new address
+        </h3>
         <div className="grid gap-3">
           <div>
-            <label className="block text-[11px] font-semibold text-slate-500 mb-1">Label</label>
+            <label className="block text-[11px] font-semibold text-slate-500 mb-1">
+              Label
+            </label>
             <input
               type="text"
               value={addressForm.label}
@@ -883,7 +1011,10 @@ export default function AccountPage() {
                 required
                 value={addressForm.pincode}
                 onChange={(e) =>
-                  setAddressForm((prev) => ({ ...prev, pincode: e.target.value }))
+                  setAddressForm((prev) => ({
+                    ...prev,
+                    pincode: e.target.value,
+                  }))
                 }
                 className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
               />
@@ -904,10 +1035,16 @@ export default function AccountPage() {
   const renderOrders = () => (
     <div className="space-y-4">
       <div className="rounded-xl border border-[var(--color-border)] bg-white p-6">
-        <h2 className="text-lg font-bold text-[#1a1a2e] mb-1" style={FONT_HEADING}>Order history</h2>
+        <h2
+          className="text-lg font-bold text-[#1a1a2e] mb-1"
+          style={FONT_HEADING}
+        >
+          Order history
+        </h2>
         {orders.length === 0 ? (
           <p className="text-xs text-[var(--color-text-muted)]">
-            Your past orders placed with this account will appear here with their details.
+            Your past orders placed with this account will appear here with
+            their details.
           </p>
         ) : (
           <div className="mt-3 space-y-3 text-sm">
@@ -918,16 +1055,22 @@ export default function AccountPage() {
               >
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div>
-                    <p className="text-xs font-semibold text-slate-500">Order ID</p>
-                    <p className="text-sm font-semibold text-slate-900">{order.id}</p>
+                    <p className="text-xs font-semibold text-slate-500">
+                      Order ID
+                    </p>
+                    <p className="text-sm font-semibold text-slate-900">
+                      {order.id}
+                    </p>
                   </div>
                   <div className="text-right">
                     <p className="text-xs text-slate-500">
                       {order.createdAt
                         ? new Date(order.createdAt).toLocaleString()
-                        : 'Just now'}
+                        : "Just now"}
                     </p>
-                    <p className="text-sm font-semibold text-slate-900">₹{order.total}</p>
+                    <p className="text-sm font-semibold text-slate-900">
+                      ₹{order.total}
+                    </p>
                   </div>
                 </div>
                 <div className="flex gap-3 items-center">
@@ -944,7 +1087,7 @@ export default function AccountPage() {
                   )}
                   <div className="flex-1 min-w-0">
                     <p className="text-xs font-semibold text-slate-500 truncate">
-                      {order.schoolName || 'Uniform Lab'}
+                      {order.schoolName || "Uniform Lab"}
                     </p>
                     <ul className="mt-1 text-xs text-slate-600 space-y-0.5">
                       {order.items.map((item, idx) => (
@@ -966,19 +1109,19 @@ export default function AccountPage() {
   );
 
   const renderTrack = () => {
-    const steps = ['Order confirmed', 'Packed', 'Shipped', 'Delivered'];
+    const steps = ["Order confirmed", "Packed", "Shipped", "Delivered"];
 
     const getStepIndex = (status) => {
       switch (status) {
-        case 'Order confirmed':
+        case "Order confirmed":
           return 0;
-        case 'Packed':
+        case "Packed":
           return 1;
-        case 'Shipped':
+        case "Shipped":
           return 2;
-        case 'Delivered':
+        case "Delivered":
           return 3;
-        case 'Undelivered':
+        case "Undelivered":
           return 3;
         default:
           return 0;
@@ -993,27 +1136,34 @@ export default function AccountPage() {
     const handleTrack = () => {
       const trimmed = trackId.trim();
       if (!trimmed) {
-        setTrackError('Please enter your order ID.');
+        setTrackError("Please enter your order ID.");
         setTrackedOrder(null);
         return;
       }
       const found =
-        orders.find((o) => (o.id || '').toLowerCase() === trimmed.toLowerCase()) || null;
+        orders.find(
+          (o) => (o.id || "").toLowerCase() === trimmed.toLowerCase(),
+        ) || null;
       if (!found) {
-        setTrackError('No order found with this ID for your account.');
+        setTrackError("No order found with this ID for your account.");
         setTrackedOrder(null);
       } else {
-        setTrackError('');
+        setTrackError("");
         setTrackedOrder(found);
       }
     };
 
     return (
       <div className="rounded-xl border border-[var(--color-border)] bg-white p-6 max-w-xl space-y-4">
-        <h2 className="text-lg font-bold text-[#1a1a2e] mb-1" style={FONT_HEADING}>Track order</h2>
+        <h2
+          className="text-lg font-bold text-[#1a1a2e] mb-1"
+          style={FONT_HEADING}
+        >
+          Track order
+        </h2>
         <p className="text-xs text-[var(--color-text-muted)]">
-          Paste your Uniform Lab order ID (e.g. UL-20260227-00001) to see the latest delivery
-          status.
+          Paste your Uniform Lab order ID (e.g. UL-20260227-00001) to see the
+          latest delivery status.
         </p>
         <div className="flex flex-col sm:flex-row gap-2">
           <input
@@ -1038,15 +1188,24 @@ export default function AccountPage() {
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
               <div>
                 <p className="text-xs font-semibold text-slate-500">Order ID</p>
-                <p className="text-sm font-semibold text-slate-900">{trackedOrder.id}</p>
+                <p className="text-sm font-semibold text-slate-900">
+                  {trackedOrder.id}
+                </p>
                 {trackedOrder.schoolName && (
-                  <p className="text-xs text-slate-600 mt-0.5">{trackedOrder.schoolName}</p>
+                  <p className="text-xs text-slate-600 mt-0.5">
+                    {trackedOrder.schoolName}
+                  </p>
                 )}
               </div>
               <div className="text-sm text-slate-700">
-                <span className="font-semibold">{trackedOrder.deliveryStatus}</span>
+                <span className="font-semibold">
+                  {trackedOrder.deliveryStatus}
+                </span>
                 {trackedOrder.deliveryReason && (
-                  <span className="text-xs text-slate-500"> — {trackedOrder.deliveryReason}</span>
+                  <span className="text-xs text-slate-500">
+                    {" "}
+                    — {trackedOrder.deliveryReason}
+                  </span>
                 )}
               </div>
             </div>
@@ -1061,8 +1220,8 @@ export default function AccountPage() {
                         <div
                           className={`w-3.5 h-3.5 rounded-full border ${
                             isActive
-                              ? 'bg-emerald-500 border-emerald-500'
-                              : 'bg-slate-100 border-slate-300'
+                              ? "bg-emerald-500 border-emerald-500"
+                              : "bg-slate-100 border-slate-300"
                           }`}
                         />
                         <span className="text-xs text-slate-700">{label}</span>
@@ -1071,7 +1230,7 @@ export default function AccountPage() {
                         <div className="hidden sm:block flex-1 h-px mx-2">
                           <div
                             className={`h-px ${
-                              isActive ? 'bg-emerald-400' : 'bg-slate-200'
+                              isActive ? "bg-emerald-400" : "bg-slate-200"
                             }`}
                           />
                         </div>
@@ -1088,7 +1247,8 @@ export default function AccountPage() {
   };
 
   const renderReturns = () => {
-    const selectedOrder = orders.find((o) => o.id === returnForm.orderId) || null;
+    const selectedOrder =
+      orders.find((o) => o.id === returnForm.orderId) || null;
     const items = selectedOrder?.items || [];
 
     return (
@@ -1098,11 +1258,15 @@ export default function AccountPage() {
           onSubmit={submitReturnRequest}
           className="rounded-xl border border-[var(--color-border)] bg-white p-6 space-y-4"
         >
-          <h2 className="text-lg font-bold text-[#1a1a2e] mb-1" style={FONT_HEADING}>
+          <h2
+            className="text-lg font-bold text-[#1a1a2e] mb-1"
+            style={FONT_HEADING}
+          >
             Exchange request
           </h2>
           <p className="text-xs text-[var(--color-text-muted)]">
-            Select the order and item you'd like to exchange, then describe the reason. Our team will get back to you.
+            Select the order and item you'd like to exchange, then describe the
+            reason. Our team will get back to you.
           </p>
           {exchangeSuccess && (
             <p className="text-xs text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2">
@@ -1127,7 +1291,7 @@ export default function AccountPage() {
                   setReturnForm((prev) => ({
                     ...prev,
                     orderId: e.target.value,
-                    itemKey: '',
+                    itemKey: "",
                   }))
                 }
                 className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
@@ -1159,7 +1323,10 @@ export default function AccountPage() {
               >
                 <option value="">Choose item</option>
                 {items.map((item, idx) => (
-                  <option key={`${selectedOrder.id}-${idx}`} value={`${selectedOrder.id}:${idx}`}>
+                  <option
+                    key={`${selectedOrder.id}-${idx}`}
+                    value={`${selectedOrder.id}:${idx}`}
+                  >
                     {item.name} · Qty {item.quantity}
                     {item.size && ` · Size ${item.size}`}
                     {item.color && ` · ${item.color}`}
@@ -1188,8 +1355,8 @@ export default function AccountPage() {
             </div>
 
             <p className="text-[10px] text-[var(--color-text-muted)]">
-              Convenience fee and any difference in product price will be applicable for exchanges,
-              as mentioned in the policy.
+              Convenience fee and any difference in product price will be
+              applicable for exchanges, as mentioned in the policy.
             </p>
           </div>
 
@@ -1199,54 +1366,73 @@ export default function AccountPage() {
             className="inline-flex items-center justify-center py-2.5 px-5 rounded-full font-bold hover:brightness-105 transition disabled:opacity-60"
             style={{ ...BTN_PRIMARY, ...FONT_HEADING }}
           >
-            {exchangeSubmitting ? 'Submitting…' : 'Submit exchange request'}
+            {exchangeSubmitting ? "Submitting…" : "Submit exchange request"}
           </button>
         </form>
 
         {/* Right: policy (scrollable) */}
         <aside className="rounded-xl border border-[var(--color-border)] bg-white p-5 max-h-[460px] overflow-y-auto text-xs leading-relaxed text-slate-700">
-          <h3 className="text-sm font-bold text-[#1a1a2e] mb-2" style={FONT_HEADING}>
+          <h3
+            className="text-sm font-bold text-[#1a1a2e] mb-2"
+            style={FONT_HEADING}
+          >
             Uniform Lab Exchange Policy
           </h3>
           <p className="mb-2">
-            At Uniform Lab, we ensure you a hassle-free shopping experience, where you can
-            confidently make purchases.
+            At Uniform Lab, we ensure you a hassle-free shopping experience,
+            where you can confidently make purchases.
           </p>
           <ul className="list-disc pl-4 space-y-1 mb-3">
-            <li>ONLY EXCHANGE requests will be considered for uniforms. No refunds.</li>
-            <li>Exchange will be done for extra charges (convenience + size price difference).</li>
-            <li>Exchange is allowed for size change in the same product within 7 days of delivery.</li>
             <li>
-              Items must be unused, unwashed, unaltered, with tags and accessories intact, and in
-              original packaging.
+              ONLY EXCHANGE requests will be considered for uniforms. No
+              refunds.
+            </li>
+            <li>
+              Exchange will be done for extra charges (convenience + size price
+              difference).
+            </li>
+            <li>
+              Exchange is allowed for size change in the same product within 7
+              days of delivery.
+            </li>
+            <li>
+              Items must be unused, unwashed, unaltered, with tags and
+              accessories intact, and in original packaging.
             </li>
             <li>Socks and clothing freebies are ineligible for exchange.</li>
-            <li>Products with tampered/missing serial numbers are not eligible.</li>
+            <li>
+              Products with tampered/missing serial numbers are not eligible.
+            </li>
           </ul>
           <p className="font-semibold mb-1">Initiation of exchange</p>
           <p className="mb-2">
-            Exchange can be initiated by contacting{' '}
-            <span className="font-mono text-[11px]">help@theuniformlab.in</span>. You can either
-            bring the product to our shop or ship it back to us. Items sent back without prior
-            request will not be accepted.
+            Exchange can be initiated by contacting{" "}
+            <span className="font-mono text-[11px]">help@theuniformlab.in</span>
+            . You can either bring the product to our shop or ship it back to
+            us. Items sent back without prior request will not be accepted.
           </p>
           <p className="mb-2">
-            Once received, the product will be checked before any further action is taken.
+            Once received, the product will be checked before any further action
+            is taken.
           </p>
           <p className="font-semibold mb-1">Damages &amp; issues</p>
           <p className="mb-2">
-            Please inspect your order on delivery and contact us immediately if the item is
-            defective, damaged or if you receive the wrong item, so that we can evaluate the issue
-            and make it right.
+            Please inspect your order on delivery and contact us immediately if
+            the item is defective, damaged or if you receive the wrong item, so
+            that we can evaluate the issue and make it right.
           </p>
-          <p className="font-semibold mb-1">Exceptions / non-exchangeable items</p>
+          <p className="font-semibold mb-1">
+            Exceptions / non-exchangeable items
+          </p>
           <p className="mb-1">
-            Customised products (special orders, personalised items, hemmed pants), personal care
-            goods, wholesale orders and sale items are not eligible for exchange or refund.
+            Customised products (special orders, personalised items, hemmed
+            pants), personal care goods, wholesale orders and sale items are not
+            eligible for exchange or refund.
           </p>
           <p>
-            For any specific questions about your item or exchange, write to{' '}
-            <span className="font-mono text-[11px]">help@theuniformlab.in</span>.
+            For any specific questions about your item or exchange, write to{" "}
+            <span className="font-mono text-[11px]">help@theuniformlab.in</span>
+            .
           </p>
         </aside>
       </div>
@@ -1256,14 +1442,23 @@ export default function AccountPage() {
   const showAuthForms = !isAuthenticated;
 
   return (
-    <main className="min-h-screen bg-[var(--page-bg)] pt-24 px-4 sm:px-6" style={FONT_BODY}>
+    <main
+      className="min-h-screen bg-[var(--page-bg)] pt-24 px-4 sm:px-6"
+      style={FONT_BODY}
+    >
       <style>{`@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700&display=swap');`}</style>
       <div className="max-w-5xl mx-auto">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
           <div>
-            <h1 className="text-2xl font-bold text-[#1a1a2e] mb-1" style={FONT_HEADING}>My Account</h1>
+            <h1
+              className="text-2xl font-bold text-[#1a1a2e] mb-1"
+              style={FONT_HEADING}
+            >
+              My Account
+            </h1>
             <p className="text-sm text-[var(--color-text-muted)]">
-              Manage your details, addresses, wishlist and orders in one clean place.
+              Manage your details, addresses, wishlist and orders in one clean
+              place.
             </p>
           </div>
           {isAuthenticated && (
@@ -1280,43 +1475,51 @@ export default function AccountPage() {
         {/* Tabs – visible when logged in */}
         {isAuthenticated && (
           <div className="flex flex-wrap gap-2 mb-6 text-xs justify-center md:justify-start">
-            {['profile', 'addresses', 'orders', 'returns', 'track'].map((tab) => (
-              <button
-                key={tab}
-                type="button"
-                onClick={() => setActiveTab(tab)}
-                className={`px-4 py-1.5 rounded-full border font-semibold transition ${
-                  activeTab === tab
-                    ? 'text-white border-transparent'
-                    : 'border-slate-200 text-slate-700 bg-white hover:bg-[#eef5ff]'
-                }`}
-                style={activeTab === tab ? { ...BTN_PRIMARY, ...FONT_HEADING, padding: '0.375rem 1rem', fontSize: '0.75rem' } : undefined}
-              >
-                {tab === 'profile' && 'Profile'}
-                {tab === 'addresses' && 'Addresses'}
-                {tab === 'orders' && 'Orders'}
-                {tab === 'returns' && 'Exchange'}
-                {tab === 'track' && 'Track order'}
-              </button>
-            ))}
+            {["profile", "addresses", "orders", "returns", "track"].map(
+              (tab) => (
+                <button
+                  key={tab}
+                  type="button"
+                  onClick={() => setActiveTab(tab)}
+                  className={`px-4 py-1.5 rounded-full border font-semibold transition ${
+                    activeTab === tab
+                      ? "text-white border-transparent"
+                      : "border-slate-200 text-slate-700 bg-white hover:bg-[#eef5ff]"
+                  }`}
+                  style={
+                    activeTab === tab
+                      ? {
+                          ...BTN_PRIMARY,
+                          ...FONT_HEADING,
+                          padding: "0.375rem 1rem",
+                          fontSize: "0.75rem",
+                        }
+                      : undefined
+                  }
+                >
+                  {tab === "profile" && "Profile"}
+                  {tab === "addresses" && "Addresses"}
+                  {tab === "orders" && "Orders"}
+                  {tab === "returns" && "Exchange"}
+                  {tab === "track" && "Track order"}
+                </button>
+              ),
+            )}
           </div>
         )}
 
-        {showAuthForms ? (
-          renderLoginSignup()
-        ) : activeTab === 'profile' ? (
-          renderProfile()
-        ) : activeTab === 'addresses' ? (
-          renderAddresses()
-        ) : activeTab === 'orders' ? (
-          renderOrders()
-        ) : activeTab === 'returns' ? (
-          renderReturns()
-        ) : (
-          renderTrack()
-        )}
+        {showAuthForms
+          ? renderLoginSignup()
+          : activeTab === "profile"
+            ? renderProfile()
+            : activeTab === "addresses"
+              ? renderAddresses()
+              : activeTab === "orders"
+                ? renderOrders()
+                : activeTab === "returns"
+                  ? renderReturns()
+                  : renderTrack()}
       </div>
     </main>
   );
 }
-

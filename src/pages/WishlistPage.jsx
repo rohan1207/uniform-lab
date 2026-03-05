@@ -1,10 +1,10 @@
-import { Link } from 'react-router-dom';
-import { useWishlist } from '@/contexts/WishlistContext';
-import { useCart } from '@/contexts/CartContext';
-import { Heart, ShoppingBag, X } from 'lucide-react';
+import { Link } from "react-router-dom";
+import { useWishlist } from "@/contexts/WishlistContext";
+import { useCart } from "@/contexts/CartContext";
+import { Heart, ShoppingBag, X } from "lucide-react";
 
 const FONT_HEADING = { fontFamily: "'Baloo 2', cursive" };
-const FONT_BODY    = { fontFamily: "'Nunito', sans-serif" };
+const FONT_BODY = { fontFamily: "'Nunito', sans-serif" };
 
 const PAGE_CSS = `
   @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800;900&family=Nunito:wght@400;600;700&display=swap');
@@ -146,14 +146,19 @@ export default function WishlistPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[var(--page-bg)] pt-24 pb-16 px-4 sm:px-6" style={FONT_BODY}>
+    <main
+      className="min-h-screen bg-[var(--page-bg)] pt-24 pb-16 px-4 sm:px-6"
+      style={FONT_BODY}
+    >
       <style>{PAGE_CSS}</style>
       <div className="max-w-5xl mx-auto">
-
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-2xl font-bold text-[#1a1a2e] mb-1" style={FONT_HEADING}>
+            <h1
+              className="text-2xl font-bold text-[#1a1a2e] mb-1"
+              style={FONT_HEADING}
+            >
               Wishlist
               {items.length > 0 && (
                 <span className="ml-2 text-base font-semibold text-slate-400">
@@ -182,14 +187,22 @@ export default function WishlistPage() {
             <div className="w-16 h-16 rounded-full bg-rose-50 flex items-center justify-center mb-4">
               <Heart size={28} className="text-rose-300" />
             </div>
-            <p className="text-base font-bold text-slate-700 mb-1" style={FONT_HEADING}>Nothing saved yet</p>
-            <p className="text-sm text-slate-400 mb-5">Tap the ♡ on any product to save it here.</p>
+            <p
+              className="text-base font-bold text-slate-700 mb-1"
+              style={FONT_HEADING}
+            >
+              Nothing saved yet
+            </p>
+            <p className="text-sm text-slate-400 mb-5">
+              Tap the ♡ on any product to save it here.
+            </p>
             <Link
               to="/schools"
               className="inline-flex items-center gap-2 py-2.5 px-6 rounded-full font-bold text-white hover:brightness-105 transition text-sm"
               style={{
-                background: 'linear-gradient(180deg, #1a6bb8 0%, #004C99 50%, #003d7a 100%)',
-                textDecoration: 'none',
+                background:
+                  "linear-gradient(180deg, #1a6bb8 0%, #004C99 50%, #003d7a 100%)",
+                textDecoration: "none",
                 ...FONT_HEADING,
               }}
             >
@@ -203,13 +216,20 @@ export default function WishlistPage() {
               return (
                 <div key={item.productId} className="wl-card">
                   {/* Image */}
-                  <Link to={`/product/${item.productId}`} style={{ display: 'block', flexShrink: 0 }}>
+                  <Link
+                    to={`/product/${item.productId}`}
+                    style={{ display: "block", flexShrink: 0 }}
+                  >
                     <div className="wl-img-wrap">
                       {imgSrc ? (
                         <img src={imgSrc} alt={item.name} />
                       ) : (
                         <div className="wl-img-placeholder">
-                          <ShoppingBag size={36} strokeWidth={1} style={{ color: '#93c5fd' }} />
+                          <ShoppingBag
+                            size={36}
+                            strokeWidth={1}
+                            style={{ color: "#93c5fd" }}
+                          />
                         </div>
                       )}
                       {/* Remove button pinned on image */}
@@ -233,11 +253,13 @@ export default function WishlistPage() {
                       <Link
                         to={`/product/${item.productId}`}
                         className="wl-name hover:text-[#2563eb] transition-colors"
-                        style={{ ...FONT_HEADING, textDecoration: 'none' }}
+                        style={{ ...FONT_HEADING, textDecoration: "none" }}
                       >
                         {item.name}
                       </Link>
-                      <div className="wl-price" style={FONT_HEADING}>₹{item.price}</div>
+                      <div className="wl-price" style={FONT_HEADING}>
+                        ₹{item.price}
+                      </div>
                     </div>
                     <button
                       type="button"
@@ -258,4 +280,3 @@ export default function WishlistPage() {
     </main>
   );
 }
-

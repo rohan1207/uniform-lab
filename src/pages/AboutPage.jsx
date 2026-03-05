@@ -883,7 +883,9 @@ function FounderPhotoCard({ src, alt }) {
   const cardTransform = active
     ? `perspective(700px) rotateX(${tilt.y * -ROT}deg) rotateY(${tilt.x * ROT}deg) scale(1.04)`
     : `perspective(700px) rotateX(0deg) rotateY(0deg) scale(1)`;
-  const transition = active ? "transform 0.07s linear" : `transform 0.5s ${easeOut}`;
+  const transition = active
+    ? "transform 0.07s linear"
+    : `transform 0.5s ${easeOut}`;
 
   return (
     <div
@@ -1011,7 +1013,6 @@ export default function AboutPage() {
             </h2>
           </Reveal>
           <div className="ab-founders" style={{ marginBottom: "72px" }}>
-
             {/* ── Founder 1: image LEFT · text RIGHT ── */}
             <Reveal delay={0}>
               <div className="ab-founder-row">
@@ -1020,29 +1021,41 @@ export default function AboutPage() {
                   <div className="ab-founder-role">Founder</div>
                   <div className="ab-founder-name">Priyank Mota</div>
                   <p className="ab-founder-bio">
-                    Priyank comes from the Mota Group — a family business with deep roots
-                    in fabric and manufacturing. Growing up around the trade gave him an
-                    instinctive understanding of supply chains, quality control, and the
-                    discipline required to run institutional-scale operations.
+                    Priyank comes from the Mota Group — a family business with
+                    deep roots in fabric and manufacturing. Growing up around
+                    the trade gave him an instinctive understanding of supply
+                    chains, quality control, and the discipline required to run
+                    institutional-scale operations.
                   </p>
 
                   {/* extra content — collapsed on mobile until expanded */}
-                  <div className={`ab-founder-extra ${isMobile && !priyankExpanded ? "collapsed" : "expanded"}`}>
+                  <div
+                    className={`ab-founder-extra ${isMobile && !priyankExpanded ? "collapsed" : "expanded"}`}
+                  >
                     <p className="ab-founder-bio">
-                      Over more than 15 years, he built the operational backbone of The
-                      Uniform Lab — from standardising fabric sourcing to designing production
-                      workflows that handle tens of thousands of units every month without
-                      compromising on consistency. His approach treats every school or
-                      corporate partnership as a long-term system, not a one-off order.
+                      Over more than 15 years, he built the operational backbone
+                      of The Uniform Lab — from standardising fabric sourcing to
+                      designing production workflows that handle tens of
+                      thousands of units every month without compromising on
+                      consistency. His approach treats every school or corporate
+                      partnership as a long-term system, not a one-off order.
                     </p>
-                   
+
                     <blockquote className="ab-founder-quote">
-                      "When a school calls us in Year 4, it means our systems worked —
-                      not just our product."
+                      "When a school calls us in Year 4, it means our systems
+                      worked — not just our product."
                     </blockquote>
                     <div className="ab-founder-tags">
-                      {["Manufacturing Operations","Supply Chain","Institutional Sales","Quality Systems","Scale & Growth"].map(t => (
-                        <span key={t} className="ab-founder-tag">{t}</span>
+                      {[
+                        "Manufacturing Operations",
+                        "Supply Chain",
+                        "Institutional Sales",
+                        "Quality Systems",
+                        "Scale & Growth",
+                      ].map((t) => (
+                        <span key={t} className="ab-founder-tag">
+                          {t}
+                        </span>
                       ))}
                     </div>
                   </div>
@@ -1051,7 +1064,7 @@ export default function AboutPage() {
                     <button
                       type="button"
                       className="ab-founder-readmore"
-                      onClick={() => setPriyankExpanded(v => !v)}
+                      onClick={() => setPriyankExpanded((v) => !v)}
                     >
                       {priyankExpanded ? "Show less ↑" : "Read more ↓"}
                     </button>
@@ -1067,29 +1080,41 @@ export default function AboutPage() {
                   <div className="ab-founder-role">Co-Founder</div>
                   <div className="ab-founder-name">Nivedita Mota</div>
                   <p className="ab-founder-bio">
-                    Nivedita brings a sharp eye for design and an unwavering focus on
-                    the customer experience. She joined the founding journey to ensure
-                    The Uniform Lab wasn't just operationally sound, but genuinely
-                    pleasant and reliable to work with at every touchpoint.
+                    Nivedita brings a sharp eye for design and an unwavering
+                    focus on the customer experience. She joined the founding
+                    journey to ensure The Uniform Lab wasn't just operationally
+                    sound, but genuinely pleasant and reliable to work with at
+                    every touchpoint.
                   </p>
 
                   {/* extra content — collapsed on mobile until expanded */}
-                  <div className={`ab-founder-extra ${isMobile && !niveditaExpanded ? "collapsed" : "expanded"}`}>
+                  <div
+                    className={`ab-founder-extra ${isMobile && !niveditaExpanded ? "collapsed" : "expanded"}`}
+                  >
                     <p className="ab-founder-bio">
-                      She leads everything that touches the customer — from how enquiries are
-                      handled and orders communicated, to the design language of the products
-                      themselves. Under her direction, the brand evolved from a manufacturer
-                      into a trusted uniform partner that institutions feel confident
+                      She leads everything that touches the customer — from how
+                      enquiries are handled and orders communicated, to the
+                      design language of the products themselves. Under her
+                      direction, the brand evolved from a manufacturer into a
+                      trusted uniform partner that institutions feel confident
                       recommending to parents.
                     </p>
-                   
+
                     <blockquote className="ab-founder-quote">
-                      "A coordinator shouldn't have to chase us — that's a burden
-                      we should never pass on."
+                      "A coordinator shouldn't have to chase us — that's a
+                      burden we should never pass on."
                     </blockquote>
                     <div className="ab-founder-tags">
-                      {["Product Design","Brand Identity","Customer Experience","School Partnerships","Operations Communication"].map(t => (
-                        <span key={t} className="ab-founder-tag">{t}</span>
+                      {[
+                        "Product Design",
+                        "Brand Identity",
+                        "Customer Experience",
+                        "School Partnerships",
+                        "Operations Communication",
+                      ].map((t) => (
+                        <span key={t} className="ab-founder-tag">
+                          {t}
+                        </span>
                       ))}
                     </div>
                   </div>
@@ -1098,7 +1123,7 @@ export default function AboutPage() {
                     <button
                       type="button"
                       className="ab-founder-readmore"
-                      onClick={() => setNiveditaExpanded(v => !v)}
+                      onClick={() => setNiveditaExpanded((v) => !v)}
                     >
                       {niveditaExpanded ? "Show less ↑" : "Read more ↓"}
                     </button>
@@ -1107,7 +1132,6 @@ export default function AboutPage() {
                 <FounderPhotoCard src="/nivedita.png" alt="Nivedita Mota" />
               </div>
             </Reveal>
-
           </div>
 
           {/* ── Specialisations ── */}

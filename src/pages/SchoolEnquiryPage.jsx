@@ -426,7 +426,8 @@ export default function SchoolEnquiryPage() {
     message: "",
   });
 
-  const set = (field) => (e) => setForm((prev) => ({ ...prev, [field]: e.target.value }));
+  const set = (field) => (e) =>
+    setForm((prev) => ({ ...prev, [field]: e.target.value }));
 
   useEffect(() => {
     const update = () => {
@@ -460,7 +461,8 @@ export default function SchoolEnquiryPage() {
               <p className="eq-success-sub">
                 Your enquiry details have been pre-filled in WhatsApp. Just hit
                 <strong> Send</strong> to connect with our team directly.
-                <br /><br />
+                <br />
+                <br />
                 If WhatsApp didn't open,{" "}
                 <a
                   href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(buildWhatsAppMessage(form))}`}
@@ -469,7 +471,8 @@ export default function SchoolEnquiryPage() {
                   style={{ color: "#2563eb", fontWeight: 700 }}
                 >
                   click here
-                </a>.
+                </a>
+                .
               </p>
               <Link to="/" className="eq-success-back">
                 Back to Home
@@ -655,10 +658,7 @@ export default function SchoolEnquiryPage() {
                   </div>
                 </div>
 
-                <form
-                  className="eq-form-body"
-                  onSubmit={handleSubmit}
-                >
+                <form className="eq-form-body" onSubmit={handleSubmit}>
                   <div className="eq-field">
                     <label className="eq-label">School / College Name *</label>
                     <input

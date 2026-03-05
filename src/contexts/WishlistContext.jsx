@@ -1,7 +1,7 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from "react";
 
 const WishlistContext = createContext(null);
-const STORAGE_KEY = 'uniformlab_wishlist';
+const STORAGE_KEY = "uniformlab_wishlist";
 
 export function WishlistProvider({ children }) {
   const [items, setItems] = useState([]);
@@ -23,7 +23,8 @@ export function WishlistProvider({ children }) {
     }
   }, [items]);
 
-  const isInWishlist = (productId) => items.some((i) => i.productId === productId);
+  const isInWishlist = (productId) =>
+    items.some((i) => i.productId === productId);
 
   const toggleWishlist = (product) => {
     setItems((prev) => {
@@ -40,9 +41,11 @@ export function WishlistProvider({ children }) {
             product.image ||
             product.mainImageUrl ||
             (product.imagesByColor
-              ? Object.values(product.imagesByColor)[0]?.[0] ?? null
+              ? (Object.values(product.imagesByColor)[0]?.[0] ?? null)
               : null) ||
-            (Array.isArray(product.images) ? product.images[0] ?? null : null) ||
+            (Array.isArray(product.images)
+              ? (product.images[0] ?? null)
+              : null) ||
             null,
           meta: product,
           addedAt: new Date().toISOString(),
@@ -69,7 +72,6 @@ export function WishlistProvider({ children }) {
 
 export function useWishlist() {
   const ctx = useContext(WishlistContext);
-  if (!ctx) throw new Error('useWishlist must be used within WishlistProvider');
+  if (!ctx) throw new Error("useWishlist must be used within WishlistProvider");
   return ctx;
 }
-

@@ -1,28 +1,27 @@
-import { useEffect } from 'react';
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
-import { ThemeProvider } from '@/contexts/ThemeContext';
-import { CartProvider } from '@/contexts/CartContext';
+import { useEffect } from "react";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { ThemeProvider } from "@/contexts/ThemeContext";
+import { CartProvider } from "@/contexts/CartContext";
 import { AuthProvider } from "@/contexts/AuthContext";
-import { WishlistProvider } from '@/contexts/WishlistContext';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
-import { CartDrawerWrapper } from '@/components/CartDrawerWrapper';
+import { WishlistProvider } from "@/contexts/WishlistContext";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import { CartDrawerWrapper } from "@/components/CartDrawerWrapper";
 
-
-import SchoolsPage from '@/pages/SchoolsPage';
-import SchoolProductsPage from '@/pages/SchoolProductsPage';
-import ProductPage from '@/pages/ProductPage';
-import CheckoutPage from '@/pages/CheckoutPage';
-import AccountPage from '@/pages/AccountPage';
-import WishlistPage from '@/pages/WishlistPage';
-import SchoolEnquiryPage from '@/pages/SchoolEnquiryPage';
-import SizeGuidePage from '@/pages/SizeGuidePage';
-import SearchPage from '@/pages/SearchPage';
-import AboutPage from '@/pages/AboutPage';
-import ServicesPage from '@/pages/ServicesPage';
-import FAQPage from '@/pages/FAQPage';
-import HomePage from '@/pages/HomePage';
-import ResetPasswordPage from '@/pages/ResetPasswordPage';
+import SchoolsPage from "@/pages/SchoolsPage";
+import SchoolProductsPage from "@/pages/SchoolProductsPage";
+import ProductPage from "@/pages/ProductPage";
+import CheckoutPage from "@/pages/CheckoutPage";
+import AccountPage from "@/pages/AccountPage";
+import WishlistPage from "@/pages/WishlistPage";
+import SchoolEnquiryPage from "@/pages/SchoolEnquiryPage";
+import SizeGuidePage from "@/pages/SizeGuidePage";
+import SearchPage from "@/pages/SearchPage";
+import AboutPage from "@/pages/AboutPage";
+import ServicesPage from "@/pages/ServicesPage";
+import FAQPage from "@/pages/FAQPage";
+import HomePage from "@/pages/HomePage";
+import ResetPasswordPage from "@/pages/ResetPasswordPage";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -35,7 +34,7 @@ function ScrollToTop() {
 function LayoutContent() {
   const { pathname } = useLocation();
 
-  if (pathname.startsWith('/admin')) {
+  if (pathname.startsWith("/admin")) {
     return <AdminRoutes />;
   }
 

@@ -6,6 +6,17 @@ import { cachedFetch } from "@/lib/apiCache";
 
 const GLOBAL_CSS = `
   @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800;900&family=Nunito:wght@400;600;700&display=swap');
+
+  @keyframes pdp-shimmer {
+    0%   { background-position: -800px 0; }
+    100% { background-position:  800px 0; }
+  }
+  .pdp-skel {
+    background: linear-gradient(90deg, #edf2f7 0%, #dce8f5 40%, #edf2f7 80%);
+    background-size: 1600px 100%;
+    animation: pdp-shimmer 1.6s ease-in-out infinite;
+    border-radius: 6px;
+  }
 `;
 
 /* ── Loading skeleton ───────────────────────────────────────────────────── */
@@ -13,38 +24,80 @@ function LoadingState() {
   return (
     <>
       <style>{GLOBAL_CSS}</style>
-      <main
-        className="min-h-screen flex items-center justify-center"
-        style={{ background: "#f8f9fb", fontFamily: "'Nunito', sans-serif" }}
-      >
-        <div className="flex flex-col items-center gap-4">
-          <div
-            className="w-12 h-12 rounded-full border-[3px] border-[#e2e8f0] border-t-[#2563eb] animate-spin"
-            style={{ boxShadow: "0 4px 14px rgba(37,99,235,0.14)" }}
-          />
-          <p
-            className="text-[#0f172a]"
-            style={{
-              fontFamily: "'Baloo 2', cursive",
-              fontWeight: 900,
-              fontSize: "clamp(15px, 1.4vw, 20px)",
-              letterSpacing: "-0.2px",
-            }}
-          >
-            Loading product…
-          </p>
-          <p
-            className="text-[#94a3b8]"
-            style={{
-              fontSize: "13px",
-              fontFamily: "'Nunito', sans-serif",
-              fontWeight: 600,
-            }}
-          >
-            Hang tight, fetching the details ✦
-          </p>
+      <div style={{ background: "#f8f9fb", minHeight: "100vh", paddingTop: "5.5rem" }}>
+
+        {/* Breadcrumb bar */}
+        <div style={{ borderBottom: "1px solid #e8ecf1", background: "#fff", padding: "12px 0" }}>
+          <div style={{ maxWidth: 1400, margin: "0 auto", padding: "0 16px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <div className="pdp-skel" style={{ width: 36, height: 12 }} />
+              <span style={{ color: "#cbd5e1", fontSize: 12 }}>›</span>
+              <div className="pdp-skel" style={{ width: 52, height: 12 }} />
+              <span style={{ color: "#cbd5e1", fontSize: 12 }}>›</span>
+              <div className="pdp-skel" style={{ width: 100, height: 12 }} />
+              <span style={{ color: "#cbd5e1", fontSize: 12 }}>›</span>
+              <div className="pdp-skel" style={{ width: 160, height: 12 }} />
+            </div>
+          </div>
         </div>
-      </main>
+
+        {/* Hero grid */}
+        <div style={{ maxWidth: 1400, margin: "0 auto", padding: "32px 16px" }}>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-16">
+
+            {/* LEFT: image + thumbnails */}
+            <div>
+              <div className="pdp-skel" style={{ width: "100%", aspectRatio: "4/5", borderRadius: 16, marginBottom: 12 }} />
+              <div style={{ display: "flex", gap: 8 }}>
+                {[0, 1, 2, 3].map((i) => (
+                  <div key={i} className="pdp-skel" style={{ width: 62, height: 62, borderRadius: 10, flexShrink: 0 }} />
+                ))}
+              </div>
+            </div>
+
+            {/* RIGHT: product info */}
+            <div style={{ paddingTop: 8 }}>
+              {/* School pill */}
+              <div className="pdp-skel" style={{ width: 110, height: 24, borderRadius: 999, marginBottom: 14 }} />
+              {/* Product name */}
+              <div className="pdp-skel" style={{ width: "82%", height: 32, borderRadius: 8, marginBottom: 8 }} />
+              <div className="pdp-skel" style={{ width: "55%", height: 32, borderRadius: 8, marginBottom: 12 }} />
+              {/* Subtitle */}
+              <div className="pdp-skel" style={{ width: "60%", height: 13, borderRadius: 6, marginBottom: 18 }} />
+              {/* Price */}
+              <div className="pdp-skel" style={{ width: 100, height: 28, borderRadius: 8, marginBottom: 22 }} />
+              {/* Color label + swatches */}
+              <div className="pdp-skel" style={{ width: 80, height: 12, borderRadius: 6, marginBottom: 10 }} />
+              <div style={{ display: "flex", gap: 8, marginBottom: 22 }}>
+                {[0, 1, 2, 3].map((i) => (
+                  <div key={i} className="pdp-skel" style={{ width: 36, height: 36, borderRadius: 999, flexShrink: 0 }} />
+                ))}
+              </div>
+              {/* Size label + pills */}
+              <div className="pdp-skel" style={{ width: 60, height: 12, borderRadius: 6, marginBottom: 10 }} />
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 28 }}>
+                {[0, 1, 2, 3, 4, 5].map((i) => (
+                  <div key={i} className="pdp-skel" style={{ width: 48, height: 36, borderRadius: 10, flexShrink: 0 }} />
+                ))}
+              </div>
+              {/* CTA buttons */}
+              <div style={{ display: "flex", gap: 10, marginBottom: 20 }}>
+                <div className="pdp-skel" style={{ flex: 1, height: 46, borderRadius: 999 }} />
+                <div className="pdp-skel" style={{ flex: 1, height: 46, borderRadius: 999 }} />
+              </div>
+              {/* Trust badges */}
+              <div style={{ display: "flex", gap: 14, flexWrap: "wrap", paddingTop: 16, borderTop: "1px solid #f1f5f9" }}>
+                {[0, 1, 2].map((i) => (
+                  <div key={i} style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                    <div className="pdp-skel" style={{ width: 20, height: 20, borderRadius: 6, flexShrink: 0 }} />
+                    <div className="pdp-skel" style={{ width: 80, height: 11, borderRadius: 5 }} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 }

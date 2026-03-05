@@ -1,7 +1,6 @@
 import { useState, useMemo, useRef, useCallback, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Search } from "lucide-react";
-import { featuredSchools as staticFeaturedSchools } from "@/data/featuredSchools";
 import { cachedFetch } from "@/lib/apiCache";
 
 /* ─────────────────────────────────────────────────────────────────────────────
@@ -237,6 +236,60 @@ const GLOBAL_CSS = `
       font-size: 13px !important;
     }
   }
+
+  /* ══════════════════════════════════════════════════════════
+     SKELETON SHIMMER  (Myntra / Amazon style)
+  ══════════════════════════════════════════════════════════ */
+  @keyframes sp-shimmer {
+    0%   { background-position: -600px 0; }
+    100% { background-position: 600px 0; }
+  }
+  .sp-skeleton {
+    background: linear-gradient(
+      90deg,
+      #edf2f7 0%,
+      #e2eaf5 40%,
+      #edf2f7 80%
+    );
+    background-size: 1200px 100%;
+    animation: sp-shimmer 1.6s ease-in-out infinite;
+  }
+  .sp-skel-card {
+    border-radius: 20px;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+    display: flex;
+    flex-direction: column;
+  }
+  .sp-skel-logo-zone {
+    height: 136px;
+    background: #f8faff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .sp-skel-img-zone {
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .sp-skel-body {
+    height: 82px;
+    padding: 14px 22px;
+    background: linear-gradient(165deg, #f8fafc 0%, #f1f5f9 50%, #eef2f7 100%);
+    border-top: 1px solid rgba(203,213,225,0.6);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  @media (max-width: 767px) {
+    .sp-skel-logo-zone { height: 104px !important; }
+    .sp-skel-body      { height: 68px !important; padding: 9px 18px !important; gap: 6px !important; }
+  }
 `;
 
 const INITIAL_VISIBLE = 8;
@@ -384,40 +437,66 @@ function SchoolCard({ school }) {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
+   SchoolCardSkeleton — mirrors real card layout for shimmer loading
+───────────────────────────────────────────────────────────────────────────── */
+function SchoolCardSkeleton() {
+  return (
+    <div className="sp-skel-card" aria-hidden="true">
+      {/* Logo zone */}
+      <div className="sp-skel-logo-zone">
+        <div className="sp-skeleton" style={{ width: 64, height: 64, borderRadius: 14 }} />
+      </div>
+      {/* School image zone */}
+      <div className="sp-skel-img-zone">
+        <div className="sp-skeleton" style={{ width: "100%", height: "100%" }} />
+      </div>
+      {/* Name rows */}
+      <div className="sp-skel-body">
+        <div className="sp-skeleton" style={{ height: 12, borderRadius: 6, width: "72%" }} />
+        <div className="sp-skeleton" style={{ height: 12, borderRadius: 6, width: "48%" }} />
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
    Page
 ───────────────────────────────────────────────────────────────────────────── */
 export default function SchoolsPage() {
   const [query, setQuery] = useState("");
   const [showAll, setShowAll] = useState(false);
-  const [schools, setSchools] = useState(staticFeaturedSchools);
+  // null  = still fetching  |  []  = loaded, none  |  [...]  = loaded
+  const [schools, setSchools] = useState(null);
 
-  // Load real schools from backend; fall back to static on error
   useEffect(() => {
     let cancelled = false;
     (async () => {
       try {
         const data = await cachedFetch("/api/public/schools");
-        if (!Array.isArray(data) || cancelled) return;
-        const mapped = data.map((s) => ({
-          id: s._id || s.slug,
-          slug: s.slug,
-          name: s.name,
-          level: s.level || "CBSE",
-          image: s.imageUrl || "/school-placeholder.png",
-          logo: s.logoUrl || null,
-          color: "#004C99",
-        }));
-        if (mapped.length) setSchools(mapped);
+        if (cancelled) return;
+        const list = Array.isArray(data) ? data : [];
+        setSchools(
+          list.map((s) => ({
+            id: s._id || s.slug,
+            slug: s.slug,
+            name: s.name,
+            level: s.level || "CBSE",
+            image: s.imageUrl || "/school-placeholder.png",
+            logo: s.logoUrl || null,
+            color: "#004C99",
+          })),
+        );
       } catch {
-        // keep static fallback
+        if (!cancelled) setSchools([]);
       }
     })();
-    return () => {
-      cancelled = true;
-    };
+    return () => { cancelled = true; };
   }, []);
 
+  const loading = schools === null;
+
   const filtered = useMemo(() => {
+    if (!schools) return [];
     if (!query.trim()) return schools;
     const q = query.trim().toLowerCase();
     return schools.filter(
@@ -502,15 +581,26 @@ export default function SchoolsPage() {
             />
           </div>
 
-          {/* ── Cards grid ── */}
-          <div className="sp-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 mb-7">
-            {visible.map((school) => (
-              <SchoolCard key={school.id} school={school} />
-            ))}
-          </div>
+          {/* ── Skeleton cards while loading ── */}
+          {loading && (
+            <div className="sp-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 mb-7">
+              {Array.from({ length: INITIAL_VISIBLE }).map((_, i) => (
+                <SchoolCardSkeleton key={i} />
+              ))}
+            </div>
+          )}
+
+          {/* ── Real cards ── */}
+          {!loading && (
+            <div className="sp-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 mb-7">
+              {visible.map((school) => (
+                <SchoolCard key={school.id} school={school} />
+              ))}
+            </div>
+          )}
 
           {/* ── Empty state ── */}
-          {filtered.length === 0 && (
+          {!loading && filtered.length === 0 && (
             <p
               className="text-center py-8 font-semibold text-gray-400"
               style={{
@@ -523,7 +613,7 @@ export default function SchoolsPage() {
           )}
 
           {/* ── View more ── */}
-          {isCollapsed && (
+          {!loading && isCollapsed && (
             <div className="text-center mt-2">
               <button
                 type="button"
