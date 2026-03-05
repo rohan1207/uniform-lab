@@ -28,16 +28,16 @@ export default function Footer() {
         .ftl-link:hover { color: #fff; }
         .ftl-col-label {
           font-size: 10px; font-weight: 800; letter-spacing: 0.15em;
-          text-transform: uppercase; color: #475569; margin-bottom: 14px;
+          text-transform: uppercase; color: #94a3b8; margin-bottom: 14px;
           padding-bottom: 8px; border-bottom: 1px solid #1e293b;
         }
         .ftl-contact-row { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
         .ftl-contact-row:last-child { margin-bottom: 0; }
         .ftl-contact-ico { color: #3b82f6; margin-top: 2px; flex-shrink: 0; }
-        .ftl-contact-text { font-size: 13px; color: #94a3b8; line-height: 1.5; }
-        .ftl-contact-text a { color: #94a3b8; text-decoration: none; transition: color 0.15s; }
+        .ftl-contact-text { font-size: 13px; color: #cbd5e1; line-height: 1.5; }
+        .ftl-contact-text a { color: #cbd5e1; text-decoration: none; transition: color 0.15s; }
         .ftl-contact-text a:hover { color: #fff; }
-        .ftl-contact-sub { font-size: 11.5px; color: #475569; margin-top: 1px; }
+        .ftl-contact-sub { font-size: 11.5px; color: #94a3b8; margin-top: 1px; }
       `}</style>
 
       {/* ── Accent line ── */}
@@ -68,7 +68,7 @@ export default function Footer() {
             <h3 style={{ ...FONT_HEADING, fontSize: 26, fontWeight: 900, color: '#fff', margin: '0 0 10px' }}>
               The Uniform Lab
             </h3>
-            <p style={{ fontSize: 13, color: '#64748b', lineHeight: 1.7, margin: '0 0 0', maxWidth: 280 }}>
+            <p style={{ fontSize: 13, color: '#94a3b8', lineHeight: 1.7, margin: '0 0 0', maxWidth: 280 }}>
               Uniforms that make students look smart, feel comfortable, and wear with pride — crafted for schools across Pune & India.
             </p>
           </div>
@@ -134,14 +134,14 @@ export default function Footer() {
         <div style={{
           marginTop: 40,
           paddingTop: 20,
-          borderTop: '1px solid #0f172a',
+          borderTop: '1px solid #1e293b',
           display: 'flex',
           flexWrap: 'wrap',
           justifyContent: 'space-between',
           alignItems: 'center',
           gap: '8px 24px',
           fontSize: 12,
-          color: '#334155',
+          color: '#94a3b8',
         }}>
           <span>© {year} The Uniform Lab. All rights reserved.</span>
           <span>Serving schools &amp; institutions across India.</span>
