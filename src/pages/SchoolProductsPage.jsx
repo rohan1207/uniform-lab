@@ -356,8 +356,8 @@ function matchesSearch(name, query) {
 }
 function matchesGradeFilter(product, selectedGradeId) {
   if (!selectedGradeId) return true;
-  const gradeId = product.gradeId ?? product.grade?._id;
-  return gradeId === selectedGradeId;
+  // gradeId is either a string label (new) or ObjectId string (legacy)
+  return product.gradeId === selectedGradeId || product.gradeLabel === selectedGradeId;
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
@@ -466,18 +466,13 @@ export default function SchoolProductsPage() {
         }
 
         const byCategory = {};
-        products.forEach((p) => {
-          const catId = p.category?._id || p.category;
-          if (!catId) return;
-          if (!byCategory[catId]) byCategory[catId] = [];
 
-          // Same image logic as ProductPage (detail page) so card gets identical shape
+        // Build a shared product-data builder to avoid duplication
+        const buildProductEntry = (p) => {
           const mainImage =
             p.mainImageUrl ||
             (Array.isArray(p.galleryImageUrls) ? p.galleryImageUrls[0] : null);
-          const images = [p.mainImageUrl, ...(p.galleryImageUrls || [])].filter(
-            Boolean,
-          );
+          const images = [p.mainImageUrl, ...(p.galleryImageUrls || [])].filter(Boolean);
 
           if (process.env.NODE_ENV !== "production" && p.name && !mainImage) {
             console.warn("[SchoolProductsPage] Product has no image:", p.name, {
@@ -486,7 +481,10 @@ export default function SchoolProductsPage() {
             });
           }
 
-          byCategory[catId].push({
+          // Grade: prefer gradeLabel string (new), fall back to grade._id (legacy)
+          const gradeId = p.gradeLabel || p.grade?._id || null;
+
+          return {
             id: p._id,
             name: p.name,
             price: p.price,
@@ -498,14 +496,42 @@ export default function SchoolProductsPage() {
             images,
             imagesByColor: p.imagesByColor || null,
             variants: Array.isArray(p.variants) ? p.variants : [],
-            gradeId: p.grade?._id || null,
+            gradeId,           // string label (new) or ObjectId string (legacy)
+            gradeLabel: p.gradeLabel || null,
+          };
+        };
+
+        products.forEach((p) => {
+          // Support multi-category: use categories array if present, else single category
+          const allCatRefs = Array.isArray(p.categories) && p.categories.length
+            ? p.categories
+            : (p.category ? [p.category] : []);
+          const allCatIds = allCatRefs.map((c) => c?._id || c).filter(Boolean);
+
+          if (!allCatIds.length) return;
+
+          const entry = buildProductEntry(p);
+          allCatIds.forEach((catId) => {
+            const key = String(catId);
+            if (!byCategory[key]) byCategory[key] = [];
+            // Avoid duplicate product entries in same category (can happen if category in both fields)
+            if (!byCategory[key].some((x) => x.id === p._id)) {
+              byCategory[key].push(entry);
+            }
           });
         });
+
+        // Build grade filter options: support gradeLabel strings AND legacy grade._id
         const gradesSeen = new Map();
         products.forEach((p) => {
-          const g = p.grade;
-          if (g && g._id && g.name && !gradesSeen.has(g._id)) {
-            gradesSeen.set(g._id, { _id: g._id, name: g.name });
+          if (p.gradeLabel) {
+            if (!gradesSeen.has(p.gradeLabel)) {
+              gradesSeen.set(p.gradeLabel, { _id: p.gradeLabel, name: p.gradeLabel });
+            }
+          } else if (p.grade && p.grade._id && p.grade.name) {
+            if (!gradesSeen.has(p.grade._id)) {
+              gradesSeen.set(p.grade._id, { _id: p.grade._id, name: p.grade.name });
+            }
           }
         });
         const schoolGrades = Array.from(gradesSeen.values()).sort((a, b) =>

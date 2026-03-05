@@ -61,7 +61,7 @@ export default function TrustedBy() {
         <div className="w-full">
           <img
             src="/trustedby.png"
-            alt="Trusted by 1000+ Moms"
+            alt="Trusted by 10,000+ Moms"
             className="w-full h-full object-cover block"
             style={{ display: 'block' }}
           />
