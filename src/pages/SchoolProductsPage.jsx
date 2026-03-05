@@ -438,7 +438,28 @@ export default function SchoolProductsPage() {
           setCatalog(null);
           return;
         }
-        const { school, categories = [], products = [] } = data;
+        const { school, products = [] } = data;
+
+        // Build a deduplicated, sorted categories list from the products themselves
+        // (supports both legacy single `category` and new `categories` array)
+        // Always normalize IDs to plain strings to avoid ObjectId vs string mismatches
+        const categoriesMap = new Map();
+        products.forEach((p) => {
+          const allCats = (p.categories && p.categories.length > 0)
+            ? p.categories
+            : (p.category ? [p.category] : []);
+          allCats.forEach((cat) => {
+            if (!cat) return;
+            const id = String(cat._id ?? cat);
+            const name = typeof cat === "object" ? (cat.name ?? null) : null;
+            if (id && name !== null && !categoriesMap.has(id)) {
+              categoriesMap.set(id, { _id: id, name, sortOrder: cat.sortOrder ?? 0 });
+            }
+          });
+        });
+        const categories = Array.from(categoriesMap.values()).sort(
+          (a, b) => (a.sortOrder - b.sortOrder) || a.name.localeCompare(b.name)
+        );
 
         if (typeof window !== "undefined") {
           console.log("[SchoolProductsPage] raw API data", {
@@ -502,11 +523,15 @@ export default function SchoolProductsPage() {
         };
 
         products.forEach((p) => {
-          // Support multi-category: use categories array if present, else single category
+          // Support multi-category: use categories array if present, else single category.
+          // Always extract to plain ID strings regardless of whether the field is an
+          // ObjectId, a populated object, or already a string (handles all API shapes).
+          const toId = (v) => v ? String(v?._id ?? v) : null;
+
           const allCatRefs = Array.isArray(p.categories) && p.categories.length
             ? p.categories
             : (p.category ? [p.category] : []);
-          const allCatIds = allCatRefs.map((c) => c?._id || c).filter(Boolean);
+          const allCatIds = allCatRefs.map(toId).filter(Boolean);
 
           if (!allCatIds.length) return;
 
