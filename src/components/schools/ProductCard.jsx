@@ -151,8 +151,8 @@ const CARD_CSS = `
     /* Subtle lift only — no big jump on tiny cards */
     .pc-card:hover { transform: translateY(-2px); }
 
-    /* Full-width on mobile — no max-width cap */
-    .pc-card { border-radius: 14px; max-width: none; }
+    /* Full-width on mobile — strictly contained within grid column */
+    .pc-card { border-radius: 14px; max-width: none; width: 100%; min-width: 0; overflow: hidden; }
 
     /* Price chip — smaller, less obtrusive */
     .pc-price {
@@ -173,19 +173,21 @@ const CARD_CSS = `
       object-position: center;
     }
 
-    /* Info body — tighter padding */
+    /* Info body — tighter padding, min-width:0 prevents content overflow */
     .pc-info {
       padding: 10px 11px 12px;
       gap: 7px;
+      min-width: 0;
     }
 
-    /* Quick Shop button — slimmer */
+    /* Quick Shop button — slimmer, min-width:0 allows shrink */
     .pc-btn-quick {
       height: 30px;
       font-size: 9px;
       letter-spacing: 0.06em;
       border-radius: 8px;
       gap: 3px;
+      min-width: 0;
     }
 
     /* Add to Cart button — slimmer square */

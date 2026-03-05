@@ -195,7 +195,7 @@ const GLOBAL_CSS = `
   @media (max-width: 767px) {
 
     /* Root — let global layout handle navbar padding; only control bottom spacing here */
-    .spp-root { padding-top: 0 !important; padding-bottom: 40px !important; }
+    .spp-root { padding-top: 0 !important; padding-bottom: 40px !important; overflow-x: hidden; }
 
     /* Force sidebar off — its own display:flex overrides Tailwind hidden */
     .spp-sidebar { display: none !important; }
@@ -294,10 +294,10 @@ const GLOBAL_CSS = `
       padding: 16px 12px !important;
     }
 
-    /* 2-column grid on mobile */
+    /* 2-column grid on mobile — minmax(0,1fr) strictly caps column to available space */
     .spp-product-grid {
-      grid-template-columns: repeat(2, 1fr) !important;
-      gap: 12px !important;
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      gap: 10px !important;
     }
 
     /* Category section spacing */
@@ -611,7 +611,7 @@ export default function SchoolProductsPage() {
                 <div className="spp-skel" style={{ width: 26, height: 18, borderRadius: 6 }} />
                 <div style={{ flex: 1, height: 1, background: '#e2e8f0', borderRadius: 99 }} />
               </div>
-              <div className="spp-product-grid grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 lg:gap-5 mb-14">
+              <div className="spp-product-grid grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-4 mb-14">
                 {Array.from({ length: 8 }).map((_, i) => (
                   <div key={i} className="spp-skel-card">
                     <div className="spp-skel" style={{ aspectRatio: '3/4', width: '100%', borderRadius: 0 }} />
@@ -630,7 +630,7 @@ export default function SchoolProductsPage() {
                 <div className="spp-skel" style={{ width: 26, height: 18, borderRadius: 6 }} />
                 <div style={{ flex: 1, height: 1, background: '#e2e8f0', borderRadius: 99 }} />
               </div>
-              <div className="spp-product-grid grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 lg:gap-5">
+              <div className="spp-product-grid grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-4">
                 {Array.from({ length: 4 }).map((_, i) => (
                   <div key={i} className="spp-skel-card">
                     <div className="spp-skel" style={{ aspectRatio: '3/4', width: '100%', borderRadius: 0 }} />
@@ -1067,7 +1067,7 @@ export default function SchoolProductsPage() {
                         }}
                       />
                     </div>
-                    <div className="spp-product-grid grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 lg:gap-5">
+                    <div className="spp-product-grid grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-4">
                       {category.products.map((product) => (
                         <ProductCard
                           key={product.id}
