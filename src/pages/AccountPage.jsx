@@ -40,7 +40,7 @@ export default function AccountPage() {
   const navigate = useNavigate();
   const searchParams = new URLSearchParams(location.search);
   const redirectTo = searchParams.get("redirect");
-  const validTabs = ["profile", "addresses", "orders", "returns", "track"];
+  const validTabs = ["profile", "addresses", "orders", "returns"];
   const [activeTab, setActiveTab] = useState(() => {
     if (!isAuthenticated) return "login";
     const tabParam = searchParams.get("tab");
@@ -89,9 +89,7 @@ export default function AccountPage() {
   const [exchangeSubmitting, setExchangeSubmitting] = useState(false);
   const [exchangeSuccess, setExchangeSuccess] = useState("");
   const [exchangeError, setExchangeError] = useState("");
-  const [trackId, setTrackId] = useState("");
-  const [trackedOrder, setTrackedOrder] = useState(null);
-  const [trackError, setTrackError] = useState("");
+
 
   const ADDRESS_STORAGE_KEY = "uniformlab_addresses";
   const ORDER_STORAGE_KEY = "uniformlab_orders";
@@ -1032,219 +1030,164 @@ export default function AccountPage() {
     </div>
   );
 
+  const DELIVERY_STEPS = [
+    { key: "Order confirmed", label: "Confirmed" },
+    { key: "Packed",          label: "Packed"    },
+    { key: "Shipped",         label: "Shipped"   },
+    { key: "Delivered",       label: "Delivered" },
+  ];
+
+  const getDeliveryStep = (status) => {
+    switch (status) {
+      case "Order confirmed": return 0;
+      case "Packed":          return 1;
+      case "Shipped":         return 2;
+      case "Delivered":       return 3;
+      default:                return 0;
+    }
+  };
+
   const renderOrders = () => (
     <div className="space-y-4">
       <div className="rounded-xl border border-[var(--color-border)] bg-white p-6">
-        <h2
-          className="text-lg font-bold text-[#1a1a2e] mb-1"
-          style={FONT_HEADING}
-        >
+        <h2 className="text-lg font-bold text-[#1a1a2e] mb-1" style={FONT_HEADING}>
           Order history
         </h2>
         {orders.length === 0 ? (
           <p className="text-xs text-[var(--color-text-muted)]">
-            Your past orders placed with this account will appear here with
-            their details.
+            Your past orders placed with this account will appear here with their details.
           </p>
         ) : (
-          <div className="mt-3 space-y-3 text-sm">
-            {orders.map((order) => (
-              <div
-                key={order.id}
-                className="border border-slate-200 rounded-lg p-4 space-y-3 bg-white"
-              >
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <div>
-                    <p className="text-xs font-semibold text-slate-500">
-                      Order ID
-                    </p>
-                    <p className="text-sm font-semibold text-slate-900">
-                      {order.id}
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-xs text-slate-500">
-                      {order.createdAt
-                        ? new Date(order.createdAt).toLocaleString()
-                        : "Just now"}
-                    </p>
-                    <p className="text-sm font-semibold text-slate-900">
-                      ₹{order.total}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex gap-3 items-center">
-                  {order.items[0]?.image ? (
-                    <img
-                      src={order.items[0].image}
-                      alt={order.items[0].name}
-                      className="w-16 h-16 rounded-lg object-cover flex-shrink-0 border border-slate-200"
-                    />
-                  ) : (
-                    <div className="w-16 h-16 rounded-lg bg-slate-100 border border-slate-200 flex items-center justify-center text-[10px] text-slate-400 flex-shrink-0">
-                      No image
+          <div className="mt-3 space-y-4 text-sm">
+            {orders.map((order) => {
+              const isUndelivered = order.deliveryStatus === "Undelivered";
+              const stepIdx = isUndelivered ? 2 : getDeliveryStep(order.deliveryStatus);
+              return (
+                <div
+                  key={order.id}
+                  className="border border-slate-200 rounded-xl p-4 space-y-3 bg-white"
+                >
+                  {/* ── Header row ── */}
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <div>
+                      <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide">Order ID</p>
+                      <p className="text-sm font-bold text-slate-900" style={FONT_HEADING}>{order.id}</p>
                     </div>
-                  )}
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs font-semibold text-slate-500 truncate">
-                      {order.schoolName || "Uniform Lab"}
-                    </p>
-                    <ul className="mt-1 text-xs text-slate-600 space-y-0.5">
-                      {order.items.map((item, idx) => (
-                        <li key={`${order.id}-${idx}`} className="truncate">
-                          {item.name} · Qty {item.quantity}
-                          {item.size && ` · Size ${item.size}`}
-                          {item.color && ` · ${item.color}`}
-                        </li>
-                      ))}
-                    </ul>
+                    <div className="text-right">
+                      <p className="text-xs text-slate-400">
+                        {order.createdAt ? new Date(order.createdAt).toLocaleString() : "Just now"}
+                      </p>
+                      <p className="text-sm font-bold text-slate-900" style={FONT_HEADING}>₹{order.total}</p>
+                    </div>
+                  </div>
+
+                  {/* ── Items row ── */}
+                  <div className="flex gap-3 items-center">
+                    {order.items[0]?.image ? (
+                      <img
+                        src={order.items[0].image}
+                        alt={order.items[0].name}
+                        className="w-14 h-14 rounded-lg object-cover flex-shrink-0 border border-slate-200"
+                      />
+                    ) : (
+                      <div className="w-14 h-14 rounded-lg bg-slate-100 border border-slate-200 flex items-center justify-center text-[10px] text-slate-400 flex-shrink-0">
+                        No img
+                      </div>
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[11px] font-semibold text-slate-500 truncate">
+                        {order.schoolName || "Uniform Lab"}
+                      </p>
+                      <ul className="mt-0.5 text-xs text-slate-600 space-y-0.5">
+                        {order.items.map((item, idx) => (
+                          <li key={`${order.id}-${idx}`} className="truncate">
+                            {item.name} · Qty {item.quantity}
+                            {item.size && ` · Size ${item.size}`}
+                            {item.color && ` · ${item.color}`}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* ── Inline delivery tracker ── */}
+                  <div className="pt-1">
+                    {isUndelivered && (
+                      <p className="text-[10px] font-semibold text-amber-600 mb-2">
+                        ⚠ Delivery attempt failed
+                        {order.deliveryReason ? ` — ${order.deliveryReason}` : ""}. Our team will retry.
+                      </p>
+                    )}
+                    <div className="flex items-center">
+                      {DELIVERY_STEPS.map((step, idx) => {
+                        const done = idx <= stepIdx && !isUndelivered;
+                        const current = idx === stepIdx;
+                        const isLast = idx === DELIVERY_STEPS.length - 1;
+                        return (
+                          <div key={step.key} className="flex items-center" style={{ flex: isLast ? "0 0 auto" : 1 }}>
+                            {/* Dot + label */}
+                            <div className="flex flex-col items-center gap-1">
+                              <div
+                                style={{
+                                  width: 10,
+                                  height: 10,
+                                  borderRadius: "50%",
+                                  background: done
+                                    ? "#10b981"
+                                    : current && isUndelivered
+                                    ? "#f59e0b"
+                                    : "#e2e8f0",
+                                  border: `2px solid ${
+                                    done
+                                      ? "#10b981"
+                                      : current
+                                      ? isUndelivered ? "#f59e0b" : "#10b981"
+                                      : "#cbd5e1"
+                                  }`,
+                                  boxShadow: current ? "0 0 0 3px rgba(16,185,129,0.15)" : "none",
+                                  flexShrink: 0,
+                                }}
+                              />
+                              <span
+                                style={{
+                                  fontSize: 9,
+                                  fontWeight: 700,
+                                  color: done ? "#059669" : current ? "#374151" : "#94a3b8",
+                                  whiteSpace: "nowrap",
+                                  fontFamily: "'Nunito', sans-serif",
+                                }}
+                              >
+                                {step.label}
+                              </span>
+                            </div>
+                            {/* Connector line */}
+                            {!isLast && (
+                              <div
+                                style={{
+                                  flex: 1,
+                                  height: 2,
+                                  borderRadius: 99,
+                                  background: idx < stepIdx && !isUndelivered ? "#10b981" : "#e2e8f0",
+                                  margin: "0 4px",
+                                  marginBottom: 14, /* align with dots, not labels */
+                                }}
+                              />
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>
     </div>
   );
 
-  const renderTrack = () => {
-    const steps = ["Order confirmed", "Packed", "Shipped", "Delivered"];
 
-    const getStepIndex = (status) => {
-      switch (status) {
-        case "Order confirmed":
-          return 0;
-        case "Packed":
-          return 1;
-        case "Shipped":
-          return 2;
-        case "Delivered":
-          return 3;
-        case "Undelivered":
-          return 3;
-        default:
-          return 0;
-      }
-    };
-
-    const currentStep =
-      trackedOrder && trackedOrder.deliveryStatus
-        ? getStepIndex(trackedOrder.deliveryStatus)
-        : null;
-
-    const handleTrack = () => {
-      const trimmed = trackId.trim();
-      if (!trimmed) {
-        setTrackError("Please enter your order ID.");
-        setTrackedOrder(null);
-        return;
-      }
-      const found =
-        orders.find(
-          (o) => (o.id || "").toLowerCase() === trimmed.toLowerCase(),
-        ) || null;
-      if (!found) {
-        setTrackError("No order found with this ID for your account.");
-        setTrackedOrder(null);
-      } else {
-        setTrackError("");
-        setTrackedOrder(found);
-      }
-    };
-
-    return (
-      <div className="rounded-xl border border-[var(--color-border)] bg-white p-6 max-w-xl space-y-4">
-        <h2
-          className="text-lg font-bold text-[#1a1a2e] mb-1"
-          style={FONT_HEADING}
-        >
-          Track order
-        </h2>
-        <p className="text-xs text-[var(--color-text-muted)]">
-          Paste your Uniform Lab order ID (e.g. UL-20260227-00001) to see the
-          latest delivery status.
-        </p>
-        <div className="flex flex-col sm:flex-row gap-2">
-          <input
-            type="text"
-            value={trackId}
-            onChange={(e) => setTrackId(e.target.value)}
-            placeholder="UL-YYYYMMDD-00001"
-            className="flex-1 px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
-          />
-          <button
-            type="button"
-            onClick={handleTrack}
-            className="inline-flex items-center justify-center px-4 py-2 rounded-full text-xs font-bold hover:brightness-105 transition mt-1 sm:mt-0"
-            style={{ ...BTN_PRIMARY, ...FONT_HEADING }}
-          >
-            Track
-          </button>
-        </div>
-        {trackError && <p className="text-xs text-red-600">{trackError}</p>}
-        {trackedOrder && (
-          <div className="mt-4 space-y-3 text-sm">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-              <div>
-                <p className="text-xs font-semibold text-slate-500">Order ID</p>
-                <p className="text-sm font-semibold text-slate-900">
-                  {trackedOrder.id}
-                </p>
-                {trackedOrder.schoolName && (
-                  <p className="text-xs text-slate-600 mt-0.5">
-                    {trackedOrder.schoolName}
-                  </p>
-                )}
-              </div>
-              <div className="text-sm text-slate-700">
-                <span className="font-semibold">
-                  {trackedOrder.deliveryStatus}
-                </span>
-                {trackedOrder.deliveryReason && (
-                  <span className="text-xs text-slate-500">
-                    {" "}
-                    — {trackedOrder.deliveryReason}
-                  </span>
-                )}
-              </div>
-            </div>
-            <div className="mt-3">
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-                {steps.map((label, idx) => {
-                  const isActive = currentStep != null && idx <= currentStep;
-                  const isLast = idx === steps.length - 1;
-                  return (
-                    <div key={label} className="flex items-center sm:flex-1">
-                      <div className="flex items-center gap-2">
-                        <div
-                          className={`w-3.5 h-3.5 rounded-full border ${
-                            isActive
-                              ? "bg-emerald-500 border-emerald-500"
-                              : "bg-slate-100 border-slate-300"
-                          }`}
-                        />
-                        <span className="text-xs text-slate-700">{label}</span>
-                      </div>
-                      {!isLast && (
-                        <div className="hidden sm:block flex-1 h-px mx-2">
-                          <div
-                            className={`h-px ${
-                              isActive ? "bg-emerald-400" : "bg-slate-200"
-                            }`}
-                          />
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-    );
-  };
 
   const renderReturns = () => {
     const selectedOrder =
@@ -1475,36 +1418,33 @@ export default function AccountPage() {
         {/* Tabs – visible when logged in */}
         {isAuthenticated && (
           <div className="flex flex-wrap gap-2 mb-6 text-xs justify-center md:justify-start">
-            {["profile", "addresses", "orders", "returns", "track"].map(
-              (tab) => (
-                <button
-                  key={tab}
-                  type="button"
-                  onClick={() => setActiveTab(tab)}
-                  className={`px-4 py-1.5 rounded-full border font-semibold transition ${
-                    activeTab === tab
-                      ? "text-white border-transparent"
-                      : "border-slate-200 text-slate-700 bg-white hover:bg-[#eef5ff]"
-                  }`}
-                  style={
-                    activeTab === tab
-                      ? {
-                          ...BTN_PRIMARY,
-                          ...FONT_HEADING,
-                          padding: "0.375rem 1rem",
-                          fontSize: "0.75rem",
-                        }
-                      : undefined
-                  }
-                >
-                  {tab === "profile" && "Profile"}
-                  {tab === "addresses" && "Addresses"}
-                  {tab === "orders" && "Orders"}
-                  {tab === "returns" && "Exchange"}
-                  {tab === "track" && "Track order"}
-                </button>
-              ),
-            )}
+            {["profile", "addresses", "orders", "returns"].map((tab) => (
+              <button
+                key={tab}
+                type="button"
+                onClick={() => setActiveTab(tab)}
+                className={`px-4 py-1.5 rounded-full border font-semibold transition ${
+                  activeTab === tab
+                    ? "text-white border-transparent"
+                    : "border-slate-200 text-slate-700 bg-white hover:bg-[#eef5ff]"
+                }`}
+                style={
+                  activeTab === tab
+                    ? {
+                        ...BTN_PRIMARY,
+                        ...FONT_HEADING,
+                        padding: "0.375rem 1rem",
+                        fontSize: "0.75rem",
+                      }
+                    : undefined
+                }
+              >
+                {tab === "profile" && "Profile"}
+                {tab === "addresses" && "Addresses"}
+                {tab === "orders" && "Orders"}
+                {tab === "returns" && "Exchange"}
+              </button>
+            ))}
           </div>
         )}
 
@@ -1516,9 +1456,7 @@ export default function AccountPage() {
               ? renderAddresses()
               : activeTab === "orders"
                 ? renderOrders()
-                : activeTab === "returns"
-                  ? renderReturns()
-                  : renderTrack()}
+                : renderReturns()}
       </div>
     </main>
   );
