@@ -24,10 +24,21 @@ function LoadingState() {
   return (
     <>
       <style>{GLOBAL_CSS}</style>
-      <div style={{ background: "#f8f9fb", minHeight: "100vh", paddingTop: "5.5rem" }}>
-
+      <div
+        style={{
+          background: "#f8f9fb",
+          minHeight: "100vh",
+          paddingTop: "5.5rem",
+        }}
+      >
         {/* Breadcrumb bar */}
-        <div style={{ borderBottom: "1px solid #e8ecf1", background: "#fff", padding: "12px 0" }}>
+        <div
+          style={{
+            borderBottom: "1px solid #e8ecf1",
+            background: "#fff",
+            padding: "12px 0",
+          }}
+        >
           <div style={{ maxWidth: 1400, margin: "0 auto", padding: "0 16px" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
               <div className="pdp-skel" style={{ width: 36, height: 12 }} />
@@ -44,13 +55,29 @@ function LoadingState() {
         {/* Hero grid */}
         <div style={{ maxWidth: 1400, margin: "0 auto", padding: "32px 16px" }}>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-16">
-
             {/* LEFT: image + thumbnails */}
             <div>
-              <div className="pdp-skel" style={{ width: "100%", aspectRatio: "4/5", borderRadius: 16, marginBottom: 12 }} />
+              <div
+                className="pdp-skel"
+                style={{
+                  width: "100%",
+                  aspectRatio: "4/5",
+                  borderRadius: 16,
+                  marginBottom: 12,
+                }}
+              />
               <div style={{ display: "flex", gap: 8 }}>
                 {[0, 1, 2, 3].map((i) => (
-                  <div key={i} className="pdp-skel" style={{ width: 62, height: 62, borderRadius: 10, flexShrink: 0 }} />
+                  <div
+                    key={i}
+                    className="pdp-skel"
+                    style={{
+                      width: 62,
+                      height: 62,
+                      borderRadius: 10,
+                      flexShrink: 0,
+                    }}
+                  />
                 ))}
               </div>
             </div>
@@ -58,39 +85,148 @@ function LoadingState() {
             {/* RIGHT: product info */}
             <div style={{ paddingTop: 8 }}>
               {/* School pill */}
-              <div className="pdp-skel" style={{ width: 110, height: 24, borderRadius: 999, marginBottom: 14 }} />
+              <div
+                className="pdp-skel"
+                style={{
+                  width: 110,
+                  height: 24,
+                  borderRadius: 999,
+                  marginBottom: 14,
+                }}
+              />
               {/* Product name */}
-              <div className="pdp-skel" style={{ width: "82%", height: 32, borderRadius: 8, marginBottom: 8 }} />
-              <div className="pdp-skel" style={{ width: "55%", height: 32, borderRadius: 8, marginBottom: 12 }} />
+              <div
+                className="pdp-skel"
+                style={{
+                  width: "82%",
+                  height: 32,
+                  borderRadius: 8,
+                  marginBottom: 8,
+                }}
+              />
+              <div
+                className="pdp-skel"
+                style={{
+                  width: "55%",
+                  height: 32,
+                  borderRadius: 8,
+                  marginBottom: 12,
+                }}
+              />
               {/* Subtitle */}
-              <div className="pdp-skel" style={{ width: "60%", height: 13, borderRadius: 6, marginBottom: 18 }} />
+              <div
+                className="pdp-skel"
+                style={{
+                  width: "60%",
+                  height: 13,
+                  borderRadius: 6,
+                  marginBottom: 18,
+                }}
+              />
               {/* Price */}
-              <div className="pdp-skel" style={{ width: 100, height: 28, borderRadius: 8, marginBottom: 22 }} />
+              <div
+                className="pdp-skel"
+                style={{
+                  width: 100,
+                  height: 28,
+                  borderRadius: 8,
+                  marginBottom: 22,
+                }}
+              />
               {/* Color label + swatches */}
-              <div className="pdp-skel" style={{ width: 80, height: 12, borderRadius: 6, marginBottom: 10 }} />
+              <div
+                className="pdp-skel"
+                style={{
+                  width: 80,
+                  height: 12,
+                  borderRadius: 6,
+                  marginBottom: 10,
+                }}
+              />
               <div style={{ display: "flex", gap: 8, marginBottom: 22 }}>
                 {[0, 1, 2, 3].map((i) => (
-                  <div key={i} className="pdp-skel" style={{ width: 36, height: 36, borderRadius: 999, flexShrink: 0 }} />
+                  <div
+                    key={i}
+                    className="pdp-skel"
+                    style={{
+                      width: 36,
+                      height: 36,
+                      borderRadius: 999,
+                      flexShrink: 0,
+                    }}
+                  />
                 ))}
               </div>
               {/* Size label + pills */}
-              <div className="pdp-skel" style={{ width: 60, height: 12, borderRadius: 6, marginBottom: 10 }} />
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 28 }}>
+              <div
+                className="pdp-skel"
+                style={{
+                  width: 60,
+                  height: 12,
+                  borderRadius: 6,
+                  marginBottom: 10,
+                }}
+              />
+              <div
+                style={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  gap: 8,
+                  marginBottom: 28,
+                }}
+              >
                 {[0, 1, 2, 3, 4, 5].map((i) => (
-                  <div key={i} className="pdp-skel" style={{ width: 48, height: 36, borderRadius: 10, flexShrink: 0 }} />
+                  <div
+                    key={i}
+                    className="pdp-skel"
+                    style={{
+                      width: 48,
+                      height: 36,
+                      borderRadius: 10,
+                      flexShrink: 0,
+                    }}
+                  />
                 ))}
               </div>
               {/* CTA buttons */}
               <div style={{ display: "flex", gap: 10, marginBottom: 20 }}>
-                <div className="pdp-skel" style={{ flex: 1, height: 46, borderRadius: 999 }} />
-                <div className="pdp-skel" style={{ flex: 1, height: 46, borderRadius: 999 }} />
+                <div
+                  className="pdp-skel"
+                  style={{ flex: 1, height: 46, borderRadius: 999 }}
+                />
+                <div
+                  className="pdp-skel"
+                  style={{ flex: 1, height: 46, borderRadius: 999 }}
+                />
               </div>
               {/* Trust badges */}
-              <div style={{ display: "flex", gap: 14, flexWrap: "wrap", paddingTop: 16, borderTop: "1px solid #f1f5f9" }}>
+              <div
+                style={{
+                  display: "flex",
+                  gap: 14,
+                  flexWrap: "wrap",
+                  paddingTop: 16,
+                  borderTop: "1px solid #f1f5f9",
+                }}
+              >
                 {[0, 1, 2].map((i) => (
-                  <div key={i} style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                    <div className="pdp-skel" style={{ width: 20, height: 20, borderRadius: 6, flexShrink: 0 }} />
-                    <div className="pdp-skel" style={{ width: 80, height: 11, borderRadius: 5 }} />
+                  <div
+                    key={i}
+                    style={{ display: "flex", alignItems: "center", gap: 6 }}
+                  >
+                    <div
+                      className="pdp-skel"
+                      style={{
+                        width: 20,
+                        height: 20,
+                        borderRadius: 6,
+                        flexShrink: 0,
+                      }}
+                    />
+                    <div
+                      className="pdp-skel"
+                      style={{ width: 80, height: 11, borderRadius: 5 }}
+                    />
                   </div>
                 ))}
               </div>

@@ -444,16 +444,28 @@ function SchoolCardSkeleton() {
     <div className="sp-skel-card" aria-hidden="true">
       {/* Logo zone */}
       <div className="sp-skel-logo-zone">
-        <div className="sp-skeleton" style={{ width: 64, height: 64, borderRadius: 14 }} />
+        <div
+          className="sp-skeleton"
+          style={{ width: 64, height: 64, borderRadius: 14 }}
+        />
       </div>
       {/* School image zone */}
       <div className="sp-skel-img-zone">
-        <div className="sp-skeleton" style={{ width: "100%", height: "100%" }} />
+        <div
+          className="sp-skeleton"
+          style={{ width: "100%", height: "100%" }}
+        />
       </div>
       {/* Name rows */}
       <div className="sp-skel-body">
-        <div className="sp-skeleton" style={{ height: 12, borderRadius: 6, width: "72%" }} />
-        <div className="sp-skeleton" style={{ height: 12, borderRadius: 6, width: "48%" }} />
+        <div
+          className="sp-skeleton"
+          style={{ height: 12, borderRadius: 6, width: "72%" }}
+        />
+        <div
+          className="sp-skeleton"
+          style={{ height: 12, borderRadius: 6, width: "48%" }}
+        />
       </div>
     </div>
   );
@@ -490,7 +502,9 @@ export default function SchoolsPage() {
         if (!cancelled) setSchools([]);
       }
     })();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const loading = schools === null;

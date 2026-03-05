@@ -90,7 +90,6 @@ export default function AccountPage() {
   const [exchangeSuccess, setExchangeSuccess] = useState("");
   const [exchangeError, setExchangeError] = useState("");
 
-
   const ADDRESS_STORAGE_KEY = "uniformlab_addresses";
   const ORDER_STORAGE_KEY = "uniformlab_orders";
   const RETURN_STORAGE_KEY = "uniformlab_returns";
@@ -1032,36 +1031,47 @@ export default function AccountPage() {
 
   const DELIVERY_STEPS = [
     { key: "Order confirmed", label: "Confirmed" },
-    { key: "Packed",          label: "Packed"    },
-    { key: "Shipped",         label: "Shipped"   },
-    { key: "Delivered",       label: "Delivered" },
+    { key: "Packed", label: "Packed" },
+    { key: "Shipped", label: "Shipped" },
+    { key: "Delivered", label: "Delivered" },
   ];
 
   const getDeliveryStep = (status) => {
     switch (status) {
-      case "Order confirmed": return 0;
-      case "Packed":          return 1;
-      case "Shipped":         return 2;
-      case "Delivered":       return 3;
-      default:                return 0;
+      case "Order confirmed":
+        return 0;
+      case "Packed":
+        return 1;
+      case "Shipped":
+        return 2;
+      case "Delivered":
+        return 3;
+      default:
+        return 0;
     }
   };
 
   const renderOrders = () => (
     <div className="space-y-4">
       <div className="rounded-xl border border-[var(--color-border)] bg-white p-6">
-        <h2 className="text-lg font-bold text-[#1a1a2e] mb-1" style={FONT_HEADING}>
+        <h2
+          className="text-lg font-bold text-[#1a1a2e] mb-1"
+          style={FONT_HEADING}
+        >
           Order history
         </h2>
         {orders.length === 0 ? (
           <p className="text-xs text-[var(--color-text-muted)]">
-            Your past orders placed with this account will appear here with their details.
+            Your past orders placed with this account will appear here with
+            their details.
           </p>
         ) : (
           <div className="mt-3 space-y-4 text-sm">
             {orders.map((order) => {
               const isUndelivered = order.deliveryStatus === "Undelivered";
-              const stepIdx = isUndelivered ? 2 : getDeliveryStep(order.deliveryStatus);
+              const stepIdx = isUndelivered
+                ? 2
+                : getDeliveryStep(order.deliveryStatus);
               return (
                 <div
                   key={order.id}
@@ -1070,14 +1080,28 @@ export default function AccountPage() {
                   {/* ── Header row ── */}
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <div>
-                      <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide">Order ID</p>
-                      <p className="text-sm font-bold text-slate-900" style={FONT_HEADING}>{order.id}</p>
+                      <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide">
+                        Order ID
+                      </p>
+                      <p
+                        className="text-sm font-bold text-slate-900"
+                        style={FONT_HEADING}
+                      >
+                        {order.id}
+                      </p>
                     </div>
                     <div className="text-right">
                       <p className="text-xs text-slate-400">
-                        {order.createdAt ? new Date(order.createdAt).toLocaleString() : "Just now"}
+                        {order.createdAt
+                          ? new Date(order.createdAt).toLocaleString()
+                          : "Just now"}
                       </p>
-                      <p className="text-sm font-bold text-slate-900" style={FONT_HEADING}>₹{order.total}</p>
+                      <p
+                        className="text-sm font-bold text-slate-900"
+                        style={FONT_HEADING}
+                      >
+                        ₹{order.total}
+                      </p>
                     </div>
                   </div>
 
@@ -1115,7 +1139,10 @@ export default function AccountPage() {
                     {isUndelivered && (
                       <p className="text-[10px] font-semibold text-amber-600 mb-2">
                         ⚠ Delivery attempt failed
-                        {order.deliveryReason ? ` — ${order.deliveryReason}` : ""}. Our team will retry.
+                        {order.deliveryReason
+                          ? ` — ${order.deliveryReason}`
+                          : ""}
+                        . Our team will retry.
                       </p>
                     )}
                     <div className="flex items-center">
@@ -1124,7 +1151,11 @@ export default function AccountPage() {
                         const current = idx === stepIdx;
                         const isLast = idx === DELIVERY_STEPS.length - 1;
                         return (
-                          <div key={step.key} className="flex items-center" style={{ flex: isLast ? "0 0 auto" : 1 }}>
+                          <div
+                            key={step.key}
+                            className="flex items-center"
+                            style={{ flex: isLast ? "0 0 auto" : 1 }}
+                          >
                             {/* Dot + label */}
                             <div className="flex flex-col items-center gap-1">
                               <div
@@ -1135,16 +1166,20 @@ export default function AccountPage() {
                                   background: done
                                     ? "#10b981"
                                     : current && isUndelivered
-                                    ? "#f59e0b"
-                                    : "#e2e8f0",
+                                      ? "#f59e0b"
+                                      : "#e2e8f0",
                                   border: `2px solid ${
                                     done
                                       ? "#10b981"
                                       : current
-                                      ? isUndelivered ? "#f59e0b" : "#10b981"
-                                      : "#cbd5e1"
+                                        ? isUndelivered
+                                          ? "#f59e0b"
+                                          : "#10b981"
+                                        : "#cbd5e1"
                                   }`,
-                                  boxShadow: current ? "0 0 0 3px rgba(16,185,129,0.15)" : "none",
+                                  boxShadow: current
+                                    ? "0 0 0 3px rgba(16,185,129,0.15)"
+                                    : "none",
                                   flexShrink: 0,
                                 }}
                               />
@@ -1152,7 +1187,11 @@ export default function AccountPage() {
                                 style={{
                                   fontSize: 9,
                                   fontWeight: 700,
-                                  color: done ? "#059669" : current ? "#374151" : "#94a3b8",
+                                  color: done
+                                    ? "#059669"
+                                    : current
+                                      ? "#374151"
+                                      : "#94a3b8",
                                   whiteSpace: "nowrap",
                                   fontFamily: "'Nunito', sans-serif",
                                 }}
@@ -1167,9 +1206,12 @@ export default function AccountPage() {
                                   flex: 1,
                                   height: 2,
                                   borderRadius: 99,
-                                  background: idx < stepIdx && !isUndelivered ? "#10b981" : "#e2e8f0",
+                                  background:
+                                    idx < stepIdx && !isUndelivered
+                                      ? "#10b981"
+                                      : "#e2e8f0",
                                   margin: "0 4px",
-                                  marginBottom: 14, /* align with dots, not labels */
+                                  marginBottom: 14 /* align with dots, not labels */,
                                 }}
                               />
                             )}
@@ -1186,8 +1228,6 @@ export default function AccountPage() {
       </div>
     </div>
   );
-
-
 
   const renderReturns = () => {
     const selectedOrder =

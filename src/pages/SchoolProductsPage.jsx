@@ -544,59 +544,127 @@ export default function SchoolProductsPage() {
       <>
         <style>{GLOBAL_CSS}</style>
         <main className="spp-root">
-
           {/* ══ Skeleton Topbar ══ */}
           <div className="spp-topbar sticky top-0 z-30">
             {/* Desktop */}
             <div className="spp-topbar-inner hidden md:flex items-center justify-between gap-4 py-4 pt-5">
-              <div className="spp-skel" style={{ width: 84, height: 15, borderRadius: 8 }} />
+              <div
+                className="spp-skel"
+                style={{ width: 84, height: 15, borderRadius: 8 }}
+              />
               <div className="flex flex-col items-center gap-2 flex-1">
-                <div className="spp-skel" style={{ width: 230, height: 18, borderRadius: 8 }} />
-                <div className="spp-skel" style={{ width: 130, height: 11, borderRadius: 6 }} />
+                <div
+                  className="spp-skel"
+                  style={{ width: 230, height: 18, borderRadius: 8 }}
+                />
+                <div
+                  className="spp-skel"
+                  style={{ width: 130, height: 11, borderRadius: 6 }}
+                />
               </div>
-              <div className="spp-skel" style={{ width: 42, height: 42, borderRadius: 12 }} />
+              <div
+                className="spp-skel"
+                style={{ width: 42, height: 42, borderRadius: 12 }}
+              />
             </div>
             {/* Mobile */}
             <div className="md:hidden px-4 py-3">
               <div className="flex items-center justify-between mb-2">
-                <div className="spp-skel" style={{ width: 72, height: 14, borderRadius: 6 }} />
-                <div className="spp-skel" style={{ width: 42, height: 42, borderRadius: 12 }} />
+                <div
+                  className="spp-skel"
+                  style={{ width: 72, height: 14, borderRadius: 6 }}
+                />
+                <div
+                  className="spp-skel"
+                  style={{ width: 42, height: 42, borderRadius: 12 }}
+                />
               </div>
-              <div className="spp-skel" style={{ width: '52%', height: 16, borderRadius: 8, marginBottom: 5 }} />
-              <div className="spp-skel" style={{ width: '30%', height: 11, borderRadius: 6 }} />
+              <div
+                className="spp-skel"
+                style={{
+                  width: "52%",
+                  height: 16,
+                  borderRadius: 8,
+                  marginBottom: 5,
+                }}
+              />
+              <div
+                className="spp-skel"
+                style={{ width: "30%", height: 11, borderRadius: 6 }}
+              />
             </div>
           </div>
 
           {/* ══ Mobile filter bar skeleton ══ */}
           <div className="spp-mobile-filters md:hidden">
-            <div className="spp-skel" style={{ height: 40, borderRadius: 10 }} />
+            <div
+              className="spp-skel"
+              style={{ height: 40, borderRadius: 10 }}
+            />
             <div className="spp-filter-scroll">
               {[82, 60, 74, 68, 80].map((w, i) => (
-                <div key={i} className="spp-skel flex-shrink-0" style={{ width: w, height: 32, borderRadius: 8 }} />
+                <div
+                  key={i}
+                  className="spp-skel flex-shrink-0"
+                  style={{ width: w, height: 32, borderRadius: 8 }}
+                />
               ))}
             </div>
           </div>
 
           {/* ══ Sidebar + Products ══ */}
           <div className="w-full flex items-start">
-
             {/* Sidebar */}
             <aside className="spp-skel-sidebar hidden md:flex">
               <div>
-                <div className="spp-skel" style={{ width: 48, height: 10, borderRadius: 4, marginBottom: 10 }} />
-                <div className="spp-skel" style={{ height: 40, borderRadius: 12 }} />
+                <div
+                  className="spp-skel"
+                  style={{
+                    width: 48,
+                    height: 10,
+                    borderRadius: 4,
+                    marginBottom: 10,
+                  }}
+                />
+                <div
+                  className="spp-skel"
+                  style={{ height: 40, borderRadius: 12 }}
+                />
               </div>
               <div className="spp-skel" style={{ height: 1 }} />
               <div>
-                <div className="spp-skel" style={{ width: 40, height: 10, borderRadius: 4, marginBottom: 10 }} />
-                <div className="spp-skel" style={{ height: 36, borderRadius: 10 }} />
+                <div
+                  className="spp-skel"
+                  style={{
+                    width: 40,
+                    height: 10,
+                    borderRadius: 4,
+                    marginBottom: 10,
+                  }}
+                />
+                <div
+                  className="spp-skel"
+                  style={{ height: 36, borderRadius: 10 }}
+                />
               </div>
               <div className="spp-skel" style={{ height: 1 }} />
               <div>
-                <div className="spp-skel" style={{ width: 60, height: 10, borderRadius: 4, marginBottom: 10 }} />
+                <div
+                  className="spp-skel"
+                  style={{
+                    width: 60,
+                    height: 10,
+                    borderRadius: 4,
+                    marginBottom: 10,
+                  }}
+                />
                 <div className="flex flex-col gap-2">
                   {Array.from({ length: 6 }).map((_, i) => (
-                    <div key={i} className="spp-skel" style={{ height: 34, borderRadius: 10 }} />
+                    <div
+                      key={i}
+                      className="spp-skel"
+                      style={{ height: 34, borderRadius: 10 }}
+                    />
                   ))}
                 </div>
               </div>
@@ -604,21 +672,59 @@ export default function SchoolProductsPage() {
 
             {/* Products area */}
             <div className="spp-products-area flex-1 min-w-0 px-4 sm:px-6 lg:px-8 py-8">
-
               {/* Category 1 */}
               <div className="flex items-center gap-3 mb-6">
-                <div className="spp-skel" style={{ width: 148, height: 22, borderRadius: 8 }} />
-                <div className="spp-skel" style={{ width: 26, height: 18, borderRadius: 6 }} />
-                <div style={{ flex: 1, height: 1, background: '#e2e8f0', borderRadius: 99 }} />
+                <div
+                  className="spp-skel"
+                  style={{ width: 148, height: 22, borderRadius: 8 }}
+                />
+                <div
+                  className="spp-skel"
+                  style={{ width: 26, height: 18, borderRadius: 6 }}
+                />
+                <div
+                  style={{
+                    flex: 1,
+                    height: 1,
+                    background: "#e2e8f0",
+                    borderRadius: 99,
+                  }}
+                />
               </div>
               <div className="spp-product-grid grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-4 mb-14">
                 {Array.from({ length: 8 }).map((_, i) => (
                   <div key={i} className="spp-skel-card">
-                    <div className="spp-skel" style={{ aspectRatio: '3/4', width: '100%', borderRadius: 0 }} />
-                    <div style={{ padding: '12px 14px 14px' }}>
-                      <div className="spp-skel" style={{ height: 13, borderRadius: 6, width: '78%', marginBottom: 7 }} />
-                      <div className="spp-skel" style={{ height: 13, borderRadius: 6, width: '52%', marginBottom: 12 }} />
-                      <div className="spp-skel" style={{ height: 18, borderRadius: 6, width: '38%' }} />
+                    <div
+                      className="spp-skel"
+                      style={{
+                        aspectRatio: "3/4",
+                        width: "100%",
+                        borderRadius: 0,
+                      }}
+                    />
+                    <div style={{ padding: "12px 14px 14px" }}>
+                      <div
+                        className="spp-skel"
+                        style={{
+                          height: 13,
+                          borderRadius: 6,
+                          width: "78%",
+                          marginBottom: 7,
+                        }}
+                      />
+                      <div
+                        className="spp-skel"
+                        style={{
+                          height: 13,
+                          borderRadius: 6,
+                          width: "52%",
+                          marginBottom: 12,
+                        }}
+                      />
+                      <div
+                        className="spp-skel"
+                        style={{ height: 18, borderRadius: 6, width: "38%" }}
+                      />
                     </div>
                   </div>
                 ))}
@@ -626,23 +732,61 @@ export default function SchoolProductsPage() {
 
               {/* Category 2 */}
               <div className="flex items-center gap-3 mb-6">
-                <div className="spp-skel" style={{ width: 112, height: 22, borderRadius: 8 }} />
-                <div className="spp-skel" style={{ width: 26, height: 18, borderRadius: 6 }} />
-                <div style={{ flex: 1, height: 1, background: '#e2e8f0', borderRadius: 99 }} />
+                <div
+                  className="spp-skel"
+                  style={{ width: 112, height: 22, borderRadius: 8 }}
+                />
+                <div
+                  className="spp-skel"
+                  style={{ width: 26, height: 18, borderRadius: 6 }}
+                />
+                <div
+                  style={{
+                    flex: 1,
+                    height: 1,
+                    background: "#e2e8f0",
+                    borderRadius: 99,
+                  }}
+                />
               </div>
               <div className="spp-product-grid grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-4">
                 {Array.from({ length: 4 }).map((_, i) => (
                   <div key={i} className="spp-skel-card">
-                    <div className="spp-skel" style={{ aspectRatio: '3/4', width: '100%', borderRadius: 0 }} />
-                    <div style={{ padding: '12px 14px 14px' }}>
-                      <div className="spp-skel" style={{ height: 13, borderRadius: 6, width: '78%', marginBottom: 7 }} />
-                      <div className="spp-skel" style={{ height: 13, borderRadius: 6, width: '52%', marginBottom: 12 }} />
-                      <div className="spp-skel" style={{ height: 18, borderRadius: 6, width: '38%' }} />
+                    <div
+                      className="spp-skel"
+                      style={{
+                        aspectRatio: "3/4",
+                        width: "100%",
+                        borderRadius: 0,
+                      }}
+                    />
+                    <div style={{ padding: "12px 14px 14px" }}>
+                      <div
+                        className="spp-skel"
+                        style={{
+                          height: 13,
+                          borderRadius: 6,
+                          width: "78%",
+                          marginBottom: 7,
+                        }}
+                      />
+                      <div
+                        className="spp-skel"
+                        style={{
+                          height: 13,
+                          borderRadius: 6,
+                          width: "52%",
+                          marginBottom: 12,
+                        }}
+                      />
+                      <div
+                        className="spp-skel"
+                        style={{ height: 18, borderRadius: 6, width: "38%" }}
+                      />
                     </div>
                   </div>
                 ))}
               </div>
-
             </div>
           </div>
         </main>

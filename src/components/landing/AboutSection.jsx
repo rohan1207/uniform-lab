@@ -131,8 +131,8 @@ const CSS = `
   }
   .about-founder-photo {
     width: 100px;
-    height: 132px;
-    border-radius: 14px;
+    height: 100px;
+    border-radius: 50%;
     flex-shrink: 0;
     background: linear-gradient(160deg, #eef5ff 0%, #dbeafe 100%);
     display: flex;
@@ -149,7 +149,7 @@ const CSS = `
   .about-founder-photo img {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
     object-position: center top;
   }
   .about-founder-role {
@@ -265,7 +265,7 @@ const CSS = `
     .about-intro { font-size: 14px; margin-bottom: 28px; }
     .about-founders-grid { grid-template-columns: 1fr; gap: 14px; margin-bottom: 24px; }
     .about-founder-card { padding: 18px; gap: 16px; flex-direction: column; align-items: center; text-align: center; }
-    .about-founder-photo { width: 84px; height: 112px; font-size: 22px; border-radius: 12px; }
+    .about-founder-photo { width: 88px; height: 88px; font-size: 22px; border-radius: 50%; }
     .about-points-row { gap: 8px; margin-bottom: 22px; }
     .about-point-pill { padding: 8px 12px; font-size: 12px; }
     .about-cta-bar { flex-direction: column; align-items: stretch; text-align: center; padding: 16px; }
