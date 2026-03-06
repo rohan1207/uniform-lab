@@ -1,75 +1,89 @@
-import { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Settings, Building2, BriefcaseBusiness, Boxes, Truck, ArrowRight, CheckCircle2, Sparkles } from 'lucide-react';
+import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
+import {
+  Settings,
+  Building2,
+  BriefcaseBusiness,
+  Boxes,
+  Truck,
+  ArrowRight,
+  CheckCircle2,
+  Sparkles,
+} from "lucide-react";
 
 /* ─── DATA ──────────────────────────────────────────────────────────────── */
 const SERVICES = [
   {
     icon: Building2,
-    emoji: '🏫',
-    accent: '#2563eb',
-    accentLight: '#dbeafe',
-    accentBg: '#eff6ff',
-    title: 'School Uniform Manufacturing',
-    description: 'End-to-end uniform manufacturing tailored to your school\'s identity — from design to delivery.',
-    image: '/su.png',
+    emoji: "🏫",
+    accent: "#2563eb",
+    accentLight: "#dbeafe",
+    accentBg: "#eff6ff",
+    title: "School Uniform Manufacturing",
+    description:
+      "End-to-end uniform manufacturing tailored to your school's identity — from design to delivery.",
+    image: "/su.png",
     points: [
-      'Custom uniform design aligned with school identity',
-      'Fabric sourcing with colour stability control',
-      'Standardised size charts and fit consistency',
-      'Bulk production planning aligned with academic calendars',
-      'Admission-season uniform readiness',
+      "Custom uniform design aligned with school identity",
+      "Fabric sourcing with colour stability control",
+      "Standardised size charts and fit consistency",
+      "Bulk production planning aligned with academic calendars",
+      "Admission-season uniform readiness",
     ],
   },
   {
     icon: BriefcaseBusiness,
-    emoji: '🏢',
-    accent: '#0ea5e9',
-    accentLight: '#bae6fd',
-    accentBg: '#f0f9ff',
-    title: 'Corporate Uniform Solutions',
-    description: 'Professional, role-based uniforms built for scalability, durability, and brand consistency.',
-    image: '/corporate.avif',
+    emoji: "🏢",
+    accent: "#0ea5e9",
+    accentLight: "#bae6fd",
+    accentBg: "#f0f9ff",
+    title: "Corporate Uniform Solutions",
+    description:
+      "Professional, role-based uniforms built for scalability, durability, and brand consistency.",
+    image: "/corporate.webp",
     points: [
-      'Role-based uniform design',
-      'Logo embroidery and branding',
-      'Durable fabric selection for industrial environments',
-      'Scalable production for multi-location teams',
-      'Structured bulk order management',
+      "Role-based uniform design",
+      "Logo embroidery and branding",
+      "Durable fabric selection for industrial environments",
+      "Scalable production for multi-location teams",
+      "Structured bulk order management",
     ],
   },
   {
     icon: Boxes,
-    emoji: '📦',
-    accent: '#7c3aed',
-    accentLight: '#ddd6fe',
-    accentBg: '#f5f3ff',
-    title: 'Bulk Uniform Manufacturing',
-    description: 'High-volume production with tight consistency controls and on-time dispatch — every batch, every time.',
-    image: '/bulk.png',
+    emoji: "📦",
+    accent: "#7c3aed",
+    accentLight: "#ddd6fe",
+    accentBg: "#f5f3ff",
+    title: "Bulk Uniform Manufacturing",
+    description:
+      "High-volume production with tight consistency controls and on-time dispatch — every batch, every time.",
+    image: "/bulk.jpg",
     points: [
-      'Centralised production planning',
-      'Batch consistency control',
-      'Quality checks at multiple stages',
-      'Timely bulk dispatch',
-      'Predictable output for institutional operations',
+      "Centralised production planning",
+      "Batch consistency control",
+      "Quality checks at multiple stages",
+      "Timely bulk dispatch",
+      "Predictable output for institutional operations",
     ],
   },
   {
     icon: Truck,
-    emoji: '🚚',
-    accent: '#059669',
-    accentLight: '#a7f3d0',
-    accentBg: '#ecfdf5',
-    title: 'Distribution & Fulfilment Models',
-    description: 'Flexible, zero-hassle fulfilment — from on-campus camps to e-commerce ordering for parents.',
-    image: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=700&q=80',
+    emoji: "🚚",
+    accent: "#059669",
+    accentLight: "#a7f3d0",
+    accentBg: "#ecfdf5",
+    title: "Distribution & Fulfilment Models",
+    description:
+      "Flexible, zero-hassle fulfilment — from on-campus camps to e-commerce ordering for parents.",
+    image:
+      "/distribution.jpg",
     points: [
-      'On-campus uniform camps during admissions and reopening',
-      'Retail store support for direct purchases',
-      'E-commerce ordering for parents and employees',
-      'Structured corporate dispatch models',
-      'Reduced administrative burden for institutions',
+      "On-campus uniform camps during admissions and reopening",
+      "Retail store support for direct purchases",
+      "E-commerce ordering for parents and employees",
+      "Structured corporate dispatch models",
+      "Reduced administrative burden for institutions",
     ],
   },
 ];
@@ -82,8 +96,13 @@ function useReveal(threshold = 0.12) {
     const el = ref.current;
     if (!el) return;
     const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } },
-      { threshold }
+      ([e]) => {
+        if (e.isIntersecting) {
+          setVisible(true);
+          obs.disconnect();
+        }
+      },
+      { threshold },
     );
     obs.observe(el);
     return () => obs.disconnect();
@@ -91,15 +110,19 @@ function useReveal(threshold = 0.12) {
   return [ref, visible];
 }
 
-function Reveal({ children, delay = 0, className = '', style = {} }) {
+function Reveal({ children, delay = 0, className = "", style = {} }) {
   const [ref, visible] = useReveal();
   return (
-    <div ref={ref} className={className} style={{
-      opacity: visible ? 1 : 0,
-      transform: visible ? 'translateY(0)' : 'translateY(40px)',
-      transition: `opacity 0.65s ease ${delay}s, transform 0.7s cubic-bezier(0.22,1,0.36,1) ${delay}s`,
-      ...style,
-    }}>
+    <div
+      ref={ref}
+      className={className}
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0)" : "translateY(40px)",
+        transition: `opacity 0.65s ease ${delay}s, transform 0.7s cubic-bezier(0.22,1,0.36,1) ${delay}s`,
+        ...style,
+      }}
+    >
       {children}
     </div>
   );
@@ -344,7 +367,6 @@ export default function ServicesPage() {
       <style>{CSS}</style>
 
       <div className="sv-root">
-
         {/* ══ HERO ══════════════════════════════════════════════════════ */}
         <div className="sv-hero">
           <div className="sv-hero-bg" />
@@ -355,59 +377,97 @@ export default function ServicesPage() {
               Our Services
             </div>
             <h1 className="sv-h1">
-              End-to-End Uniform<br />
+              End-to-End Uniform
+              <br />
               <em>Manufacturing &amp; Distribution</em>
             </h1>
             <p className="sv-hero-sub">
-              Complete services for schools, corporates, and institutions — built for consistency,
-              scalability, and operational ease.
+              Complete services for schools, corporates, and institutions —
+              built for consistency, scalability, and operational ease.
             </p>
           </div>
         </div>
 
         {/* ══ CARDS ══════════════════════════════════════════════════════ */}
         <div className="sv-main">
-          {SERVICES.map(({ icon: Icon, emoji, accent, accentLight, accentBg, title, description, image, points }, i) => (
-            <Reveal key={title} delay={0.05}>
-              <article
-                className="sv-card"
-                style={{ '--sv-accent': accent, '--sv-accent-light': accentLight, '--sv-accent-bg': accentBg }}
-              >
-                {/* Image */}
-                <div className="sv-card-img-wrap">
-                  <img className="sv-card-img" src={image} alt={title} loading="lazy" />
-                  <div className="sv-card-img-overlay" />
-                  <div className="sv-card-img-badge">{emoji}</div>
-                </div>
-
-                {/* Body */}
-                <div className="sv-card-body">
-                  <div
-                    className="sv-card-label"
-                    style={{ color: accent, '--before-bg': accent }}
-                  >
-                    <span style={{ display: 'inline-block', width: 18, height: 2, background: accent, borderRadius: 2, marginRight: 6 }} />
-                    {['School', 'Corporate', 'Bulk', 'Distribution'][i]}
+          {SERVICES.map(
+            (
+              {
+                icon: Icon,
+                emoji,
+                accent,
+                accentLight,
+                accentBg,
+                title,
+                description,
+                image,
+                points,
+              },
+              i,
+            ) => (
+              <Reveal key={title} delay={0.05}>
+                <article
+                  className="sv-card"
+                  style={{
+                    "--sv-accent": accent,
+                    "--sv-accent-light": accentLight,
+                    "--sv-accent-bg": accentBg,
+                  }}
+                >
+                  {/* Image */}
+                  <div className="sv-card-img-wrap">
+                    <img
+                      className="sv-card-img"
+                      src={image}
+                      alt={title}
+                      loading="lazy"
+                    />
+                    <div className="sv-card-img-overlay" />
+                    <div className="sv-card-img-badge">{emoji}</div>
                   </div>
-                  <h2 className="sv-card-h2">{title}</h2>
-                  <p className="sv-card-desc">{description}</p>
-                  <ul className="sv-points">
-                    {points.map((point, j) => (
-                      <li className="sv-point" key={point}>
-                        <CheckCircle2
-                          className="sv-point-icon"
-                          size={16}
-                          strokeWidth={2.5}
-                          style={{ color: accent, flexShrink: 0, marginTop: 2 }}
-                        />
-                        <span className="sv-point-text">{point}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </article>
-            </Reveal>
-          ))}
+
+                  {/* Body */}
+                  <div className="sv-card-body">
+                    <div
+                      className="sv-card-label"
+                      style={{ color: accent, "--before-bg": accent }}
+                    >
+                      <span
+                        style={{
+                          display: "inline-block",
+                          width: 18,
+                          height: 2,
+                          background: accent,
+                          borderRadius: 2,
+                          marginRight: 6,
+                        }}
+                      />
+                      {["School", "Corporate", "Bulk", "Distribution"][i]}
+                    </div>
+                    <h2 className="sv-card-h2">{title}</h2>
+                    <p className="sv-card-desc">{description}</p>
+                    <ul className="sv-points">
+                      {points.map((point, j) => (
+                        <li className="sv-point" key={point}>
+                          <CheckCircle2
+                            className="sv-point-icon"
+                            size={16}
+                            strokeWidth={2.5}
+                            style={{
+                              color: accent,
+                              flexShrink: 0,
+                              marginTop: 2,
+                            }}
+                          />
+                          <span className="sv-point-text">{point}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </article>
+              </Reveal>
+            ),
+          )}
 
           {/* ══ CTA ══════════════════════════════════════════════════════ */}
           <Reveal delay={0.05}>
@@ -417,9 +477,12 @@ export default function ServicesPage() {
                   <Sparkles size={11} />
                   Get Started
                 </div>
-                <h2 className="sv-cta-title">Ready to Simplify Your Uniform Operations?</h2>
+                <h2 className="sv-cta-title">
+                  Ready to Simplify Your Uniform Operations?
+                </h2>
                 <p className="sv-cta-sub">
-                  Join 500+ schools and institutions that trust The Uniform Lab for consistent, on-time delivery.
+                  Join 500+ schools and institutions that trust The Uniform Lab
+                  for consistent, on-time delivery.
                 </p>
                 <div className="sv-cta-btns">
                   <Link to="/schoolenquiry" className="sv-btn-primary">

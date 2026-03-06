@@ -366,10 +366,10 @@ function matchesTagFilter(product, selectedTags) {
  */
 function gradeToSortKey(name) {
   const n = (name || "").toLowerCase().trim();
-  if (/nursery/.test(n))                          return -3;
-  if (/lkg|jr\.?\s*kg|lower\s*k/i.test(n))       return -2;
-  if (/ukg|sr\.?\s*kg|upper\s*k/i.test(n))       return -1;
-  if (/\bkg\b/.test(n))                           return  0;
+  if (/nursery/.test(n)) return -3;
+  if (/lkg|jr\.?\s*kg|lower\s*k/i.test(n)) return -2;
+  if (/ukg|sr\.?\s*kg|upper\s*k/i.test(n)) return -1;
+  if (/\bkg\b/.test(n)) return 0;
   const m = n.match(/\d+/);
   if (m) return parseInt(m[0], 10);
   return 99; // unrecognised names sort last
@@ -395,34 +395,57 @@ function productSortScore(name) {
   const is = (re) => re.test(n);
 
   // ── Fabric / raw material — always last (checked FIRST so "Shirt Fabric" doesn't match shirt) ──
-  if (is(/\bfabrics?\b|\bcloth\b|\bmaterial\b|\bmetre\b|\bmeter\b|\byards?\b/)) return 100;
+  if (is(/\bfabrics?\b|\bcloth\b|\bmaterial\b|\bmetre\b|\bmeter\b|\byards?\b/))
+    return 100;
 
-  const isSports = is(/\bsport s?\b|\bsports\b/);  // "sport" OR "sports"
-  const isTrack  = is(/\btrack\b/);
+  const isSports = is(/\bsport s?\b|\bsports\b/); // "sport" OR "sports"
+  const isTrack = is(/\btrack\b/);
 
   // ── Accessories ───────────────────────────────────────────────────────
-  if (is(/\bbelt\b|\btie\b|\bcap\b|\bhat\b|\bbadge\b|\bscarf\b|\blanyard\b|\bbag\b|\bsock\b|\bstocking\b|\bmat\b|\bshoe\b|\bboot\b|\bfootwear\b/)) return 90;
+  if (
+    is(
+      /\bbelt\b|\btie\b|\bcap\b|\bhat\b|\bbadge\b|\bscarf\b|\blanyard\b|\bbag\b|\bsock\b|\bstocking\b|\bmat\b|\bshoe\b|\bboot\b|\bfootwear\b/,
+    )
+  )
+    return 90;
 
   // ── Outerwear (sports jacket counts here too) ─────────────────────────
-  if (is(/\bhoodie\b|\bblazer\b|\bsweater\b|\bjacket\b|\bcoat\b|\bcardigan\b|\bpullover\b/)) return 80;
+  if (
+    is(
+      /\bhoodie\b|\bblazer\b|\bsweater\b|\bjacket\b|\bcoat\b|\bcardigan\b|\bpullover\b/,
+    )
+  )
+    return 80;
 
   // ── Sports Track Pant / Track Pant / Sports Pant ─────────────────────
   if (isTrack || (isSports && is(/\bpant\b|\btrouser\b|\bbottom\b/))) return 70;
 
   // ── Sports T-Shirt / Sports Shirt / Sports Top / Sports Polo ─────────
-  if (isSports && is(/\bt[\s-]?shirt\b|\btshirt\b|\bshirt\b|\btop\b|\bpolo\b/)) return 60;
+  if (isSports && is(/\bt[\s-]?shirt\b|\btshirt\b|\bshirt\b|\btop\b|\bpolo\b/))
+    return 60;
 
   // ── Girls bottom / dress items ────────────────────────────────────────
-  if (is(/\bskirt\b|\btunic\b|\bpinafore\b|\bpinop\b|\bmidi\b|\bfrock\b|\bsalwar\b|\bdress\b/)) return 50;
+  if (
+    is(
+      /\bskirt\b|\btunic\b|\bpinafore\b|\bpinop\b|\bmidi\b|\bfrock\b|\bsalwar\b|\bdress\b/,
+    )
+  )
+    return 50;
 
   // ── Full Pant / Trouser (non-sports, non-track) ───────────────────────
-  if (!isSports && !isTrack && is(/\bfull[\s-]?pant\b|\btrouser\b|\bpant\b|\bbottom\b/)) return 40;
+  if (
+    !isSports &&
+    !isTrack &&
+    is(/\bfull[\s-]?pant\b|\btrouser\b|\bpant\b|\bbottom\b/)
+  )
+    return 40;
 
   // ── Half Pant / Shorts ────────────────────────────────────────────────
   if (is(/\bhalf[\s-]?pant\b|\bshorts\b/)) return 30;
 
   // ── Regular T-Shirt / Polo (non-sports, non-track) ───────────────────
-  if (!isSports && !isTrack && is(/\bt[\s-]?shirt\b|\btshirt\b|\bpolo\b/)) return 20;
+  if (!isSports && !isTrack && is(/\bt[\s-]?shirt\b|\btshirt\b|\bpolo\b/))
+    return 20;
 
   // ── Formal Shirt / Blouse / Kurta (non-sports) ───────────────────────
   if (!isSports && is(/\bshirt\b|\bblouse\b|\bkurta\b/)) return 10;
@@ -508,15 +531,22 @@ export default function SchoolProductsPage() {
         // Always normalize IDs to plain strings to avoid ObjectId vs string mismatches
         const categoriesMap = new Map();
         products.forEach((p) => {
-          const allCats = (p.categories && p.categories.length > 0)
-            ? p.categories
-            : (p.category ? [p.category] : []);
+          const allCats =
+            p.categories && p.categories.length > 0
+              ? p.categories
+              : p.category
+                ? [p.category]
+                : [];
           allCats.forEach((cat) => {
             if (!cat) return;
             const id = String(cat._id ?? cat);
             const name = typeof cat === "object" ? (cat.name ?? null) : null;
             if (id && name !== null && !categoriesMap.has(id)) {
-              categoriesMap.set(id, { _id: id, name, sortOrder: cat.sortOrder ?? 0 });
+              categoriesMap.set(id, {
+                _id: id,
+                name,
+                sortOrder: cat.sortOrder ?? 0,
+              });
             }
           });
         });
@@ -559,7 +589,9 @@ export default function SchoolProductsPage() {
           const mainImage =
             p.mainImageUrl ||
             (Array.isArray(p.galleryImageUrls) ? p.galleryImageUrls[0] : null);
-          const images = [p.mainImageUrl, ...(p.galleryImageUrls || [])].filter(Boolean);
+          const images = [p.mainImageUrl, ...(p.galleryImageUrls || [])].filter(
+            Boolean,
+          );
 
           if (process.env.NODE_ENV !== "production" && p.name && !mainImage) {
             console.warn("[SchoolProductsPage] Product has no image:", p.name, {
@@ -595,7 +627,7 @@ export default function SchoolProductsPage() {
             images,
             imagesByColor: p.imagesByColor || null,
             variants: Array.isArray(p.variants) ? p.variants : [],
-            gradeId,           // string label (new) or ObjectId string (legacy)
+            gradeId, // string label (new) or ObjectId string (legacy)
             gradeLabel: p.gradeLabel || null,
             tags: Array.isArray(p.tags) ? p.tags : [],
           };
@@ -621,7 +653,8 @@ export default function SchoolProductsPage() {
         const productCountByCategory = {};
         allProductsFlat.forEach((p) => {
           (p.productCategoryIds || []).forEach((catId) => {
-            productCountByCategory[catId] = (productCountByCategory[catId] || 0) + 1;
+            productCountByCategory[catId] =
+              (productCountByCategory[catId] || 0) + 1;
           });
         });
 
@@ -630,11 +663,17 @@ export default function SchoolProductsPage() {
         products.forEach((p) => {
           if (p.gradeLabel) {
             if (!gradesSeen.has(p.gradeLabel)) {
-              gradesSeen.set(p.gradeLabel, { _id: p.gradeLabel, name: p.gradeLabel });
+              gradesSeen.set(p.gradeLabel, {
+                _id: p.gradeLabel,
+                name: p.gradeLabel,
+              });
             }
           } else if (p.grade && p.grade._id && p.grade.name) {
             if (!gradesSeen.has(p.grade._id)) {
-              gradesSeen.set(p.grade._id, { _id: p.grade._id, name: p.grade.name });
+              gradesSeen.set(p.grade._id, {
+                _id: p.grade._id,
+                name: p.grade.name,
+              });
             }
           }
         });
@@ -644,7 +683,9 @@ export default function SchoolProductsPage() {
         // Collect unique tags across all products for the Categories filter
         const tagsSeen = new Set();
         products.forEach((p) => {
-          (p.tags || []).forEach((t) => { if (t && t.trim()) tagsSeen.add(t.trim()); });
+          (p.tags || []).forEach((t) => {
+            if (t && t.trim()) tagsSeen.add(t.trim());
+          });
         });
         const productTags = Array.from(tagsSeen).sort();
 
@@ -1143,7 +1184,7 @@ export default function SchoolProductsPage() {
           {/* Horizontal scroll: categories (tags) + grade (category) chips */}
           <div className="spp-filter-scroll">
             {/* Category tag chips */}
-            {(catalog.productTags?.length > 0) && (
+            {catalog.productTags?.length > 0 && (
               <>
                 {catalog.productTags.map((tag) => (
                   <button
@@ -1155,7 +1196,18 @@ export default function SchoolProductsPage() {
                     {tag}
                   </button>
                 ))}
-                <span style={{ flexShrink: 0, alignSelf: "center", color: "#cbd5e1", fontSize: 18, lineHeight: 1, padding: "0 2px" }}>·</span>
+                <span
+                  style={{
+                    flexShrink: 0,
+                    alignSelf: "center",
+                    color: "#cbd5e1",
+                    fontSize: 18,
+                    lineHeight: 1,
+                    padding: "0 2px",
+                  }}
+                >
+                  ·
+                </span>
               </>
             )}
             {/* Grade chips (product categories) */}
@@ -1278,7 +1330,9 @@ export default function SchoolProductsPage() {
                     ))}
                   </>
                 ) : (
-                  <p className="text-xs text-gray-400 px-1 py-1">No categories added yet</p>
+                  <p className="text-xs text-gray-400 px-1 py-1">
+                    No categories added yet
+                  </p>
                 )}
               </div>
             </div>
@@ -1301,6 +1355,21 @@ export default function SchoolProductsPage() {
 
           {/* ── RIGHT: Products ── */}
           <div className="spp-products-area flex-1 min-w-0 px-4 sm:px-6 lg:px-8 py-8">
+            {/* Disclaimer */}
+            <p
+              style={{
+                fontFamily: "'Nunito', sans-serif",
+                fontSize: "11px",
+                color: "#94a3b8",
+                fontWeight: 600,
+                marginBottom: "18px",
+                lineHeight: 1.5,
+              }}
+            >
+              📷 Images are for visual representation only. Actual colours may
+              vary slightly but are accurate as per the official school uniform
+              specification.
+            </p>
             {filteredProducts.length === 0 ? (
               <div className="text-center py-16">
                 <div className="text-5xl mb-4">
@@ -1340,17 +1409,34 @@ export default function SchoolProductsPage() {
                 )}
               </div>
             ) : (
-              <div className="spp-product-grid grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-4">
-                {filteredProducts.map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    schoolName={catalog.name}
-                    schoolSlug={catalog.slug}
-                    onQuickShop={openQuickShop}
-                  />
-                ))}
-              </div>
+              <>
+                <div className="spp-product-grid grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-4">
+                  {filteredProducts.map((product) => (
+                    <ProductCard
+                      key={product.id}
+                      product={product}
+                      schoolName={catalog.name}
+                      schoolSlug={catalog.slug}
+                      onQuickShop={openQuickShop}
+                    />
+                  ))}
+                </div>
+                <p
+                  style={{
+                    fontFamily: "'Nunito', sans-serif",
+                    fontSize: "11px",
+                    color: "#94a3b8",
+                    fontWeight: 600,
+                    textAlign: "center",
+                    marginTop: "32px",
+                    lineHeight: 1.5,
+                  }}
+                >
+                  * Images are for visual representation only. Actual colours
+                  may vary slightly but are accurate as per the official school
+                  uniform specification.
+                </p>
+              </>
             )}
           </div>
         </div>

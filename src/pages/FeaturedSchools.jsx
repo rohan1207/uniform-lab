@@ -396,15 +396,23 @@ export default function FeaturedSchools() {
       try {
         const data = await cachedFetch("/api/public/schools");
         if (!Array.isArray(data) || cancelled) return;
-        const mapped = data.map((s) => ({
-          id: s._id || s.slug,
-          slug: s.slug,
-          name: s.name,
-          level: s.level || "",
-          image: s.imageUrl || "/school-placeholder.png",
-          logo: s.logoUrl || null,
-          color: "#004C99",
-        }));
+        const mapped = data
+          .map((s) => ({
+            id: s._id || s.slug,
+            slug: s.slug,
+            name: s.name,
+            level: s.level || "",
+            image: s.imageUrl || "/school-placeholder.png",
+            logo: s.logoUrl || null,
+            color: "#004C99",
+            displayOrder: s.displayOrder ?? null,
+          }))
+          .sort((a, b) => {
+            if (a.displayOrder == null && b.displayOrder == null) return 0;
+            if (a.displayOrder == null) return 1;
+            if (b.displayOrder == null) return -1;
+            return a.displayOrder - b.displayOrder;
+          });
         setSchools(mapped);
       } catch {
         // if backend fails, keep empty list instead of dummy data

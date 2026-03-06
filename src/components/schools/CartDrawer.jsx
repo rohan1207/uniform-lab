@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
+import { toTitleCase } from "@/lib/apiCache";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   X,
@@ -245,7 +246,7 @@ function UpsellCard({ product: p, schoolName: sn, schoolSlug: ss, onClose }) {
             color: "#0f172a",
           }}
         >
-          {p.name}
+          {toTitleCase(p.name)}
         </p>
         <p
           className="m-0"
@@ -350,7 +351,7 @@ function MobileUpsellPill({ product: p, schoolSlug: ss, onClose }) {
             overflow: "hidden",
           }}
         >
-          {p.name}
+          {toTitleCase(p.name)}
         </p>
         <div className="flex items-center justify-between mt-1.5">
           <span
@@ -756,7 +757,7 @@ export function CartDrawer({ open, onClose }) {
                                   color: "#0f172a",
                                 }}
                               >
-                                {item.name}
+                                {toTitleCase(item.name)}
                               </p>
                               <div className="flex flex-wrap items-center gap-1.5 mt-0.5">
                                 {item.size && (
@@ -940,7 +941,13 @@ export function CartDrawer({ open, onClose }) {
                       ₹125
                     </span>
                   </div>
-                  <div className="flex items-center justify-between mb-4" style={{ borderTop: '1.5px solid #e8ecf1', paddingTop: '10px' }}>
+                  <div
+                    className="flex items-center justify-between mb-4"
+                    style={{
+                      borderTop: "1.5px solid #e8ecf1",
+                      paddingTop: "10px",
+                    }}
+                  >
                     <span
                       style={{
                         fontFamily: "'Nunito', sans-serif",

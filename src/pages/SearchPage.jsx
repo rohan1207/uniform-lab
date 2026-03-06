@@ -1,7 +1,7 @@
-﻿import { useState, useMemo, useRef, useCallback, useEffect } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
-import { Search as SearchIcon, X, School, ArrowRight } from 'lucide-react';
-import { cachedFetch } from '@/lib/apiCache';
+﻿import { useState, useMemo, useRef, useCallback, useEffect } from "react";
+import { Link, useSearchParams } from "react-router-dom";
+import { Search as SearchIcon, X, School, ArrowRight } from "lucide-react";
+import { cachedFetch } from "@/lib/apiCache";
 
 /* ---------------------------------------------------------------------------
    CSS - premium card style matching FeaturedSchools
@@ -217,7 +217,7 @@ function matchesQuery(school, rawQuery) {
   const words = rawQuery.toLowerCase().split(/\s+/).filter(Boolean);
   const haystack = [school.name, school.level, school.city, school.area]
     .filter(Boolean)
-    .join(' ')
+    .join(" ")
     .toLowerCase();
   return words.every((w) => haystack.includes(w));
 }
@@ -228,12 +228,14 @@ function matchesQuery(school, rawQuery) {
 function HighlightName({ name, rawQuery }) {
   if (!rawQuery || !rawQuery.trim()) return name;
   const words = rawQuery.trim().toLowerCase().split(/\s+/).filter(Boolean);
-  const escaped = words.map((w) => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
-  const re = new RegExp(`(${escaped.join('|')})`, 'gi');
+  const escaped = words.map((w) => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+  const re = new RegExp(`(${escaped.join("|")})`, "gi");
   const parts = name.split(re);
   return parts.map((part, i) =>
     re.test(part) ? (
-      <span key={i} className="srch-hl">{part}</span>
+      <span key={i} className="srch-hl">
+        {part}
+      </span>
     ) : (
       part
     ),
@@ -283,43 +285,48 @@ function SchoolCard({ school, query }) {
   }, []);
 
   const initials = school.name
-    .replace(/[^a-zA-Z ]/g, '')
-    .split(' ')
+    .replace(/[^a-zA-Z ]/g, "")
+    .split(" ")
     .filter(Boolean)
     .slice(0, 2)
     .map((w) => w[0].toUpperCase())
-    .join('');
+    .join("");
 
   const CARD_ROT = 7;
   const LOGO_SHIFT = 4;
   const IMG_SHIFT = 10;
-  const easeOut = 'cubic-bezier(0.22, 1, 0.36, 1)';
-  const transition = active ? 'transform 0.07s linear' : `transform 0.5s ${easeOut}`;
+  const easeOut = "cubic-bezier(0.22, 1, 0.36, 1)";
+  const transition = active
+    ? "transform 0.07s linear"
+    : `transform 0.5s ${easeOut}`;
 
   const cardTransform = active
     ? `perspective(900px) rotateX(${tilt.y * -CARD_ROT}deg) rotateY(${tilt.x * CARD_ROT}deg) scale(1.03)`
-    : 'perspective(900px) rotateX(0deg) rotateY(0deg) scale(1)';
+    : "perspective(900px) rotateX(0deg) rotateY(0deg) scale(1)";
 
   const logoTransform = active
     ? `translate(${tilt.x * -LOGO_SHIFT}px, ${tilt.y * -LOGO_SHIFT}px)`
-    : 'translate(0px, 0px)';
+    : "translate(0px, 0px)";
 
   const imgTransform = active
     ? `translate(${tilt.x * IMG_SHIFT}px, ${tilt.y * IMG_SHIFT}px) scale(1.06)`
-    : 'translate(0px, 0px) scale(1)';
+    : "translate(0px, 0px) scale(1)";
 
   return (
-    <Link to={`/schools/${school.slug || school.id}`} className="srch-card-link">
+    <Link
+      to={`/schools/${school.slug || school.id}`}
+      className="srch-card-link"
+    >
       <div
         ref={cardRef}
         className="srch-card"
         style={{
           transform: cardTransform,
           boxShadow: active
-            ? '0 22px 52px rgba(0,0,0,0.16), 0 6px 18px rgba(0,0,0,0.09)'
-            : '0 4px 24px rgba(0,0,0,0.08)',
+            ? "0 22px 52px rgba(0,0,0,0.16), 0 6px 18px rgba(0,0,0,0.09)"
+            : "0 4px 24px rgba(0,0,0,0.08)",
           transition: active
-            ? 'transform 0.07s linear, box-shadow 0.07s linear'
+            ? "transform 0.07s linear, box-shadow 0.07s linear"
             : `transform 0.5s ${easeOut}, box-shadow 0.35s ease`,
         }}
         onMouseMove={onMouseMove}
@@ -373,7 +380,7 @@ function SchoolCard({ school, query }) {
 --------------------------------------------------------------------------- */
 export default function SearchPage() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const initialQ = searchParams.get('q') || '';
+  const initialQ = searchParams.get("q") || "";
   const [query, setQuery] = useState(initialQ);
   const [schools, setSchools] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -383,17 +390,17 @@ export default function SearchPage() {
     let cancelled = false;
     (async () => {
       try {
-        const data = await cachedFetch('/api/public/schools');
+        const data = await cachedFetch("/api/public/schools");
         if (!Array.isArray(data) || cancelled) return;
         const mapped = data.map((s) => ({
           id: s._id || s.slug,
           slug: s.slug,
           name: s.name,
-          level: s.level || '',
-          image: s.imageUrl || '/school-placeholder.png',
+          level: s.level || "",
+          image: s.imageUrl || "/school-placeholder.png",
           logo: s.logoUrl || null,
-          city: s.city || '',
-          area: s.area || '',
+          city: s.city || "",
+          area: s.area || "",
         }));
         setSchools(mapped);
       } catch {
@@ -402,7 +409,9 @@ export default function SearchPage() {
         if (!cancelled) setLoading(false);
       }
     })();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   useEffect(() => {
@@ -426,16 +435,31 @@ export default function SearchPage() {
   );
 
   const suggestions = useMemo(() => {
-    const skip = new Set(['school', 'the', 'of', 'and', 'for', 'public', 'international', 'vidyalaya', 'academy', 'high', 'english', 'medium']);
+    const skip = new Set([
+      "school",
+      "the",
+      "of",
+      "and",
+      "for",
+      "public",
+      "international",
+      "vidyalaya",
+      "academy",
+      "high",
+      "english",
+      "medium",
+    ]);
     const names = schools.slice(0, 10).map((s) => {
-      const words = s.name.split(/\s+/).filter((w) => w.length > 2 && !skip.has(w.toLowerCase()));
-      return words[0] || s.name.split(' ')[0];
+      const words = s.name
+        .split(/\s+/)
+        .filter((w) => w.length > 2 && !skip.has(w.toLowerCase()));
+      return words[0] || s.name.split(" ")[0];
     });
     return [...new Set(names)].slice(0, 6);
   }, [schools]);
 
   const clearQuery = () => {
-    setQuery('');
+    setQuery("");
     inputRef.current?.focus();
   };
 
@@ -445,16 +469,16 @@ export default function SearchPage() {
 
       <main className="srch-root pt-12 pb-16 sm:pt-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
           <header className="text-center mb-8 sm:mb-10">
             <div className="flex justify-center mb-3">
               <span
                 className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full font-bold uppercase tracking-widest"
                 style={{
-                  background: 'linear-gradient(135deg, #eef5ff 0%, #ddeaff 100%)',
-                  color: '#2563eb',
-                  fontSize: 'clamp(9px, 0.8vw, 11px)',
-                  boxShadow: '0 1px 8px rgba(37,99,235,0.14)',
+                  background:
+                    "linear-gradient(135deg, #eef5ff 0%, #ddeaff 100%)",
+                  color: "#2563eb",
+                  fontSize: "clamp(9px, 0.8vw, 11px)",
+                  boxShadow: "0 1px 8px rgba(37,99,235,0.14)",
                   fontFamily: "'Nunito', sans-serif",
                 }}
               >
@@ -466,8 +490,8 @@ export default function SearchPage() {
               className="srch-heading m-0 font-black text-[#1a1a2e] leading-tight mb-2"
               style={{
                 fontFamily: "'Baloo 2', cursive",
-                fontSize: 'clamp(26px, 3.6vw, 48px)',
-                letterSpacing: '-0.5px',
+                fontSize: "clamp(26px, 3.6vw, 48px)",
+                letterSpacing: "-0.5px",
               }}
             >
               Search Your School
@@ -475,16 +499,17 @@ export default function SearchPage() {
 
             <p
               className="m-0 font-semibold text-gray-400 max-w-lg mx-auto leading-snug"
-              style={{ fontSize: 'clamp(13px, 1.1vw, 16px)' }}
+              style={{ fontSize: "clamp(13px, 1.1vw, 16px)" }}
             >
-              Type your school name to find uniforms, sports kits, accessories and more.
+              Type your school name to find uniforms, sports kits, accessories
+              and more.
             </p>
           </header>
 
           <div className="relative mb-5 max-w-xl mx-auto">
             <SearchIcon
               className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 pointer-events-none"
-              style={{ color: '#2563eb' }}
+              style={{ color: "#2563eb" }}
               strokeWidth={2}
             />
             <input
@@ -532,16 +557,17 @@ export default function SearchPage() {
               style={{ fontFamily: "'Nunito', sans-serif" }}
             >
               {loading ? (
-                'Loading schools...'
+                "Loading schools..."
               ) : trimmed ? (
                 <>
                   <span className="text-slate-700">{results.length}</span>
-                  {results.length === 1 ? ' school' : ' schools'} for{' '}
+                  {results.length === 1 ? " school" : " schools"} for{" "}
                   <span className="text-[#2563eb]">"{trimmed}"</span>
                 </>
               ) : (
                 <>
-                  <span className="text-slate-700">{schools.length}</span> partner schools
+                  <span className="text-slate-700">{schools.length}</span>{" "}
+                  partner schools
                 </>
               )}
             </p>
@@ -563,7 +589,7 @@ export default function SearchPage() {
                 <div
                   key={i}
                   className="rounded-2xl overflow-hidden bg-white"
-                  style={{ boxShadow: '0 4px 24px rgba(0,0,0,0.06)' }}
+                  style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.06)" }}
                 >
                   <div className="h-[136px] bg-slate-100 animate-pulse" />
                   <div className="aspect-square bg-slate-50 animate-pulse" />
@@ -591,9 +617,9 @@ export default function SearchPage() {
               </div>
               <p
                 className="mb-2 font-black text-[#1a1a2e]"
-                style={{ fontFamily: "'Baloo 2', cursive", fontSize: '20px' }}
+                style={{ fontFamily: "'Baloo 2', cursive", fontSize: "20px" }}
               >
-                {trimmed ? 'No school found' : 'No schools available'}
+                {trimmed ? "No school found" : "No schools available"}
               </p>
               <p
                 className="text-sm text-slate-400 max-w-xs leading-relaxed"
@@ -601,11 +627,12 @@ export default function SearchPage() {
               >
                 {trimmed ? (
                   <>
-                    We couldn't find a school matching <strong>"{trimmed}"</strong>.
-                    Try a shorter name or check spelling.
+                    We couldn't find a school matching{" "}
+                    <strong>"{trimmed}"</strong>. Try a shorter name or check
+                    spelling.
                   </>
                 ) : (
-                  'Schools will appear here once they are added.'
+                  "Schools will appear here once they are added."
                 )}
               </p>
               {trimmed && (
@@ -614,8 +641,9 @@ export default function SearchPage() {
                   onClick={clearQuery}
                   className="mt-5 inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full text-sm font-bold text-white"
                   style={{
-                    background: 'linear-gradient(180deg, #3b82f6 0%, #2563eb 100%)',
-                    boxShadow: '0 2px 8px rgba(37,99,235,0.3)',
+                    background:
+                      "linear-gradient(180deg, #3b82f6 0%, #2563eb 100%)",
+                    boxShadow: "0 2px 8px rgba(37,99,235,0.3)",
                   }}
                 >
                   Clear search <X size={14} />

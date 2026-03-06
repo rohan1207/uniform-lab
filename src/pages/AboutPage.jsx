@@ -120,7 +120,7 @@ const GALLERY = [
     alt: "School children in uniforms",
   },
   {
-    src: "/fabric3.avif",
+    src: "/fabric3.jpg",
     alt: "Fabric manufacturing",
   },
   {
@@ -128,7 +128,7 @@ const GALLERY = [
     alt: "Students at school",
   },
   {
-    src: "/fabric1.jpg",
+    src: "/fabric1.png",
     alt: "Quality fabric rolls",
   },
 ];

@@ -7,6 +7,10 @@
  * • Cache entries are auto-evicted after `ttl` ms.
  */
 
+/** Converts any casing (ALL CAPS, lowercase, mixed) to Title Case */
+export const toTitleCase = (str) =>
+  str ? str.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase()) : str;
+
 const API_BASE = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
 
 const cache = new Map();      // url → { data, ts }

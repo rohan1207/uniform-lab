@@ -1,5 +1,6 @@
 import { useState, useRef, useCallback, useEffect, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { toTitleCase } from "@/lib/apiCache";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import {
   ShoppingBag,
@@ -256,7 +257,8 @@ const SHIPPING_INFO = {
     "Delivery charge: ₹125 per order. Delivered in 2–3 business days across Maharashtra and pan-India.",
   tracking:
     "Track your order via SMS and email. You'll get updates at every step.",
-  payment: "Secure online payment via UPI, netbanking and cards. Payments are processed securely by our trusted payment partner.",
+  payment:
+    "Secure online payment via UPI, netbanking and cards. Payments are processed securely by our trusted payment partner.",
 };
 const FAQ_ITEMS = [
   {
@@ -665,7 +667,7 @@ export function ProductDetailTemplate({
                 color: "#0f172a",
               }}
             >
-              {product.name}
+              {toTitleCase(product.name)}
             </span>
           </nav>
         </div>
@@ -694,6 +696,21 @@ export function ProductDetailTemplate({
               current={sliderIndex}
               setCurrent={setSliderIndex}
             />
+            <p
+              style={{
+                fontFamily: "'Nunito', sans-serif",
+                fontSize: "11px",
+                color: "#b0bec5",
+                fontWeight: 600,
+                lineHeight: 1.5,
+                marginTop: "10px",
+                textAlign: "center",
+              }}
+            >
+              * Images are for visual representation only. Actual colours may
+              vary slightly but are accurate as per the official school uniform
+              specification.
+            </p>
           </motion.div>
 
           {/* RIGHT: Product Info — order-2 on mobile (comes after image) */}
@@ -732,7 +749,7 @@ export function ProductDetailTemplate({
                 letterSpacing: "-0.3px",
               }}
             >
-              {product.name}
+              {toTitleCase(product.name)}
             </h1>
 
             <p
@@ -746,7 +763,6 @@ export function ProductDetailTemplate({
               Official School Uniform · Direct from Manufacturer
             </p>
 
-            {/* Price + stars */}
             <div className="flex items-center gap-4 mb-4">
               <span
                 className="font-black text-[#0f172a]"

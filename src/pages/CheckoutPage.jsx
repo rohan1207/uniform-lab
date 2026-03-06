@@ -2,7 +2,14 @@ import { useEffect, useState, useMemo, useCallback } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useCart } from "@/contexts/CartContext";
 import { useAuth } from "@/contexts/AuthContext";
-import { ArrowLeft, ShoppingBag, ShoppingCart, Plus, X, XCircle } from "lucide-react";
+import {
+  ArrowLeft,
+  ShoppingBag,
+  ShoppingCart,
+  Plus,
+  X,
+  XCircle,
+} from "lucide-react";
 
 const API_BASE = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
 const DELIVERY_CHARGE = 125; // flat ₹125 per order
@@ -81,7 +88,8 @@ export default function CheckoutPage() {
   const displayItemsTotal = frozenItems
     ? frozenItems.reduce((sum, i) => sum + i.price * i.quantity, 0)
     : totalAmount;
-  const displayTotal = displayItemsTotal + (displayItems.length > 0 ? DELIVERY_CHARGE : 0);
+  const displayTotal =
+    displayItemsTotal + (displayItems.length > 0 ? DELIVERY_CHARGE : 0);
 
   // Clean up buyNowItem when navigating away
   useEffect(() => {
@@ -968,7 +976,9 @@ export default function CheckoutPage() {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-[#94a3b8]">Delivery charge</span>
-                    <span className="font-semibold text-[#0f172a]">₹{DELIVERY_CHARGE}</span>
+                    <span className="font-semibold text-[#0f172a]">
+                      ₹{DELIVERY_CHARGE}
+                    </span>
                   </div>
                   <div className="flex justify-between pt-1">
                     <span className="font-extrabold text-[#0f172a]">

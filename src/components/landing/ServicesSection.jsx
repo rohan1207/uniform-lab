@@ -1,51 +1,63 @@
-'use client';
+"use client";
 
-import { Link } from 'react-router-dom';
-import { ArrowRight, ArrowUpRight, Building2, Factory, PackageCheck } from 'lucide-react';
-import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
-import { useRef, useState } from 'react';
+import { Link } from "react-router-dom";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  Building2,
+  Factory,
+  PackageCheck,
+} from "lucide-react";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useMotionValue,
+  useSpring,
+} from "framer-motion";
+import { useRef, useState } from "react";
 
-const CARD_BGS = ['/su.png', '/corporate.avif', '/bulk.png'];
+const CARD_BGS = ["/su.png", "/corporate.webp", "/bulk.jpg"];
 
 const SERVICES = [
   {
-    num: '01',
+    num: "01",
     icon: Building2,
-    title: 'School Uniform Manufacturing',
-    short: 'Crafted for schools',
-    text: 'Custom uniform design, fabric sourcing with colour stability control, standardised size charts, and admission-season readiness — built to run year after year without friction.',
-    tags: ['Colour Matching', 'Size Standards', 'Seasonal Planning'],
-    accent: '#2563eb',
-    accentLight: '#eff6ff',
-    surfaceFrom: '#ffffff',
-    surfaceTo: '#f6faff',
-    grad: 'from-blue-600 to-indigo-600',
+    title: "School Uniform Manufacturing",
+    short: "Crafted for schools",
+    text: "Custom uniform design, fabric sourcing with colour stability control, standardised size charts, and admission-season readiness — built to run year after year without friction.",
+    tags: ["Colour Matching", "Size Standards", "Seasonal Planning"],
+    accent: "#2563eb",
+    accentLight: "#eff6ff",
+    surfaceFrom: "#ffffff",
+    surfaceTo: "#f6faff",
+    grad: "from-blue-600 to-indigo-600",
   },
   {
-    num: '02',
+    num: "02",
     icon: Factory,
-    title: 'Corporate Uniform Solutions',
-    short: 'Branded workwear',
-    text: 'Role-based design systems, logo embroidery, durable industrial-grade fabrics, and scalable production for multi-location corporate teams.',
-    tags: ['Logo Embroidery', 'Role-Based Design', 'Multi-site Delivery'],
-    accent: '#0ea5e9',
-    accentLight: '#f0f9ff',
-    surfaceFrom: '#ffffff',
-    surfaceTo: '#f3fbff',
-    grad: 'from-sky-500 to-blue-600',
+    title: "Corporate Uniform Solutions",
+    short: "Branded workwear",
+    text: "Role-based design systems, logo embroidery, durable industrial-grade fabrics, and scalable production for multi-location corporate teams.",
+    tags: ["Logo Embroidery", "Role-Based Design", "Multi-site Delivery"],
+    accent: "#0ea5e9",
+    accentLight: "#f0f9ff",
+    surfaceFrom: "#ffffff",
+    surfaceTo: "#f3fbff",
+    grad: "from-sky-500 to-blue-600",
   },
   {
-    num: '03',
+    num: "03",
     icon: PackageCheck,
-    title: 'Bulk Manufacturing & Distribution',
-    short: 'End-to-end supply',
-    text: 'Centralised planning, batch consistency, multi-stage quality checks, and flexible fulfilment through on-campus camps, retail counters, and e-commerce.',
-    tags: ['Batch QC', 'On-campus Camps', 'E-commerce Ready'],
-    accent: '#6366f1',
-    accentLight: '#eef2ff',
-    surfaceFrom: '#ffffff',
-    surfaceTo: '#f6f5ff',
-    grad: 'from-indigo-500 to-violet-600',
+    title: "Bulk Manufacturing & Distribution",
+    short: "End-to-end supply",
+    text: "Centralised planning, batch consistency, multi-stage quality checks, and flexible fulfilment through on-campus camps, retail counters, and e-commerce.",
+    tags: ["Batch QC", "On-campus Camps", "E-commerce Ready"],
+    accent: "#6366f1",
+    accentLight: "#eef2ff",
+    surfaceFrom: "#ffffff",
+    surfaceTo: "#f6f5ff",
+    grad: "from-indigo-500 to-violet-600",
   },
 ];
 
@@ -102,17 +114,19 @@ function ServiceCard({ service, index }) {
       {/* Glow backdrop */}
       <div
         className="absolute -inset-px rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm"
-        style={{ background: `linear-gradient(135deg, ${service.accent}44, ${service.accent}18)` }}
+        style={{
+          background: `linear-gradient(135deg, ${service.accent}44, ${service.accent}18)`,
+        }}
       />
 
       {/* Card */}
       <div
         className="relative rounded-2xl border overflow-hidden h-full flex flex-col transition-shadow duration-400 group-hover:shadow-2xl"
         style={{
-          borderColor: hovered ? `${service.accent}30` : '#e8f0fe',
+          borderColor: hovered ? `${service.accent}30` : "#e8f0fe",
           boxShadow: hovered
             ? `0 24px 64px ${service.accent}14, 0 2px 8px rgba(15,23,42,0.04)`
-            : '0 2px 16px rgba(15,23,42,0.05)',
+            : "0 2px 16px rgba(15,23,42,0.05)",
         }}
       >
         {/* ── Full card background image ── */}
@@ -121,8 +135,8 @@ function ServiceCard({ service, index }) {
           className="absolute inset-0 pointer-events-none transition-opacity duration-500"
           style={{
             backgroundImage: `url('${bgSrc}')`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
+            backgroundSize: "cover",
+            backgroundPosition: "center",
             opacity: hovered ? 0.22 : 0.14,
           }}
         />
@@ -156,7 +170,7 @@ function ServiceCard({ service, index }) {
               className="w-8 h-8 md:w-10 md:h-10 lg:w-11 lg:h-11 rounded-lg md:rounded-xl flex items-center justify-center flex-shrink-0"
               style={{ background: service.accentLight, color: service.accent }}
               whileHover={{ scale: 1.14, rotate: -6 }}
-              transition={{ type: 'spring', stiffness: 360, damping: 18 }}
+              transition={{ type: "spring", stiffness: 360, damping: 18 }}
             >
               <Icon size={20} strokeWidth={1.8} />
             </motion.div>
@@ -219,10 +233,13 @@ function ServiceCard({ service, index }) {
 
 export default function ServicesSection() {
   const sectionRef = useRef(null);
-  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] });
-  const orbY1 = useTransform(scrollYProgress, [0, 1], ['-10%', '10%']);
-  const orbY2 = useTransform(scrollYProgress, [0, 1], ['8%', '-8%']);
-  const lineW = useTransform(scrollYProgress, [0.1, 0.5], ['0%', '100%']);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+  const orbY1 = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"]);
+  const orbY2 = useTransform(scrollYProgress, [0, 1], ["8%", "-8%"]);
+  const lineW = useTransform(scrollYProgress, [0.1, 0.5], ["0%", "100%"]);
 
   return (
     <>
@@ -244,7 +261,7 @@ export default function ServicesSection() {
           style={{
             backgroundImage: `linear-gradient(rgba(37,99,235,0.045) 1px, transparent 1px),
                               linear-gradient(90deg, rgba(37,99,235,0.045) 1px, transparent 1px)`,
-            backgroundSize: '52px 52px',
+            backgroundSize: "52px 52px",
           }}
         />
 
@@ -267,7 +284,6 @@ export default function ServicesSection() {
         <div className="absolute top-0 right-0 bottom-0 w-px bg-gradient-to-b from-transparent via-blue-300/40 to-transparent pointer-events-none hidden lg:block" />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
           {/* ── Header ── */}
           <div className="mb-10 sm:mb-12 lg:mb-14">
             <motion.div
@@ -288,10 +304,14 @@ export default function ServicesSection() {
                 initial={{ opacity: 0, y: 28 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.7, delay: 0.06, ease: [0.22, 1, 0.36, 1] }}
+                transition={{
+                  duration: 0.7,
+                  delay: 0.06,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
                 className="font-['Baloo_2'] text-3xl sm:text-4xl lg:text-[52px] font-900 text-slate-900 leading-[1.08] tracking-[-0.8px] max-w-xl"
               >
-                End-to-End{' '}
+                End-to-End{" "}
                 <em className="not-italic bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">
                   Uniform
                 </em>
@@ -303,12 +323,16 @@ export default function ServicesSection() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.14, ease: [0.22, 1, 0.36, 1] }}
+                transition={{
+                  duration: 0.6,
+                  delay: 0.14,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
                 className="max-w-sm lg:max-w-[360px]"
               >
                 <p className="text-slate-600 text-[14px] sm:text-[15px] leading-[1.68] font-medium">
-                  Complete manufacturing and distribution systems — designed for consistency,
-                  scale, and operational ease.
+                  Complete manufacturing and distribution systems — designed for
+                  consistency, scale, and operational ease.
                 </p>
               </motion.div>
             </div>
@@ -334,7 +358,11 @@ export default function ServicesSection() {
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.65, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            transition={{
+              duration: 0.65,
+              delay: 0.2,
+              ease: [0.22, 1, 0.36, 1],
+            }}
             className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-5 p-4 sm:p-5 rounded-2xl border border-blue-200/70 bg-white/75 backdrop-blur-sm"
           >
             <div>
@@ -342,39 +370,46 @@ export default function ServicesSection() {
                 Ready to streamline your uniform operations?
               </p>
               <p className="text-slate-600 text-[13px] sm:text-sm font-medium mt-0.5">
-                Distribution, fulfilment, on-campus camps, and production workflows — all under one roof.
+                Distribution, fulfilment, on-campus camps, and production
+                workflows — all under one roof.
               </p>
             </div>
             <Link
               to="/services"
               className="svc-cta-btn group w-full sm:w-auto justify-center sm:justify-start flex-shrink-0 inline-flex items-center gap-2.5 rounded-full font-black uppercase text-white transition-all duration-200"
               style={{
-                padding: '12px 24px',
+                padding: "12px 24px",
                 fontFamily: "'Baloo 2', cursive",
-                fontSize: 'clamp(12px, 1vw, 14px)',
-                letterSpacing: '0.11em',
-                background: 'linear-gradient(180deg, #1a6bb8 0%, #004C99 50%, #003d7a 100%)',
-                border: '1px solid rgba(0,76,153,0.6)',
-                boxShadow: '0 2px 8px rgba(0,76,153,0.25), inset 0 1px 0 rgba(255,255,255,0.15)',
-                textShadow: '0 1px 0 rgba(0,0,0,0.2)',
+                fontSize: "clamp(12px, 1vw, 14px)",
+                letterSpacing: "0.11em",
+                background:
+                  "linear-gradient(180deg, #1a6bb8 0%, #004C99 50%, #003d7a 100%)",
+                border: "1px solid rgba(0,76,153,0.6)",
+                boxShadow:
+                  "0 2px 8px rgba(0,76,153,0.25), inset 0 1px 0 rgba(255,255,255,0.15)",
+                textShadow: "0 1px 0 rgba(0,0,0,0.2)",
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.filter = 'brightness(1.04)';
-                e.currentTarget.style.transform = 'translateY(-1px)';
-                e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,76,153,0.3), inset 0 1px 0 rgba(255,255,255,0.2)';
+                e.currentTarget.style.filter = "brightness(1.04)";
+                e.currentTarget.style.transform = "translateY(-1px)";
+                e.currentTarget.style.boxShadow =
+                  "0 4px 12px rgba(0,76,153,0.3), inset 0 1px 0 rgba(255,255,255,0.2)";
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.filter = '';
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,76,153,0.25), inset 0 1px 0 rgba(255,255,255,0.15)';
+                e.currentTarget.style.filter = "";
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow =
+                  "0 2px 8px rgba(0,76,153,0.25), inset 0 1px 0 rgba(255,255,255,0.15)";
               }}
               onMouseDown={(e) => {
-                e.currentTarget.style.transform = 'translateY(1px)';
-                e.currentTarget.style.boxShadow = '0 1px 4px rgba(0,76,153,0.2), inset 0 1px 0 rgba(255,255,255,0.1)';
+                e.currentTarget.style.transform = "translateY(1px)";
+                e.currentTarget.style.boxShadow =
+                  "0 1px 4px rgba(0,76,153,0.2), inset 0 1px 0 rgba(255,255,255,0.1)";
               }}
               onMouseUp={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,76,153,0.25), inset 0 1px 0 rgba(255,255,255,0.15)';
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow =
+                  "0 2px 8px rgba(0,76,153,0.25), inset 0 1px 0 rgba(255,255,255,0.15)";
               }}
             >
               Explore All Services
@@ -384,7 +419,6 @@ export default function ServicesSection() {
               />
             </Link>
           </motion.div>
-
         </div>
       </section>
     </>

@@ -616,12 +616,26 @@ export default function SchoolEnquiryPage() {
                     {
                       icon: <MapPin size={15} />,
                       label: "Visit us",
-                      val: "23/24, Anusuya Enclave, Jagtap Chowk, Wanowrie, Pune – 411040",
+                      val: (
+                        <a
+                          href="https://maps.app.goo.gl/FF2DvjnQ5tvCnFY87"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{
+                            color: "inherit",
+                            textDecoration: "underline",
+                            textDecorationColor: "rgba(0,0,0,0.25)",
+                          }}
+                        >
+                          Shop 23/24 , Anusuya Enclave, Jagtap Chowk, Wanowrie,
+                          Pune – 411040
+                        </a>
+                      ),
                     },
                     {
                       icon: <Clock size={15} />,
                       label: "Store hours",
-                      val: "Tue–Sun, 9:30 AM – 7:00 PM · Closed Mondays",
+                      val: "Tue–Sun, 9:30 AM – 7:00 PM · Monday Closed ",
                     },
                   ].map(({ icon, label, val }) => (
                     <div className="eq-contact-item" key={label}>
@@ -752,6 +766,27 @@ export default function SchoolEnquiryPage() {
               </div>
             </Reveal>
           </div>
+        </div>
+
+        {/* ── Google Map ── */}
+        <div style={{ width: "100%", lineHeight: 0 }}>
+          <a
+            href="https://maps.app.goo.gl/FF2DvjnQ5tvCnFY87"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ display: "block", width: "100%" }}
+          >
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3783.8147672911623!2d73.89676472496227!3d18.492047732596!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2c1a12ad1d09f%3A0xa39ce2ad906db1d5!2sThe%20Uniform%20Lab!5e0!3m2!1sen!2sin!4v1772799880642!5m2!1sen!2sin"
+              width="100%"
+              height="420"
+              style={{ border: 0, display: "block", pointerEvents: "auto" }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="The Uniform Lab location"
+            />
+          </a>
         </div>
       </div>
     </>

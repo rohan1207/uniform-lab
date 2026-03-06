@@ -88,7 +88,7 @@ export default function AccountPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [exchangeSubmitting, setExchangeSubmitting] = useState(false);
-  const [exchangeSuccess, setExchangeSuccess] = useState("");
+  const [exchangeSuccess, setExchangeSuccess] = useState(false);
   const [exchangeError, setExchangeError] = useState("");
 
   const ADDRESS_STORAGE_KEY = "uniformlab_addresses";
@@ -423,7 +423,7 @@ export default function AccountPage() {
       return;
     setExchangeSubmitting(true);
     setExchangeError("");
-    setExchangeSuccess("");
+    setExchangeSuccess(false);
     try {
       // itemKey format: "<displayOrderId>:<itemIndex>"
       const [, itemIdxStr] = returnForm.itemKey.split(":");
@@ -448,9 +448,7 @@ export default function AccountPage() {
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data?.error?.message || "Submission failed");
-      setExchangeSuccess(
-        "Exchange request submitted! We'll reach out to you soon.",
-      );
+      setExchangeSuccess(true);
       setReturnForm({ orderId: "", itemKey: "", reason: "" });
     } catch (err) {
       setExchangeError(
@@ -1245,7 +1243,9 @@ export default function AccountPage() {
                           <button
                             type="button"
                             onClick={() => {
-                              navigator.clipboard.writeText(order.trackingNumber);
+                              navigator.clipboard.writeText(
+                                order.trackingNumber,
+                              );
                               setCopiedTrackingId(order.id);
                               setTimeout(() => setCopiedTrackingId(null), 2000);
                             }}
@@ -1254,9 +1254,15 @@ export default function AccountPage() {
                             title="Copy tracking number"
                           >
                             {copiedTrackingId === order.id ? (
-                              <><Check size={10} strokeWidth={3} />&nbsp;Copied</>
+                              <>
+                                <Check size={10} strokeWidth={3} />
+                                &nbsp;Copied
+                              </>
                             ) : (
-                              <><Copy size={10} />&nbsp;Copy</>
+                              <>
+                                <Copy size={10} />
+                                &nbsp;Copy
+                              </>
                             )}
                           </button>
                         </div>
@@ -1264,7 +1270,8 @@ export default function AccountPage() {
                           className="mt-1.5 text-[11px] text-slate-500 leading-snug"
                           style={{ fontWeight: 600 }}
                         >
-                          Use this no. to track your order once it&apos;s shipped — copy this tracking no. and paste&nbsp;
+                          Use this no. to track your order once it&apos;s
+                          shipped — copy this tracking no. and paste&nbsp;
                           <a
                             href="https://shreemaruti.com/"
                             target="_blank"
@@ -1316,9 +1323,64 @@ export default function AccountPage() {
             reason. Our team will get back to you.
           </p>
           {exchangeSuccess && (
-            <p className="text-xs text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2">
-              {exchangeSuccess}
-            </p>
+            <div
+              className="fixed inset-0 z-50 flex items-center justify-center"
+              style={{ background: "rgba(0,0,0,0.45)" }}
+              onClick={() => setExchangeSuccess(false)}
+            >
+              <div
+                className="relative bg-white rounded-2xl shadow-2xl max-w-sm w-full mx-4 p-6"
+                style={{ fontFamily: "inherit" }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Close button */}
+                <button
+                  type="button"
+                  onClick={() => setExchangeSuccess(false)}
+                  className="absolute top-3 right-3 w-7 h-7 flex items-center justify-center rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+                  aria-label="Close"
+                >
+                  ✕
+                </button>
+
+                {/* Checkmark */}
+                <div className="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-50 mx-auto mb-4">
+                  <span style={{ fontSize: 24 }}>✅</span>
+                </div>
+
+                <h3 className="text-center font-bold text-slate-900 text-base mb-1">
+                  Request Received!
+                </h3>
+                <p className="text-center text-slate-500 text-xs mb-4 leading-relaxed">
+                  Please visit our store with the product. Our team will assist
+                  you with the exchange.
+                </p>
+
+                <div className="bg-slate-50 rounded-xl px-4 py-3 text-center">
+                  <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-1">
+                    Our Store
+                  </p>
+                  <a
+                    href="https://maps.app.goo.gl/FF2DvjnQ5tvCnFY87"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs font-semibold text-blue-600 hover:text-blue-800 hover:underline leading-snug"
+                  >
+                    Shop 23/24, Anusuya Enclave, Jagtap Chowk
+                    <br />
+                    Wanowrie, Pune – 411040
+                  </a>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setExchangeSuccess(false)}
+                  className="mt-4 w-full py-2 rounded-xl bg-slate-900 text-white text-sm font-semibold hover:bg-slate-700 transition-colors"
+                >
+                  Got it
+                </button>
+              </div>
+            </div>
           )}
           {exchangeError && (
             <p className="text-xs text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
@@ -1478,8 +1540,10 @@ export default function AccountPage() {
           </p>
           <p>
             For any specific questions about your item or exchange, write to{" "}
-            <span className="font-mono text-[11px]">help@theuniformlab.in</span>
-            .
+            <span className="font-mono text-[11px]">help@theuniformlab.in</span>{" "}
+            Or
+            <span>+91 9028552855</span> with your order details, and we will
+            assist you promptly .
           </p>
         </aside>
       </div>

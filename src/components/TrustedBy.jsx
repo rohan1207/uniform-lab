@@ -51,7 +51,7 @@ export default function TrustedBy() {
               }}
             >
               Trusted by{' '}
-              <span style={{ color: '#2563eb' }}>1,000+</span>
+              <span style={{ color: '#2563eb' }}>10,000+</span>
               {' '}Moms
             </span>
           </div>

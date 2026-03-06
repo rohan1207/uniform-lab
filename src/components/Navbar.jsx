@@ -61,12 +61,20 @@ export default function Navbar() {
       try {
         const data = await cachedFetch("/api/public/schools");
         if (!Array.isArray(data) || cancelled) return;
-        const mapped = data.map((s) => ({
-          id: s._id || s.slug,
-          slug: s.slug,
-          name: s.name,
-          level: s.level || "CBSE",
-        }));
+        const mapped = data
+          .map((s) => ({
+            id: s._id || s.slug,
+            slug: s.slug,
+            name: s.name,
+            level: s.level || "CBSE",
+            displayOrder: s.displayOrder ?? null,
+          }))
+          .sort((a, b) => {
+            if (a.displayOrder == null && b.displayOrder == null) return 0;
+            if (a.displayOrder == null) return 1;
+            if (b.displayOrder == null) return -1;
+            return a.displayOrder - b.displayOrder;
+          });
         if (mapped.length) setSchools(mapped);
       } catch {
         // ignore, keep static fallback

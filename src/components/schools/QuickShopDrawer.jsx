@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { toTitleCase } from "@/lib/apiCache";
 import {
   X,
   ShoppingBag,
@@ -456,7 +457,7 @@ export function QuickShopDrawer({
                 color: "#0f172a",
               }}
             >
-              {product.name}
+              {toTitleCase(product.name)}
             </h2>
             <p
               className="m-0 mt-0.5"
@@ -677,7 +678,7 @@ export function QuickShopDrawer({
                   color: "#0f172a",
                 }}
               >
-                {product.name}
+                {toTitleCase(product.name)}
               </h3>
               <p
                 className="m-0"
@@ -888,21 +889,19 @@ export function QuickShopDrawer({
         >
           {/* Trust row */}
           <div className="flex items-center justify-center gap-4 mb-3">
-            {["✓ Official uniform", "✓ 7-day exchange"].map(
-              (t) => (
-                <span
-                  key={t}
-                  style={{
-                    fontFamily: "'Nunito', sans-serif",
-                    fontWeight: 700,
-                    fontSize: "10px",
-                    color: "#94a3b8",
-                  }}
-                >
-                  {t}
-                </span>
-              ),
-            )}
+            {["✓ Official uniform", "✓ 7-day exchange"].map((t) => (
+              <span
+                key={t}
+                style={{
+                  fontFamily: "'Nunito', sans-serif",
+                  fontWeight: 700,
+                  fontSize: "10px",
+                  color: "#94a3b8",
+                }}
+              >
+                {t}
+              </span>
+            ))}
           </div>
 
           <div style={{ display: "flex", gap: "10px" }}>
