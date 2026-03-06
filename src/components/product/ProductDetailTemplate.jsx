@@ -256,7 +256,7 @@ const SHIPPING_INFO = {
     "Delivery charge: ₹125 per order. Delivered in 2–3 business days across Maharashtra and pan-India.",
   tracking:
     "Track your order via SMS and email. You'll get updates at every step.",
-  cod: "Cash on Delivery (COD) available. Secure online payment options also available.",
+  payment: "Secure online payment via UPI, netbanking and cards. Payments are processed securely by our trusted payment partner.",
 };
 const FAQ_ITEMS = [
   {
@@ -265,11 +265,11 @@ const FAQ_ITEMS = [
   },
   {
     q: "How do I choose the right size?",
-    a: "Use our size chart on this page. If in doubt, we recommend the next size up. Easy exchange available.",
+    a: "Use our size chart on this page. If in doubt, we recommend the next size up.",
   },
   {
     q: "What if the size is wrong?",
-    a: "We offer hassle-free exchange. Contact us within 7 days of delivery and we'll arrange a swap.",
+    a: "We offer size exchanges within 7 days of delivery — no returns or refunds. Items must be unused, unwashed, with original tags intact. Visit our store or email help@theuniformlab.in to initiate.",
   },
   {
     q: "When will I receive my order?",
@@ -1294,13 +1294,13 @@ export function ProductDetailTemplate({
                           icon: Shield,
                           color: "#10b981",
                           label: "Payment",
-                          text: SHIPPING_INFO.cod,
+                          text: SHIPPING_INFO.payment,
                         },
                         {
                           icon: RotateCcw,
                           color: "#f59e0b",
-                          label: "Returns & Exchange",
-                          text: "Easy 7-day return & exchange. Contact us and we'll arrange everything.",
+                          label: "Exchange Policy",
+                          text: "Size exchanges within 7 days of delivery. No returns or refunds. Items must be unused with tags intact. Visit our store or email help@theuniformlab.in to initiate.",
                         },
                       ].map(({ icon: Icon, color, label, text }) => (
                         <div key={label} className="flex items-start gap-4">

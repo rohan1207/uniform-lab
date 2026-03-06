@@ -1,8 +1,8 @@
 import { useEffect, useState, useMemo, useCallback } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useCart } from "@/contexts/CartContext";
 import { useAuth } from "@/contexts/AuthContext";
-import { ArrowLeft, ShoppingBag, ShoppingCart, Plus, X } from "lucide-react";
+import { ArrowLeft, ShoppingBag, ShoppingCart, Plus, X, XCircle } from "lucide-react";
 
 const API_BASE = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
 const DELIVERY_CHARGE = 125; // flat ₹125 per order
@@ -19,6 +19,7 @@ export default function CheckoutPage() {
     clearBuyNow,
   } = useCart();
   const { user, token, isAuthenticated } = useAuth();
+  const [searchParams] = useSearchParams();
 
   // Per-item selection of which cart items to merge into this Buy Now checkout
   const [selectedCartKeys, setSelectedCartKeys] = useState(new Set());
@@ -245,6 +246,79 @@ export default function CheckoutPage() {
       setSubmitting(false);
     }
   };
+
+  // ── Payment failure redirect from Instamojo ──────────────────────────────
+  const paymentFailed = searchParams.get("status") === "payment_failed";
+  if (paymentFailed) {
+    const failReason = searchParams.get("reason");
+    const reasonText =
+      failReason === "failed"
+        ? "Your payment was declined by the bank or payment provider."
+        : "Your payment was not completed or was cancelled.";
+    return (
+      <main className="min-h-screen bg-[#f8f9fb] pt-24 px-4 sm:px-6 pb-16">
+        <div className="max-w-2xl mx-auto text-center bg-white rounded-2xl border border-[#fee2e2] px-6 sm:px-10 py-10 shadow-sm">
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-[#fee2e2] mb-4">
+            <XCircle className="text-[#ef4444]" size={26} strokeWidth={2} />
+          </div>
+          <h1
+            className="mb-2 text-[#0f172a]"
+            style={{
+              fontFamily: "'Baloo 2', cursive",
+              fontWeight: 900,
+              fontSize: "clamp(22px,2.4vw,30px)",
+            }}
+          >
+            Order not placed
+          </h1>
+          <p
+            className="mb-1 text-[#64748b]"
+            style={{
+              fontFamily: "'Nunito', sans-serif",
+              fontSize: "15px",
+              fontWeight: 700,
+            }}
+          >
+            {reasonText}
+          </p>
+          <p
+            className="mb-7 text-[#94a3b8]"
+            style={{
+              fontFamily: "'Nunito', sans-serif",
+              fontSize: "13px",
+              fontWeight: 600,
+            }}
+          >
+            No order has been placed and you have{" "}
+            <span className="font-black text-[#0f172a]">not been charged</span>.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <button
+              type="button"
+              onClick={() => navigate("/schools")}
+              className="inline-flex items-center justify-center px-6 py-2.5 rounded-full text-xs font-black tracking-[0.12em] uppercase shadow-sm"
+              style={{
+                fontFamily: "'Baloo 2', cursive",
+                background:
+                  "linear-gradient(180deg,#60a5fa 0%,#2563eb 52%,#1d4ed8 100%)",
+                color: "#fff",
+              }}
+            >
+              Browse products
+            </button>
+            <button
+              type="button"
+              onClick={() => navigate(-1)}
+              className="inline-flex items-center justify-center px-6 py-2.5 rounded-full text-xs font-black tracking-[0.12em] uppercase border border-[#e2e8f0] bg-white text-[#0f172a]"
+              style={{ fontFamily: "'Baloo 2', cursive" }}
+            >
+              Go back
+            </button>
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   if (!items.length && orderId) {
     return (

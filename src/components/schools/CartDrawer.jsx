@@ -987,7 +987,7 @@ export function CartDrawer({ open, onClose }) {
                       color: "#94a3b8",
                     }}
                   >
-                    🔒 Secure checkout · COD available
+                    🔒 Secure checkout
                   </p>
                 </div>
               )}

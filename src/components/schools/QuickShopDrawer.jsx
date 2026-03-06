@@ -888,7 +888,7 @@ export function QuickShopDrawer({
         >
           {/* Trust row */}
           <div className="flex items-center justify-center gap-4 mb-3">
-            {["✓ Official uniform", "✓ 7-day exchange", "✓ COD available"].map(
+            {["✓ Official uniform", "✓ 7-day exchange"].map(
               (t) => (
                 <span
                   key={t}
