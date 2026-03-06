@@ -5,6 +5,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { ArrowLeft, ShoppingBag, ShoppingCart, Plus, X } from "lucide-react";
 
 const API_BASE = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+const DELIVERY_CHARGE = 125; // flat ₹125 per order
 
 export default function CheckoutPage() {
   const navigate = useNavigate();
@@ -58,6 +59,7 @@ export default function CheckoutPage() {
 
   const items = checkoutItems;
   const totalAmount = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
+  const grandTotal = items.length > 0 ? totalAmount + DELIVERY_CHARGE : 0;
 
   const [form, setForm] = useState({
     name: user?.name || "",
@@ -75,9 +77,10 @@ export default function CheckoutPage() {
 
   // Frozen snapshot used for display during submission so clearBuyNow() doesn't flash cart items
   const displayItems = frozenItems || items;
-  const displayTotal = frozenItems
+  const displayItemsTotal = frozenItems
     ? frozenItems.reduce((sum, i) => sum + i.price * i.quantity, 0)
     : totalAmount;
+  const displayTotal = displayItemsTotal + (displayItems.length > 0 ? DELIVERY_CHARGE : 0);
 
   // Clean up buyNowItem when navigating away
   useEffect(() => {
@@ -170,7 +173,9 @@ export default function CheckoutPage() {
           color: i.color,
           imageUrl: i.image || null,
         })),
-        totalAmount,
+        itemsTotal: totalAmount,
+        deliveryCharge: DELIVERY_CHARGE,
+        totalAmount: grandTotal,
       };
 
       const res = await fetch(
@@ -884,12 +889,12 @@ export default function CheckoutPage() {
                   <div className="flex justify-between">
                     <span className="text-[#94a3b8]">Items total</span>
                     <span className="font-semibold text-[#0f172a]">
-                      ₹{displayTotal}
+                      ₹{displayItemsTotal}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-[#94a3b8]">Delivery</span>
-                    <span className="font-semibold text-emerald-700">Free</span>
+                    <span className="text-[#94a3b8]">Delivery charge</span>
+                    <span className="font-semibold text-[#0f172a]">₹{DELIVERY_CHARGE}</span>
                   </div>
                   <div className="flex justify-between pt-1">
                     <span className="font-extrabold text-[#0f172a]">

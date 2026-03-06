@@ -253,7 +253,7 @@ const GLOBAL_CSS = `
 ────────────────────────────────────────────────────────────────────────── */
 const SHIPPING_INFO = {
   delivery:
-    "Delivery in 2–3 business days. We ship across Maharashtra and pan-India.",
+    "Delivery charge: ₹125 per order. Delivered in 2–3 business days across Maharashtra and pan-India.",
   tracking:
     "Track your order via SMS and email. You'll get updates at every step.",
   cod: "Cash on Delivery (COD) available. Secure online payment options also available.",
@@ -1060,7 +1060,7 @@ export function ProductDetailTemplate({
                   label: "2 Lakh+\nCustomers",
                   color: "#0f172a",
                 },
-                { icon: Truck, label: "Free\nShipping", color: "#0f172a" },
+                { icon: Truck, label: "₹125\nDelivery", color: "#0f172a" },
                 { icon: RotateCcw, label: "7-Day\nExchange", color: "#0f172a" },
               ].map(({ icon: Icon, label, color }) => (
                 <div

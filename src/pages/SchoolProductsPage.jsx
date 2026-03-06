@@ -470,30 +470,23 @@ export default function SchoolProductsPage() {
     setSelectedCategoryIds([]);
   }, []);
 
-  const filteredCategories = useMemo(() => {
-    if (!catalog?.categories) return [];
-    return catalog.categories
-      .filter(
-        (cat) =>
-          selectedCategoryIds.length === 0 ||
-          selectedCategoryIds.includes(cat.id),
-      )
-      .map((category) => ({
-        ...category,
-        products: category.products.filter(
-          (p) =>
-            matchesSearch(p.name, searchQuery) &&
-            matchesTagFilter(p, selectedTagFilters),
-        ),
-      }))
-      .filter((cat) => cat.products.length > 0);
+  const filteredProducts = useMemo(() => {
+    if (!catalog?.allProducts) return [];
+    return catalog.allProducts.filter(
+      (p) =>
+        matchesSearch(p.name, searchQuery) &&
+        matchesTagFilter(p, selectedTagFilters) &&
+        (selectedCategoryIds.length === 0 ||
+          p.productCategoryIds.some((id) => selectedCategoryIds.includes(id))),
+    );
   }, [catalog, searchQuery, selectedTagFilters, selectedCategoryIds]);
 
-  const hasActiveFilters =
-    searchQuery.trim() || selectedTagFilters.length > 0 || selectedCategoryIds.length > 0;
-  const totalProducts =
-    catalog?.categories?.reduce((acc, cat) => acc + cat.products.length, 0) ??
-    0;
+  const hasActiveFilters = !!(
+    searchQuery.trim() ||
+    selectedTagFilters.length > 0 ||
+    selectedCategoryIds.length > 0
+  );
+  const totalProducts = catalog?.allProducts?.length ?? 0;
 
   // Load school + categories + products from backend
   useEffect(() => {
@@ -561,8 +554,6 @@ export default function SchoolProductsPage() {
           });
         }
 
-        const byCategory = {};
-
         // Build a shared product-data builder to avoid duplication
         const buildProductEntry = (p) => {
           const mainImage =
@@ -580,10 +571,22 @@ export default function SchoolProductsPage() {
           // Grade: prefer gradeLabel string (new), fall back to grade._id (legacy)
           const gradeId = p.gradeLabel || p.grade?._id || null;
 
+          // Category IDs for the Grade sidebar filter
+          const toId = (v) => (v ? String(v?._id ?? v) : null);
+          const allCatRefs =
+            Array.isArray(p.categories) && p.categories.length
+              ? p.categories
+              : p.category
+                ? [p.category]
+                : [];
+          const productCategoryIds = allCatRefs.map(toId).filter(Boolean);
+
           return {
             id: p._id,
             name: p.name,
             price: p.price,
+            displayOrder: p.displayOrder ?? null,
+            productCategoryIds,
             description: p.description || "",
             sizes: Array.isArray(p.sizes) ? p.sizes : [],
             sizeType: p.sizeType || "none",
@@ -598,27 +601,27 @@ export default function SchoolProductsPage() {
           };
         };
 
+        // Build flat deduplicated product list sorted by displayOrder → productSortScore → name
+        const seenProductIds = new Set();
+        const allProductsFlat = [];
         products.forEach((p) => {
-          // Support multi-category: use categories array if present, else single category.
-          // Always extract to plain ID strings regardless of whether the field is an
-          // ObjectId, a populated object, or already a string (handles all API shapes).
-          const toId = (v) => v ? String(v?._id ?? v) : null;
-
-          const allCatRefs = Array.isArray(p.categories) && p.categories.length
-            ? p.categories
-            : (p.category ? [p.category] : []);
-          const allCatIds = allCatRefs.map(toId).filter(Boolean);
-
-          if (!allCatIds.length) return;
-
-          const entry = buildProductEntry(p);
-          allCatIds.forEach((catId) => {
-            const key = String(catId);
-            if (!byCategory[key]) byCategory[key] = [];
-            // Avoid duplicate product entries in same category (can happen if category in both fields)
-            if (!byCategory[key].some((x) => x.id === p._id)) {
-              byCategory[key].push(entry);
-            }
+          if (seenProductIds.has(p._id)) return;
+          seenProductIds.add(p._id);
+          allProductsFlat.push(buildProductEntry(p));
+        });
+        allProductsFlat.sort((a, b) => {
+          const aOrd = a.displayOrder ?? Infinity;
+          const bOrd = b.displayOrder ?? Infinity;
+          if (aOrd !== bOrd) return aOrd - bOrd;
+          const scoreDiff = productSortScore(a.name) - productSortScore(b.name);
+          if (scoreDiff !== 0) return scoreDiff;
+          return a.name.localeCompare(b.name);
+        });
+        // Per-category product counts for Grade filter pill badges
+        const productCountByCategory = {};
+        allProductsFlat.forEach((p) => {
+          (p.productCategoryIds || []).forEach((catId) => {
+            productCountByCategory[catId] = (productCountByCategory[catId] || 0) + 1;
           });
         });
 
@@ -649,13 +652,11 @@ export default function SchoolProductsPage() {
           id: school?._id || school?.slug,
           slug: school?.slug || slug,
           name: school?.name || slug,
+          allProducts: allProductsFlat,
           categories: categories.map((c) => ({
             id: c._id,
             name: c.name,
-            // Sort products: core items (shirts, pants) first, accessories last
-            products: (byCategory[c._id] || []).sort(
-              (a, b) => productSortScore(a.name) - productSortScore(b.name),
-            ),
+            productCount: productCountByCategory[c._id] || 0,
           })),
           grades: schoolGrades,
           productTags,
@@ -1008,7 +1009,7 @@ export default function SchoolProductsPage() {
                   }}
                 >
                   {totalProducts} products · {catalog.categories?.length ?? 0}{" "}
-                  categories
+                  grades
                 </p>
               </div>
               <button
@@ -1104,7 +1105,7 @@ export default function SchoolProductsPage() {
                 }}
               >
                 {totalProducts} products · {catalog.categories?.length ?? 0}{" "}
-                categories
+                grades
               </p>
             </div>
           </div>
@@ -1243,7 +1244,7 @@ export default function SchoolProductsPage() {
                   >
                     {cat.name}
                     <span className="ml-auto text-xs font-bold opacity-50">
-                      {cat.products.length}
+                      {cat.productCount}
                     </span>
                   </button>
                 ))}
@@ -1300,7 +1301,7 @@ export default function SchoolProductsPage() {
 
           {/* ── RIGHT: Products ── */}
           <div className="spp-products-area flex-1 min-w-0 px-4 sm:px-6 lg:px-8 py-8">
-            {filteredCategories.length === 0 ? (
+            {filteredProducts.length === 0 ? (
               <div className="text-center py-16">
                 <div className="text-5xl mb-4">
                   {hasActiveFilters ? "🔍" : "🏫"}
@@ -1339,46 +1340,15 @@ export default function SchoolProductsPage() {
                 )}
               </div>
             ) : (
-              <div className="spp-sections space-y-14">
-                {filteredCategories.map((category) => (
-                  <section key={category.id} className="spp-cat-section">
-                    <div className="spp-cat-header flex items-center gap-3 mb-6">
-                      <h2 className="spp-cat-heading m-0">{category.name}</h2>
-                      <span
-                        style={{
-                          fontFamily: "'Nunito',sans-serif",
-                          fontSize: "11px",
-                          fontWeight: 700,
-                          color: "#64748b",
-                          background: "#f1f5f9",
-                          borderRadius: "6px",
-                          padding: "2px 8px",
-                          flexShrink: 0,
-                        }}
-                      >
-                        {category.products.length}
-                      </span>
-                      <div
-                        style={{
-                          flex: 1,
-                          height: "1px",
-                          background: "#e2e8f0",
-                          borderRadius: "99px",
-                        }}
-                      />
-                    </div>
-                    <div className="spp-product-grid grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-4">
-                      {category.products.map((product) => (
-                        <ProductCard
-                          key={product.id}
-                          product={product}
-                          schoolName={catalog.name}
-                          schoolSlug={catalog.slug}
-                          onQuickShop={openQuickShop}
-                        />
-                      ))}
-                    </div>
-                  </section>
+              <div className="spp-product-grid grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-4">
+                {filteredProducts.map((product) => (
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    schoolName={catalog.name}
+                    schoolSlug={catalog.slug}
+                    onQuickShop={openQuickShop}
+                  />
                 ))}
               </div>
             )}

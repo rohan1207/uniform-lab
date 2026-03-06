@@ -896,8 +896,51 @@ export function CartDrawer({ open, onClose }) {
                     background: "#fff",
                   }}
                 >
-                  {/* Total */}
-                  <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center justify-between mb-1">
+                    <span
+                      style={{
+                        fontFamily: "'Nunito', sans-serif",
+                        fontWeight: 700,
+                        fontSize: "13px",
+                        color: "#64748b",
+                      }}
+                    >
+                      Items total
+                    </span>
+                    <span
+                      style={{
+                        fontFamily: "'Baloo 2', cursive",
+                        fontWeight: 900,
+                        fontSize: "16px",
+                        color: "#0f172a",
+                      }}
+                    >
+                      ₹{totalAmount}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between mb-3">
+                    <span
+                      style={{
+                        fontFamily: "'Nunito', sans-serif",
+                        fontWeight: 700,
+                        fontSize: "13px",
+                        color: "#64748b",
+                      }}
+                    >
+                      Delivery charge
+                    </span>
+                    <span
+                      style={{
+                        fontFamily: "'Baloo 2', cursive",
+                        fontWeight: 700,
+                        fontSize: "14px",
+                        color: "#374151",
+                      }}
+                    >
+                      ₹125
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between mb-4" style={{ borderTop: '1.5px solid #e8ecf1', paddingTop: '10px' }}>
                     <span
                       style={{
                         fontFamily: "'Nunito', sans-serif",
@@ -917,7 +960,7 @@ export function CartDrawer({ open, onClose }) {
                         letterSpacing: "-0.5px",
                       }}
                     >
-                      ₹{totalAmount}
+                      ₹{totalAmount + 125}
                     </span>
                   </div>
 
