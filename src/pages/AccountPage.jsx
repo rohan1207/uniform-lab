@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { Copy, Check, ExternalLink } from "lucide-react";
 
 /* Match NewHero.jsx: Baloo 2 (headings), Nunito (body). Pill buttons: blue/gold gradients. */
 const FONT_HEADING = { fontFamily: "'Baloo 2', cursive" };
@@ -171,6 +172,7 @@ export default function AccountPage() {
             fulfillmentStatus: o.fulfillmentStatus,
             deliveryStatus: o.deliveryStatus,
             deliveryReason: o.deliveryReason,
+            trackingNumber: o.trackingNumber || null,
             items: Array.isArray(o.items)
               ? o.items.map((it) => ({
                   name: it.productName,
@@ -1036,6 +1038,8 @@ export default function AccountPage() {
     { key: "Delivered", label: "Delivered" },
   ];
 
+  const [copiedTrackingId, setCopiedTrackingId] = useState(null);
+
   const getDeliveryStep = (status) => {
     switch (status) {
       case "Order confirmed":
@@ -1219,6 +1223,66 @@ export default function AccountPage() {
                         );
                       })}
                     </div>
+                  </div>
+
+                  {/* ── Tracking number ── */}
+                  <div
+                    className="pt-3 border-t border-slate-100"
+                    style={{ fontFamily: "'Nunito', sans-serif" }}
+                  >
+                    <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide mb-1.5">
+                      Tracking No.
+                    </p>
+                    {order.trackingNumber ? (
+                      <>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span
+                            className="text-sm font-bold text-slate-800"
+                            style={{ fontFamily: "'Baloo 2', cursive" }}
+                          >
+                            {order.trackingNumber}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              navigator.clipboard.writeText(order.trackingNumber);
+                              setCopiedTrackingId(order.id);
+                              setTimeout(() => setCopiedTrackingId(null), 2000);
+                            }}
+                            className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full border border-slate-200 text-slate-500 hover:bg-slate-50 transition-colors"
+                            style={{ fontSize: 10, fontWeight: 700 }}
+                            title="Copy tracking number"
+                          >
+                            {copiedTrackingId === order.id ? (
+                              <><Check size={10} strokeWidth={3} />&nbsp;Copied</>
+                            ) : (
+                              <><Copy size={10} />&nbsp;Copy</>
+                            )}
+                          </button>
+                        </div>
+                        <p
+                          className="mt-1.5 text-[11px] text-slate-500 leading-snug"
+                          style={{ fontWeight: 600 }}
+                        >
+                          Use this no. to track your order once it&apos;s shipped — copy this tracking no. and paste&nbsp;
+                          <a
+                            href="https://shreemaruti.com/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-600 hover:underline font-black inline-flex items-center gap-0.5"
+                          >
+                            here <ExternalLink size={10} />
+                          </a>
+                        </p>
+                      </>
+                    ) : (
+                      <p
+                        className="text-[11px] text-slate-400 italic"
+                        style={{ fontWeight: 600 }}
+                      >
+                        Tracking no. yet to assign
+                      </p>
+                    )}
                   </div>
                 </div>
               );
