@@ -328,7 +328,7 @@ function SchoolCard({ school, query }) {
         onTouchMove={onTouchMove}
         onTouchEnd={onTouchEnd}
       >
-        <span className="srch-card-tag">{school.level}</span>
+        {school.level && <span className="srch-card-tag">{school.level}</span>}
 
         <div className="srch-card-visual">
           <div
@@ -389,7 +389,7 @@ export default function SearchPage() {
           id: s._id || s.slug,
           slug: s.slug,
           name: s.name,
-          level: s.level || 'CBSE',
+          level: s.level || '',
           image: s.imageUrl || '/school-placeholder.png',
           logo: s.logoUrl || null,
           city: s.city || '',

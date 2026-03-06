@@ -354,10 +354,80 @@ function matchesSearch(name, query) {
   if (!query.trim()) return true;
   return name.toLowerCase().includes(query.trim().toLowerCase());
 }
-function matchesGradeFilter(product, selectedGradeId) {
-  if (!selectedGradeId) return true;
-  // gradeId is either a string label (new) or ObjectId string (legacy)
-  return product.gradeId === selectedGradeId || product.gradeLabel === selectedGradeId;
+function matchesTagFilter(product, selectedTags) {
+  if (!selectedTags.length) return true;
+  return selectedTags.some((tag) => product.tags && product.tags.includes(tag));
+}
+
+/**
+ * Convert a grade/class name to a numeric sort key so grades sort
+ * descending (Class 12 → Class 1 → KG → Nursery) automatically,
+ * without any manual ordering in the admin panel.
+ */
+function gradeToSortKey(name) {
+  const n = (name || "").toLowerCase().trim();
+  if (/nursery/.test(n))                          return -3;
+  if (/lkg|jr\.?\s*kg|lower\s*k/i.test(n))       return -2;
+  if (/ukg|sr\.?\s*kg|upper\s*k/i.test(n))       return -1;
+  if (/\bkg\b/.test(n))                           return  0;
+  const m = n.match(/\d+/);
+  if (m) return parseInt(m[0], 10);
+  return 99; // unrecognised names sort last
+}
+
+/**
+ * Priority order (lower score = shown first):
+ *
+ *  10  Formal Shirt / Blouse / Kurta          (non-sports)
+ *  20  Regular T-Shirt / Polo                 (non-sports, non-track)
+ *  30  Half Pant / Shorts
+ *  40  Full Pant / Trouser                    (non-sports, non-track)
+ *  50  Skirt / Tunic / Pinafore / Midi / Frock / Salwar  (girls)
+ *  60  Sports T-Shirt / Sports Shirt / Sports Top
+ *  70  Sports Track Pant / Track Pant / Sports Pant
+ *  80  Outerwear — Hoodie, Blazer, Sweater, Jacket, Coat (sports or not)
+ *  90  Accessories — Belt, Tie, Cap, Socks, Shoes, Bag, Mat …
+ * 100  Fabric / raw material
+ *  85  Unknown / unrecognised (between outerwear and accessories)
+ */
+function productSortScore(name) {
+  const n = (name || "").toLowerCase();
+  const is = (re) => re.test(n);
+
+  // ── Fabric / raw material — always last (checked FIRST so "Shirt Fabric" doesn't match shirt) ──
+  if (is(/\bfabrics?\b|\bcloth\b|\bmaterial\b|\bmetre\b|\bmeter\b|\byards?\b/)) return 100;
+
+  const isSports = is(/\bsport s?\b|\bsports\b/);  // "sport" OR "sports"
+  const isTrack  = is(/\btrack\b/);
+
+  // ── Accessories ───────────────────────────────────────────────────────
+  if (is(/\bbelt\b|\btie\b|\bcap\b|\bhat\b|\bbadge\b|\bscarf\b|\blanyard\b|\bbag\b|\bsock\b|\bstocking\b|\bmat\b|\bshoe\b|\bboot\b|\bfootwear\b/)) return 90;
+
+  // ── Outerwear (sports jacket counts here too) ─────────────────────────
+  if (is(/\bhoodie\b|\bblazer\b|\bsweater\b|\bjacket\b|\bcoat\b|\bcardigan\b|\bpullover\b/)) return 80;
+
+  // ── Sports Track Pant / Track Pant / Sports Pant ─────────────────────
+  if (isTrack || (isSports && is(/\bpant\b|\btrouser\b|\bbottom\b/))) return 70;
+
+  // ── Sports T-Shirt / Sports Shirt / Sports Top / Sports Polo ─────────
+  if (isSports && is(/\bt[\s-]?shirt\b|\btshirt\b|\bshirt\b|\btop\b|\bpolo\b/)) return 60;
+
+  // ── Girls bottom / dress items ────────────────────────────────────────
+  if (is(/\bskirt\b|\btunic\b|\bpinafore\b|\bpinop\b|\bmidi\b|\bfrock\b|\bsalwar\b|\bdress\b/)) return 50;
+
+  // ── Full Pant / Trouser (non-sports, non-track) ───────────────────────
+  if (!isSports && !isTrack && is(/\bfull[\s-]?pant\b|\btrouser\b|\bpant\b|\bbottom\b/)) return 40;
+
+  // ── Half Pant / Shorts ────────────────────────────────────────────────
+  if (is(/\bhalf[\s-]?pant\b|\bshorts\b/)) return 30;
+
+  // ── Regular T-Shirt / Polo (non-sports, non-track) ───────────────────
+  if (!isSports && !isTrack && is(/\bt[\s-]?shirt\b|\btshirt\b|\bpolo\b/)) return 20;
+
+  // ── Formal Shirt / Blouse / Kurta (non-sports) ───────────────────────
+  if (!isSports && is(/\bshirt\b|\bblouse\b|\bkurta\b/)) return 10;
+
+  return 85; // unrecognised — after outerwear, before accessories
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
@@ -370,7 +440,7 @@ export default function SchoolProductsPage() {
   const { totalItems, openCart } = useCart();
 
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedGradeFilter, setSelectedGradeFilter] = useState("");
+  const [selectedTagFilters, setSelectedTagFilters] = useState([]);
   const [selectedCategoryIds, setSelectedCategoryIds] = useState([]);
   const [quickShopProduct, setQuickShopProduct] = useState(null);
   const quickShopOpen = Boolean(quickShopProduct);
@@ -388,9 +458,15 @@ export default function SchoolProductsPage() {
     );
   }, []);
 
+  const toggleTag = useCallback((tag) => {
+    setSelectedTagFilters((prev) =>
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag],
+    );
+  }, []);
+
   const clearFilters = useCallback(() => {
     setSearchQuery("");
-    setSelectedGradeFilter("");
+    setSelectedTagFilters([]);
     setSelectedCategoryIds([]);
   }, []);
 
@@ -407,23 +483,17 @@ export default function SchoolProductsPage() {
         products: category.products.filter(
           (p) =>
             matchesSearch(p.name, searchQuery) &&
-            matchesGradeFilter(p, selectedGradeFilter),
+            matchesTagFilter(p, selectedTagFilters),
         ),
       }))
       .filter((cat) => cat.products.length > 0);
-  }, [catalog, searchQuery, selectedGradeFilter, selectedCategoryIds]);
+  }, [catalog, searchQuery, selectedTagFilters, selectedCategoryIds]);
 
   const hasActiveFilters =
-    searchQuery.trim() || selectedGradeFilter || selectedCategoryIds.length > 0;
+    searchQuery.trim() || selectedTagFilters.length > 0 || selectedCategoryIds.length > 0;
   const totalProducts =
     catalog?.categories?.reduce((acc, cat) => acc + cat.products.length, 0) ??
     0;
-
-  const gradeFilterOptions = useMemo(() => {
-    const all = { value: "", label: "All grades" };
-    const list = catalog?.grades ?? [];
-    return [all, ...list.map((g) => ({ value: g._id, label: g.name }))];
-  }, [catalog?.grades]);
 
   // Load school + categories + products from backend
   useEffect(() => {
@@ -457,9 +527,14 @@ export default function SchoolProductsPage() {
             }
           });
         });
-        const categories = Array.from(categoriesMap.values()).sort(
-          (a, b) => (a.sortOrder - b.sortOrder) || a.name.localeCompare(b.name)
-        );
+        const categories = Array.from(categoriesMap.values()).sort((a, b) => {
+          // Respect explicit sortOrder if admin has set different values
+          const aSO = a.sortOrder ?? 0;
+          const bSO = b.sortOrder ?? 0;
+          if (aSO !== bSO) return aSO - bSO;
+          // Otherwise auto-sort by grade number descending (12 → 1 → KG → Nursery)
+          return gradeToSortKey(b.name) - gradeToSortKey(a.name);
+        });
 
         if (typeof window !== "undefined") {
           console.log("[SchoolProductsPage] raw API data", {
@@ -519,6 +594,7 @@ export default function SchoolProductsPage() {
             variants: Array.isArray(p.variants) ? p.variants : [],
             gradeId,           // string label (new) or ObjectId string (legacy)
             gradeLabel: p.gradeLabel || null,
+            tags: Array.isArray(p.tags) ? p.tags : [],
           };
         };
 
@@ -562,6 +638,13 @@ export default function SchoolProductsPage() {
         const schoolGrades = Array.from(gradesSeen.values()).sort((a, b) =>
           a.name.localeCompare(b.name),
         );
+        // Collect unique tags across all products for the Categories filter
+        const tagsSeen = new Set();
+        products.forEach((p) => {
+          (p.tags || []).forEach((t) => { if (t && t.trim()) tagsSeen.add(t.trim()); });
+        });
+        const productTags = Array.from(tagsSeen).sort();
+
         const mappedCatalog = {
           id: school?._id || school?.slug,
           slug: school?.slug || slug,
@@ -569,9 +652,13 @@ export default function SchoolProductsPage() {
           categories: categories.map((c) => ({
             id: c._id,
             name: c.name,
-            products: byCategory[c._id] || [],
+            // Sort products: core items (shirts, pants) first, accessories last
+            products: (byCategory[c._id] || []).sort(
+              (a, b) => productSortScore(a.name) - productSortScore(b.name),
+            ),
           })),
           grades: schoolGrades,
+          productTags,
         };
         if (typeof window !== "undefined") {
           console.log("[SchoolProductsPage] mapped catalog", mappedCatalog);
@@ -1052,20 +1139,25 @@ export default function SchoolProductsPage() {
               </button>
             )}
           </div>
-          {/* Horizontal scroll: grade + category chips */}
+          {/* Horizontal scroll: categories (tags) + grade (category) chips */}
           <div className="spp-filter-scroll">
-            <select
-              value={selectedGradeFilter}
-              onChange={(e) => setSelectedGradeFilter(e.target.value)}
-              className="spp-mobile-grade"
-              aria-label="Grade filter"
-            >
-              {gradeFilterOptions.map((opt) => (
-                <option key={opt.value || "all"} value={opt.value}>
-                  {opt.label}
-                </option>
-              ))}
-            </select>
+            {/* Category tag chips */}
+            {(catalog.productTags?.length > 0) && (
+              <>
+                {catalog.productTags.map((tag) => (
+                  <button
+                    key={tag}
+                    type="button"
+                    onClick={() => toggleTag(tag)}
+                    className={`spp-chip ${selectedTagFilters.includes(tag) ? "active" : ""}`}
+                  >
+                    {tag}
+                  </button>
+                ))}
+                <span style={{ flexShrink: 0, alignSelf: "center", color: "#cbd5e1", fontSize: 18, lineHeight: 1, padding: "0 2px" }}>·</span>
+              </>
+            )}
+            {/* Grade chips (product categories) */}
             <button
               type="button"
               onClick={() => setSelectedCategoryIds([])}
@@ -1131,35 +1223,16 @@ export default function SchoolProductsPage() {
 
             <hr className="spp-divider" />
 
-            {/* Grade filter */}
+            {/* Grade filter (product categories) */}
             <div>
               <p className="spp-section-label">Grade</p>
-              <select
-                value={selectedGradeFilter}
-                onChange={(e) => setSelectedGradeFilter(e.target.value)}
-                className="spp-select"
-                aria-label="Grade filter"
-              >
-                {gradeFilterOptions.map((opt) => (
-                  <option key={opt.value || "all"} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <hr className="spp-divider" />
-
-            {/* Category filter */}
-            <div className="flex-1">
-              <p className="spp-section-label">Category</p>
               <div className="flex flex-col gap-1">
                 <button
                   type="button"
                   onClick={() => setSelectedCategoryIds([])}
                   className={`spp-pill ${selectedCategoryIds.length === 0 ? "active" : ""}`}
                 >
-                  All categories
+                  All grades
                 </button>
                 {catalog.categories.map((cat) => (
                   <button
@@ -1174,6 +1247,38 @@ export default function SchoolProductsPage() {
                     </span>
                   </button>
                 ))}
+              </div>
+            </div>
+
+            <hr className="spp-divider" />
+
+            {/* Categories filter (product tags) */}
+            <div className="flex-1">
+              <p className="spp-section-label">Categories</p>
+              <div className="flex flex-col gap-1">
+                {catalog.productTags?.length > 0 ? (
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => setSelectedTagFilters([])}
+                      className={`spp-pill ${selectedTagFilters.length === 0 ? "active" : ""}`}
+                    >
+                      All categories
+                    </button>
+                    {catalog.productTags.map((tag) => (
+                      <button
+                        key={tag}
+                        type="button"
+                        onClick={() => toggleTag(tag)}
+                        className={`spp-pill ${selectedTagFilters.includes(tag) ? "active" : ""}`}
+                      >
+                        {tag}
+                      </button>
+                    ))}
+                  </>
+                ) : (
+                  <p className="text-xs text-gray-400 px-1 py-1">No categories added yet</p>
+                )}
               </div>
             </div>
 

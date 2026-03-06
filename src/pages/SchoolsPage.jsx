@@ -394,8 +394,8 @@ function SchoolCard({ school }) {
         onTouchMove={onTouchMove}
         onTouchEnd={onTouchEnd}
       >
-        {/* Tag: minimal, top-right */}
-        <span className="sp-card-tag">{school.level}</span>
+        {/* Tag: board/curriculum — only shown if set */}
+        {school.level && <span className="sp-card-tag">{school.level}</span>}
 
         <div className="sp-card-visual">
           {/* ── TOP: white logo zone ── */}
@@ -492,7 +492,7 @@ export default function SchoolsPage() {
             id: s._id || s.slug,
             slug: s.slug,
             name: s.name,
-            level: s.level || "CBSE",
+            level: s.level || "",
             image: s.imageUrl || "/school-placeholder.png",
             logo: s.logoUrl || null,
             color: "#004C99",
