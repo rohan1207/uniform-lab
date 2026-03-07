@@ -25,8 +25,7 @@ import { featuredSchools as staticFeaturedSchools } from "@/data/featuredSchools
 import { cachedFetch } from "@/lib/apiCache";
 
 const NAV_CSS = `
-  @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800;900&family=Nunito:wght@400;600;700&display=swap');
-`;
+  `;
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -96,9 +95,9 @@ export default function Navbar() {
   };
 
   const navLinkStyle = (active) => ({
-    fontFamily: "'Nunito', sans-serif",
+    fontFamily: "'Inter', sans-serif",
     fontWeight: 700,
-    fontSize: "14px",
+    fontSize: "15px",
     color: active ? "#0077e6" : "#374151",
     textDecoration: "none",
     padding: "6px 2px",
@@ -110,12 +109,12 @@ export default function Navbar() {
 
   const leftLinks = [
     { href: "/", label: "Home" },
-    { href: "/about", label: "About Us" },
-    { href: "/services", label: "Services" },
   ];
 
   const rightLinks = [
+    { href: "/services", label: "Services" },
     { href: "/faqs", label: "FAQs" },
+    { href: "/about", label: "About Us" },
     { href: "/size-guide", label: "Size Guide" },
     { href: "/schoolenquiry", label: "Contact Us" },
   ];
@@ -164,7 +163,7 @@ export default function Navbar() {
         <div
           className="hidden md:grid"
           style={{
-            gridTemplateColumns: "1fr auto 1fr",
+            gridTemplateColumns: "auto 1fr auto",
             alignItems: "center",
             maxWidth: "1280px",
             margin: "0 auto",
@@ -172,14 +171,39 @@ export default function Navbar() {
             height: "84px",
           }}
         >
-          {/* LEFT: 3 nav links + Shop By Schools dropdown */}
+          {/* Logo — LEFT aligned */}
+          <Link
+            to="/"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              textDecoration: "none",
+              flexShrink: 0,
+              marginRight: "24px",
+            }}
+          >
+            <img
+              src="/logo.png"
+              alt="Logo"
+              style={{
+                height: "72px",
+                width: "auto",
+                display: "block",
+                objectFit: "contain",
+                transform: "scale(1.25)",
+                transformOrigin: "left center",
+                marginTop: "12px",
+              }}
+            />
+          </Link>
+
+          {/* All nav links — centered */}
           <nav
             style={{
               display: "flex",
               alignItems: "center",
               gap: "28px",
-              justifyContent: "flex-end",
-              paddingRight: "40px",
+              justifyContent: "center",
             }}
           >
             {leftLinks.map((item) => (
@@ -248,7 +272,7 @@ export default function Navbar() {
                     style={{
                       position: "absolute",
                       top: "calc(100% + 12px)",
-                      right: 0,
+                      left: 0,
                       minWidth: "220px",
                       background: "#fff",
                       borderRadius: "14px",
@@ -260,9 +284,9 @@ export default function Navbar() {
                   >
                     <p
                       style={{
-                        fontFamily: "'Baloo 2', cursive",
+                        fontFamily: "'Inter', sans-serif",
                         fontWeight: 800,
-                        fontSize: "11px",
+                        fontSize: "12px",
                         color: "#94a3b8",
                         letterSpacing: "0.1em",
                         textTransform: "uppercase",
@@ -284,9 +308,9 @@ export default function Navbar() {
                           borderRadius: "8px",
                           textDecoration: "none",
                           color: "#1e293b",
-                          fontFamily: "'Nunito', sans-serif",
+                          fontFamily: "'Inter', sans-serif",
                           fontWeight: 600,
-                          fontSize: "13.5px",
+                          fontSize: "14.5px",
                           transition: "background 0.15s",
                         }}
                         onMouseEnter={(e) => {
@@ -300,7 +324,7 @@ export default function Navbar() {
                         {school.level && (
                           <span
                             style={{
-                              fontSize: "11px",
+                              fontSize: "12px",
                               color: "#0077e6",
                               background: "#eff6ff",
                               borderRadius: "6px",
@@ -317,42 +341,7 @@ export default function Navbar() {
                 )}
               </AnimatePresence>
             </div>
-          </nav>
 
-          {/* CENTER: Logo (strictly centered via grid) */}
-          <Link
-            to="/"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              textDecoration: "none",
-              flexShrink: 0,
-            }}
-          >
-            <img
-              src="/logo.png"
-              alt="Logo"
-              style={{
-                height: "80px",
-                width: "auto",
-                display: "block",
-                objectFit: "contain",
-                transform: "scale(1.35)",
-              }}
-            />
-          </Link>
-
-          {/* RIGHT: 3 nav links + icons */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "28px",
-              justifyContent: "flex-start",
-              paddingLeft: "40px",
-            }}
-          >
             {rightLinks.map((item) => (
               <Link
                 key={item.href}
@@ -370,86 +359,24 @@ export default function Navbar() {
                 {item.label}
               </Link>
             ))}
+          </nav>
 
-            {/* Divider */}
-            <div
-              style={{
-                width: "1px",
-                height: "20px",
-                background: "#e2e8f0",
-                flexShrink: 0,
-              }}
-            />
-
-            {/* Icons */}
-            <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-              {[
-                { icon: User, label: "Account", href: "/account" },
-                {
-                  icon: Heart,
-                  label: "Wishlist",
-                  href: "/wishlist",
-                  badge: wishlistCount,
-                },
-                { icon: Search, label: "Search", href: "/search" },
-              ].map(({ icon: Icon, label, href, badge }) => (
-                <Link
-                  key={label}
-                  to={href}
-                  aria-label={label}
-                  style={{
-                    position: "relative",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    width: "36px",
-                    height: "36px",
-                    borderRadius: "10px",
-                    color: "#475569",
-                    transition: "background 0.15s, color 0.15s",
-                    textDecoration: "none",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = "#f1f5f9";
-                    e.currentTarget.style.color = "#0077e6";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = "transparent";
-                    e.currentTarget.style.color = "#475569";
-                  }}
-                >
-                  <Icon size={18} />
-                  {badge > 0 && (
-                    <span
-                      style={{
-                        position: "absolute",
-                        top: "4px",
-                        right: "4px",
-                        background: "#e11d48",
-                        color: "#fff",
-                        borderRadius: "999px",
-                        fontSize: "10px",
-                        fontWeight: 800,
-                        minWidth: "16px",
-                        height: "16px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        padding: "0 3px",
-                        fontFamily: "'Nunito', sans-serif",
-                        lineHeight: 1,
-                      }}
-                    >
-                      {badge > 99 ? "99+" : badge}
-                    </span>
-                  )}
-                </Link>
-              ))}
-
-              {/* Cart */}
-              <button
-                onClick={openCart}
-                aria-label={`Cart${totalItems > 0 ? ` – ${totalItems} items` : ""}`}
+          {/* Icons — RIGHT */}
+          <div style={{ display: "flex", alignItems: "center", gap: "4px", flexShrink: 0 }}>
+            {[
+              { icon: User, label: "Account", href: "/account" },
+              {
+                icon: Heart,
+                label: "Wishlist",
+                href: "/wishlist",
+                badge: wishlistCount,
+              },
+              { icon: Search, label: "Search", href: "/search" },
+            ].map(({ icon: Icon, label, href, badge }) => (
+              <Link
+                key={label}
+                to={href}
+                aria-label={label}
                 style={{
                   position: "relative",
                   display: "flex",
@@ -458,11 +385,9 @@ export default function Navbar() {
                   width: "36px",
                   height: "36px",
                   borderRadius: "10px",
-                  background: "none",
-                  border: "none",
-                  cursor: "pointer",
                   color: "#475569",
                   transition: "background 0.15s, color 0.15s",
+                  textDecoration: "none",
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.background = "#f1f5f9";
@@ -473,14 +398,14 @@ export default function Navbar() {
                   e.currentTarget.style.color = "#475569";
                 }}
               >
-                <ShoppingBag size={18} />
-                {totalItems > 0 && (
+                <Icon size={18} />
+                {badge > 0 && (
                   <span
                     style={{
                       position: "absolute",
                       top: "4px",
                       right: "4px",
-                      background: "#0077e6",
+                      background: "#e11d48",
                       color: "#fff",
                       borderRadius: "999px",
                       fontSize: "10px",
@@ -491,15 +416,69 @@ export default function Navbar() {
                       alignItems: "center",
                       justifyContent: "center",
                       padding: "0 3px",
-                      fontFamily: "'Nunito', sans-serif",
+                      fontFamily: "'Inter', sans-serif",
                       lineHeight: 1,
                     }}
                   >
-                    {totalItems > 99 ? "99+" : totalItems}
+                    {badge > 99 ? "99+" : badge}
                   </span>
                 )}
-              </button>
-            </div>
+              </Link>
+            ))}
+
+            {/* Cart */}
+            <button
+              onClick={openCart}
+              aria-label={`Cart${totalItems > 0 ? ` – ${totalItems} items` : ""}`}
+              style={{
+                position: "relative",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "36px",
+                height: "36px",
+                borderRadius: "10px",
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                color: "#475569",
+                transition: "background 0.15s, color 0.15s",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "#f1f5f9";
+                e.currentTarget.style.color = "#0077e6";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "transparent";
+                e.currentTarget.style.color = "#475569";
+              }}
+            >
+              <ShoppingBag size={18} />
+              {totalItems > 0 && (
+                <span
+                  style={{
+                    position: "absolute",
+                    top: "4px",
+                    right: "4px",
+                    background: "#0077e6",
+                    color: "#fff",
+                    borderRadius: "999px",
+                    fontSize: "10px",
+                    fontWeight: 800,
+                    minWidth: "16px",
+                    height: "16px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    padding: "0 3px",
+                    fontFamily: "'Inter', sans-serif",
+                    lineHeight: 1,
+                  }}
+                >
+                  {totalItems > 99 ? "99+" : totalItems}
+                </span>
+              )}
+            </button>
           </div>
         </div>
 
@@ -614,7 +593,7 @@ export default function Navbar() {
                     alignItems: "center",
                     justifyContent: "center",
                     padding: "0 3px",
-                    fontFamily: "'Nunito', sans-serif",
+                    fontFamily: "'Inter', sans-serif",
                     lineHeight: 1,
                   }}
                 >
@@ -657,7 +636,7 @@ export default function Navbar() {
                     alignItems: "center",
                     justifyContent: "center",
                     padding: "0 3px",
-                    fontFamily: "'Nunito', sans-serif",
+                    fontFamily: "'Inter', sans-serif",
                     lineHeight: 1,
                   }}
                 >
@@ -777,9 +756,9 @@ export default function Navbar() {
                             border: "none",
                             borderBottom: "1px solid #f1f5f9",
                             cursor: "pointer",
-                            fontFamily: "'Nunito', sans-serif",
+                            fontFamily: "'Inter', sans-serif",
                             fontWeight: 700,
-                            fontSize: "15px",
+                            fontSize: "16px",
                             color: "#1e293b",
                             textAlign: "left",
                           }}
@@ -835,9 +814,9 @@ export default function Navbar() {
                                     justifyContent: "space-between",
                                     padding: "11px 16px",
                                     textDecoration: "none",
-                                    fontFamily: "'Nunito', sans-serif",
+                                    fontFamily: "'Inter', sans-serif",
                                     fontWeight: 600,
-                                    fontSize: "13.5px",
+                                    fontSize: "14.5px",
                                     color: "#334155",
                                     borderBottom:
                                       i < schools.length - 1
@@ -858,7 +837,7 @@ export default function Navbar() {
                                   {school.level && (
                                     <span
                                       style={{
-                                        fontSize: "11px",
+                                        fontSize: "12px",
                                         color: "#0077e6",
                                         background: "#e0edff",
                                         borderRadius: "6px",
@@ -894,9 +873,9 @@ export default function Navbar() {
                         padding: "14px 12px",
                         borderRadius: "10px",
                         textDecoration: "none",
-                        fontFamily: "'Nunito', sans-serif",
+                        fontFamily: "'Inter', sans-serif",
                         fontWeight: 700,
-                        fontSize: "15px",
+                        fontSize: "16px",
                         color: active ? "#0077e6" : "#1e293b",
                         background: active ? "#eff6ff" : "transparent",
                         borderBottom: "1px solid #f1f5f9",
@@ -952,9 +931,9 @@ export default function Navbar() {
                       gap: "8px",
                       padding: "14px 12px",
                       borderRadius: "9999px",
-                      fontFamily: "'Baloo 2', cursive",
+                      fontFamily: "'Inter', sans-serif",
                       fontWeight: 800,
-                      fontSize: "12px",
+                      fontSize: "13px",
                       letterSpacing: "0.08em",
                       textTransform: "uppercase",
                       textDecoration: "none",
@@ -980,9 +959,9 @@ export default function Navbar() {
                       gap: "8px",
                       padding: "14px 12px",
                       borderRadius: "9999px",
-                      fontFamily: "'Baloo 2', cursive",
+                      fontFamily: "'Inter', sans-serif",
                       fontWeight: 800,
-                      fontSize: "12px",
+                      fontSize: "13px",
                       letterSpacing: "0.08em",
                       textTransform: "uppercase",
                       textDecoration: "none",
@@ -1028,8 +1007,8 @@ export default function Navbar() {
                         background: "#fff",
                         textDecoration: "none",
                         color: "#475569",
-                        fontFamily: "'Nunito', sans-serif",
-                        fontSize: "11px",
+                        fontFamily: "'Inter', sans-serif",
+                        fontSize: "12px",
                         fontWeight: 600,
                         transition: "background 0.15s, border-color 0.15s",
                       }}
@@ -1088,8 +1067,8 @@ export default function Navbar() {
                       background: "#fff",
                       cursor: "pointer",
                       color: "#475569",
-                      fontFamily: "'Nunito', sans-serif",
-                      fontSize: "11px",
+                      fontFamily: "'Inter', sans-serif",
+                      fontSize: "12px",
                       fontWeight: 600,
                       position: "relative",
                       transition: "background 0.15s, border-color 0.15s",
