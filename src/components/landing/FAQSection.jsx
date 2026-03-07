@@ -116,11 +116,12 @@ const CSS = `
     transform: translateY(1px);
     box-shadow: 0 1px 4px rgba(0,76,153,0.2), inset 0 1px 0 rgba(255,255,255,0.1);
   }
-  .faq-cta-wrap { text-align: left; }
+  .faq-cta-wrap { max-width: 900px; text-align: right; }
   @media (max-width: 767px) {
     .faq-sec { padding: 58px 0 68px; }
     .faq-q { font-size: 16px; }
     .faq-sub { font-size: 14px; }
+    .faq-cta-wrap { text-align: center; }
   }
 `;
 

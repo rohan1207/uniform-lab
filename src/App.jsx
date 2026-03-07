@@ -24,6 +24,7 @@ import HomePage from "@/pages/HomePage";
 import ResetPasswordPage from "@/pages/ResetPasswordPage";
 import CorporatePage from "@/pages/CorporatePage";
 import BulkManufacturingPage from "@/pages/BulkManufacturingPage";
+import ExchangePolicyPage from "@/pages/ExchangePolicyPage";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -66,6 +67,7 @@ function LayoutContent() {
             path="/bulk-manufacturing"
             element={<BulkManufacturingPage />}
           />
+          <Route path="/exchange-policy" element={<ExchangePolicyPage />} />
         </Routes>
       </main>
       <Footer />

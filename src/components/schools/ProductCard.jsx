@@ -10,7 +10,7 @@ import { toTitleCase } from "@/lib/apiCache";
    STYLES
 ────────────────────────────────────────────────────────────────────────── */
 const CARD_CSS = `
-  @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800;900&family=Nunito:wght@400;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
   /* ── Card shell ── */
   .pc-card {
@@ -42,8 +42,8 @@ const CARD_CSS = `
     -webkit-backdrop-filter: blur(12px);
     border-radius: 8px;
     padding: 3px 10px;
-    font-family: 'Baloo 2', cursive;
-    font-weight: 900;
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
     font-size: 13px;
     color: #0f172a;
     box-shadow: 0 2px 8px rgba(0,0,0,0.09);
@@ -59,8 +59,8 @@ const CARD_CSS = `
     border-radius: 10px;
     background: #0f172a;
     color: #cbd5e1;
-    font-family: 'Baloo 2', cursive;
-    font-weight: 900;
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
     font-size: 10.5px;
     letter-spacing: 0.09em;
     text-transform: uppercase;
@@ -416,8 +416,8 @@ export function ProductCard({ product, schoolName, schoolSlug, onQuickShop }) {
               <h3
                 style={{
                   margin: 0,
-                  fontFamily: "'Baloo 2', cursive",
-                  fontWeight: 900,
+                  fontFamily: "'Inter', sans-serif",
+                  fontWeight: 800,
                   fontSize: "clamp(14px, 1.15vw, 17px)",
                   color: "#0f172a",
                   lineHeight: 1.25,
@@ -435,8 +435,8 @@ export function ProductCard({ product, schoolName, schoolSlug, onQuickShop }) {
             <span
               style={{
                 marginLeft: "4px",
-                fontFamily: "'Baloo 2', cursive",
-                fontWeight: 900,
+                fontFamily: "'Inter', sans-serif",
+                fontWeight: 800,
                 fontSize: "clamp(13px, 1vw, 16px)",
                 color: "#0f172a",
                 whiteSpace: "nowrap",

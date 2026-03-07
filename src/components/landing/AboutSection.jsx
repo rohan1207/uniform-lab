@@ -286,7 +286,7 @@ const CSS = `
     .about-founder-photo { width: 88px; height: 88px; font-size: 22px; border-radius: 50%; }
     .about-points-row { gap: 8px; margin-bottom: 22px; }
     .about-point-pill { padding: 8px 12px; font-size: 12px; }
-    .about-cta-bar { flex-direction: column; align-items: stretch; text-align: center; padding: 16px; }
+    .about-cta-bar { flex-direction: column; align-items: center; text-align: center; padding: 16px; }
     .about-cta-btn { justify-content: center; }
   }
 `;
@@ -327,7 +327,7 @@ export default function AboutSection() {
           >
             <p className="about-para-lead">
               A system-driven school and corporate uniform manufacturer in Pune
-              — we deliver consistency, quality, and reliability at scale. Full
+               we deliver consistency, quality, and reliability at scale. Full
               story and process depth on our About page.
             </p>
             <p className="about-para-body">

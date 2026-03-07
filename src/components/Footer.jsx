@@ -7,6 +7,7 @@ const NAV_LINKS = [
   { label: "Services", href: "/services" },
   { label: "FAQs", href: "/faqs" },
   { label: "Size Guide", href: "/size-guide" },
+  { label: "Exchange Policy", href: "/exchange-policy" },
 ];
 
 const SCHOOL_LINKS = [
@@ -105,7 +106,7 @@ export default function Footer() {
               }}
             >
               Uniforms that make students look smart, feel comfortable, and wear
-              with pride — crafted for schools across Pune & India.
+              with pride crafted for schools across Pune & India.
             </p>
           </div>
 

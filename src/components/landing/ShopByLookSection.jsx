@@ -16,10 +16,18 @@ const SHOP_BY_LOOK_CONFIG = [
     modelImage: "/kalyani_shopbylook.png",
   },
   {
-    id: "bharati-rabindranath-tagore",
-    shortName: "BVRTSE",
-    logo: "/bvrtse_logo.png",
-    modelImage: "/bvrtse_shopbylook.png",
+    id:"Vidya Pratishthan's Magarpatta City Public School",
+    slug: "vidya-pratishthans-magarpatta-city-public-school",
+    shortName: " Vidya Pratishthan's Magarpatta City Public School",
+    logo: "/magarpatta_logo.png",
+    modelImage: "/magarpatta_shopbylook.png",
+  },
+  {
+    id:"Vidya Pratishthan's Nanded City Public School",
+    slug: "vidya-pratishthans-nanded-city-public-school",
+    shortName: "Vidya Pratishthan's Nanded City Public School",
+    logo: "/nanded_logo.png",
+    modelImage: "/nanded_shopbylook.png",
   },
   {
     id: "the-orbis-school",
@@ -27,6 +35,13 @@ const SHOP_BY_LOOK_CONFIG = [
     logo: "/orbis_logo.png",
     modelImage: "/orbis_shopbylook.png",
   },
+  {
+    id: "bharati-rabindranath-tagore",
+    shortName: "Bharati Vidyapeeth's Rabindranath Tagore School of Excellence",
+    logo: "/bvrtse_logo.png",
+    modelImage: "/bvrtse_shopbylook.png",
+  },
+  
 ];
 
 const SHOP_BY_LOOK_SCHOOLS = SHOP_BY_LOOK_CONFIG.map((cfg) => {
@@ -38,7 +53,7 @@ const SHOP_BY_LOOK_SCHOOLS = SHOP_BY_LOOK_CONFIG.map((cfg) => {
     id: base?.id || cfg.id,
     slug,
     name: base?.name || cfg.shortName || cfg.id,
-    level: base?.level || cfg.level || "",
+   
     logo: cfg.logo || null,
     shortName: cfg.shortName || base?.name || cfg.id,
     modelImage: cfg.modelImage,
@@ -52,7 +67,7 @@ const CSS = `
 
 .sbl-sec {
   background: #FAF3F0;
-  padding: 56px 0 88px;
+  padding: 48px 0 56px;
   font-family: 'Inter', sans-serif;
   position: relative;
   overflow: hidden;
@@ -79,7 +94,6 @@ const CSS = `
   grid-template-columns: 1fr 1fr;
   gap: 0;
   align-items: start;
-  min-height: 520px;
 }
 
 /* ── LEFT COLUMN (top-aligned with model) ── */
@@ -223,7 +237,6 @@ const CSS = `
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 620px;
 }
 
 /* Arrow buttons flanking the model */
@@ -276,7 +289,7 @@ const CSS = `
 .sbl-model-img {
   width: 100%;
   height: auto;
-  max-height: 620px;
+  max-height: 520px;
   object-fit: contain;
   object-position: top center;
   display: block;
@@ -360,7 +373,7 @@ const CSS = `
   .sbl-heading .sbl-divider { margin-bottom: 12px; }
 
   /* School card: center-aligned on phone */
-  .sbl-left-rest { margin-top: 60px; align-items: center !important; width: 100%; }
+  .sbl-left-rest { margin-top: 16px; align-items: center !important; width: 100%; }
   .sbl-school-card-link { width: fit-content !important; margin-left: auto !important; margin-right: auto !important; display: block !important; }
   .sbl-school-card {
     padding: 14px 18px 12px;

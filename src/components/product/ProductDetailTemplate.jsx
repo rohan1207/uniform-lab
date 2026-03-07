@@ -19,6 +19,9 @@ import {
   Star,
   ArrowRight,
   ArrowLeft,
+  GraduationCap,
+  FileText,
+  MessageCircle,
 } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { useWishlist } from "@/contexts/WishlistContext";
@@ -34,20 +37,20 @@ import { QuickShopDrawer } from "@/components/schools/QuickShopDrawer";
    STYLES
 ────────────────────────────────────────────────────────────────────────── */
 const GLOBAL_CSS = `
-  @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800;900&family=Nunito:wght@400;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
   .pdt-root {
     background: #f8f9fb;
     min-height: 100vh;
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Inter', sans-serif;
     color: #0f172a;
     padding-top: 5.5rem; /* clear fixed navbar so breadcrumb sits below it */
   }
 
   /* ── Add to Cart — NewHero gold pill CTA ── */
   .pdt-btn-cart {
-    font-family: 'Baloo 2', cursive;
-    font-weight: 900;
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
     font-size: clamp(11px, 1vw, 13px);
     letter-spacing: 0.11em;
     text-transform: uppercase;
@@ -73,8 +76,8 @@ const GLOBAL_CSS = `
 
   /* ── Buy Now — NewHero blue pill CTA ── */
   .pdt-btn-buy {
-    font-family: 'Baloo 2', cursive;
-    font-weight: 900;
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
     font-size: clamp(11px, 1vw, 13px);
     letter-spacing: 0.11em;
     text-transform: uppercase;
@@ -106,9 +109,9 @@ const GLOBAL_CSS = `
     border: 1.5px solid #e2e8f0;
     background: #fff;
     color: #374151;
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 13px;
-    font-weight: 700;
+    font-weight: 600;
     cursor: pointer;
     transition: all 0.15s ease;
     box-shadow: 0 1px 3px rgba(0,0,0,0.05);
@@ -125,8 +128,8 @@ const GLOBAL_CSS = `
   .pdt-tab {
     padding: 7px 16px;
     border-radius: 8px;
-    font-family: 'Baloo 2', cursive;
-    font-weight: 800;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
     font-size: 13px;
     cursor: pointer;
     border: none;
@@ -376,8 +379,8 @@ function ImageSlider({ images, productName, current, setCurrent }) {
               background: "rgba(255,255,255,0.88)",
               backdropFilter: "blur(6px)",
               color: "#374151",
-              fontFamily: "'Nunito', sans-serif",
-              fontWeight: 700,
+              fontFamily: "'Inter', sans-serif",
+              fontWeight: 600,
               boxShadow: "0 1px 6px rgba(0,0,0,0.10)",
             }}
           >
@@ -423,9 +426,9 @@ function FaqRow({ item }) {
         <span
           className="font-bold text-[#0f172a] leading-snug"
           style={{
-            fontFamily: "'Nunito', sans-serif",
+            fontFamily: "'Inter', sans-serif",
             fontSize: "14px",
-            fontWeight: 700,
+            fontWeight: 600,
           }}
         >
           {item.q}
@@ -457,8 +460,8 @@ function FaqRow({ item }) {
               className="pb-4 leading-relaxed text-[#64748b]"
               style={{
                 fontSize: "13px",
-                fontFamily: "'Nunito', sans-serif",
-                fontWeight: 600,
+                fontFamily: "'Inter', sans-serif",
+                fontWeight: 500,
               }}
             >
               {item.a}
@@ -640,9 +643,9 @@ export function ProductDetailTemplate({
                     to={item.to}
                     className="hover:text-[#2563eb] transition-colors"
                     style={{
-                      fontFamily: "'Nunito', sans-serif",
+                      fontFamily: "'Inter', sans-serif",
                       fontSize: "12px",
-                      fontWeight: 600,
+                      fontWeight: 500,
                       color: "#94a3b8",
                       textDecoration: "none",
                     }}
@@ -661,9 +664,9 @@ export function ProductDetailTemplate({
             )}
             <span
               style={{
-                fontFamily: "'Nunito', sans-serif",
+                fontFamily: "'Inter', sans-serif",
                 fontSize: "12px",
-                fontWeight: 700,
+                fontWeight: 600,
                 color: "#0f172a",
               }}
             >
@@ -698,10 +701,10 @@ export function ProductDetailTemplate({
             />
             <p
               style={{
-                fontFamily: "'Nunito', sans-serif",
+                fontFamily: "'Inter', sans-serif",
                 fontSize: "11px",
                 color: "#b0bec5",
-                fontWeight: 600,
+                fontWeight: 500,
                 lineHeight: 1.5,
                 marginTop: "10px",
                 textAlign: "center",
@@ -724,18 +727,44 @@ export function ProductDetailTemplate({
             {schoolName && (
               <Link
                 to={schoolSlug ? `/schools/${schoolSlug}` : "/schools"}
-                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full mb-3 font-bold"
+                className="inline-flex items-center gap-2 mb-4"
                 style={{
-                  background: "#f1f5f9",
-                  color: "#475569",
-                  fontSize: "11px",
-                  fontFamily: "'Nunito', sans-serif",
                   textDecoration: "none",
-                  border: "1px solid #e2e8f0",
-                  letterSpacing: "0.04em",
+                  display: "inline-flex",
                 }}
               >
-                🏫 {schoolName}
+                <span
+                  className="inline-flex items-center gap-2"
+                  style={{
+                    background: "linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%)",
+                    color: "#fff",
+                    fontSize: "clamp(12px, 1vw, 14px)",
+                    fontFamily: "'Inter', sans-serif",
+                    fontWeight: 700,
+                    letterSpacing: "0.03em",
+                    padding: "8px 18px 8px 12px",
+                    borderRadius: "999px",
+                    border: "1px solid rgba(37,99,235,0.3)",
+                    boxShadow: "0 2px 10px rgba(37,99,235,0.25), inset 0 1px 0 rgba(255,255,255,0.12)",
+                    transition: "box-shadow 0.2s ease, filter 0.2s ease",
+                  }}
+                >
+                  <span
+                    style={{
+                      width: "26px",
+                      height: "26px",
+                      borderRadius: "50%",
+                      background: "rgba(255,255,255,0.15)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexShrink: 0,
+                    }}
+                  >
+                    <GraduationCap size={14} strokeWidth={2.5} style={{ color: "#fff" }} />
+                  </span>
+                  {schoolName}
+                </span>
               </Link>
             )}
 
@@ -743,8 +772,8 @@ export function ProductDetailTemplate({
             <h1
               className="m-0 text-[#0f172a] leading-tight mb-1"
               style={{
-                fontFamily: "'Baloo 2', cursive",
-                fontWeight: 900,
+                fontFamily: "'Inter', sans-serif",
+                fontWeight: 800,
                 fontSize: "clamp(22px, 2.6vw, 36px)",
                 letterSpacing: "-0.3px",
               }}
@@ -755,9 +784,9 @@ export function ProductDetailTemplate({
             <p
               className="text-[#94a3b8] mb-4"
               style={{
-                fontFamily: "'Nunito', sans-serif",
+                fontFamily: "'Inter', sans-serif",
                 fontSize: "13px",
-                fontWeight: 600,
+                fontWeight: 500,
               }}
             >
               Official School Uniform · Direct from Manufacturer
@@ -767,8 +796,8 @@ export function ProductDetailTemplate({
               <span
                 className="font-black text-[#0f172a]"
                 style={{
-                  fontFamily: "'Baloo 2', cursive",
-                  fontWeight: 900,
+                  fontFamily: "'Inter', sans-serif",
+                  fontWeight: 800,
                   fontSize: "clamp(24px, 2.4vw, 30px)",
                 }}
               >
@@ -785,8 +814,8 @@ export function ProductDetailTemplate({
                 <span
                   className="font-black text-[#0f172a] ml-1"
                   style={{
-                    fontFamily: "'Baloo 2', cursive",
-                    fontWeight: 900,
+                    fontFamily: "'Inter', sans-serif",
+                    fontWeight: 700,
                     fontSize: "13px",
                   }}
                 >
@@ -796,8 +825,8 @@ export function ProductDetailTemplate({
                   className="text-[#94a3b8] ml-1"
                   style={{
                     fontSize: "12px",
-                    fontFamily: "'Nunito', sans-serif",
-                    fontWeight: 600,
+                    fontFamily: "'Inter', sans-serif",
+                    fontWeight: 500,
                   }}
                 >
                   (2,143)
@@ -818,8 +847,8 @@ export function ProductDetailTemplate({
                 className="flex items-center gap-1.5 text-[#16a34a]"
                 style={{
                   fontSize: "12px",
-                  fontFamily: "'Nunito', sans-serif",
-                  fontWeight: 700,
+                  fontFamily: "'Inter', sans-serif",
+                  fontWeight: 600,
                 }}
               >
                 <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
@@ -832,8 +861,8 @@ export function ProductDetailTemplate({
                 className="flex items-center gap-1.5 text-[#d97706]"
                 style={{
                   fontSize: "12px",
-                  fontFamily: "'Nunito', sans-serif",
-                  fontWeight: 700,
+                  fontFamily: "'Inter', sans-serif",
+                  fontWeight: 600,
                 }}
               >
                 <Flame size={11} />
@@ -856,8 +885,8 @@ export function ProductDetailTemplate({
                 <p
                   className="font-semibold uppercase tracking-wider mb-2.5"
                   style={{
-                    fontFamily: "'Nunito', sans-serif",
-                    fontWeight: 700,
+                    fontFamily: "'Inter', sans-serif",
+                    fontWeight: 600,
                     fontSize: "11px",
                     color: "#64748b",
                     letterSpacing: "0.08em",
@@ -918,37 +947,46 @@ export function ProductDetailTemplate({
 
             {/* Size picker */}
             <div className="mb-5">
-              <div className="flex items-center justify-between mb-2.5">
+              <div className="flex items-center gap-3 mb-2.5">
                 <p
-                  className="font-semibold uppercase tracking-wider m-0"
+                  className="m-0 uppercase tracking-wider"
                   style={{
-                    fontFamily: "'Nunito', sans-serif",
+                    fontFamily: "'Inter', sans-serif",
                     fontWeight: 700,
-                    fontSize: "11px",
-                    color: "#64748b",
-                    letterSpacing: "0.08em",
+                    fontSize: "13px",
+                    color: "#475569",
+                    letterSpacing: "0.07em",
+                    whiteSpace: "nowrap",
                   }}
                 >
                   Size —{" "}
                   <span
                     className="normal-case tracking-normal"
-                    style={{ color: "#f59e0b" }}
+                    style={{ color: "#0f172a", fontWeight: 800, fontSize: "14px" }}
                   >
                     {selectedSize}
                   </span>
                 </p>
                 <Link
                   to="/size-guide"
-                  className="flex items-center gap-1 hover:text-[#2563eb] transition-colors"
+                  className="inline-flex items-center gap-1.5"
                   style={{
-                    color: "#94a3b8",
-                    fontSize: "12px",
-                    fontFamily: "'Nunito', sans-serif",
                     textDecoration: "none",
-                    fontWeight: 600,
+                    background: "linear-gradient(135deg, #f0f7ff, #dbeafe)",
+                    color: "#1d4ed8",
+                    fontSize: "12px",
+                    fontFamily: "'Inter', sans-serif",
+                    fontWeight: 700,
+                    padding: "5px 13px",
+                    borderRadius: "999px",
+                    border: "1.5px solid rgba(37,99,235,0.3)",
+                    boxShadow: "0 2px 8px rgba(37,99,235,0.15)",
+                    letterSpacing: "0.01em",
+                    whiteSpace: "nowrap",
                   }}
                 >
-                  <Ruler size={12} /> Size Guide
+                  <Ruler size={13} strokeWidth={2} />
+                  Size Guide
                 </Link>
               </div>
               <div className="flex flex-wrap gap-2">
@@ -983,8 +1021,8 @@ export function ProductDetailTemplate({
                 <span
                   className="w-9 text-center font-black text-[#0f172a]"
                   style={{
-                    fontFamily: "'Baloo 2', cursive",
-                    fontWeight: 900,
+                    fontFamily: "'Inter', sans-serif",
+                    fontWeight: 700,
                     fontSize: "15px",
                   }}
                 >
@@ -1049,9 +1087,9 @@ export function ProductDetailTemplate({
               />
               <span
                 style={{
-                  fontFamily: "'Nunito', sans-serif",
+                  fontFamily: "'Inter', sans-serif",
                   fontSize: "13px",
-                  fontWeight: 700,
+                  fontWeight: 600,
                   color: "#166534",
                 }}
               >
@@ -1092,8 +1130,8 @@ export function ProductDetailTemplate({
                   <p
                     className="text-center leading-tight whitespace-pre-line font-bold text-[#374151] m-0"
                     style={{
-                      fontFamily: "'Nunito', sans-serif",
-                      fontWeight: 700,
+                      fontFamily: "'Inter', sans-serif",
+                      fontWeight: 600,
                       fontSize: "11px",
                     }}
                   >
@@ -1111,8 +1149,8 @@ export function ProductDetailTemplate({
               <p
                 className="font-bold uppercase tracking-wider text-center mb-3"
                 style={{
-                  fontFamily: "'Nunito', sans-serif",
-                  fontWeight: 700,
+                  fontFamily: "'Inter', sans-serif",
+                  fontWeight: 600,
                   fontSize: "10px",
                   color: "#94a3b8",
                   letterSpacing: "0.1em",
@@ -1121,7 +1159,7 @@ export function ProductDetailTemplate({
                 Guaranteed Safe Checkout
               </p>
               <div className="flex items-center justify-center gap-2 flex-wrap">
-                {["PayPal", "Mastercard", "VISA", "Amex", "UPI", "COD"].map(
+                {["PayPal", "Mastercard", "VISA", "Amex", "UPI"].map(
                   (name) => (
                     <span
                       key={name}
@@ -1130,8 +1168,8 @@ export function ProductDetailTemplate({
                         background: "#f8f9fb",
                         color: "#374151",
                         fontSize: "11px",
-                        fontFamily: "'Nunito', sans-serif",
-                        fontWeight: 700,
+                        fontFamily: "'Inter', sans-serif",
+                        fontWeight: 600,
                         border: "1px solid #e8ecf1",
                       }}
                     >
@@ -1164,7 +1202,12 @@ export function ProductDetailTemplate({
                       onClick={() => setDescTab(tab)}
                       className={`pdt-tab ${descTab === tab ? "active" : ""}`}
                     >
-                      {tab === "shipping" ? "🚚 Shipping" : "📝 Description"}
+                      <span style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                        {tab === "shipping"
+                          ? <Truck size={13} strokeWidth={2} />
+                          : <FileText size={13} strokeWidth={2} />}
+                        {tab === "shipping" ? "Shipping" : "Description"}
+                      </span>
                     </button>
                   ))}
                 </div>
@@ -1182,9 +1225,9 @@ export function ProductDetailTemplate({
                         <p
                           className="leading-relaxed text-[#374151] mb-6 whitespace-pre-line"
                           style={{
-                            fontFamily: "'Nunito', sans-serif",
+                            fontFamily: "'Inter', sans-serif",
                             fontSize: "14px",
-                            fontWeight: 600,
+                            fontWeight: 500,
                           }}
                         >
                           {product.description}
@@ -1194,17 +1237,17 @@ export function ProductDetailTemplate({
                           <p
                             className="leading-relaxed text-[#374151] mb-3"
                             style={{
-                              fontFamily: "'Nunito', sans-serif",
+                              fontFamily: "'Inter', sans-serif",
                               fontSize: "14px",
-                              fontWeight: 600,
+                              fontWeight: 500,
                             }}
                           >
                             The{" "}
                             <strong
                               style={{
                                 color: "#0f172a",
-                                fontFamily: "'Baloo 2', cursive",
-                                fontWeight: 900,
+                                fontFamily: "'Inter', sans-serif",
+                                fontWeight: 700,
                               }}
                             >
                               {product.name}
@@ -1215,9 +1258,9 @@ export function ProductDetailTemplate({
                           <p
                             className="leading-relaxed text-[#94a3b8] mb-6"
                             style={{
-                              fontFamily: "'Nunito', sans-serif",
+                              fontFamily: "'Inter', sans-serif",
                               fontSize: "13px",
-                              fontWeight: 600,
+                              fontWeight: 500,
                             }}
                           >
                             We partner directly with schools to ensure colour
@@ -1235,8 +1278,8 @@ export function ProductDetailTemplate({
                         <p
                           className="font-black uppercase tracking-wider mb-4"
                           style={{
-                            fontFamily: "'Baloo 2', cursive",
-                            fontWeight: 900,
+                            fontFamily: "'Inter', sans-serif",
+                            fontWeight: 800,
                             fontSize: "12px",
                             color: "#0f172a",
                             letterSpacing: "0.08em",
@@ -1270,9 +1313,9 @@ export function ProductDetailTemplate({
                               <p
                                 className="text-[#374151] m-0"
                                 style={{
-                                  fontFamily: "'Nunito', sans-serif",
+                                  fontFamily: "'Inter', sans-serif",
                                   fontSize: "14px",
-                                  fontWeight: 600,
+                                  fontWeight: 500,
                                 }}
                               >
                                 {feat}
@@ -1334,8 +1377,8 @@ export function ProductDetailTemplate({
                             <p
                               className="font-black text-[#0f172a] mb-1 m-0"
                               style={{
-                                fontFamily: "'Baloo 2', cursive",
-                                fontWeight: 900,
+                                fontFamily: "'Inter', sans-serif",
+                                fontWeight: 800,
                                 fontSize: "14px",
                               }}
                             >
@@ -1344,9 +1387,9 @@ export function ProductDetailTemplate({
                             <p
                               className="text-[#64748b] m-0"
                               style={{
-                                fontFamily: "'Nunito', sans-serif",
+                                fontFamily: "'Inter', sans-serif",
                                 fontSize: "13px",
-                                fontWeight: 600,
+                                fontWeight: 500,
                               }}
                             >
                               {text}
@@ -1364,8 +1407,8 @@ export function ProductDetailTemplate({
                 <p
                   className="font-black text-[#0f172a] mb-1"
                   style={{
-                    fontFamily: "'Baloo 2', cursive",
-                    fontWeight: 900,
+                    fontFamily: "'Inter', sans-serif",
+                    fontWeight: 800,
                     fontSize: "18px",
                   }}
                 >
@@ -1374,9 +1417,9 @@ export function ProductDetailTemplate({
                 <p
                   className="text-[#94a3b8] mb-5"
                   style={{
-                    fontFamily: "'Nunito', sans-serif",
+                    fontFamily: "'Inter', sans-serif",
                     fontSize: "13px",
-                    fontWeight: 600,
+                    fontWeight: 500,
                   }}
                 >
                   Everything you need to know.
@@ -1400,8 +1443,8 @@ export function ProductDetailTemplate({
                     <p
                       className="font-black text-white mb-1 m-0"
                       style={{
-                        fontFamily: "'Baloo 2', cursive",
-                        fontWeight: 900,
+                        fontFamily: "'Inter', sans-serif",
+                        fontWeight: 800,
                         fontSize: "16px",
                       }}
                     >
@@ -1411,28 +1454,31 @@ export function ProductDetailTemplate({
                       className="m-0"
                       style={{
                         color: "rgba(255,255,255,0.5)",
-                        fontFamily: "'Nunito', sans-serif",
+                        fontFamily: "'Inter', sans-serif",
                         fontSize: "13px",
-                        fontWeight: 600,
+                        fontWeight: 500,
                       }}
                     >
                       Our team is here to help.
                     </p>
                   </div>
                   <button
-                    className="ml-auto shrink-0 font-bold rounded-xl px-4 py-2 whitespace-nowrap"
+                    className="ml-auto shrink-0 inline-flex items-center gap-2 whitespace-nowrap"
                     style={{
-                      background: "#fff",
-                      color: "#0f172a",
-                      fontFamily: "'Baloo 2', cursive",
-                      fontWeight: 900,
+                      background: "linear-gradient(135deg, #f0f7ff, #dbeafe)",
+                      color: "#1d4ed8",
+                      fontFamily: "'Inter', sans-serif",
+                      fontWeight: 700,
                       fontSize: "13px",
-                      border: "none",
+                      border: "1.5px solid rgba(37,99,235,0.3)",
+                      borderRadius: "999px",
+                      padding: "9px 20px",
                       cursor: "pointer",
-                      boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+                      boxShadow: "0 2px 8px rgba(37,99,235,0.15)",
                     }}
                   >
-                    Ask us →
+                    <MessageCircle size={14} strokeWidth={2} />
+                    Ask us
                   </button>
                 </div>
               </div>
@@ -1450,8 +1496,8 @@ export function ProductDetailTemplate({
                 <h3
                   className="pdt-related-heading m-0 text-[#0f172a]"
                   style={{
-                    fontFamily: "'Baloo 2', cursive",
-                    fontWeight: 900,
+                    fontFamily: "'Inter', sans-serif",
+                    fontWeight: 800,
                     fontSize: "clamp(18px, 1.6vw, 24px)",
                   }}
                 >

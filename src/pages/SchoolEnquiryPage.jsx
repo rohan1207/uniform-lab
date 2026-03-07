@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
+import emailjs from "@emailjs/browser";
 import {
   CheckCircle2,
   ChevronRight,
@@ -379,6 +380,12 @@ const CSS = `
 
 /* ─── COMPONENT ──────────────────────────────────────────────────────── */
 
+// ── EmailJS — fill these 3 values once client sends them ──────────────
+const EMAILJS_SERVICE_ID  = "YOUR_SERVICE_ID";   // e.g. service_abc123
+const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID";  // e.g. template_xyz789
+const EMAILJS_PUBLIC_KEY  = "YOUR_PUBLIC_KEY";   // e.g. user_XXXXXXXX
+// ──────────────────────────────────────────────────────────────────────
+
 const WHATSAPP_NUMBER = "919028552855"; // no + or spaces
 
 function buildWhatsAppMessage(f) {
@@ -439,11 +446,33 @@ export default function SchoolEnquiryPage() {
     return () => window.removeEventListener("resize", update);
   }, []);
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
+
+    // ── WhatsApp (existing) ──
     const msg = buildWhatsAppMessage(form);
     openWhatsApp(msg);
     setSubmitted(true);
+
+    // ── Email via EmailJS ──
+    try {
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        {
+          from_name:   form.contact,
+          reply_to:    form.email,
+          phone:       form.phone,
+          school_name: form.school,
+          city:        form.city    || "—",
+          message:     form.message || "—",
+        },
+        EMAILJS_PUBLIC_KEY,
+      );
+    } catch (err) {
+      // Silent fail — WhatsApp already sent, user is not blocked
+      console.error("EmailJS error:", err);
+    }
   }
 
   /* ── Success ── */

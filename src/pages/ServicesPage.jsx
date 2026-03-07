@@ -175,7 +175,7 @@ const CSS = `
     color: #fff;
     margin: 0 0 18px;
   }
-  .sv-h1 em { font-style: normal; color: #93c5fd; }
+  .sv-h1 em { font-style: normal; color: #60a5fa; }
   .sv-hero-sub {
     color: #93c5fd; font-size: clamp(14px, 1.4vw, 17px);
     font-weight: 500; line-height: 1.7;

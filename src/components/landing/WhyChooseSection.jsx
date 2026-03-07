@@ -81,14 +81,50 @@ const CSS = `
     letter-spacing: -0.8px;
     max-width: 560px;
   }
-  .why-h2 span { color: #2563eb; }
-  .why-sub {
-    margin: 0;
+  .why-h2 span { color: #2563eb; white-space: nowrap; }
+  .why-quote {
+    position: relative;
     max-width: 360px;
-    color: #64748b;
-    font-size: 15px;
+    background: linear-gradient(135deg, #eef5ff 0%, #ddeaff 100%);
+    border-left: 3px solid #2563eb;
+    border-radius: 0 14px 14px 0;
+    padding: 18px 20px 14px 20px;
+    box-shadow: 0 2px 16px rgba(37,99,235,0.09);
+  }
+  .why-quote-mark {
+    font-family: Georgia, serif;
+    font-size: 64px;
+    line-height: 0.75;
+    color: #2563eb;
+    opacity: 0.22;
+    display: block;
+    margin-bottom: 4px;
+    font-weight: 900;
+  }
+  .why-quote-text {
+    margin: 0 0 10px;
+    color: #1e3558;
+    font-size: 14px;
     font-weight: 500;
-    line-height: 1.68;
+    line-height: 1.72;
+    font-style: italic;
+  }
+  .why-quote-attr {
+    color: #2563eb;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .why-quote-dash {
+    display: inline-block;
+    width: 20px;
+    height: 2px;
+    background: #2563eb;
+    border-radius: 2px;
   }
 
   .why-grid {
@@ -214,10 +250,10 @@ const CSS = `
     .why-sec { padding: 56px 0 64px; }
     .why-grid { gap: 10px; }
     .why-card-wrap { flex: 0 0 100%; max-width: 100%; }
-    .why-sub { font-size: 14px; }
+    .why-quote { max-width: 100%; }
     .why-title { font-size: 17px; }
     .why-card { padding: 13px 12px; }
-    .why-cta-bar { flex-direction: column; align-items: stretch; }
+    .why-cta-bar { flex-direction: column; align-items: center; }
     .why-cta { justify-content: center; }
   }
 `;
@@ -238,17 +274,23 @@ export default function WhyChooseSection() {
             </div>
 
             {/* Heading + sub — flex row like ServicesSection */}
-            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+            <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
               <h2 className="why-h2">
                 Built for Stability,
                 <br />
                 <span>Not Short-Term Supply</span>
               </h2>
-              <p className="why-sub">
-                Choosing a uniform partner is a long-term decision. We combine
-                operational discipline with transparent execution so
-                institutions can depend on predictable outcomes.
-              </p>
+              <div className="why-quote">
+                <span className="why-quote-mark">&ldquo;</span>
+                <p className="why-quote-text">
+                  Choosing a uniform partner is a long-term decision. We combine
+                  operational discipline with transparent execution so
+                  institutions can depend on predictable outcomes.
+                </p>
+                <div className="why-quote-attr">
+                 - The Uniform Lab 
+                </div>
+              </div>
             </div>
 
             {/* Divider */}

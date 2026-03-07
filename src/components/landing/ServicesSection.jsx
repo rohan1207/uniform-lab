@@ -25,7 +25,7 @@ const SERVICES = [
     icon: Building2,
     title: "School Uniform Manufacturing",
     short: "Crafted for schools",
-    text: "Custom uniform design, fabric sourcing with colour stability control, standardised size charts, and admission-season readiness — built to run year after year without friction.",
+    text: "Custom uniform design, fabric sourcing with colour stability control, standardised size charts, and admission-season readiness built to run year after year without friction.",
     tags: ["Colour Matching", "Size Standards", "Seasonal Planning"],
     accent: "#2563eb",
     accentLight: "#eff6ff",
@@ -349,13 +349,13 @@ export default function ServicesSection() {
                 }}
                 className="max-w-sm lg:max-w-[360px]"
               >
-                <p
-                  className="text-[14px] sm:text-[15px] leading-[1.68] font-medium"
+                {/* <p
+                  className="text-[14px] sm:text-[15px] leading-[1.68] font-medium text-left"
                   style={{ color: "#64748b" }}
                 >
-                  Complete manufacturing and distribution systems — designed for
+                  Complete manufacturing and distribution systems designed for
                   consistency, scale, and operational ease.
-                </p>
+                </p> */}
               </motion.div>
             </div>
 
@@ -385,7 +385,7 @@ export default function ServicesSection() {
               delay: 0.2,
               ease: [0.22, 1, 0.36, 1],
             }}
-            className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-5 p-4 sm:p-5 rounded-2xl border border-blue-200/70 bg-white/75 backdrop-blur-sm"
+            className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center sm:items-center justify-between gap-4 sm:gap-5 p-4 sm:p-5 rounded-2xl border border-blue-200/70 bg-white/75 backdrop-blur-sm"
           >
             <div>
               <p className="text-slate-900 font-['Inter'] text-base sm:text-lg font-700">
@@ -393,12 +393,12 @@ export default function ServicesSection() {
               </p>
               <p className="text-slate-600 text-[13px] sm:text-sm font-medium mt-0.5">
                 Distribution, fulfilment, on-campus camps, and production
-                workflows — all under one roof.
+                workflows all under one roof.
               </p>
             </div>
             <Link
               to="/services"
-              className="svc-cta-btn group w-full sm:w-auto justify-center sm:justify-start flex-shrink-0 inline-flex items-center gap-2.5 rounded-full font-black uppercase text-white transition-all duration-200"
+              className="svc-cta-btn group sm:w-auto justify-center flex-shrink-0 inline-flex items-center gap-2.5 rounded-full font-black uppercase text-white transition-all duration-200"
               style={{
                 padding: "12px 24px",
                 fontFamily: "'Inter', sans-serif",

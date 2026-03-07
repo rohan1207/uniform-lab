@@ -58,7 +58,7 @@ const CSS = `
   .qc-sub {
     margin: 0;
     color: #64748b;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 500;
     line-height: 1.7;
     max-width: 520px;
@@ -82,7 +82,7 @@ const CSS = `
     text-align: center;
     color: #2563eb;
     font-weight: 700;
-    font-size: 13px;
+    font-size: 14px;
   }
   .qc-list {
     list-style: none;
@@ -98,7 +98,7 @@ const CSS = `
     border-radius: 12px;
     padding: 11px 13px;
     color: #64748b;
-    font-size: 13px;
+    font-size: 14px;
     line-height: 1.55;
     font-weight: 600;
     display: flex;
@@ -153,6 +153,7 @@ const CSS = `
     .qc-wrap { padding: 20px; border-radius: 18px; }
     .qc-grid { grid-template-columns: 1fr; }
     .qc-features { grid-template-columns: 1fr 1fr 1fr; }
+    .qc-cta-wrap { justify-content: center; }
   }
 `;
 
