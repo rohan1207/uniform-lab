@@ -5,43 +5,46 @@ const GUIDES = [
   {
     id: "chest",
     label: "Chest",
-    image: "/measure-chest.jpg",
+    image: "/chest.png",
     steps: [
       "Stand upright with arms relaxed at your sides.",
       "Wrap the tape around the fullest part of your chest, just under the armpits.",
-      "Keep the tape parallel to the floor and snug — not tight.",
+      "Keep the tape parallel to the floor and snug, not tight.",
       "Note the measurement in inches or centimetres.",
     ],
     tip: "Breathe normally while measuring. Don't hold your breath or expand your chest.",
+    videoUrl: "https://youtu.be/Jk9r3eDSlYw?si=Oz_y6SxYwHSvYT_E",
   },
   {
     id: "shirt-length",
     label: "Shirt Length (from Shoulder)",
-    image: "/measure-shirt-length.jpg",
+    image: "/shirt-length.png",
     steps: [
       "Stand straight and place the tape at the highest point of your shoulder (near the neck).",
       "Let it run straight down the front to where you want the shirt to end.",
       "For school shirts, this is usually at the hip bone.",
       "Note the measurement.",
     ],
-    tip: "Keep your posture upright — slouching changes the measurement.",
+    tip: "Keep your posture upright, slouching changes the measurement.",
+    videoUrl: "https://youtu.be/-Sb7FNci8Vg?si=xGeh2Y5HwFKsSY7x",
   },
   {
     id: "waist",
     label: "Waist",
-    image: "/measure-waist.jpg",
+    image: "/waist.png",
     steps: [
-      "Find your natural waist — the narrowest part of your torso, just above the navel.",
+      "Find your natural waist, the narrowest part of your torso, just above the navel.",
       "Wrap the tape around this point, keeping it level all the way round.",
       "Keep one finger inside the tape for a comfortable fit (not too tight).",
       "Note the measurement.",
     ],
     tip: "Don't suck in your stomach. Measure relaxed for an accurate result.",
+    videoUrl: "https://youtu.be/702qNh9dBMs?si=rSOvMJ_1EODJdgPz",
   },
   {
     id: "pant-length",
     label: "Pant Length",
-    image: "/measure-pant-length.jpg",
+    image: "/pant-length.png",
     steps: [
       "Stand straight with feet slightly apart.",
       "Place the tape at your natural waistline (where your trousers sit).",
@@ -49,6 +52,7 @@ const GUIDES = [
       "Note the measurement.",
     ],
     tip: "Wear the shoes you'd normally pair with the uniform for the most accurate length.",
+    videoUrl: "https://youtu.be/io2mewM7D1Q?si=w1WcFgsF_PKdyG3v",
   },
 ];
 
@@ -131,7 +135,7 @@ const CSS = `
   /* ── Image + content row ── */
   .sg-guide-inner {
     display: grid;
-    grid-template-columns: 180px 1fr;
+    grid-template-columns: 230px 1fr;
     align-items: stretch;
     flex: 1;
   }
@@ -140,16 +144,16 @@ const CSS = `
   .sg-guide-img-wrap {
     background: #f1f5fb;
     border-right: 1px solid #e5edf9;
-    display: flex; align-items: center; justify-content: center;
-    min-height: 200px;
+    overflow: hidden;
+    min-height: 220px;
     height: 100%;
-    padding: 16px;
+    padding: 0;
   }
   .sg-guide-img {
-    width: 100%; height: 100%;
-    object-fit: contain;
-    max-height: 240px;
-    border-radius: 8px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
     display: block;
   }
   .sg-img-placeholder {
@@ -197,6 +201,31 @@ const CSS = `
     font-size: 14px; font-weight: 500; color: #374151;
     line-height: 1.65;
   }
+
+  /* ── Watch video link ── */
+  .sg-video-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #fff0f0 0%, #ffe4e4 100%);
+    border: 1px solid rgba(220,38,38,0.18);
+    color: #dc2626;
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    margin-bottom: 10px;
+    transition: background 0.18s, box-shadow 0.18s, transform 0.15s;
+    width: fit-content;
+  }
+  .sg-video-btn:hover {
+    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+    box-shadow: 0 2px 10px rgba(220,38,38,0.18);
+    transform: translateY(-1px);
+  }
+  .sg-video-btn svg { flex-shrink: 0; }
 
   /* ── Tip row ── */
   .sg-guide-tip {
@@ -262,7 +291,7 @@ export default function SizeGuidePage() {
           <div className="sg-tip-banner-inner">
             <span className="sg-tip-icon">💡</span>
             <span>
-              <strong>Before you start —</strong> use a soft measuring tape,
+              <strong>Before you start:</strong> use a soft measuring tape,
               stand straight in a relaxed posture, and wear thin clothing. Have
               someone help you for more accurate readings.
             </span>
@@ -311,6 +340,19 @@ export default function SizeGuidePage() {
                       </div>
                     ))}
                   </div>
+                  {g.videoUrl && (
+                    <a
+                      href={g.videoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="sg-video-btn"
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                      </svg>
+                      Watch how to measure
+                    </a>
+                  )}
                   <div className="sg-guide-tip">
                     <strong>Tip:</strong> {g.tip}
                   </div>

@@ -534,7 +534,7 @@ export default function SchoolEnquiryPage() {
               <em>thinks like a school.</em>
             </h1>
             <p className="eq-hero-sub">
-              We bring an organised, process-first approach to uniforms — from
+              We bring an organised, process-first approach to uniforms from
               fabric sourcing and patterning to branding and doorstep delivery
               for parents.
             </p>

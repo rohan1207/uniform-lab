@@ -21,7 +21,7 @@ const SERVICES = [
     accentBg: "#eff6ff",
     title: "School Uniform Manufacturing",
     description:
-      "End-to-end uniform manufacturing tailored to your school's identity — from design to delivery.",
+      "End-to-end uniform manufacturing tailored to your school's identity, from design to delivery.",
     image: "/su.png",
     points: [
       "Custom uniform design aligned with school identity",
@@ -57,7 +57,7 @@ const SERVICES = [
     accentBg: "#f5f3ff",
     title: "Bulk Uniform Manufacturing",
     description:
-      "High-volume production with tight consistency controls and on-time dispatch — every batch, every time.",
+      "High-volume production with tight consistency controls and on-time dispatch, every batch, every time.",
     image: "/bulk.jpg",
     points: [
       "Centralised production planning",
@@ -75,7 +75,7 @@ const SERVICES = [
     accentBg: "#ecfdf5",
     title: "Distribution & Fulfilment Models",
     description:
-      "Flexible, zero-hassle fulfilment — from on-campus camps to e-commerce ordering for parents.",
+      "Flexible, zero-hassle fulfilment, from on-campus camps to e-commerce ordering for parents.",
     image: "/distribution.jpg",
     points: [
       "On-campus uniform camps during admissions and reopening",
@@ -382,7 +382,7 @@ export default function ServicesPage() {
               <em>Manufacturing &amp; Distribution</em>
             </h1>
             <p className="sv-hero-sub">
-              Complete services for schools, corporates, and institutions —
+              Complete services for schools, corporates, and institutions,
               built for consistency, scalability, and operational ease.
             </p>
           </div>

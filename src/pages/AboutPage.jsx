@@ -1070,7 +1070,7 @@ export default function AboutPage() {
                 </p>
                 <p className="ab-body" style={{ marginTop: "16px" }}>
                   Our goal is to eliminate uniform-related stress for
-                  administrators, parents, and employees — through process, not
+                  administrators, parents, and employees through process, not
                   just promises.
                 </p>
               </div>
@@ -1107,7 +1107,7 @@ export default function AboutPage() {
                   <div className="ab-founder-role">Co-Founder</div>
                   <div className="ab-founder-name">Priyank Mota</div>
                   <p className="ab-founder-bio">
-                    Priyank comes from the Mota Group — a family business with
+                    Priyank comes from the Mota Group a family business with
                     deep roots in fabric and manufacturing. Growing up around
                     the trade gave him an instinctive understanding of supply
                     chains, quality control, and the discipline required to run
@@ -1120,7 +1120,7 @@ export default function AboutPage() {
                   >
                     <p className="ab-founder-bio">
                       Over more than 15 years, he built the operational backbone
-                      of The Uniform Lab — from standardising fabric sourcing to
+                      of The Uniform Lab from standardising fabric sourcing to
                       designing production workflows that handle tens of
                       thousands of units every month without compromising on
                       consistency. His approach is to treat every school or
@@ -1130,7 +1130,7 @@ export default function AboutPage() {
 
                     <blockquote className="ab-founder-quote">
                       "When a school calls us in Year 4, it means our systems
-                      worked — not just our product."
+                      worked not just our product."
                     </blockquote>
                     <div className="ab-founder-tags">
                       {[
@@ -1179,7 +1179,7 @@ export default function AboutPage() {
                     className={`ab-founder-extra ${isMobile && !niveditaExpanded ? "collapsed" : "expanded"}`}
                   >
                     <p className="ab-founder-bio">
-                      She leads everything that touches the customer — from how
+                      She leads everything that touches the customer from how
                       enquiries are handled and orders communicated, to the
                       design language of the products themselves. Under her
                       direction, the brand evolved from a manufacturer into a
@@ -1188,7 +1188,7 @@ export default function AboutPage() {
                     </p>
 
                     <blockquote className="ab-founder-quote">
-                      "A coordinator shouldn't have to chase us — that's a
+                      "A coordinator shouldn't have to chase us that's a
                       burden we should never pass on."
                     </blockquote>
                     <div className="ab-founder-tags">
