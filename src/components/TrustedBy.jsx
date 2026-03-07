@@ -1,4 +1,4 @@
-import { Heart } from 'lucide-react';
+import { Heart } from "lucide-react";
 
 const CSS = `
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
@@ -10,15 +10,15 @@ export default function TrustedBy() {
       <style>{CSS}</style>
 
       <section className="w-full relative">
-
         {/* ── Badge ── */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
           <div
             className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full"
             style={{
-              background: 'linear-gradient(135deg, #fff5f0 0%, #fce8e0 100%)',
-              border: '1.5px solid rgba(37,99,235,0.15)',
-              boxShadow: '0 4px 20px rgba(15,23,42,0.1), 0 1px 0 rgba(255,255,255,0.9) inset',
+              background: "linear-gradient(135deg, #fff5f0 0%, #fce8e0 100%)",
+              border: "1.5px solid rgba(37,99,235,0.15)",
+              boxShadow:
+                "0 4px 20px rgba(15,23,42,0.1), 0 1px 0 rgba(255,255,255,0.9) inset",
               fontFamily: "'Inter', sans-serif",
             }}
           >
@@ -26,11 +26,11 @@ export default function TrustedBy() {
             <span className="relative flex h-2 w-2">
               <span
                 className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-60"
-                style={{ background: '#e05252' }}
+                style={{ background: "#e05252" }}
               />
               <span
                 className="relative inline-flex rounded-full h-2 w-2"
-                style={{ background: '#e05252' }}
+                style={{ background: "#e05252" }}
               />
             </span>
 
@@ -46,14 +46,12 @@ export default function TrustedBy() {
               style={{
                 fontFamily: "'Inter', sans-serif",
                 fontWeight: 700,
-                fontSize: '15px',
-                color: '#1a1a2e',
-                letterSpacing: '0.01em',
+                fontSize: "15px",
+                color: "#1a1a2e",
+                letterSpacing: "0.01em",
               }}
             >
-              Trusted by{' '}
-              <span style={{ color: '#2563eb' }}>10,000+</span>
-              {' '}Moms
+              Trusted by <span style={{ color: "#2563eb" }}>10,000+</span> Moms
             </span>
           </div>
         </div>
@@ -64,10 +62,9 @@ export default function TrustedBy() {
             src="/trustedby.png"
             alt="Trusted by 10,000+ Moms"
             className="w-full h-full object-cover block"
-            style={{ display: 'block' }}
+            style={{ display: "block" }}
           />
         </div>
-
       </section>
     </>
   );

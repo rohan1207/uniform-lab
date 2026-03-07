@@ -1,12 +1,12 @@
-import { Link } from 'react-router-dom';
-import { ArrowRight, Shield, Scissors, Shirt, Clock3 } from 'lucide-react';
+import { Link } from "react-router-dom";
+import { ArrowRight, Shield, Scissors, Shirt, Clock3 } from "lucide-react";
 
 const ITEMS = [
-  'Controlled fabric sourcing to maintain composition and colour tone stability',
-  'Pattern standardisation, cutting precision, stitching supervision, and finishing checks',
-  'Multi-level quality checks at pre-production, mid-production, and final finishing stages',
-  'Standardised measurement charts to improve fit consistency and reduce return rates',
-  'Buffer-based planning aligned with school calendars and corporate demand cycles',
+  "Controlled fabric sourcing to maintain composition and colour tone stability",
+  "Pattern standardisation, cutting precision, stitching supervision, and finishing checks",
+  "Multi-level quality checks at pre-production, mid-production, and final finishing stages",
+  "Standardised measurement charts to improve fit consistency and reduce return rates",
+  "Buffer-based planning aligned with school calendars and corporate demand cycles",
 ];
 
 const CSS = `
@@ -174,13 +174,23 @@ export default function QualitySection() {
                   <span> It is process-driven.</span>
                 </h2>
                 <p className="qc-sub">
-                  Our manufacturing operations are designed to ensure repeatable quality at scale,
-                  with clear process checkpoints and batch-level accountability.
+                  Our manufacturing operations are designed to ensure repeatable
+                  quality at scale, with clear process checkpoints and
+                  batch-level accountability.
                 </p>
                 <div className="qc-features">
-                  <div className="qc-feature"><Scissors size={18} />Precision</div>
-                  <div className="qc-feature"><Shirt size={18} />Fit Control</div>
-                  <div className="qc-feature"><Clock3 size={18} />Timely Delivery</div>
+                  <div className="qc-feature">
+                    <Scissors size={18} />
+                    Precision
+                  </div>
+                  <div className="qc-feature">
+                    <Shirt size={18} />
+                    Fit Control
+                  </div>
+                  <div className="qc-feature">
+                    <Clock3 size={18} />
+                    Timely Delivery
+                  </div>
                 </div>
               </div>
               <div>

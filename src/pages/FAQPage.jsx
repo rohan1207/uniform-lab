@@ -1,53 +1,53 @@
-import { HelpCircle } from 'lucide-react';
+import { HelpCircle } from "lucide-react";
 
 const FAQS = [
   {
-    q: 'Are you a school uniform manufacturer in Pune?',
-    a: 'Yes. The Uniform Lab is a Pune-based school uniform manufacturer with in-house production capabilities, serving institutions in Maharashtra and across India.',
+    q: "Are you a school uniform manufacturer in Pune?",
+    a: "Yes. The Uniform Lab is a Pune-based school uniform manufacturer with in-house production capabilities, serving institutions in Maharashtra and across India.",
   },
   {
-    q: 'Do you manufacture uniforms in-house or outsource production?',
-    a: 'We operate with structured manufacturing oversight and controlled production processes to maintain consistency, fit standardisation, and quality at scale.',
+    q: "Do you manufacture uniforms in-house or outsource production?",
+    a: "We operate with structured manufacturing oversight and controlled production processes to maintain consistency, fit standardisation, and quality at scale.",
   },
   {
-    q: 'What types of uniforms do you specialise in?',
-    a: 'We specialise in school uniforms, corporate uniforms, industrial and factory uniforms, institutional uniforms, and custom-designed bulk uniforms.',
+    q: "What types of uniforms do you specialise in?",
+    a: "We specialise in school uniforms, corporate uniforms, industrial and factory uniforms, institutional uniforms, and custom-designed bulk uniforms.",
   },
   {
-    q: 'Do you provide customised uniform designs for schools?',
-    a: 'Yes. We create customised designs aligned with school identity, colour palette, and practical requirements while maintaining long-term consistency.',
+    q: "Do you provide customised uniform designs for schools?",
+    a: "Yes. We create customised designs aligned with school identity, colour palette, and practical requirements while maintaining long-term consistency.",
   },
   {
-    q: 'Can you handle large bulk uniform orders?',
-    a: 'Yes. Our production systems are designed for bulk manufacturing with scalable capacity and timeline discipline.',
+    q: "Can you handle large bulk uniform orders?",
+    a: "Yes. Our production systems are designed for bulk manufacturing with scalable capacity and timeline discipline.",
   },
   {
-    q: 'Do you organise uniform distribution camps in schools?',
-    a: 'Yes. We conduct on-campus uniform camps during admissions and reopening seasons to reduce administrative load for schools.',
+    q: "Do you organise uniform distribution camps in schools?",
+    a: "Yes. We conduct on-campus uniform camps during admissions and reopening seasons to reduce administrative load for schools.",
   },
   {
-    q: 'Do you offer e-commerce ordering for parents or employees?',
-    a: 'Yes. We support online ordering models along with retail store access for structured and convenient fulfilment.',
+    q: "Do you offer e-commerce ordering for parents or employees?",
+    a: "Yes. We support online ordering models along with retail store access for structured and convenient fulfilment.",
   },
   {
-    q: 'How do you ensure quality consistency every year?',
-    a: 'We follow controlled fabric sourcing, standardised size charts, structured workflows, and multi-level quality checks across stages.',
+    q: "How do you ensure quality consistency every year?",
+    a: "We follow controlled fabric sourcing, standardised size charts, structured workflows, and multi-level quality checks across stages.",
   },
   {
-    q: 'Do you supply uniforms to corporates and industrial units?',
-    a: 'Yes. We provide role-based customisation, branding, and scalable supply models for offices, factories, and institutional teams.',
+    q: "Do you supply uniforms to corporates and industrial units?",
+    a: "Yes. We provide role-based customisation, branding, and scalable supply models for offices, factories, and institutional teams.",
   },
   {
-    q: 'What makes The Uniform Lab different from other uniform suppliers?',
-    a: 'We operate as a system-driven manufacturing partner focused on process discipline, predictable timelines, and long-term institutional partnerships.',
+    q: "What makes The Uniform Lab different from other uniform suppliers?",
+    a: "We operate as a system-driven manufacturing partner focused on process discipline, predictable timelines, and long-term institutional partnerships.",
   },
   {
-    q: 'Can you manage uniforms for multiple school branches or corporate locations?',
-    a: 'Yes. Our production and distribution systems are structured for multi-location institutions and phased rollouts.',
+    q: "Can you manage uniforms for multiple school branches or corporate locations?",
+    a: "Yes. Our production and distribution systems are structured for multi-location institutions and phased rollouts.",
   },
   {
-    q: 'How can schools or corporates partner with The Uniform Lab?',
-    a: 'Institutions can contact us through the website or visit our retail store in Wanowrie, Pune for pilot engagements and onboarding discussions.',
+    q: "How can schools or corporates partner with The Uniform Lab?",
+    a: "Institutions can contact us through the website or visit our retail store in Wanowrie, Pune for pilot engagements and onboarding discussions.",
   },
 ];
 
@@ -138,7 +138,8 @@ export default function FAQPage() {
             </div>
             <h1 className="fqp-h1">Frequently Asked Questions</h1>
             <p className="fqp-sub">
-              Answers to common school and corporate uniform manufacturing, quality, and distribution queries.
+              Answers to common school and corporate uniform manufacturing,
+              quality, and distribution queries.
             </p>
           </header>
 

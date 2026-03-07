@@ -477,7 +477,8 @@ export default function FeaturedSchools() {
               className="sp-subheading m-0 font-semibold text-gray-400 max-w-3xl mx-auto leading-snug whitespace-nowrap"
               style={{ fontSize: "clamp(13px, 1.1vw, 16px)" }}
             >
-              Choose your school and shop uniforms, blazers, ties, socks and accessories all in one place.
+              Choose your school and shop uniforms, blazers, ties, socks and
+              accessories all in one place.
             </p>
 
             <div

@@ -247,14 +247,13 @@ export default function SizeGuidePage() {
     <>
       <style>{CSS}</style>
       <div className="sg-root">
-
         {/* Header */}
         <div className="sg-header">
           <div className="sg-pill">📏 Measuring Guide</div>
           <h1 className="sg-h1">How to Take Your Measurements</h1>
           <p className="sg-h1-sub">
-            Four simple measurements are all we need to get your uniform fitting perfectly.
-            Follow each step carefully for the best result.
+            Four simple measurements are all we need to get your uniform fitting
+            perfectly. Follow each step carefully for the best result.
           </p>
         </div>
 
@@ -263,8 +262,9 @@ export default function SizeGuidePage() {
           <div className="sg-tip-banner-inner">
             <span className="sg-tip-icon">💡</span>
             <span>
-              <strong>Before you start —</strong> use a soft measuring tape, stand straight in
-              a relaxed posture, and wear thin clothing. Have someone help you for more accurate readings.
+              <strong>Before you start —</strong> use a soft measuring tape,
+              stand straight in a relaxed posture, and wear thin clothing. Have
+              someone help you for more accurate readings.
             </span>
           </div>
         </div>
@@ -290,7 +290,10 @@ export default function SizeGuidePage() {
                       e.currentTarget.nextSibling.style.display = "flex";
                     }}
                   />
-                  <div className="sg-img-placeholder" style={{ display: "none" }}>
+                  <div
+                    className="sg-img-placeholder"
+                    style={{ display: "none" }}
+                  >
                     <span style={{ fontSize: 28 }}>📷</span>
                     <span>Image coming soon</span>
                   </div>
@@ -316,7 +319,6 @@ export default function SizeGuidePage() {
             </div>
           ))}
         </div>
-
       </div>
     </>
   );

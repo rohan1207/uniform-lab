@@ -158,7 +158,11 @@ export default function WishlistPage() {
           <div>
             <h1
               className="text-[#1a1a2e] mb-1"
-              style={{ ...FONT_HEADING, fontSize: "clamp(28px, 2.8vw, 38px)", letterSpacing: "-0.7px" }}
+              style={{
+                ...FONT_HEADING,
+                fontSize: "clamp(28px, 2.8vw, 38px)",
+                letterSpacing: "-0.7px",
+              }}
             >
               Wishlist
               {items.length > 0 && (
@@ -167,7 +171,10 @@ export default function WishlistPage() {
                 </span>
               )}
             </h1>
-            <p className="text-[var(--color-text-muted)]" style={{ fontSize: "15px" }}>
+            <p
+              className="text-[var(--color-text-muted)]"
+              style={{ fontSize: "15px" }}
+            >
               Save uniforms you like and add to cart when ready.
             </p>
           </div>

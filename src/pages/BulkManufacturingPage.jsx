@@ -33,8 +33,12 @@ export default function BulkManufacturingPage() {
       <style>{CSS}</style>
       <div className="bulk-root">
         <h1 className="bulk-title">Bulk Manufacturing & Distribution</h1>
-        <p className="bulk-sub">Our bulk manufacturing service is coming soon.</p>
-        <Link to="/" className="bulk-back">← Back to Home</Link>
+        <p className="bulk-sub">
+          Our bulk manufacturing service is coming soon.
+        </p>
+        <Link to="/" className="bulk-back">
+          ← Back to Home
+        </Link>
       </div>
     </>
   );

@@ -547,9 +547,7 @@ export default function SearchPage() {
           )}
 
           <div className="flex items-baseline justify-between mb-4 max-w-7xl mx-auto">
-            <p
-              className="text-xs sm:text-sm font-semibold text-slate-400"
-            >
+            <p className="text-xs sm:text-sm font-semibold text-slate-400">
               {loading ? (
                 "Loading schools..."
               ) : trimmed ? (
@@ -611,13 +609,16 @@ export default function SearchPage() {
               </div>
               <p
                 className="mb-2 font-black text-[#1a1a2e]"
-                style={{ fontFamily: "'Inter', sans-serif", fontWeight: 800, fontSize: "20px", letterSpacing: "-0.4px" }}
+                style={{
+                  fontFamily: "'Inter', sans-serif",
+                  fontWeight: 800,
+                  fontSize: "20px",
+                  letterSpacing: "-0.4px",
+                }}
               >
                 {trimmed ? "No school found" : "No schools available"}
               </p>
-              <p
-                className="text-sm text-slate-400 max-w-xs leading-relaxed"
-              >
+              <p className="text-sm text-slate-400 max-w-xs leading-relaxed">
                 {trimmed ? (
                   <>
                     We couldn't find a school matching{" "}

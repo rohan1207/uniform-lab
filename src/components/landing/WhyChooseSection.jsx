@@ -1,42 +1,49 @@
-import { Link } from 'react-router-dom';
-import { ArrowRight, ShieldCheck, Factory, TrendingUp, Files, Handshake } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Link } from "react-router-dom";
+import {
+  ArrowRight,
+  ShieldCheck,
+  Factory,
+  TrendingUp,
+  Files,
+  Handshake,
+} from "lucide-react";
+import { motion } from "framer-motion";
 
 const POINTS = [
   {
     icon: ShieldCheck,
-    title: 'System-Driven Operations',
-    text: 'Structured production and delivery ensures year-on-year consistency in quality and fit.',
-    accent: '#2563eb',
-    tone: '#f5f9ff',
+    title: "System-Driven Operations",
+    text: "Structured production and delivery ensures year-on-year consistency in quality and fit.",
+    accent: "#2563eb",
+    tone: "#f5f9ff",
   },
   {
     icon: Factory,
-    title: 'In-House Manufacturing Control',
-    text: 'Direct production oversight enables stronger quality assurance and accountability.',
-    accent: '#0ea5e9',
-    tone: '#f3fbff',
+    title: "In-House Manufacturing Control",
+    text: "Direct production oversight enables stronger quality assurance and accountability.",
+    accent: "#0ea5e9",
+    tone: "#f3fbff",
   },
   {
     icon: TrendingUp,
-    title: 'Scalable Production Capacity',
-    text: 'Supports controlled scaling for single-campus and multi-campus institutions.',
-    accent: '#4f46e5',
-    tone: '#f5f5ff',
+    title: "Scalable Production Capacity",
+    text: "Supports controlled scaling for single-campus and multi-campus institutions.",
+    accent: "#4f46e5",
+    tone: "#f5f5ff",
   },
   {
     icon: Files,
-    title: 'Transparent Processes',
-    text: 'Clear billing, documentation, and order tracking for smoother coordination.',
-    accent: '#0f766e',
-    tone: '#f1fcfb',
+    title: "Transparent Processes",
+    text: "Clear billing, documentation, and order tracking for smoother coordination.",
+    accent: "#0f766e",
+    tone: "#f1fcfb",
   },
   {
     icon: Handshake,
-    title: 'Long-Term Partnerships',
-    text: 'Built for reliable multi-year relationships, not seasonal transactions.',
-    accent: '#7c3aed',
-    tone: '#f8f3ff',
+    title: "Long-Term Partnerships",
+    text: "Built for reliable multi-year relationships, not seasonal transactions.",
+    accent: "#7c3aed",
+    tone: "#f8f3ff",
   },
 ];
 
@@ -234,11 +241,13 @@ export default function WhyChooseSection() {
             <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
               <h2 className="why-h2">
                 Built for Stability,
-                <br /><span>Not Short-Term Supply</span>
+                <br />
+                <span>Not Short-Term Supply</span>
               </h2>
               <p className="why-sub">
-                Choosing a uniform partner is a long-term decision. We combine operational discipline
-                with transparent execution so institutions can depend on predictable outcomes.
+                Choosing a uniform partner is a long-term decision. We combine
+                operational discipline with transparent execution so
+                institutions can depend on predictable outcomes.
               </p>
             </div>
 
@@ -256,8 +265,16 @@ export default function WhyChooseSection() {
                 viewport={{ once: true, amount: 0.18 }}
                 transition={{ duration: 0.38 }}
               >
-                <div className="why-card-glow" style={{ background: `${accent}22` }} />
-                <div className="why-card" style={{ background: `linear-gradient(160deg, #fff 0%, ${tone} 100%)` }}>
+                <div
+                  className="why-card-glow"
+                  style={{ background: `${accent}22` }}
+                />
+                <div
+                  className="why-card"
+                  style={{
+                    background: `linear-gradient(160deg, #fff 0%, ${tone} 100%)`,
+                  }}
+                >
                   <div className="why-icon" style={{ color: accent }}>
                     <Icon size={17} />
                   </div>
@@ -272,7 +289,8 @@ export default function WhyChooseSection() {
 
           <div className="why-cta-bar">
             <p className="why-cta-copy">
-              Explore our complete approach to consistency, control, and long-term partnership.
+              Explore our complete approach to consistency, control, and
+              long-term partnership.
             </p>
             <Link to="/about#why-choose" className="why-cta">
               Why Choose Us

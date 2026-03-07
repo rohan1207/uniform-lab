@@ -33,8 +33,12 @@ export default function CorporatePage() {
       <style>{CSS}</style>
       <div className="corp-root">
         <h1 className="corp-title">Corporate Uniform Solutions</h1>
-        <p className="corp-sub">Our corporate uniform service is coming soon.</p>
-        <Link to="/" className="corp-back">← Back to Home</Link>
+        <p className="corp-sub">
+          Our corporate uniform service is coming soon.
+        </p>
+        <Link to="/" className="corp-back">
+          ← Back to Home
+        </Link>
       </div>
     </>
   );

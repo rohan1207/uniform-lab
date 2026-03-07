@@ -1,42 +1,44 @@
-'use client';
+"use client";
 
-import { Link } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useState, useCallback } from 'react';
-import { featuredSchools } from '@/data/featuredSchools';
+import { Link } from "react-router-dom";
+import { ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState, useCallback } from "react";
+import { featuredSchools } from "@/data/featuredSchools";
 
 // Configuration for "shop by look" schools – easy to extend
 const SHOP_BY_LOOK_CONFIG = [
   {
-    id: 'The Kalyani School',
-    slug: 'the-kalyani-school',
-    shortName: 'The Kalyani School',
-    logo: '/kalyani_logo.png',
-    modelImage: '/kalyani_shopbylook.png',
-  },  
-  {
-    id: 'bharati-rabindranath-tagore',
-    shortName: 'BVRTSE',
-    logo: '/bvrtse_logo.png',
-    modelImage: '/bvrtse_shopbylook.png',
+    id: "The Kalyani School",
+    slug: "the-kalyani-school",
+    shortName: "The Kalyani School",
+    logo: "/kalyani_logo.png",
+    modelImage: "/kalyani_shopbylook.png",
   },
   {
-    id: 'the-orbis-school',
-    shortName: 'The Orbis School',
-    logo: '/orbis_logo.png',
-    modelImage: '/orbis_shopbylook.png',
+    id: "bharati-rabindranath-tagore",
+    shortName: "BVRTSE",
+    logo: "/bvrtse_logo.png",
+    modelImage: "/bvrtse_shopbylook.png",
+  },
+  {
+    id: "the-orbis-school",
+    shortName: "The Orbis School",
+    logo: "/orbis_logo.png",
+    modelImage: "/orbis_shopbylook.png",
   },
 ];
 
 const SHOP_BY_LOOK_SCHOOLS = SHOP_BY_LOOK_CONFIG.map((cfg) => {
-  const base = featuredSchools.find((s) => s.id === cfg.id || s.slug === cfg.id);
+  const base = featuredSchools.find(
+    (s) => s.id === cfg.id || s.slug === cfg.id,
+  );
   const slug = base?.slug || cfg.slug || cfg.id;
   return {
     id: base?.id || cfg.id,
     slug,
     name: base?.name || cfg.shortName || cfg.id,
-    level: base?.level || cfg.level || '',
+    level: base?.level || cfg.level || "",
     logo: cfg.logo || null,
     shortName: cfg.shortName || base?.name || cfg.id,
     modelImage: cfg.modelImage,
@@ -417,7 +419,6 @@ export default function ShopByLookSection() {
 
       <section className="sbl-sec">
         <div className="sbl-inner">
-
           {/* ── LEFT ── */}
           <div className="sbl-left">
             <div className="sbl-heading">
@@ -427,66 +428,87 @@ export default function ShopByLookSection() {
               </div>
 
               <h2 className="sbl-h2">
-                See the Look.<br />
+                See the Look.
+                <br />
                 <span>Choose the School.</span>
               </h2>
 
               <p className="sbl-sub">
-                Browse uniforms by school. Select a school to view its complete look and explore available options.
+                Browse uniforms by school. Select a school to view its complete
+                look and explore available options.
               </p>
 
               <div className="sbl-divider" />
             </div>
 
             <div className="sbl-left-rest">
-            {/* Animated school card — click goes to school page */}
-            <AnimatePresence mode="wait" custom={direction}>
-              <Link
-                to={`/schools/${school.slug}`}
-                className="sbl-school-card-link"
-                style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
-              >
-                <motion.div
-                  key={school.id}
-                  className="sbl-school-card"
-                  custom={direction}
-                  variants={cardVariants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                  transition={{ duration: 0.32, ease: [0.25, 0.46, 0.45, 0.94] }}
+              {/* Animated school card — click goes to school page */}
+              <AnimatePresence mode="wait" custom={direction}>
+                <Link
+                  to={`/schools/${school.slug}`}
+                  className="sbl-school-card-link"
+                  style={{
+                    textDecoration: "none",
+                    color: "inherit",
+                    display: "block",
+                  }}
                 >
-                  <div className="sbl-school-text-wrap">
-                    <p className="sbl-school-name">{school.shortName}</p>
-                    {school.level && <p className="sbl-school-level">{school.level}</p>}
-                  </div>
-                  {school.logo && (
-                    <div className="sbl-school-logo-wrap">
-                      <img src={school.logo} alt={school.name} className="sbl-school-logo" />
+                  <motion.div
+                    key={school.id}
+                    className="sbl-school-card"
+                    custom={direction}
+                    variants={cardVariants}
+                    initial="enter"
+                    animate="center"
+                    exit="exit"
+                    transition={{
+                      duration: 0.32,
+                      ease: [0.25, 0.46, 0.45, 0.94],
+                    }}
+                  >
+                    <div className="sbl-school-text-wrap">
+                      <p className="sbl-school-name">{school.shortName}</p>
+                      {school.level && (
+                        <p className="sbl-school-level">{school.level}</p>
+                      )}
                     </div>
-                  )}
-                </motion.div>
-              </Link>
-            </AnimatePresence>
+                    {school.logo && (
+                      <div className="sbl-school-logo-wrap">
+                        <img
+                          src={school.logo}
+                          alt={school.name}
+                          className="sbl-school-logo"
+                        />
+                      </div>
+                    )}
+                  </motion.div>
+                </Link>
+              </AnimatePresence>
 
-            {/* Dots */}
-            <div className="sbl-dots">
-              {SHOP_BY_LOOK_SCHOOLS.map((_, i) => (
-                <div
-                  key={i}
-                  className={`sbl-dot${i === index ? ' active' : ''}`}
-                  onClick={() => { setDirection(i > index ? 1 : -1); setIndex(i); }}
-                />
-              ))}
-            </div>
+              {/* Dots */}
+              <div className="sbl-dots">
+                {SHOP_BY_LOOK_SCHOOLS.map((_, i) => (
+                  <div
+                    key={i}
+                    className={`sbl-dot${i === index ? " active" : ""}`}
+                    onClick={() => {
+                      setDirection(i > index ? 1 : -1);
+                      setIndex(i);
+                    }}
+                  />
+                ))}
+              </div>
             </div>
           </div>
 
           {/* ── RIGHT ── */}
           <div className="sbl-right">
-
             {/* Left arrow */}
-            <button className="sbl-arrow-left" onClick={goPrev} aria-label="Previous school">
+            <button
+              className="sbl-arrow-left"
+              onClick={goPrev}
+              aria-label="Previous school"
+            >
               <ChevronLeft size={20} strokeWidth={2} />
             </button>
 
@@ -494,7 +516,7 @@ export default function ShopByLookSection() {
             <AnimatePresence mode="wait" custom={direction}>
               <Link
                 to={`/schools/${school.slug}`}
-                style={{ display: 'block', textDecoration: 'none' }}
+                style={{ display: "block", textDecoration: "none" }}
                 className="sbl-model-link"
               >
                 <motion.div
@@ -517,11 +539,14 @@ export default function ShopByLookSection() {
             </AnimatePresence>
 
             {/* Right arrow */}
-            <button className="sbl-arrow-right" onClick={goNext} aria-label="Next school">
+            <button
+              className="sbl-arrow-right"
+              onClick={goNext}
+              aria-label="Next school"
+            >
               <ChevronRight size={20} strokeWidth={2} />
             </button>
           </div>
-
         </div>
       </section>
     </>

@@ -302,13 +302,17 @@ export default function ServicesSection() {
               <div
                 className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[11px] font-bold tracking-[0.16em] uppercase"
                 style={{
-                  background: 'linear-gradient(135deg, #eef5ff 0%, #ddeaff 100%)',
-                  color: '#2563eb',
-                  boxShadow: '0 1px 8px rgba(37,99,235,0.10)',
-                  border: '1px solid rgba(37,99,235,0.12)',
+                  background:
+                    "linear-gradient(135deg, #eef5ff 0%, #ddeaff 100%)",
+                  color: "#2563eb",
+                  boxShadow: "0 1px 8px rgba(37,99,235,0.10)",
+                  border: "1px solid rgba(37,99,235,0.12)",
                 }}
               >
-                <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#2563eb' }} />
+                <span
+                  className="w-1.5 h-1.5 rounded-full animate-pulse"
+                  style={{ background: "#2563eb" }}
+                />
                 What We Do
               </div>
             </motion.div>
@@ -324,10 +328,10 @@ export default function ServicesSection() {
                   ease: [0.22, 1, 0.36, 1],
                 }}
                 className="font-['Inter'] text-3xl sm:text-4xl lg:text-[52px] font-800 leading-[1.08] tracking-[-0.8px] max-w-xl"
-                style={{ color: '#1a1a2e' }}
+                style={{ color: "#1a1a2e" }}
               >
                 End-to-End{" "}
-                <em className="not-italic" style={{ color: '#2563eb' }}>
+                <em className="not-italic" style={{ color: "#2563eb" }}>
                   Uniform
                 </em>
                 <br />
@@ -345,7 +349,10 @@ export default function ServicesSection() {
                 }}
                 className="max-w-sm lg:max-w-[360px]"
               >
-                <p className="text-[14px] sm:text-[15px] leading-[1.68] font-medium" style={{ color: '#64748b' }}>
+                <p
+                  className="text-[14px] sm:text-[15px] leading-[1.68] font-medium"
+                  style={{ color: "#64748b" }}
+                >
                   Complete manufacturing and distribution systems — designed for
                   consistency, scale, and operational ease.
                 </p>

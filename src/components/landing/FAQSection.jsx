@@ -1,18 +1,18 @@
-import { Link } from 'react-router-dom';
-import { ArrowRight, HelpCircle } from 'lucide-react';
+import { Link } from "react-router-dom";
+import { ArrowRight, HelpCircle } from "lucide-react";
 
 const FAQ_PREVIEW = [
   {
-    q: 'Are you a school uniform manufacturer in Pune?',
-    a: 'Yes. The Uniform Lab is a Pune-based school uniform manufacturer with in-house production capabilities.',
+    q: "Are you a school uniform manufacturer in Pune?",
+    a: "Yes. The Uniform Lab is a Pune-based school uniform manufacturer with in-house production capabilities.",
   },
   {
-    q: 'Can you handle large bulk uniform orders?',
-    a: 'Yes. Our production processes are designed for bulk manufacturing with scalable capacity and timeline discipline.',
+    q: "Can you handle large bulk uniform orders?",
+    a: "Yes. Our production processes are designed for bulk manufacturing with scalable capacity and timeline discipline.",
   },
   {
-    q: 'Do you organise uniform camps in schools?',
-    a: 'Yes. We conduct on-campus uniform camps during admissions and reopening to reduce admin burden for schools.',
+    q: "Do you organise uniform camps in schools?",
+    a: "Yes. We conduct on-campus uniform camps during admissions and reopening to reduce admin burden for schools.",
   },
 ];
 
@@ -140,7 +140,8 @@ export default function FAQSection() {
               <span> Clear Answers</span>
             </h2>
             <p className="faq-sub">
-              A quick snapshot of our most asked operational and partnership questions.
+              A quick snapshot of our most asked operational and partnership
+              questions.
             </p>
           </div>
 

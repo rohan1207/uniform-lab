@@ -62,7 +62,10 @@ function LayoutContent() {
           <Route path="/search" element={<SearchPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/corporate" element={<CorporatePage />} />
-          <Route path="/bulk-manufacturing" element={<BulkManufacturingPage />} />
+          <Route
+            path="/bulk-manufacturing"
+            element={<BulkManufacturingPage />}
+          />
         </Routes>
       </main>
       <Footer />

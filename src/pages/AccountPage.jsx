@@ -1236,7 +1236,10 @@ export default function AccountPage() {
                         <div className="flex items-center gap-2 flex-wrap">
                           <span
                             className="text-sm font-bold text-slate-800"
-                            style={{ fontFamily: "'Inter', sans-serif", fontWeight: 800 }}
+                            style={{
+                              fontFamily: "'Inter', sans-serif",
+                              fontWeight: 800,
+                            }}
                           >
                             {order.trackingNumber}
                           </span>
@@ -1575,7 +1578,11 @@ export default function AccountPage() {
           <div>
             <h1
               className="text-[#1a1a2e] mb-1"
-              style={{ ...FONT_HEADING, fontSize: "clamp(28px, 2.8vw, 38px)", letterSpacing: "-0.7px" }}
+              style={{
+                ...FONT_HEADING,
+                fontSize: "clamp(28px, 2.8vw, 38px)",
+                letterSpacing: "-0.7px",
+              }}
             >
               My Account
             </h1>
