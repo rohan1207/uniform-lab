@@ -44,12 +44,14 @@ const SHOP_BY_LOOK_SCHOOLS = SHOP_BY_LOOK_CONFIG.map((cfg) => {
 });
 
 const CSS = `
-@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800;900&family=Nunito:wght@400;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+.sbl-sec, .sbl-sec * { font-family: 'Inter', sans-serif !important; }
 
 .sbl-sec {
   background: #FAF3F0;
   padding: 56px 0 88px;
-  font-family: 'Nunito', sans-serif;
+  font-family: 'Inter', sans-serif;
   position: relative;
   overflow: hidden;
 }
@@ -104,7 +106,7 @@ const CSS = `
 }
 
 .sbl-h2 {
-  font-family: 'Baloo 2', cursive;
+  font-family: 'Inter', sans-serif;
   font-weight: 900;
   font-size: clamp(30px, 3.4vw, 46px);
   color: #1a1a2e;
@@ -137,22 +139,37 @@ const CSS = `
   background: #f8faff;
   border: 1.5px solid #e0eaff;
   border-radius: 20px;
-  padding: 28px 28px 24px;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 0;
+  box-shadow: 0 4px 24px rgba(37,99,235,0.07);
+  max-width: 420px;
+}
+
+/* Text side (left) */
+.sbl-school-text-wrap {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  box-shadow: 0 4px 24px rgba(37,99,235,0.07);
-  max-width: 380px;
+  justify-content: center;
+  align-items: flex-start;
+  padding-right: 20px;
 }
 
 .sbl-school-logo-wrap {
   display: flex;
   align-items: center;
+  justify-content: center;
+  border-left: 1.5px solid #e0eaff;
+  padding-left: 20px;
+  min-width: 140px;
 }
 
 .sbl-school-logo {
-  max-width: 130px;
-  max-height: 60px;
+  max-width: 160px;
+  max-height: 120px;
   width: auto;
   height: auto;
   object-fit: contain;
@@ -160,7 +177,7 @@ const CSS = `
 }
 
 .sbl-school-name {
-  font-family: 'Baloo 2', cursive;
+  font-family: 'Inter', sans-serif;
   font-weight: 800;
   font-size: clamp(20px, 2vw, 26px);
   color: #1e293b;
@@ -345,7 +362,8 @@ const CSS = `
   .sbl-school-card-link { width: fit-content !important; margin-left: auto !important; margin-right: auto !important; display: block !important; }
   .sbl-school-card {
     padding: 14px 18px 12px;
-    gap: 10px;
+    flex-direction: column;
+    gap: 0;
     border-radius: 16px;
     max-width: 92%;
     min-width: 260px;
@@ -355,8 +373,9 @@ const CSS = `
     align-items: center;
     text-align: center;
   }
-  .sbl-school-card .sbl-school-logo-wrap { justify-content: center; }
-  .sbl-school-logo { max-width: 120px; max-height: 48px; }
+  .sbl-school-text-wrap { align-items: center !important; padding-right: 0 !important; padding-bottom: 12px; }
+  .sbl-school-card .sbl-school-logo-wrap { border-left: none !important; padding-left: 0 !important; min-width: unset !important; justify-content: center; }
+  .sbl-school-logo { max-width: 120px; max-height: 80px; }
   .sbl-school-name { font-size: 18px; }
   .sbl-school-level { font-size: 12px; }
   .sbl-dots { margin-top: 10px; gap: 5px; }
@@ -437,15 +456,15 @@ export default function ShopByLookSection() {
                   exit="exit"
                   transition={{ duration: 0.32, ease: [0.25, 0.46, 0.45, 0.94] }}
                 >
+                  <div className="sbl-school-text-wrap">
+                    <p className="sbl-school-name">{school.shortName}</p>
+                    {school.level && <p className="sbl-school-level">{school.level}</p>}
+                  </div>
                   {school.logo && (
                     <div className="sbl-school-logo-wrap">
                       <img src={school.logo} alt={school.name} className="sbl-school-logo" />
                     </div>
                   )}
-                  <div>
-                    <p className="sbl-school-name">{school.shortName}</p>
-                    {school.level && <p className="sbl-school-level">{school.level}</p>}
-                  </div>
                 </motion.div>
               </Link>
             </AnimatePresence>

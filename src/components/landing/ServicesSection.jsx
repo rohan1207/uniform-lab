@@ -161,7 +161,7 @@ function ServiceCard({ service, index }) {
           {/* Number + Icon row */}
           <div className="flex items-start justify-between">
             <span
-              className="font-['Baloo_2'] text-3xl md:text-5xl lg:text-6xl font-900 leading-none select-none"
+              className="font-['Inter'] text-3xl md:text-5xl lg:text-6xl font-900 leading-none select-none"
               style={{ color: `${service.accent}18` }}
             >
               {service.num}
@@ -184,7 +184,7 @@ function ServiceCard({ service, index }) {
             >
               {service.short}
             </span>
-            <h3 className="mt-0.5 md:mt-1 font-['Baloo_2'] text-[14px] md:text-[20px] lg:text-[22px] font-800 leading-tight text-slate-900">
+            <h3 className="mt-0.5 md:mt-1 font-['Inter'] text-[14px] md:text-[20px] lg:text-[22px] font-700 leading-tight text-slate-900">
               {service.title}
             </h3>
           </div>
@@ -244,8 +244,9 @@ export default function ServicesSection() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800;900&family=Nunito:wght@400;600;700;800&display=swap');
-        .svc-root { font-family: 'Nunito', sans-serif; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+        .svc-root, .svc-root * { font-family: 'Inter', sans-serif !important; }
+        .svc-root { font-family: 'Inter', sans-serif; }
         .font-900 { font-weight: 900; }
         .font-800 { font-weight: 800; }
         .font-700 { font-weight: 700; }
@@ -293,8 +294,16 @@ export default function ServicesSection() {
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               className="flex items-center gap-3 mb-4 sm:mb-5"
             >
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[11px] font-bold tracking-[0.16em] uppercase">
-                <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
+              <div
+                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[11px] font-bold tracking-[0.16em] uppercase"
+                style={{
+                  background: 'linear-gradient(135deg, #eef5ff 0%, #ddeaff 100%)',
+                  color: '#2563eb',
+                  boxShadow: '0 1px 8px rgba(37,99,235,0.10)',
+                  border: '1px solid rgba(37,99,235,0.12)',
+                }}
+              >
+                <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#2563eb' }} />
                 What We Do
               </div>
             </motion.div>
@@ -309,10 +318,11 @@ export default function ServicesSection() {
                   delay: 0.06,
                   ease: [0.22, 1, 0.36, 1],
                 }}
-                className="font-['Baloo_2'] text-3xl sm:text-4xl lg:text-[52px] font-900 text-slate-900 leading-[1.08] tracking-[-0.8px] max-w-xl"
+                className="font-['Inter'] text-3xl sm:text-4xl lg:text-[52px] font-800 leading-[1.08] tracking-[-0.8px] max-w-xl"
+                style={{ color: '#1a1a2e' }}
               >
                 End-to-End{" "}
-                <em className="not-italic bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">
+                <em className="not-italic" style={{ color: '#2563eb' }}>
                   Uniform
                 </em>
                 <br />
@@ -330,7 +340,7 @@ export default function ServicesSection() {
                 }}
                 className="max-w-sm lg:max-w-[360px]"
               >
-                <p className="text-slate-600 text-[14px] sm:text-[15px] leading-[1.68] font-medium">
+                <p className="text-[14px] sm:text-[15px] leading-[1.68] font-medium" style={{ color: '#64748b' }}>
                   Complete manufacturing and distribution systems — designed for
                   consistency, scale, and operational ease.
                 </p>
@@ -366,7 +376,7 @@ export default function ServicesSection() {
             className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-5 p-4 sm:p-5 rounded-2xl border border-blue-200/70 bg-white/75 backdrop-blur-sm"
           >
             <div>
-              <p className="text-slate-900 font-['Baloo_2'] text-base sm:text-lg font-700">
+              <p className="text-slate-900 font-['Inter'] text-base sm:text-lg font-700">
                 Ready to streamline your uniform operations?
               </p>
               <p className="text-slate-600 text-[13px] sm:text-sm font-medium mt-0.5">
@@ -379,7 +389,7 @@ export default function ServicesSection() {
               className="svc-cta-btn group w-full sm:w-auto justify-center sm:justify-start flex-shrink-0 inline-flex items-center gap-2.5 rounded-full font-black uppercase text-white transition-all duration-200"
               style={{
                 padding: "12px 24px",
-                fontFamily: "'Baloo 2', cursive",
+                fontFamily: "'Inter', sans-serif",
                 fontSize: "clamp(12px, 1vw, 14px)",
                 letterSpacing: "0.11em",
                 background:

@@ -11,7 +11,7 @@ import { motion } from "framer-motion";
 const FOUNDERS = [
   {
     name: "Priyank Mota",
-    role: "Founder",
+    role: "Co-Founder",
     bio: "Focus on systems, scale, and structured growth. Hands-on experience in manufacturing and retail operations.",
     initials: "PM",
     image: "/priyank.jpeg",
@@ -32,48 +32,49 @@ const MINI_POINTS = [
 ];
 
 const CSS = `
-  @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800;900&family=Nunito:wght@400;600;700;800&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
+  .about-sec, .about-sec * { font-family: 'Inter', sans-serif !important; }
   .about-sec {
     background: #FAF3F0;
     padding: 72px 0 80px;
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Inter', sans-serif;
     position: relative;
     overflow: hidden;
   }
 
   .about-header-top {
-    text-align: center;
     margin-bottom: 18px;
   }
   .about-pill {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 10px 24px;
+    gap: 6px;
+    padding: 5px 16px;
     border-radius: 999px;
     background: linear-gradient(135deg, #eef5ff 0%, #ddeaff 100%);
     color: #2563eb;
-    font-family: 'Baloo 2', cursive;
-    font-size: clamp(18px, 2.2vw, 26px);
-    font-weight: 900;
-    letter-spacing: 0.02em;
-    box-shadow: 0 2px 12px rgba(37,99,235,0.14);
-    margin: 0 auto;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    box-shadow: 0 1px 8px rgba(37,99,235,0.10);
+    border: 1px solid rgba(37,99,235,0.12);
   }
   .about-h2 {
-    font-family: 'Baloo 2', cursive;
-    font-weight: 900;
-    font-size: clamp(26px, 3.2vw, 42px);
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: clamp(30px, 3.4vw, 52px);
     color: #1a1a2e;
-    line-height: 1.1;
-    letter-spacing: -0.4px;
+    line-height: 1.08;
+    letter-spacing: -0.8px;
     margin: 0 0 10px;
   }
   .about-h2 span { color: #2563eb; }
   .about-sub {
     font-size: 15px;
-    font-weight: 600;
+    font-weight: 500;
     color: #64748b;
     line-height: 1.68;
     max-width: 640px;
@@ -87,14 +88,28 @@ const CSS = `
     margin-bottom: 32px;
   }
 
-  /* Intro block */
-  .about-intro {
-    font-size: 15px;
-    font-weight: 600;
-    color: #475569;
-    line-height: 1.75;
-    max-width: 720px;
+  /* Two-column para row (desktop only) */
+  .about-para-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
     margin-bottom: 36px;
+  }
+  .about-para-lead {
+    font-size: 15px;
+    font-weight: 500;
+    color: #64748b;
+    line-height: 1.72;
+    margin: 0;
+  }
+  .about-para-body {
+    font-size: 15px;
+    font-weight: 500;
+    color: #64748b;
+    line-height: 1.78;
+    margin: 0;
+    padding-left: 24px;
+    border-left: 2px solid #dbeafe;
   }
 
   /* Leadership heading */
@@ -138,8 +153,8 @@ const CSS = `
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: 'Baloo 2', cursive;
-    font-weight: 900;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
     font-size: 24px;
     color: #2563eb;
     overflow: hidden;
@@ -161,16 +176,16 @@ const CSS = `
     margin-bottom: 4px;
   }
   .about-founder-name {
-    font-family: 'Baloo 2', cursive;
-    font-weight: 800;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
     font-size: 20px;
-    color: #1e293b;
+    color: #1a1a2e;
     margin: 0 0 8px;
     line-height: 1.2;
   }
   .about-founder-bio {
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 500;
     color: #64748b;
     line-height: 1.6;
     margin: 0;
@@ -192,8 +207,8 @@ const CSS = `
     background: #fff;
     border: 1px solid #e2e8f0;
     font-size: 13px;
-    font-weight: 700;
-    color: #475569;
+    font-weight: 600;
+    color: #64748b;
     transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
   }
   .about-point-pill:hover {
@@ -210,17 +225,18 @@ const CSS = `
     align-items: center;
     justify-content: space-between;
     gap: 16px;
-    padding: 18px 22px;
-    border-radius: 18px;
+    padding: 16px 20px;
+    border-radius: 16px;
     border: 1px solid #dbeafe;
     background: rgba(255,255,255,0.85);
     backdrop-filter: blur(8px);
+    width: 100%;
   }
   .about-cta-text {
-    font-family: 'Baloo 2', cursive;
-    font-weight: 800;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
     font-size: 17px;
-    color: #1e293b;
+    color: #1a1a2e;
     margin: 0;
   }
   .about-cta-sub {
@@ -233,12 +249,12 @@ const CSS = `
   .about-cta-btn {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     text-decoration: none;
     color: #fff;
-    font-family: 'Baloo 2', cursive;
-    font-weight: 900;
-    font-size: clamp(11px, 1vw, 13px);
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: clamp(12px, 1vw, 14px);
     letter-spacing: 0.11em;
     text-transform: uppercase;
     padding: 12px 24px;
@@ -249,6 +265,7 @@ const CSS = `
     text-shadow: 0 1px 0 rgba(0,0,0,0.2);
     transition: transform 0.1s ease, box-shadow 0.1s ease, filter 0.12s ease;
     flex-shrink: 0;
+    margin-left: auto;
   }
   .about-cta-btn:hover {
     filter: brightness(1.04);
@@ -262,7 +279,8 @@ const CSS = `
 
   @media (max-width: 767px) {
     .about-sec { padding: 56px 0 64px; }
-    .about-intro { font-size: 14px; margin-bottom: 28px; }
+    .about-para-row { grid-template-columns: 1fr; gap: 16px; margin-bottom: 28px; }
+    .about-para-body { padding-left: 0; border-left: none; }
     .about-founders-grid { grid-template-columns: 1fr; gap: 14px; margin-bottom: 24px; }
     .about-founder-card { padding: 18px; gap: 16px; flex-direction: column; align-items: center; text-align: center; }
     .about-founder-photo { width: 88px; height: 88px; font-size: 22px; border-radius: 50%; }
@@ -288,7 +306,7 @@ export default function AboutSection() {
           >
             <div className="about-header-top">
               <div className="about-pill">
-                <Sparkles size={18} style={{ flexShrink: 0 }} />
+                <Sparkles size={12} style={{ flexShrink: 0 }} />
                 About Uniform Lab
               </div>
             </div>
@@ -296,29 +314,31 @@ export default function AboutSection() {
               Reliable Uniform Systems.
               <span> Human-Centered Execution.</span>
             </h2>
-            <p className="about-sub">
-              A system-driven school and corporate uniform manufacturer in Pune
-              — we deliver consistency, quality, and reliability at scale. Full
-              story and process depth on our About page.
-            </p>
             <div className="about-divider" />
           </motion.div>
 
-          {/* ── Intro ── */}
-          <motion.p
-            className="about-intro"
+          {/* ── Intro para row (2-col on desktop) ── */}
+          <motion.div
+            className="about-para-row"
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.5, delay: 0.06 }}
           >
-            The Uniform Lab specialises in designing, manufacturing, and
-            distributing uniforms for schools, corporates, and institutions
-            across India. With in-house production and structured quality
-            control, we ensure fabric consistency, fit standardisation, and
-            timely deliveries year after year. We are long-term uniform partners
-            for schools and parents alike.
-          </motion.p>
+            <p className="about-para-lead">
+              A system-driven school and corporate uniform manufacturer in Pune
+              — we deliver consistency, quality, and reliability at scale. Full
+              story and process depth on our About page.
+            </p>
+            <p className="about-para-body">
+              The Uniform Lab specialises in designing, manufacturing, and
+              distributing uniforms for schools, corporates, and institutions
+              across India. With in-house production and structured quality
+              control, we ensure fabric consistency, fit standardisation, and
+              timely deliveries year after year. We are long-term uniform
+              partners for schools and parents alike.
+            </p>
+          </motion.div>
 
           {/* ── Leadership ── */}
           <p className="about-lead-label">Leadership</p>
@@ -374,7 +394,7 @@ export default function AboutSection() {
               </p>
             </div>
             <Link to="/about" className="about-cta-btn">
-              Read Our Full Story
+              Read More
               <ArrowRight size={16} />
             </Link>
           </motion.div>

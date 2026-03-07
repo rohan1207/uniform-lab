@@ -5,7 +5,15 @@ import { Link } from 'react-router-dom';
    GLOBAL STYLES
 ────────────────────────────────────────────────────────────────────────── */
 const GLOBAL_CSS = `
-  @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800;900&family=Nunito:wght@400;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+  /* ── Force Inter on every element inside hero — nothing can override it ── */
+  .hero-root,
+  .hero-root *,
+  .hero-root *::before,
+  .hero-root *::after {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+  }
 
   /* ── Separators ── */
   .metric-sep, .btn-sep {
@@ -18,6 +26,14 @@ const GLOBAL_CSS = `
 
   /* Hide mobile-only buttons row on desktop */
   .hero-btns-mobile { display: none; }
+
+  /* Left-col metric cards: visible on desktop, hidden on mobile */
+  .hero-left-metrics {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(8px, 1.2vh, 14px);
+    width: 100%;
+  }
 
   /* Desktop only: hide left-col text content (pill, lineTwo, divider, feature list); structure/columns unchanged */
   @media (min-width: 768px) {
@@ -82,6 +98,21 @@ const GLOBAL_CSS = `
     z-index: 1;
   }
 
+  /* Hidden by default (desktop) — shown as 2×2 grid on mobile */
+  .hero-mobile-metrics-wrap { display: none; }
+
+  /* Desktop: metric cards have white card styling */
+  .hero-metric-card {
+    background: #ffffff;
+    border: 1.5px solid #e4ecfb;
+    border-radius: 14px;
+    padding: clamp(9px, 0.85vw, 13px) clamp(11px, 1vw, 16px);
+    box-shadow: 0 2px 16px rgba(0,60,200,0.07);
+    width: 100%;
+    max-width: 250px;
+    box-sizing: border-box;
+  }
+
   /* ═══════════════════════════════════════════════════════════════════════
      MOBILE
   ═══════════════════════════════════════════════════════════════════════ */
@@ -92,7 +123,12 @@ const GLOBAL_CSS = `
       overflow: visible !important;
       padding-bottom: 20px;
     }
-    .hero-logo-section { padding-top: 60px !important; }
+    .hero-logo-section {
+      padding-top: 60px !important;
+      display: flex !important;
+      justify-content: center !important;
+      text-align: center !important;
+    }
     .hero-logo-img     { height: 78px !important; }
 
     .hero-main-grid {
@@ -118,22 +154,60 @@ const GLOBAL_CSS = `
     .hero-left-col p:last-of-type  { font-size: 13px !important; }
     .hero-features-list { display: none !important; }
     .hero-left-divider  { display: none !important; }
+    .hero-left-metrics  { display: none !important; }
 
     .hero-center-col {
       width: 100% !important;
       height: auto !important;
       overflow: visible !important;
       margin-top: 16px !important;
-      margin-bottom: 24px !important;
+      margin-bottom: 12px !important;
     }
     .hero-img-scale { transform: scale(1.08) translateY(0%) !important; }
     .hero-btns-desktop { display: none !important; }
 
+    /* Hide right-col on mobile — all 4 metrics shown in hero-mobile-metrics-wrap */
+    .hero-right-col { display: none !important; }
+
+    /* All 4 metrics in a 2×2 grid above the buttons */
+    .hero-mobile-metrics-wrap {
+      display: grid !important;
+      grid-template-columns: 1fr 1fr !important;
+      gap: 10px !important;
+      width: 100% !important;
+      margin-top: 4px !important;
+      margin-bottom: 0 !important;
+    }
+    /* Mobile metric cards: plain, no card background */
+    .hero-metric-card {
+      background: transparent !important;
+      border: none !important;
+      border-radius: 0 !important;
+      padding: 4px 0 !important;
+      box-shadow: none !important;
+      justify-content: center !important;
+      text-align: center !important;
+      align-items: center !important;
+      flex-direction: column !important;
+      width: 100% !important;
+    }
+    .hero-metric-card > div:first-child {
+      width: 28px !important;
+      height: 28px !important;
+      min-width: 28px !important;
+      background: transparent !important;
+      box-shadow: none !important;
+    }
+    .hero-metric-card .hero-metric-sub { display: none !important; }
+    .hero-metric-card .hero-metric-title { font-size: 12px !important; text-align: center !important; }
+    .hero-metric-card > div:last-child { align-items: center !important; text-align: center !important; }
+
     .hero-btns-mobile {
       display: flex !important;
       width: 100% !important;
+      justify-content: center !important;
       gap: 24px !important;
-      margin-top: 48px !important;
+      margin-top: 16px !important;
       padding-bottom: 10px !important;
     }
     .hero-btns-mobile .peek-wrap > .peek-btn {
@@ -145,37 +219,6 @@ const GLOBAL_CSS = `
       font-size: 11px !important;
       letter-spacing: 0.10em !important;
     }
-
-    .hero-right-col {
-      width: 100% !important;
-      display: grid !important;
-      grid-template-columns: 1fr 1fr !important;
-      gap: 10px !important;
-      padding-left: 0 !important;
-      padding-bottom: 0 !important;
-      margin-top: 16px !important;
-      justify-items: center !important;
-      text-align: center !important;
-    }
-    .hero-right-col .metric-sep { display: none !important; }
-    .hero-metric-card {
-      justify-content: center !important;
-      text-align: center !important;
-      background: transparent !important;
-      border-radius: 0 !important;
-      padding: 4px 0 !important;
-      box-shadow: none !important;
-    }
-    .hero-metric-card > div:first-child {
-      width: 24px !important;
-      height: 24px !important;
-      min-width: 24px !important;
-      background: transparent !important;
-      box-shadow: none !important;
-    }
-    .hero-metric-card .hero-metric-sub { display: none !important; }
-    .hero-metric-card .hero-metric-title { font-size: 11px !important; }
-    .hero-metric-card > div:last-child { align-items: center !important; text-align: center !important; }
   }
 `;
 
@@ -244,9 +287,6 @@ function GameButton({ to, label, emoji, peekEmoji, variant = 'gold' }) {
     : 'linear-gradient(180deg, #1a6bb8 0%, #004C99 50%, #003d7a 100%)';
   const border = isGold ? '1px solid rgba(229,167,50,0.6)' : '1px solid rgba(0,76,153,0.6)';
   const textColor = isGold ? '#5c3a0a' : '#fff';
-  const txtShadow = isGold
-    ? '0 1px 0 rgba(255,255,255,0.45)'
-    : '0 1px 0 rgba(0,0,0,0.2)';
 
   return (
     <Link to={to} style={{ textDecoration: 'none' }} className="select-none peek-wrap">
@@ -282,13 +322,11 @@ function GameButton({ to, label, emoji, peekEmoji, variant = 'gold' }) {
         }}
       >
         <span
-          className="font-black uppercase text-center"
+          className="font-bold uppercase text-center"
           style={{
-            fontFamily: "'Baloo 2', cursive",
-            fontSize: 'clamp(11px, 1vw, 13px)',
+            fontSize: 'clamp(12px, 1.1vw, 14px)',
             letterSpacing: '0.11em',
             color: textColor,
-            textShadow: txtShadow,
           }}
         >
           {label}
@@ -320,8 +358,8 @@ function Metric({ Icon, title, sub, iconColor = '#2563eb' }) {
       </div>
       <div>
         <p
-          className="hero-metric-title m-0 font-black text-[#1a1a2e] leading-snug"
-          style={{ fontFamily: "'Baloo 2', cursive", fontSize: 'clamp(11px, 1.1vw, 15px)' }}
+          className="hero-metric-title m-0 font-semibold text-[#1a1a2e] leading-snug"
+          style={{ fontSize: 'clamp(11px, 1.1vw, 15px)' }}
         >
           {title}
         </p>
@@ -342,7 +380,7 @@ function Metric({ Icon, title, sub, iconColor = '#2563eb' }) {
 ────────────────────────────────────────────────────────────────────────── */
 export default function NewHero({
   logoSrc       = '/logo.png',
-  lineOne       = 'School uniforms made simple.',
+  lineOne       = 'School Uniforms Made Simple.',
   lineTwo       = 'Order online, get fast delivery and perfect fits.',
   heroVideoSrc  = '/hero.mp4',
   primaryHref   = '/schoolenquiry',
@@ -354,7 +392,7 @@ export default function NewHero({
 
       <section
         className="hero-root relative h-svh max-h-screen overflow-hidden flex flex-col"
-        style={{ background: '#FAF3F0', fontFamily: "'Nunito', sans-serif" }}
+        style={{ background: '#FAF3F0' }}
       >
         <div className="relative z-10 flex flex-col w-full h-full">
 
@@ -371,8 +409,8 @@ export default function NewHero({
             }}
           >
              <p
-                className="m-0 font-black text-[#1a1a2e] leading-tight mt-10"
-                style={{ fontFamily: "'Baloo 2', cursive", fontSize: 'clamp(20px, 2.6vw, 36px)', letterSpacing: '-0.3px' }}
+                className="m-0 font-bold text-[#1a1a2e] leading-tight mt-10"
+                style={{ fontSize: 'clamp(20px, 2.6vw, 36px)', letterSpacing: '-0.3px' }}
               >
                 {lineOne}
               </p>
@@ -392,10 +430,10 @@ export default function NewHero({
             }}
           >
             {/* LEFT */}
-            <div className="hero-left-col flex flex-col justify-center gap-3 h-full" style={{ paddingRight: 'clamp(8px, 1.5vw, 24px)' }}>
+            <div className="hero-left-col flex flex-col justify-center gap-3 h-full" style={{ position: 'relative', zIndex: 30, paddingLeft: 'clamp(8px, 1vw, 16px)', paddingRight: 'clamp(8px, 1.8vw, 24px)' }}>
               <div className="flex items-center gap-2">
                 <span
-                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-bold uppercase tracking-widest"
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-medium uppercase tracking-widest"
                   style={{
                     background: 'linear-gradient(135deg, #eef5ff 0%, #ddeaff 100%)',
                     color: '#2563eb',
@@ -434,6 +472,13 @@ export default function NewHero({
                   </li>
                 ))}
               </ul>
+
+              {/* Desktop: first 2 metrics on the left */}
+              <div className="hero-left-metrics">
+                <Metric Icon={IconSchool}   iconColor="#2563eb" title="School Approved"  sub="Trusted by 500+ schools" />
+                <hr className="metric-sep" style={{ margin: '2px 0' }} />
+                <Metric Icon={IconDelivery} iconColor="#0ea5e9" title="Fastest Delivery" sub="2–3 day doorstep delivery" />
+              </div>
             </div>
 
             {/* CENTRE */}
@@ -486,15 +531,19 @@ export default function NewHero({
             {/* RIGHT */}
             <div
               className="hero-right-col flex flex-col justify-center gap-3 h-full"
-              style={{ paddingBottom: 'clamp(4px, 0.8vh, 10px)', paddingLeft: 'clamp(44px, 7vw, 96px)' }}
+              style={{ position: 'relative', zIndex: 30, paddingBottom: 'clamp(4px, 0.8vh, 10px)', paddingLeft: 'clamp(40px, 6vw, 80px)' }}
             >
-              <Metric Icon={IconSchool}   iconColor="#2563eb" title="School Approved"  sub="Trusted by 500+ schools"    />
+              <Metric Icon={IconQuality}  iconColor="#f59e0b" title="100% Quality"  sub="ISI certified fabrics"    />
               <hr className="metric-sep" />
-              <Metric Icon={IconDelivery} iconColor="#0ea5e9" title="Fastest Delivery" sub="2–3 day doorstep delivery"  />
-              <hr className="metric-sep" />
-              <Metric Icon={IconQuality}  iconColor="#f59e0b" title="100% Quality"     sub="ISI certified fabrics"       />
-              <hr className="metric-sep" />
-              <Metric Icon={IconFit}      iconColor="#10b981" title="Perfect Fit"       sub="Exact sizing, guaranteed"   />
+              <Metric Icon={IconFit}      iconColor="#10b981" title="Perfect Fit"   sub="Exact sizing, guaranteed" />
+            </div>
+
+            {/* Mobile: all 4 metrics in 2×2 grid, above CTA buttons */}
+            <div className="hero-mobile-metrics-wrap">
+              <Metric Icon={IconSchool}   iconColor="#2563eb" title="School Approved"  sub="Trusted by 500+ schools" />
+              <Metric Icon={IconDelivery} iconColor="#0ea5e9" title="Fastest Delivery" sub="2–3 day doorstep delivery" />
+              <Metric Icon={IconQuality}  iconColor="#f59e0b" title="100% Quality"     sub="ISI certified fabrics" />
+              <Metric Icon={IconFit}      iconColor="#10b981" title="Perfect Fit"      sub="Exact sizing, guaranteed" />
             </div>
 
             {/* Buttons mobile */}

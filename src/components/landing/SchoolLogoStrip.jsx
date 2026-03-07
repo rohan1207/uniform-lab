@@ -132,6 +132,7 @@ export default function SchoolLogoStrip() {
           height: auto;
           object-fit: contain;
           object-position: center;
+          transform: scale(1.18);
         }
       `}</style>
 
@@ -163,7 +164,7 @@ export default function SchoolLogoStrip() {
                   src={school.logo}
                   alt={school.name ?? "School logo"}
                   draggable={false}
-                  className="select-none opacity-80 hover:opacity-100 transition-opacity duration-200"
+                  className="select-none opacity-100"
                 />
               ) : (
                 <span

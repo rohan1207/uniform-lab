@@ -10,11 +10,12 @@ const ITEMS = [
 ];
 
 const CSS = `
-  @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800;900&family=Nunito:wght@400;600;700;800&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+  .qc-sec, .qc-sec * { font-family: 'Inter', sans-serif !important; }
   .qc-sec {
     background: #f8faff;
     padding: 88px 0 94px;
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Inter', sans-serif;
   }
   .qc-wrap {
     border: 1px solid #dce9ff;
@@ -26,14 +27,16 @@ const CSS = `
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 5px 14px;
+    padding: 5px 16px;
     border-radius: 999px;
-    background: rgba(37,99,235,0.12);
+    background: linear-gradient(135deg, #eef5ff 0%, #ddeaff 100%);
     color: #2563eb;
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
+    box-shadow: 0 1px 8px rgba(37,99,235,0.10);
+    border: 1px solid rgba(37,99,235,0.12);
     margin-bottom: 14px;
   }
   .qc-grid {
@@ -44,9 +47,11 @@ const CSS = `
   }
   .qc-h2 {
     margin: 0 0 12px;
-    font-family: 'Baloo 2', cursive;
-    font-size: clamp(26px, 3vw, 40px);
-    line-height: 1.12;
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: clamp(26px, 3vw, 44px);
+    line-height: 1.08;
+    letter-spacing: -0.6px;
     color: #1a1a2e;
   }
   .qc-h2 span { color: #2563eb; }
@@ -54,7 +59,7 @@ const CSS = `
     margin: 0;
     color: #64748b;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 500;
     line-height: 1.7;
     max-width: 520px;
   }
@@ -66,13 +71,18 @@ const CSS = `
   }
   .qc-feature {
     border: 1px solid #dbeafe;
-    border-radius: 10px;
+    border-radius: 12px;
     background: #fff;
-    padding: 10px;
+    padding: 16px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
     text-align: center;
     color: #2563eb;
-    font-weight: 800;
-    font-size: 11px;
+    font-weight: 700;
+    font-size: 13px;
   }
   .qc-list {
     list-style: none;
@@ -87,10 +97,10 @@ const CSS = `
     border: 1px solid #e2e8f0;
     border-radius: 12px;
     padding: 11px 13px;
-    color: #475569;
+    color: #64748b;
     font-size: 13px;
     line-height: 1.55;
-    font-weight: 700;
+    font-weight: 600;
     display: flex;
     gap: 8px;
     align-items: flex-start;
@@ -104,17 +114,40 @@ const CSS = `
     margin-top: 6px;
     flex-shrink: 0;
   }
+  .qc-cta-wrap {
+    margin-top: 16px;
+    display: flex;
+    justify-content: flex-end;
+  }
   .qc-cta {
-    margin-top: 14px;
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    color: #1a1a2e;
-    font-size: 13px;
-    font-weight: 800;
+    gap: 10px;
     text-decoration: none;
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: clamp(12px, 1vw, 14px);
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    padding: 12px 24px;
+    border-radius: 9999px;
+    border: 1px solid rgba(0,76,153,0.6);
+    background: linear-gradient(180deg, #1a6bb8 0%, #004C99 50%, #003d7a 100%);
+    box-shadow: 0 2px 8px rgba(0,76,153,0.25), inset 0 1px 0 rgba(255,255,255,0.15);
+    text-shadow: 0 1px 0 rgba(0,0,0,0.2);
+    transition: transform 0.1s ease, box-shadow 0.1s ease, filter 0.12s ease;
   }
-  .qc-cta:hover { color: #2563eb; }
+  .qc-cta:hover {
+    filter: brightness(1.04);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,76,153,0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+  }
+  .qc-cta:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 4px rgba(0,76,153,0.2), inset 0 1px 0 rgba(255,255,255,0.1);
+  }
   @media (max-width: 767px) {
     .qc-sec { padding: 58px 0 66px; }
     .qc-wrap { padding: 20px; border-radius: 18px; }
@@ -145,9 +178,9 @@ export default function QualitySection() {
                   with clear process checkpoints and batch-level accountability.
                 </p>
                 <div className="qc-features">
-                  <div className="qc-feature"><Scissors size={14} style={{ marginBottom: 4 }} /><br />Precision</div>
-                  <div className="qc-feature"><Shirt size={14} style={{ marginBottom: 4 }} /><br />Fit Control</div>
-                  <div className="qc-feature"><Clock3 size={14} style={{ marginBottom: 4 }} /><br />Timely Delivery</div>
+                  <div className="qc-feature"><Scissors size={18} />Precision</div>
+                  <div className="qc-feature"><Shirt size={18} />Fit Control</div>
+                  <div className="qc-feature"><Clock3 size={18} />Timely Delivery</div>
                 </div>
               </div>
               <div>
@@ -159,10 +192,12 @@ export default function QualitySection() {
                     </li>
                   ))}
                 </ul>
-                <Link to="/about#quality-control" className="qc-cta">
-                  Read complete quality framework
-                  <ArrowRight size={14} />
-                </Link>
+                <div className="qc-cta-wrap">
+                  <Link to="/about#quality-control" className="qc-cta">
+                    Quality Framework
+                    <ArrowRight size={14} />
+                  </Link>
+                </div>
               </div>
             </div>
           </div>

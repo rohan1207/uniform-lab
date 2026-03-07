@@ -41,14 +41,15 @@ const POINTS = [
 ];
 
 const CSS = `
-  @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800;900&family=Nunito:wght@400;600;700;800&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
+  .why-sec, .why-sec * { font-family: 'Inter', sans-serif !important; }
   .why-sec {
     background: #fff;
     padding: 72px 0 78px;
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Inter', sans-serif;
   }
-  .why-head { text-align: center; margin-bottom: 28px; }
+  .why-head { margin-bottom: 10px; }
   .why-pill {
     display: inline-flex;
     align-items: center;
@@ -62,23 +63,24 @@ const CSS = `
     letter-spacing: 0.12em;
     text-transform: uppercase;
     box-shadow: 0 1px 8px rgba(37,99,235,0.12);
-    margin-bottom: 14px;
   }
   .why-h2 {
-    margin: 0 0 10px;
+    margin: 0;
     color: #1a1a2e;
-    font-family: 'Baloo 2', cursive;
-    font-size: clamp(28px, 3.2vw, 42px);
-    line-height: 1.1;
-    letter-spacing: -0.4px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: clamp(30px, 3.4vw, 52px);
+    line-height: 1.08;
+    letter-spacing: -0.8px;
+    max-width: 560px;
   }
   .why-h2 span { color: #2563eb; }
   .why-sub {
-    margin: 0 auto;
-    max-width: 640px;
+    margin: 0;
+    max-width: 360px;
     color: #64748b;
     font-size: 15px;
-    font-weight: 600;
+    font-weight: 500;
     line-height: 1.68;
   }
 
@@ -130,10 +132,10 @@ const CSS = `
   }
   .why-title {
     margin: 1px 0 4px;
-    color: #1e293b;
-    font-family: 'Baloo 2', cursive;
-    font-size: 18px;
-    font-weight: 800;
+    color: #1a1a2e;
+    font-family: 'Inter', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
     line-height: 1.2;
   }
   .why-text {
@@ -146,9 +148,9 @@ const CSS = `
 
   .why-cta-bar {
     border: 1px solid #dbeafe;
-    border-radius: 14px;
+    border-radius: 16px;
     background: #f8fbff;
-    padding: 12px 14px;
+    padding: 16px 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -156,21 +158,21 @@ const CSS = `
   }
   .why-cta-copy {
     margin: 0;
-    color: #475569;
-    font-size: 13px;
+    color: #64748b;
+    font-size: 16px;
     font-weight: 700;
-    line-height: 1.5;
+    line-height: 1.4;
   }
   /* CTA: NewHero-style pill — #004C99 blue */
   .why-cta {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     text-decoration: none;
     color: #fff;
-    font-family: 'Baloo 2', cursive;
-    font-weight: 900;
-    font-size: clamp(11px, 1vw, 13px);
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: clamp(12px, 1vw, 14px);
     letter-spacing: 0.11em;
     text-transform: uppercase;
     white-space: nowrap;
@@ -212,19 +214,29 @@ export default function WhyChooseSection() {
       <style>{CSS}</style>
       <section className="why-sec">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="why-head">
-            <div className="why-pill">
-              <ShieldCheck size={11} />
-              Why Uniform Lab
+          <div className="why-head mb-10 sm:mb-12 lg:mb-14">
+            {/* Pill — left aligned, own row */}
+            <div className="flex items-center gap-3 mb-4 sm:mb-5">
+              <div className="why-pill">
+                <ShieldCheck size={11} />
+                Why Uniform Lab
+              </div>
             </div>
-            <h2 className="why-h2">
-              Built for Stability,
-              <span> Not Short-Term Supply</span>
-            </h2>
-            <p className="why-sub">
-              Choosing a uniform partner is a long-term decision. We combine operational discipline
-              with transparent execution so institutions can depend on predictable outcomes.
-            </p>
+
+            {/* Heading + sub — flex row like ServicesSection */}
+            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+              <h2 className="why-h2">
+                Built for Stability,
+                <br /><span>Not Short-Term Supply</span>
+              </h2>
+              <p className="why-sub">
+                Choosing a uniform partner is a long-term decision. We combine operational discipline
+                with transparent execution so institutions can depend on predictable outcomes.
+              </p>
+            </div>
+
+            {/* Divider */}
+            <div className="mt-6 sm:mt-8 h-px bg-blue-200/60" />
           </div>
 
           <div className="why-grid">
@@ -256,7 +268,7 @@ export default function WhyChooseSection() {
               Explore our complete approach to consistency, control, and long-term partnership.
             </p>
             <Link to="/about#why-choose" className="why-cta">
-              Read Full Why Choose Us
+              Why Choose Us
               <ArrowRight size={14} />
             </Link>
           </div>

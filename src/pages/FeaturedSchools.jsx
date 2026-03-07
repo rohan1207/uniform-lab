@@ -7,13 +7,14 @@ import { cachedFetch } from "@/lib/apiCache";
    GLOBAL CSS
 ───────────────────────────────────────────────────────────────────────────── */
 const GLOBAL_CSS = `
-  @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800;900&family=Nunito:wght@400;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
   /* ── Root ── */
+  .sp-root, .sp-root * { font-family: 'Inter', sans-serif !important; }
   .sp-root {
     background: #f8faff;
     min-height: 100vh;
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Inter', sans-serif;
   }
 
   /* ── Search bar ── */
@@ -23,7 +24,7 @@ const GLOBAL_CSS = `
     border-radius: 999px;
     outline: none;
     color: #1a1a2e;
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 16px;
     font-weight: 600;
     transition: border-color 0.18s ease, box-shadow 0.18s ease;
@@ -118,7 +119,7 @@ const GLOBAL_CSS = `
     justify-content: center;
     background: #f1f5f9;
     border: 2px solid #e2e8f0;
-    font-family: 'Baloo 2', cursive;
+    font-family: 'Inter', sans-serif;
     font-weight: 900;
     font-size: 22px;
     color: #334155;
@@ -158,21 +159,21 @@ const GLOBAL_CSS = `
 
   .sp-card-name {
     margin: 0;
-    font-family: 'Baloo 2', cursive;
-    font-weight: 900;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
     color: #0f172a;
     line-height: 1.28;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    font-size: clamp(13px, 1.05vw, 15px);
+    font-size: clamp(14px, 1.2vw, 17px);
     letter-spacing: -0.02em;
   }
 
   /* ── View-more button (game style) ── */
   .sp-view-more {
-    font-family: 'Baloo 2', cursive;
+    font-family: 'Inter', sans-serif;
     font-weight: 900;
     font-size: clamp(12px, 1.1vw, 14px);
     letter-spacing: 0.12em;
@@ -203,7 +204,7 @@ const GLOBAL_CSS = `
       font-size: 28px !important;
       letter-spacing: -0.2px !important;
     }
-    .sp-subheading { font-size: 13px !important; }
+    .sp-subheading { font-size: 13px !important; white-space: normal !important; }
 
     .sp-search {
       font-size: 16px !important;
@@ -454,17 +455,17 @@ export default function FeaturedSchools() {
                   color: "#2563eb",
                   fontSize: "clamp(9px, 0.8vw, 11px)",
                   boxShadow: "0 1px 8px rgba(37,99,235,0.14)",
-                  fontFamily: "'Nunito', sans-serif",
+                  fontFamily: "'Inter', sans-serif",
                 }}
               >
-                🏫 500+ Schools on board
+                🏫 100+ Schools on board
               </span>
             </div>
 
             <h1
               className="sp-heading m-0 font-black text-[#1a1a2e] leading-tight mb-3"
               style={{
-                fontFamily: "'Baloo 2', cursive",
+                fontFamily: "'Inter', sans-serif",
                 fontSize: "clamp(28px, 4vw, 54px)",
                 letterSpacing: "-0.5px",
               }}
@@ -473,11 +474,10 @@ export default function FeaturedSchools() {
             </h1>
 
             <p
-              className="sp-subheading m-0 font-semibold text-gray-400 max-w-xl mx-auto leading-snug"
+              className="sp-subheading m-0 font-semibold text-gray-400 max-w-3xl mx-auto leading-snug whitespace-nowrap"
               style={{ fontSize: "clamp(13px, 1.1vw, 16px)" }}
             >
-              Choose your school and shop uniforms, blazers, ties, socks and
-              accessories — all in one place.
+              Choose your school and shop uniforms, blazers, ties, socks and accessories all in one place.
             </p>
 
             <div
@@ -520,7 +520,7 @@ export default function FeaturedSchools() {
             <p
               className="text-center py-8 font-semibold text-gray-400"
               style={{
-                fontFamily: "'Nunito', sans-serif",
+                fontFamily: "'Inter', sans-serif",
                 fontSize: "clamp(14px, 1.1vw, 16px)",
               }}
             >

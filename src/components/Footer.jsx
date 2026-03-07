@@ -1,9 +1,6 @@
 import { Link } from "react-router-dom";
 import { MapPin, Mail, Phone, Clock } from "lucide-react";
 
-const FONT_HEADING = { fontFamily: "'Baloo 2', cursive" };
-const FONT_BODY = { fontFamily: "'Nunito', sans-serif" };
-
 const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "About Us", href: "/about" },
@@ -25,11 +22,11 @@ export default function Footer() {
       style={{
         background: "#060d1f",
         color: "#fff",
-        fontFamily: "'Nunito', sans-serif",
       }}
     >
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800;900&family=Nunito:wght@400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+        footer, footer * { font-family: 'Inter', sans-serif !important; }
         .ftl-link { color: #94a3b8; font-size: 13.5px; font-weight: 600; text-decoration: none; transition: color 0.15s; display: inline-block; }
         .ftl-link:hover { color: #fff; }
         .ftl-col-label {
@@ -89,11 +86,11 @@ export default function Footer() {
             </div>
             <h3
               style={{
-                ...FONT_HEADING,
-                fontSize: 26,
-                fontWeight: 900,
+                fontSize: 24,
+                fontWeight: 800,
                 color: "#fff",
                 margin: "0 0 10px",
+                letterSpacing: "-0.4px",
               }}
             >
               The Uniform Lab
@@ -226,6 +223,7 @@ export default function Footer() {
             alignItems: "center",
             gap: "8px 24px",
             fontSize: 12,
+            fontWeight: 500,
             color: "#94a3b8",
           }}
         >

@@ -1,7 +1,7 @@
 import { Heart } from 'lucide-react';
 
 const CSS = `
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=DM+Sans:wght@400;500;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 `;
 
 export default function TrustedBy() {
@@ -19,7 +19,7 @@ export default function TrustedBy() {
               background: 'linear-gradient(135deg, #fff5f0 0%, #fce8e0 100%)',
               border: '1.5px solid rgba(37,99,235,0.15)',
               boxShadow: '0 4px 20px rgba(15,23,42,0.1), 0 1px 0 rgba(255,255,255,0.9) inset',
-              fontFamily: "'DM Sans', sans-serif",
+              fontFamily: "'Inter', sans-serif",
             }}
           >
             {/* Pulse dot */}
@@ -42,10 +42,11 @@ export default function TrustedBy() {
             />
 
             <span
-              className="text-[13px] font-700 tracking-wide whitespace-nowrap"
+              className="font-700 tracking-wide whitespace-nowrap"
               style={{
-                fontFamily: "'Playfair Display', serif",
+                fontFamily: "'Inter', sans-serif",
                 fontWeight: 700,
+                fontSize: '15px',
                 color: '#1a1a2e',
                 letterSpacing: '0.01em',
               }}

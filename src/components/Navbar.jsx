@@ -492,69 +492,35 @@ export default function Navbar() {
             position: "relative",
           }}
         >
-          {/* Left: Hamburger — minimal, no bg */}
-          <button
-            onClick={() => setOpen((v) => !v)}
-            aria-label={open ? "Close menu" : "Open menu"}
-            aria-expanded={open}
+          {/* Left: Logo */}
+          <Link
+            to="/"
             style={{
+              textDecoration: "none",
               display: "flex",
               alignItems: "center",
-              justifyContent: "center",
-              width: "32px",
-              height: "32px",
-              borderRadius: "6px",
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              color: "#374151",
               flexShrink: 0,
             }}
           >
-            {open ? (
-              <X size={20} strokeWidth={2} />
-            ) : (
-              <Menu size={20} strokeWidth={2} />
-            )}
-          </button>
-
-          {/* Center: Logo (absolute center) */}
-          <div
-            style={{
-              position: "absolute",
-              left: "50%",
-              transform: "translateX(-50%)",
-            }}
-          >
-            <Link
-              to="/"
+            <img
+              src="/logo.png"
+              alt="Logo"
               style={{
-                textDecoration: "none",
-                display: "flex",
-                alignItems: "center",
+                height: "48px",
+                width: "auto",
+                display: "block",
+                objectFit: "contain",
               }}
-            >
-              <img
-                src="/logo.png"
-                alt="Logo"
-                style={{
-                  height: "58px",
-                  width: "auto",
-                  display: "block",
-                  objectFit: "contain",
-                  transform: "scale(1.35)",
-                }}
-              />
-            </Link>
-          </div>
+            />
+          </Link>
 
-          {/* Right: Account + Cart */}
+          {/* Right: Account + Cart + Hamburger */}
           <div
             style={{
               marginLeft: "auto",
               display: "flex",
               alignItems: "center",
-              gap: "4px",
+              gap: "6px",
             }}
           >
             {/* Account icon */}
@@ -642,6 +608,32 @@ export default function Navbar() {
                 >
                   {totalItems > 99 ? "99+" : totalItems}
                 </span>
+              )}
+            </button>
+
+            {/* Hamburger — rightmost */}
+            <button
+              onClick={() => setOpen((v) => !v)}
+              aria-label={open ? "Close menu" : "Open menu"}
+              aria-expanded={open}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "40px",
+                height: "40px",
+                borderRadius: "10px",
+                background: "none",
+                border: "1.5px solid #e2e8f0",
+                cursor: "pointer",
+                color: "#374151",
+                flexShrink: 0,
+              }}
+            >
+              {open ? (
+                <X size={20} strokeWidth={2} />
+              ) : (
+                <Menu size={20} strokeWidth={2} />
               )}
             </button>
           </div>
