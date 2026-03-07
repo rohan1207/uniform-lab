@@ -85,10 +85,16 @@ const CSS = `
   }
 
   .why-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 12px;
     margin-bottom: 20px;
+  }
+
+  .why-card-wrap {
+    flex: 0 0 calc(33.333% - 8px);
+    max-width: calc(33.333% - 8px);
   }
 
   .why-card-wrap { position: relative; }
@@ -195,11 +201,12 @@ const CSS = `
   }
 
   @media (max-width: 1023px) {
-    .why-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .why-card-wrap { flex: 0 0 calc(50% - 6px); max-width: calc(50% - 6px); }
   }
   @media (max-width: 767px) {
     .why-sec { padding: 56px 0 64px; }
-    .why-grid { grid-template-columns: 1fr; gap: 10px; }
+    .why-grid { gap: 10px; }
+    .why-card-wrap { flex: 0 0 100%; max-width: 100%; }
     .why-sub { font-size: 14px; }
     .why-title { font-size: 17px; }
     .why-card { padding: 13px 12px; }

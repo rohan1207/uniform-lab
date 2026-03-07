@@ -12,12 +12,12 @@ const API_BASE = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
    STYLES
 ────────────────────────────────────────────────────────────────────────── */
 const GLOBAL_CSS = `
-  @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800;900&family=Nunito:wght@400;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+  .spp-root, .spp-root * { font-family: 'Inter', sans-serif !important; }
 
   .spp-root {
     background: #f4f6fb;
     min-height: 100vh;
-    font-family: 'Nunito', sans-serif;
   }
 
   /* ── Sticky top bar ── */
@@ -61,9 +61,8 @@ const GLOBAL_CSS = `
     border-radius: 12px;
     outline: none;
     color: #0f172a;
-    font-family: 'Nunito', sans-serif;
-    font-size: 16px;
-    font-weight: 600;
+    font-size: 15px;
+    font-weight: 500;
     transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
     width: 100%;
     padding: 9px 36px 9px 38px;
@@ -77,7 +76,6 @@ const GLOBAL_CSS = `
 
   /* ── Sidebar section label ── */
   .spp-section-label {
-    font-family: 'Nunito', sans-serif;
     font-weight: 700;
     font-size: 10.5px;
     letter-spacing: 0.1em;
@@ -93,7 +91,6 @@ const GLOBAL_CSS = `
     width: 100%;
     padding: 7px 12px;
     border-radius: 10px;
-    font-family: 'Nunito', sans-serif;
     font-size: 13px;
     font-weight: 600;
     border: 1.5px solid transparent;
@@ -121,7 +118,6 @@ const GLOBAL_CSS = `
     border: 1.5px solid #e2e8f0;
     border-radius: 10px;
     color: #0f172a;
-    font-family: 'Nunito', sans-serif;
     font-size: 13px;
     font-weight: 600;
     padding: 8px 12px;
@@ -156,8 +152,7 @@ const GLOBAL_CSS = `
 
   /* ── Category heading ── */
   .spp-cat-heading {
-    font-family: 'Baloo 2', cursive;
-    font-weight: 900;
+    font-weight: 800;
     color: #0f172a;
     letter-spacing: -0.4px;
     font-size: clamp(17px, 1.8vw, 22px);
@@ -171,7 +166,6 @@ const GLOBAL_CSS = `
     background: #fff5f5;
     border: 1.5px solid #fecaca;
     color: #dc2626;
-    font-family: 'Nunito', sans-serif;
     font-size: 12px;
     font-weight: 700;
     cursor: pointer;
@@ -244,7 +238,6 @@ const GLOBAL_CSS = `
       background: #f8fafc;
       border: 1.5px solid #e2e8f0;
       color: #0f172a;
-      font-family: 'Nunito', sans-serif;
       font-weight: 700;
       cursor: pointer;
       white-space: nowrap;
@@ -257,7 +250,6 @@ const GLOBAL_CSS = `
       align-items: center;
       padding: 6px 12px;
       border-radius: 8px;
-      font-family: 'Nunito', sans-serif;
       font-size: 12px;
       font-weight: 700;
       border: 1.5px solid #e2e8f0;
@@ -279,7 +271,6 @@ const GLOBAL_CSS = `
       gap: 4px;
       padding: 6px 11px;
       border-radius: 8px;
-      font-family: 'Nunito', sans-serif;
       font-size: 12px;
       font-weight: 700;
       border: 1.5px solid #fecaca;
@@ -984,8 +975,9 @@ export default function SchoolProductsPage() {
             <p
               className="mb-2 font-black text-[#1a1a2e]"
               style={{
-                fontFamily: "'Baloo 2', cursive",
                 fontSize: "clamp(22px, 2.5vw, 32px)",
+                fontWeight: 800,
+                letterSpacing: "-0.6px",
               }}
             >
               School not found 🏫
@@ -994,8 +986,8 @@ export default function SchoolProductsPage() {
               to="/schools"
               className="inline-flex items-center gap-2 font-bold text-[#2563eb] hover:underline mt-3"
               style={{
-                fontFamily: "'Nunito', sans-serif",
                 fontSize: "clamp(13px, 1vw, 15px)",
+                fontWeight: 700,
               }}
             >
               <ArrowLeft size={18} />
@@ -1021,8 +1013,8 @@ export default function SchoolProductsPage() {
                 to="/schools"
                 className="inline-flex items-center gap-1.5 font-bold text-[#2563eb] hover:text-[#1d4ed8] transition-colors flex-shrink-0"
                 style={{
-                  fontFamily: "'Nunito', sans-serif",
                   fontSize: "clamp(12px, 0.9vw, 14px)",
+                  fontWeight: 700,
                 }}
               >
                 <ArrowLeft size={17} strokeWidth={2.5} />
@@ -1032,8 +1024,8 @@ export default function SchoolProductsPage() {
                 <h1
                   className="m-0 font-black leading-tight text-center truncate w-full"
                   style={{
-                    fontFamily: "'Baloo 2', cursive",
                     fontSize: "clamp(14px, 1.4vw, 19px)",
+                    fontWeight: 800,
                     letterSpacing: "-0.3px",
                     color: "#0f172a",
                   }}
@@ -1043,8 +1035,8 @@ export default function SchoolProductsPage() {
                 <p
                   className="m-0 font-semibold"
                   style={{
-                    fontFamily: "'Nunito',sans-serif",
                     fontSize: "clamp(10px,0.8vw,11px)",
+                    fontWeight: 500,
                     color: "#94a3b8",
                     marginTop: "2px",
                   }}
@@ -1069,7 +1061,7 @@ export default function SchoolProductsPage() {
                     className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full text-white text-xs font-black flex items-center justify-center"
                     style={{
                       background: "linear-gradient(135deg,#1e3a8a,#2563eb)",
-                      fontFamily: "'Baloo 2',cursive",
+                      fontWeight: 800,
                       boxShadow: "0 2px 6px rgba(37,99,235,0.5)",
                       border: "2px solid #fff",
                     }}
@@ -1088,8 +1080,8 @@ export default function SchoolProductsPage() {
                   to="/schools"
                   className="inline-flex items-center gap-1 font-bold text-[#2563eb]"
                   style={{
-                    fontFamily: "'Nunito', sans-serif",
                     fontSize: "13px",
+                    fontWeight: 700,
                   }}
                 >
                   <ArrowLeft size={15} strokeWidth={2.5} />
@@ -1111,7 +1103,7 @@ export default function SchoolProductsPage() {
                       className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full text-white text-xs font-black flex items-center justify-center"
                       style={{
                         background: "linear-gradient(135deg,#1e3a8a,#2563eb)",
-                        fontFamily: "'Baloo 2',cursive",
+                        fontWeight: 800,
                         boxShadow: "0 2px 6px rgba(37,99,235,0.5)",
                         border: "2px solid #fff",
                       }}
@@ -1125,8 +1117,8 @@ export default function SchoolProductsPage() {
               <h1
                 className="m-0 font-black leading-snug"
                 style={{
-                  fontFamily: "'Baloo 2', cursive",
                   fontSize: "15px",
+                  fontWeight: 800,
                   letterSpacing: "-0.2px",
                   color: "#0f172a",
                   whiteSpace: "nowrap",
@@ -1139,8 +1131,8 @@ export default function SchoolProductsPage() {
               <p
                 className="m-0"
                 style={{
-                  fontFamily: "'Nunito',sans-serif",
                   fontSize: "11px",
+                  fontWeight: 500,
                   color: "#94a3b8",
                   marginTop: "1px",
                 }}
@@ -1358,10 +1350,9 @@ export default function SchoolProductsPage() {
             {/* Disclaimer */}
             <p
               style={{
-                fontFamily: "'Nunito', sans-serif",
                 fontSize: "11px",
                 color: "#94a3b8",
-                fontWeight: 600,
+                fontWeight: 500,
                 marginBottom: "18px",
                 lineHeight: 1.5,
               }}
@@ -1378,8 +1369,9 @@ export default function SchoolProductsPage() {
                 <p
                   className="mb-3 font-black text-[#1a1a2e]"
                   style={{
-                    fontFamily: "'Baloo 2', cursive",
                     fontSize: "clamp(18px, 2vw, 26px)",
+                    fontWeight: 800,
+                    letterSpacing: "-0.4px",
                   }}
                 >
                   {hasActiveFilters
@@ -1389,8 +1381,8 @@ export default function SchoolProductsPage() {
                 <p
                   className="font-semibold text-gray-400 mb-4"
                   style={{
-                    fontFamily: "'Nunito',sans-serif",
                     fontSize: "clamp(12px,1vw,14px)",
+                    fontWeight: 500,
                   }}
                 >
                   {hasActiveFilters
@@ -1423,10 +1415,9 @@ export default function SchoolProductsPage() {
                 </div>
                 <p
                   style={{
-                    fontFamily: "'Nunito', sans-serif",
                     fontSize: "11px",
                     color: "#94a3b8",
-                    fontWeight: 600,
+                    fontWeight: 500,
                     textAlign: "center",
                     marginTop: "32px",
                     lineHeight: 1.5,

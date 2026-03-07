@@ -22,7 +22,8 @@ import {
    STYLES
 ────────────────────────────────────────────────────────────────────────── */
 const QS_CSS = `
-  @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800;900&family=Nunito:wght@400;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+  .qs-panel, .qs-panel * { font-family: 'Inter', sans-serif !important; }
 
   /* ── Scrollbar ── */
   .qs-scroll { scrollbar-width: none; }
@@ -72,7 +73,6 @@ const QS_CSS = `
     border: 1.5px solid #e2e8f0;
     background: #fff;
     color: #374151;
-    font-family: 'Nunito', sans-serif;
     font-size: 12.5px;
     font-weight: 700;
     cursor: pointer;
@@ -95,8 +95,7 @@ const QS_CSS = `
     background: linear-gradient(135deg, #eef5ff 0%, #ddeaff 100%);
     border: 1.5px solid rgba(0,76,153,0.35);
     color: #004C99;
-    font-family: 'Baloo 2', cursive;
-    font-weight: 900;
+    font-weight: 800;
     font-size: 12px;
     letter-spacing: 0.04em;
     text-decoration: none;
@@ -118,8 +117,8 @@ const QS_CSS = `
     cursor: pointer;
     background: linear-gradient(180deg, #fcd88a 0%, #F7BE4F 50%, #e5a732 100%);
     color: #5c3a0a;
-    font-family: 'Baloo 2', cursive;
-    font-weight: 900;
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
     font-size: clamp(11px, 1vw, 13px);
     letter-spacing: 0.11em;
     text-transform: uppercase;
@@ -143,8 +142,8 @@ const QS_CSS = `
     cursor: pointer;
     background: linear-gradient(180deg, #1a6bb8 0%, #004C99 50%, #003d7a 100%);
     color: #fff;
-    font-family: 'Baloo 2', cursive;
-    font-weight: 900;
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
     font-size: clamp(11px, 1vw, 13px);
     letter-spacing: 0.11em;
     text-transform: uppercase;
@@ -408,8 +407,7 @@ export function QuickShopDrawer({
             <h2
               style={{
                 margin: 0,
-                fontFamily: "'Baloo 2', cursive",
-                fontWeight: 900,
+                fontWeight: 800,
                 fontSize: "18px",
                 color: "#0f172a",
               }}
@@ -451,8 +449,7 @@ export function QuickShopDrawer({
             <h2
               className="m-0 leading-snug line-clamp-2"
               style={{
-                fontFamily: "'Baloo 2', cursive",
-                fontWeight: 900,
+                fontWeight: 800,
                 fontSize: "16px",
                 color: "#0f172a",
               }}
@@ -462,8 +459,7 @@ export function QuickShopDrawer({
             <p
               className="m-0 mt-0.5"
               style={{
-                fontFamily: "'Baloo 2', cursive",
-                fontWeight: 900,
+                fontWeight: 800,
                 fontSize: "18px",
                 color: "#0f172a",
               }}
@@ -581,7 +577,6 @@ export function QuickShopDrawer({
               <p
                 className="m-0 mb-1"
                 style={{
-                  fontFamily: "'Nunito', sans-serif",
                   fontWeight: 700,
                   fontSize: "11px",
                   color: "#94a3b8",
@@ -594,7 +589,6 @@ export function QuickShopDrawer({
               <p
                 className="m-0"
                 style={{
-                  fontFamily: "'Nunito', sans-serif",
                   fontWeight: 700,
                   fontSize: "12.5px",
                   color: "#475569",
@@ -604,8 +598,7 @@ export function QuickShopDrawer({
                 <span
                   style={{
                     color: "#0f172a",
-                    fontFamily: "'Baloo 2', cursive",
-                    fontWeight: 900,
+                    fontWeight: 800,
                   }}
                 >
                   {selectedSize}
@@ -615,7 +608,6 @@ export function QuickShopDrawer({
                 <p
                   className="m-0 mt-0.5"
                   style={{
-                    fontFamily: "'Nunito', sans-serif",
                     fontWeight: 700,
                     fontSize: "12.5px",
                     color: "#475569",
@@ -625,8 +617,7 @@ export function QuickShopDrawer({
                   <span
                     style={{
                       color: "#f59e0b",
-                      fontFamily: "'Baloo 2', cursive",
-                      fontWeight: 900,
+                      fontWeight: 800,
                     }}
                   >
                     {selectedColor.name}
@@ -636,7 +627,6 @@ export function QuickShopDrawer({
               <p
                 className="m-0 mt-0.5"
                 style={{
-                  fontFamily: "'Nunito', sans-serif",
                   fontWeight: 700,
                   fontSize: "12.5px",
                   color: "#475569",
@@ -646,8 +636,7 @@ export function QuickShopDrawer({
                 <span
                   style={{
                     color: "#0f172a",
-                    fontFamily: "'Baloo 2', cursive",
-                    fontWeight: 900,
+                    fontWeight: 800,
                   }}
                 >
                   {quantity}
@@ -672,8 +661,7 @@ export function QuickShopDrawer({
               <h3
                 className="m-0 leading-tight mb-1"
                 style={{
-                  fontFamily: "'Baloo 2', cursive",
-                  fontWeight: 900,
+                  fontWeight: 800,
                   fontSize: "clamp(17px, 1.5vw, 21px)",
                   color: "#0f172a",
                 }}
@@ -683,8 +671,7 @@ export function QuickShopDrawer({
               <p
                 className="m-0"
                 style={{
-                  fontFamily: "'Baloo 2', cursive",
-                  fontWeight: 900,
+                  fontWeight: 800,
                   fontSize: "22px",
                   color: "#0f172a",
                   letterSpacing: "-0.3px",
@@ -706,7 +693,6 @@ export function QuickShopDrawer({
                 <p
                   className="m-0 mb-2.5"
                   style={{
-                    fontFamily: "'Nunito', sans-serif",
                     fontWeight: 700,
                     fontSize: "10.5px",
                     color: "#64748b",
@@ -763,7 +749,6 @@ export function QuickShopDrawer({
               <p
                 className="m-0 mb-2.5"
                 style={{
-                  fontFamily: "'Nunito', sans-serif",
                   fontWeight: 700,
                   fontSize: "10.5px",
                   color: "#64748b",
@@ -774,8 +759,7 @@ export function QuickShopDrawer({
                 Size —{" "}
                 <span
                   style={{
-                    fontFamily: "'Baloo 2', cursive",
-                    fontWeight: 900,
+                    fontWeight: 800,
                     color: "#f59e0b",
                     textTransform: "none",
                     letterSpacing: "normal",
@@ -804,7 +788,6 @@ export function QuickShopDrawer({
               <p
                 className="m-0 mb-2.5"
                 style={{
-                  fontFamily: "'Nunito', sans-serif",
                   fontWeight: 700,
                   fontSize: "10.5px",
                   color: "#64748b",
@@ -835,8 +818,7 @@ export function QuickShopDrawer({
                 <span
                   className="w-9 text-center"
                   style={{
-                    fontFamily: "'Baloo 2', cursive",
-                    fontWeight: 900,
+                    fontWeight: 800,
                     fontSize: "15px",
                     color: "#0f172a",
                   }}
@@ -867,7 +849,6 @@ export function QuickShopDrawer({
                 onClick={onClose}
                 className="inline-flex items-center gap-1.5 transition-colors hover:text-[#2563eb]"
                 style={{
-                  fontFamily: "'Nunito', sans-serif",
                   fontWeight: 700,
                   fontSize: "12.5px",
                   color: "#94a3b8",
@@ -893,7 +874,6 @@ export function QuickShopDrawer({
               <span
                 key={t}
                 style={{
-                  fontFamily: "'Nunito', sans-serif",
                   fontWeight: 700,
                   fontSize: "10px",
                   color: "#94a3b8",

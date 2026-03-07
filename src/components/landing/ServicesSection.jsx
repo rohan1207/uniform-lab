@@ -1,6 +1,6 @@
 "use client";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -32,6 +32,7 @@ const SERVICES = [
     surfaceFrom: "#ffffff",
     surfaceTo: "#f6faff",
     grad: "from-blue-600 to-indigo-600",
+    link: "/schools",
   },
   {
     num: "02",
@@ -45,6 +46,7 @@ const SERVICES = [
     surfaceFrom: "#ffffff",
     surfaceTo: "#f3fbff",
     grad: "from-sky-500 to-blue-600",
+    link: "/corporate",
   },
   {
     num: "03",
@@ -58,6 +60,7 @@ const SERVICES = [
     surfaceFrom: "#ffffff",
     surfaceTo: "#f6f5ff",
     grad: "from-indigo-500 to-violet-600",
+    link: "/bulk-manufacturing",
   },
 ];
 
@@ -73,6 +76,7 @@ const fadeUp = {
 function ServiceCard({ service, index }) {
   const cardRef = useRef(null);
   const [hovered, setHovered] = useState(false);
+  const navigate = useNavigate();
   const rawX = useMotionValue(0);
   const rawY = useMotionValue(0);
   const rotateX = useSpring(rawY, { stiffness: 280, damping: 28 });
@@ -109,7 +113,8 @@ function ServiceCard({ service, index }) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={handleMouseLeave}
       style={{ rotateX, rotateY, transformPerspective: 900 }}
-      className="svc-card relative group cursor-default"
+      className="svc-card relative group cursor-pointer"
+      onClick={() => navigate(service.link)}
     >
       {/* Glow backdrop */}
       <div
@@ -221,7 +226,7 @@ function ServiceCard({ service, index }) {
             </span>
             <ArrowUpRight
               size={14}
-              className="opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
               style={{ color: service.accent }}
             />
           </div>

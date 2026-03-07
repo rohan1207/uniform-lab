@@ -7,12 +7,12 @@ import { cachedFetch } from "@/lib/apiCache";
    CSS - premium card style matching FeaturedSchools
 --------------------------------------------------------------------------- */
 const CSS = `
-  @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800;900&family=Nunito:wght@400;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+  .srch-root, .srch-root * { font-family: 'Inter', sans-serif; }
 
   .srch-root {
     background: #f8faff;
     min-height: 100vh;
-    font-family: 'Nunito', sans-serif;
   }
 
   .srch-input {
@@ -21,7 +21,6 @@ const CSS = `
     border-radius: 999px;
     outline: none;
     color: #1a1a2e;
-    font-family: 'Nunito', sans-serif;
     font-size: 16px;
     font-weight: 600;
     transition: border-color 0.18s ease, box-shadow 0.18s ease;
@@ -41,7 +40,6 @@ const CSS = `
     border-radius: 999px;
     border: 1.5px solid #e2e8f0;
     background: #fff;
-    font-family: 'Nunito', sans-serif;
     font-size: 12px;
     font-weight: 600;
     color: #475569;
@@ -80,7 +78,6 @@ const CSS = `
     z-index: 2;
     padding: 2px 6px;
     border-radius: 4px;
-    font-family: 'Nunito', sans-serif;
     font-weight: 600;
     font-size: 9px;
     letter-spacing: 0.04em;
@@ -126,8 +123,7 @@ const CSS = `
     justify-content: center;
     background: #f1f5f9;
     border: 2px solid #e2e8f0;
-    font-family: 'Baloo 2', cursive;
-    font-weight: 900;
+    font-weight: 800;
     font-size: 22px;
     color: #334155;
     letter-spacing: -0.5px;
@@ -164,8 +160,7 @@ const CSS = `
 
   .srch-card-name {
     margin: 0;
-    font-family: 'Baloo 2', cursive;
-    font-weight: 900;
+    font-weight: 800;
     color: #0f172a;
     line-height: 1.28;
     display: -webkit-box;
@@ -479,7 +474,6 @@ export default function SearchPage() {
                   color: "#2563eb",
                   fontSize: "clamp(9px, 0.8vw, 11px)",
                   boxShadow: "0 1px 8px rgba(37,99,235,0.14)",
-                  fontFamily: "'Nunito', sans-serif",
                 }}
               >
                 Find & Shop
@@ -489,9 +483,10 @@ export default function SearchPage() {
             <h1
               className="srch-heading m-0 font-black text-[#1a1a2e] leading-tight mb-2"
               style={{
-                fontFamily: "'Baloo 2', cursive",
+                fontFamily: "'Inter', sans-serif",
+                fontWeight: 800,
                 fontSize: "clamp(26px, 3.6vw, 48px)",
-                letterSpacing: "-0.5px",
+                letterSpacing: "-0.8px",
               }}
             >
               Search Your School
@@ -554,7 +549,6 @@ export default function SearchPage() {
           <div className="flex items-baseline justify-between mb-4 max-w-7xl mx-auto">
             <p
               className="text-xs sm:text-sm font-semibold text-slate-400"
-              style={{ fontFamily: "'Nunito', sans-serif" }}
             >
               {loading ? (
                 "Loading schools..."
@@ -617,13 +611,12 @@ export default function SearchPage() {
               </div>
               <p
                 className="mb-2 font-black text-[#1a1a2e]"
-                style={{ fontFamily: "'Baloo 2', cursive", fontSize: "20px" }}
+                style={{ fontFamily: "'Inter', sans-serif", fontWeight: 800, fontSize: "20px", letterSpacing: "-0.4px" }}
               >
                 {trimmed ? "No school found" : "No schools available"}
               </p>
               <p
                 className="text-sm text-slate-400 max-w-xs leading-relaxed"
-                style={{ fontFamily: "'Nunito', sans-serif" }}
               >
                 {trimmed ? (
                   <>
@@ -657,7 +650,6 @@ export default function SearchPage() {
               <Link
                 to="/schools"
                 className="inline-flex items-center gap-2 text-sm font-bold text-[#2563eb] hover:underline"
-                style={{ fontFamily: "'Nunito', sans-serif" }}
               >
                 Browse all schools <ArrowRight size={16} />
               </Link>

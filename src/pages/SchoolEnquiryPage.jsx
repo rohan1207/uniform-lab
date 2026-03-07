@@ -60,12 +60,13 @@ function Reveal({ children, delay = 0, className = "", style = {} }) {
 
 /* ─── CSS ─────────────────────────────────────────────────────────────── */
 const CSS = `
-  @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800;900&family=Nunito:wght@400;600;700;800&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
   *, *::before, *::after { box-sizing: border-box; }
 
+  .eq-root, .eq-root * { font-family: 'Inter', sans-serif !important; }
+
   .eq-root {
-    font-family: 'Nunito', sans-serif;
     background: #f6f8ff;
     min-height: 100vh;
     overflow-x: hidden;
@@ -98,15 +99,14 @@ const CSS = `
     margin-bottom: 22px; backdrop-filter: blur(8px);
   }
   .eq-h1 {
-    font-family: 'Baloo 2', cursive;
-    font-size: clamp(30px, 5vw, 58px);
-    color: #fff; font-weight: 900;
-    line-height: 1.06; margin: 0 0 16px;
+    font-size: clamp(28px, 5vw, 56px);
+    color: #fff; font-weight: 800;
+    line-height: 1.06; letter-spacing: -0.8px; margin: 0 0 16px;
   }
   .eq-h1 em { font-style: normal; color: #93c5fd; }
   .eq-hero-sub {
     color: #93c5fd; font-size: clamp(14px, 1.3vw, 17px);
-    font-weight: 600; line-height: 1.7;
+    font-weight: 500; line-height: 1.7;
   }
 
   /* ── Main layout ── */
@@ -148,15 +148,15 @@ const CSS = `
     background: #2563eb; border-radius: 2px;
   }
   .eq-info-h2 {
-    font-family: 'Baloo 2', cursive;
-    font-size: clamp(22px, 2.4vw, 30px);
+    font-size: clamp(20px, 2.2vw, 28px);
     color: #1a1a2e; font-weight: 800;
-    line-height: 1.15; margin: 0 0 10px;
+    line-height: 1.12; margin: 0 0 10px;
+    letter-spacing: -0.4px;
   }
   .eq-info-h2 span { color: #2563eb; }
   .eq-info-p {
-    color: #64748b; font-size: 14px; font-weight: 600;
-    line-height: 1.7; margin: 0 0 24px;
+    color: #64748b; font-size: 14px; font-weight: 500;
+    line-height: 1.75; margin: 0 0 24px;
   }
 
   /* Feature list inside info card */
@@ -169,7 +169,7 @@ const CSS = `
   }
   .eq-feat:hover { background: #eff6ff; border-color: #bfdbfe; transform: translateX(3px); }
   .eq-feat-icon { color: #2563eb; flex-shrink: 0; margin-top: 1px; }
-  .eq-feat-text { font-size: 13px; font-weight: 700; color: #475569; line-height: 1.5; }
+  .eq-feat-text { font-size: 13px; font-weight: 500; color: #64748b; line-height: 1.55; }
 
   /* Feature grid — 2 cols */
   .eq-feat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -189,7 +189,7 @@ const CSS = `
     flex-shrink: 0;
   }
   .eq-feat-box-title { font-size: 12px; font-weight: 800; color: #1e293b; margin-bottom: 2px; }
-  .eq-feat-box-sub { font-size: 11px; font-weight: 600; color: #64748b; line-height: 1.4; }
+  .eq-feat-box-sub { font-size: 11px; font-weight: 500; color: #64748b; line-height: 1.4; }
 
   /* Contact info strip */
   .eq-contact-strip {
@@ -223,11 +223,11 @@ const CSS = `
     border-bottom: 1px solid #dbeafe;
   }
   .eq-form-title {
-    font-family: 'Baloo 2', cursive;
-    font-size: clamp(20px, 2vw, 26px);
+    font-size: clamp(18px, 1.8vw, 24px);
     font-weight: 800; color: #1e293b; margin: 0 0 6px;
+    letter-spacing: -0.3px;
   }
-  .eq-form-subtitle { color: #64748b; font-size: 13px; font-weight: 600; }
+  .eq-form-subtitle { color: #64748b; font-size: 13px; font-weight: 500; }
   .eq-form-body { padding: 28px 32px 32px; }
 
   /* Form elements */
@@ -241,8 +241,8 @@ const CSS = `
   .eq-input {
     width: 100%; padding: 12px 16px;
     border: 1.5px solid #e5edf9; border-radius: 12px;
-    background: #f8faff; font-family: 'Nunito', sans-serif;
-    font-size: 16px; font-weight: 600; color: #1e293b;
+    background: #f8faff;
+    font-size: 15px; font-weight: 500; color: #1e293b;
     transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
     appearance: none; outline: none;
   }
@@ -251,7 +251,7 @@ const CSS = `
     box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
     background: #fff;
   }
-  .eq-input::placeholder { color: #cbd5e1; font-weight: 600; }
+  .eq-input::placeholder { color: #cbd5e1; font-weight: 400; }
   .eq-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
   textarea.eq-input { resize: none; }
 
@@ -262,8 +262,8 @@ const CSS = `
     cursor: pointer;
     background: linear-gradient(180deg, #1a6bb8 0%, #004C99 50%, #003d7a 100%);
     box-shadow: 0 2px 8px rgba(0,76,153,0.25), inset 0 1px 0 rgba(255,255,255,0.15);
-    color: #fff; font-family: 'Baloo 2', cursive;
-    font-size: 14px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+    color: #fff; font-size: clamp(12px, 1vw, 14px);
+    font-weight: 700; letter-spacing: 0.11em; text-transform: uppercase;
     display: flex; align-items: center; justify-content: center; gap: 10px;
     transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
     margin-top: 22px;
@@ -329,19 +329,19 @@ const CSS = `
     margin: 0 auto 24px; color: #059669;
   }
   .eq-success-title {
-    font-family: 'Baloo 2', cursive;
-    font-size: clamp(22px, 3vw, 32px);
-    color: #1a1a2e; font-weight: 900; margin: 0 0 12px;
+    font-size: clamp(20px, 2.6vw, 30px);
+    color: #1a1a2e; font-weight: 800;
+    letter-spacing: -0.4px; margin: 0 0 12px;
   }
-  .eq-success-sub { color: #64748b; font-size: 15px; font-weight: 600; line-height: 1.7; margin: 0 0 28px; }
+  .eq-success-sub { color: #64748b; font-size: 15px; font-weight: 500; line-height: 1.7; margin: 0 0 28px; }
   .eq-success-back {
     display: inline-flex; align-items: center; gap: 8px;
     padding: 13px 26px; border-radius: 999px;
     border: 1px solid rgba(0,76,153,0.6);
     background: linear-gradient(180deg, #1a6bb8 0%, #004C99 50%, #003d7a 100%);
     box-shadow: 0 2px 8px rgba(0,76,153,0.25), inset 0 1px 0 rgba(255,255,255,0.15);
-    color: #fff; font-family: 'Baloo 2', cursive;
-    font-size: 14px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+    color: #fff; font-size: clamp(12px, 1vw, 14px);
+    font-weight: 700; letter-spacing: 0.11em; text-transform: uppercase;
     text-decoration: none;
     transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
   }
@@ -752,7 +752,7 @@ export default function SchoolEnquiryPage() {
 
                   <div className="eq-trust">
                     {[
-                      "500+ schools trust us",
+                      "100+ schools trust us",
                       "No spam, ever",
                       "Response within 24h",
                     ].map((t) => (

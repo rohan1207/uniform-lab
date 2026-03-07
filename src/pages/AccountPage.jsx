@@ -3,9 +3,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Copy, Check, ExternalLink } from "lucide-react";
 
-/* Match NewHero.jsx: Baloo 2 (headings), Nunito (body). Pill buttons: blue/gold gradients. */
-const FONT_HEADING = { fontFamily: "'Baloo 2', cursive" };
-const FONT_BODY = { fontFamily: "'Nunito', sans-serif" };
+/* Font: Inter throughout */
+const FONT_HEADING = { fontFamily: "'Inter', sans-serif", fontWeight: 800 };
+const FONT_BODY = { fontFamily: "'Inter', sans-serif" };
 const BTN_PRIMARY = {
   background: "linear-gradient(180deg, #1a6bb8 0%, #004C99 50%, #003d7a 100%)",
   border: "1px solid rgba(0,76,153,0.6)",
@@ -1195,7 +1195,7 @@ export default function AccountPage() {
                                       ? "#374151"
                                       : "#94a3b8",
                                   whiteSpace: "nowrap",
-                                  fontFamily: "'Nunito', sans-serif",
+                                  fontFamily: "'Inter', sans-serif",
                                 }}
                               >
                                 {step.label}
@@ -1226,7 +1226,7 @@ export default function AccountPage() {
                   {/* ── Tracking number ── */}
                   <div
                     className="pt-3 border-t border-slate-100"
-                    style={{ fontFamily: "'Nunito', sans-serif" }}
+                    style={{ fontFamily: "'Inter', sans-serif" }}
                   >
                     <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide mb-1.5">
                       Tracking No.
@@ -1236,7 +1236,7 @@ export default function AccountPage() {
                         <div className="flex items-center gap-2 flex-wrap">
                           <span
                             className="text-sm font-bold text-slate-800"
-                            style={{ fontFamily: "'Baloo 2', cursive" }}
+                            style={{ fontFamily: "'Inter', sans-serif", fontWeight: 800 }}
                           >
                             {order.trackingNumber}
                           </span>
@@ -1557,7 +1557,7 @@ export default function AccountPage() {
       className="min-h-screen bg-[var(--page-bg)] pt-24 px-4 sm:px-6"
       style={FONT_BODY}
     >
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700&display=swap');`}</style>
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap'); .min-h-screen { font-family: 'Inter', sans-serif; }`}</style>
       <div className="max-w-5xl mx-auto">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
           <div>

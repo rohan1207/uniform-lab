@@ -3,11 +3,12 @@ import { useWishlist } from "@/contexts/WishlistContext";
 import { useCart } from "@/contexts/CartContext";
 import { Heart, ShoppingBag, X } from "lucide-react";
 
-const FONT_HEADING = { fontFamily: "'Baloo 2', cursive" };
-const FONT_BODY = { fontFamily: "'Nunito', sans-serif" };
+const FONT_HEADING = { fontFamily: "'Inter', sans-serif", fontWeight: 800 };
+const FONT_BODY = { fontFamily: "'Inter', sans-serif" };
 
 const PAGE_CSS = `
-  @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800;900&family=Nunito:wght@400;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+  .wl-card, .wl-card * { font-family: 'Inter', sans-serif; }
 
   .wl-grid {
     display: grid;

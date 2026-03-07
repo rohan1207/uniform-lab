@@ -52,13 +52,13 @@ const FAQS = [
 ];
 
 const CSS = `
-  @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800;900&family=Nunito:wght@400;600;700;800&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+  .fqp-root, .fqp-root * { font-family: 'Inter', sans-serif !important; }
   .fqp-root {
     min-height: 100vh;
     background: #f8faff;
     padding-top: 98px;
     padding-bottom: 64px;
-    font-family: 'Nunito', sans-serif;
   }
   .fqp-head { text-align: center; margin-bottom: 34px; }
   .fqp-pill {
@@ -78,10 +78,10 @@ const CSS = `
   .fqp-h1 {
     margin: 0 0 10px;
     color: #1a1a2e;
-    font-family: 'Baloo 2', cursive;
-    font-size: clamp(32px, 4vw, 50px);
+    font-size: clamp(30px, 3.4vw, 50px);
+    font-weight: 800;
     line-height: 1.08;
-    letter-spacing: -0.4px;
+    letter-spacing: -0.8px;
   }
   .fqp-sub {
     margin: 0 auto;
@@ -89,7 +89,7 @@ const CSS = `
     color: #64748b;
     font-size: 15px;
     line-height: 1.7;
-    font-weight: 600;
+    font-weight: 500;
   }
   .fqp-list {
     display: flex;
@@ -107,21 +107,20 @@ const CSS = `
   .fqp-q {
     margin: 0 0 6px;
     color: #1e293b;
-    font-family: 'Baloo 2', cursive;
-    font-size: 23px;
-    line-height: 1.18;
-    font-weight: 800;
+    font-size: 17px;
+    line-height: 1.3;
+    font-weight: 700;
   }
   .fqp-a {
     margin: 0;
     color: #64748b;
     font-size: 14px;
-    line-height: 1.64;
-    font-weight: 600;
+    line-height: 1.7;
+    font-weight: 500;
   }
   @media (max-width: 767px) {
     .fqp-root { padding-top: 90px; }
-    .fqp-q { font-size: 20px; }
+    .fqp-q { font-size: 15px; }
     .fqp-sub { font-size: 14px; }
   }
 `;

@@ -22,6 +22,8 @@ import ServicesPage from "@/pages/ServicesPage";
 import FAQPage from "@/pages/FAQPage";
 import HomePage from "@/pages/HomePage";
 import ResetPasswordPage from "@/pages/ResetPasswordPage";
+import CorporatePage from "@/pages/CorporatePage";
+import BulkManufacturingPage from "@/pages/BulkManufacturingPage";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -59,6 +61,8 @@ function LayoutContent() {
           <Route path="/faqs" element={<FAQPage />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/corporate" element={<CorporatePage />} />
+          <Route path="/bulk-manufacturing" element={<BulkManufacturingPage />} />
         </Routes>
       </main>
       <Footer />

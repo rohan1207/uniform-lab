@@ -19,7 +19,8 @@ import { DETAIL_SIZES } from "@/data/schoolCatalog";
    STYLES
 ────────────────────────────────────────────────────────────────────────── */
 const CART_CSS = `
-  @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800;900&family=Nunito:wght@400;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+  .cart-aside, .cart-aside * { font-family: 'Inter', sans-serif !important; }
 
   .cart-scrollbar-hide { scrollbar-width: none; }
   .cart-scrollbar-hide::-webkit-scrollbar { display: none; }
@@ -30,8 +31,8 @@ const CART_CSS = `
     border: 1px solid rgba(229,167,50,0.6) !important;
     background: linear-gradient(180deg, #fcd88a 0%, #F7BE4F 50%, #e5a732 100%) !important;
     box-shadow: 0 2px 8px rgba(247,190,79,0.35), inset 0 1px 0 rgba(255,255,255,0.45) !important;
-    font-family: 'Baloo 2', cursive !important;
-    font-weight: 900 !important;
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 800 !important;
     font-size: clamp(11px, 1vw, 13px) !important;
     letter-spacing: 0.11em !important;
     text-transform: uppercase !important;
@@ -56,8 +57,8 @@ const CART_CSS = `
     border: 1px solid rgba(0,76,153,0.6) !important;
     background: linear-gradient(180deg, #1a6bb8 0%, #004C99 50%, #003d7a 100%) !important;
     box-shadow: 0 2px 8px rgba(0,76,153,0.25), inset 0 1px 0 rgba(255,255,255,0.15) !important;
-    font-family: 'Baloo 2', cursive !important;
-    font-weight: 900 !important;
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 800 !important;
     font-size: clamp(11px, 1vw, 13px) !important;
     letter-spacing: 0.11em !important;
     text-transform: uppercase !important;
@@ -85,7 +86,6 @@ const CART_CSS = `
     background: linear-gradient(135deg, #eef5ff 0%, #ddeaff 100%);
     border: 1px solid rgba(0,76,153,0.25);
     color: #004C99;
-    font-family: 'Baloo 2', cursive;
     font-weight: 800;
     font-size: 10.5px;
     box-shadow: 0 1px 3px rgba(0,76,153,0.08);
@@ -226,7 +226,6 @@ function UpsellCard({ product: p, schoolName: sn, schoolSlug: ss, onClose }) {
           <p
             className="m-0 truncate"
             style={{
-              fontFamily: "'Nunito', sans-serif",
               fontWeight: 700,
               fontSize: "9px",
               color: "#2563eb",
@@ -240,8 +239,7 @@ function UpsellCard({ product: p, schoolName: sn, schoolSlug: ss, onClose }) {
         <p
           className="m-0 line-clamp-2 leading-snug group-hover:text-[#2563eb] transition-colors"
           style={{
-            fontFamily: "'Baloo 2', cursive",
-            fontWeight: 900,
+            fontWeight: 800,
             fontSize: "12.5px",
             color: "#0f172a",
           }}
@@ -251,8 +249,7 @@ function UpsellCard({ product: p, schoolName: sn, schoolSlug: ss, onClose }) {
         <p
           className="m-0"
           style={{
-            fontFamily: "'Baloo 2', cursive",
-            fontWeight: 900,
+            fontWeight: 800,
             fontSize: "13px",
             color: "#0f172a",
           }}
@@ -341,8 +338,7 @@ function MobileUpsellPill({ product: p, schoolSlug: ss, onClose }) {
         <p
           className="m-0 leading-tight"
           style={{
-            fontFamily: "'Baloo 2', cursive",
-            fontWeight: 900,
+            fontWeight: 800,
             fontSize: "11.5px",
             color: "#0f172a",
             display: "-webkit-box",
@@ -356,8 +352,7 @@ function MobileUpsellPill({ product: p, schoolSlug: ss, onClose }) {
         <div className="flex items-center justify-between mt-1.5">
           <span
             style={{
-              fontFamily: "'Baloo 2', cursive",
-              fontWeight: 900,
+              fontWeight: 800,
               fontSize: "12.5px",
               color: "#0f172a",
             }}
@@ -442,7 +437,6 @@ export function CartDrawer({ open, onClose }) {
                 ? "min(780px, 96vw)"
                 : "min(440px, 96vw)",
               boxShadow: "-8px 0 64px rgba(15,23,42,0.24)",
-              fontFamily: "'Nunito', sans-serif",
             }}
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
@@ -468,8 +462,7 @@ export function CartDrawer({ open, onClose }) {
                   <p
                     className="m-0 mb-0.5"
                     style={{
-                      fontFamily: "'Baloo 2', cursive",
-                      fontWeight: 900,
+                      fontWeight: 800,
                       fontSize: "17px",
                       color: "#0f172a",
                     }}
@@ -479,8 +472,7 @@ export function CartDrawer({ open, onClose }) {
                   <p
                     className="m-0"
                     style={{
-                      fontFamily: "'Nunito', sans-serif",
-                      fontWeight: 600,
+                      fontWeight: 500,
                       fontSize: "12px",
                       color: "#64748b",
                     }}
@@ -534,8 +526,7 @@ export function CartDrawer({ open, onClose }) {
                   <p
                     className="m-0"
                     style={{
-                      fontFamily: "'Baloo 2', cursive",
-                      fontWeight: 900,
+                      fontWeight: 800,
                       fontSize: "19px",
                       color: "#0f172a",
                     }}
@@ -546,8 +537,7 @@ export function CartDrawer({ open, onClose }) {
                     <span
                       className="px-2 py-0.5 rounded-full text-white"
                       style={{
-                        fontFamily: "'Baloo 2', cursive",
-                        fontWeight: 900,
+                        fontWeight: 800,
                         fontSize: "11px",
                         background: "linear-gradient(135deg, #2563eb, #1d4ed8)",
                         lineHeight: 1.5,
@@ -588,8 +578,7 @@ export function CartDrawer({ open, onClose }) {
                       <p
                         className="m-0"
                         style={{
-                          fontFamily: "'Baloo 2', cursive",
-                          fontWeight: 900,
+                          fontWeight: 800,
                           fontSize: "12px",
                           color: "#0f172a",
                           letterSpacing: "0.02em",
@@ -600,8 +589,7 @@ export function CartDrawer({ open, onClose }) {
                       <p
                         className="m-0 mt-0.5"
                         style={{
-                          fontFamily: "'Nunito', sans-serif",
-                          fontWeight: 600,
+                          fontWeight: 500,
                           fontSize: "11px",
                           color: "#64748b",
                         }}
@@ -663,8 +651,7 @@ export function CartDrawer({ open, onClose }) {
                       <p
                         className="m-0 mb-1"
                         style={{
-                          fontFamily: "'Baloo 2', cursive",
-                          fontWeight: 900,
+                          fontWeight: 800,
                           fontSize: "18px",
                           color: "#0f172a",
                         }}
@@ -674,8 +661,7 @@ export function CartDrawer({ open, onClose }) {
                       <p
                         className="m-0"
                         style={{
-                          fontFamily: "'Nunito', sans-serif",
-                          fontWeight: 600,
+                          fontWeight: 500,
                           fontSize: "13px",
                           color: "#94a3b8",
                         }}
@@ -751,8 +737,7 @@ export function CartDrawer({ open, onClose }) {
                               <p
                                 className="m-0 leading-snug line-clamp-2"
                                 style={{
-                                  fontFamily: "'Baloo 2', cursive",
-                                  fontWeight: 900,
+                                  fontWeight: 800,
                                   fontSize: "13.5px",
                                   color: "#0f172a",
                                 }}
@@ -774,8 +759,7 @@ export function CartDrawer({ open, onClose }) {
                               <p
                                 className="m-0 mt-1.5"
                                 style={{
-                                  fontFamily: "'Baloo 2', cursive",
-                                  fontWeight: 900,
+                                  fontWeight: 800,
                                   fontSize: "14px",
                                   color: "#0f172a",
                                 }}
@@ -784,8 +768,7 @@ export function CartDrawer({ open, onClose }) {
                                 {item.quantity > 1 && (
                                   <span
                                     style={{
-                                      fontFamily: "'Nunito', sans-serif",
-                                      fontWeight: 600,
+                                      fontWeight: 500,
                                       fontSize: "11px",
                                       color: "#94a3b8",
                                       marginLeft: "5px",
@@ -850,8 +833,7 @@ export function CartDrawer({ open, onClose }) {
                                 <span
                                   className="w-7 text-center"
                                   style={{
-                                    fontFamily: "'Baloo 2', cursive",
-                                    fontWeight: 900,
+                                    fontWeight: 800,
                                     fontSize: "13px",
                                     color: "#0f172a",
                                   }}
@@ -900,7 +882,6 @@ export function CartDrawer({ open, onClose }) {
                   <div className="flex items-center justify-between mb-1">
                     <span
                       style={{
-                        fontFamily: "'Nunito', sans-serif",
                         fontWeight: 700,
                         fontSize: "13px",
                         color: "#64748b",
@@ -910,8 +891,7 @@ export function CartDrawer({ open, onClose }) {
                     </span>
                     <span
                       style={{
-                        fontFamily: "'Baloo 2', cursive",
-                        fontWeight: 900,
+                        fontWeight: 800,
                         fontSize: "16px",
                         color: "#0f172a",
                       }}
@@ -922,7 +902,6 @@ export function CartDrawer({ open, onClose }) {
                   <div className="flex items-center justify-between mb-3">
                     <span
                       style={{
-                        fontFamily: "'Nunito', sans-serif",
                         fontWeight: 700,
                         fontSize: "13px",
                         color: "#64748b",
@@ -932,7 +911,6 @@ export function CartDrawer({ open, onClose }) {
                     </span>
                     <span
                       style={{
-                        fontFamily: "'Baloo 2', cursive",
                         fontWeight: 700,
                         fontSize: "14px",
                         color: "#374151",
@@ -950,7 +928,6 @@ export function CartDrawer({ open, onClose }) {
                   >
                     <span
                       style={{
-                        fontFamily: "'Nunito', sans-serif",
                         fontWeight: 700,
                         fontSize: "14px",
                         color: "#64748b",
@@ -960,8 +937,7 @@ export function CartDrawer({ open, onClose }) {
                     </span>
                     <span
                       style={{
-                        fontFamily: "'Baloo 2', cursive",
-                        fontWeight: 900,
+                        fontWeight: 800,
                         fontSize: "26px",
                         color: "#0f172a",
                         letterSpacing: "-0.5px",
@@ -988,8 +964,7 @@ export function CartDrawer({ open, onClose }) {
                   <p
                     className="text-center mt-3 m-0"
                     style={{
-                      fontFamily: "'Nunito', sans-serif",
-                      fontWeight: 600,
+                      fontWeight: 500,
                       fontSize: "11px",
                       color: "#94a3b8",
                     }}

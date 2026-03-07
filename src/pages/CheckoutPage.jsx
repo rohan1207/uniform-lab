@@ -272,9 +272,10 @@ export default function CheckoutPage() {
           <h1
             className="mb-2 text-[#0f172a]"
             style={{
-              fontFamily: "'Baloo 2', cursive",
-              fontWeight: 900,
+              fontFamily: "'Inter', sans-serif",
+              fontWeight: 800,
               fontSize: "clamp(22px,2.4vw,30px)",
+              letterSpacing: "-0.5px",
             }}
           >
             Order not placed
@@ -282,9 +283,9 @@ export default function CheckoutPage() {
           <p
             className="mb-1 text-[#64748b]"
             style={{
-              fontFamily: "'Nunito', sans-serif",
+              fontFamily: "'Inter', sans-serif",
               fontSize: "15px",
-              fontWeight: 700,
+              fontWeight: 500,
             }}
           >
             {reasonText}
@@ -292,9 +293,9 @@ export default function CheckoutPage() {
           <p
             className="mb-7 text-[#94a3b8]"
             style={{
-              fontFamily: "'Nunito', sans-serif",
+              fontFamily: "'Inter', sans-serif",
               fontSize: "13px",
-              fontWeight: 600,
+              fontWeight: 500,
             }}
           >
             No order has been placed and you have{" "}
@@ -306,7 +307,8 @@ export default function CheckoutPage() {
               onClick={() => navigate("/schools")}
               className="inline-flex items-center justify-center px-6 py-2.5 rounded-full text-xs font-black tracking-[0.12em] uppercase shadow-sm"
               style={{
-                fontFamily: "'Baloo 2', cursive",
+                fontFamily: "'Inter', sans-serif",
+                fontWeight: 800,
                 background:
                   "linear-gradient(180deg,#60a5fa 0%,#2563eb 52%,#1d4ed8 100%)",
                 color: "#fff",
@@ -318,7 +320,7 @@ export default function CheckoutPage() {
               type="button"
               onClick={() => navigate(-1)}
               className="inline-flex items-center justify-center px-6 py-2.5 rounded-full text-xs font-black tracking-[0.12em] uppercase border border-[#e2e8f0] bg-white text-[#0f172a]"
-              style={{ fontFamily: "'Baloo 2', cursive" }}
+              style={{ fontFamily: "'Inter', sans-serif", fontWeight: 800 }}
             >
               Go back
             </button>
@@ -338,9 +340,10 @@ export default function CheckoutPage() {
           <h1
             className="mb-2 text-[#0f172a]"
             style={{
-              fontFamily: "'Baloo 2', cursive",
-              fontWeight: 900,
+              fontFamily: "'Inter', sans-serif",
+              fontWeight: 800,
               fontSize: "clamp(22px,2.4vw,30px)",
+              letterSpacing: "-0.5px",
             }}
           >
             Thank you for your order
@@ -348,15 +351,15 @@ export default function CheckoutPage() {
           <p
             className="mb-4 text-[#64748b]"
             style={{
-              fontFamily: "'Nunito', sans-serif",
+              fontFamily: "'Inter', sans-serif",
               fontSize: "14px",
-              fontWeight: 600,
+              fontWeight: 500,
             }}
           >
             Your Uniform Lab order ID is{" "}
             <span
               className="font-black text-[#0f172a]"
-              style={{ fontFamily: "'Baloo 2', cursive" }}
+              style={{ fontFamily: "'Inter', sans-serif", fontWeight: 800 }}
             >
               {orderId}
             </span>
@@ -367,7 +370,8 @@ export default function CheckoutPage() {
             onClick={() => navigate("/")}
             className="inline-flex items-center justify-center px-5 py-2.5 rounded-full text-xs font-black tracking-[0.12em] uppercase shadow-sm"
             style={{
-              fontFamily: "'Baloo 2', cursive",
+              fontFamily: "'Inter', sans-serif",
+              fontWeight: 800,
               background:
                 "linear-gradient(180deg,#60a5fa 0%,#2563eb 52%,#1d4ed8 100%)",
               color: "#fff",
@@ -387,7 +391,7 @@ export default function CheckoutPage() {
           <Link
             to="/schools"
             className="inline-flex items-center gap-2 mb-4 text-xs font-semibold uppercase tracking-[0.16em] text-[#94a3b8] hover:text-[#0f172a]"
-            style={{ fontFamily: "'Nunito', sans-serif" }}
+            style={{ fontFamily: "'Inter', sans-serif" }}
           >
             <ArrowLeft size={18} />
             Back to schools
@@ -395,9 +399,10 @@ export default function CheckoutPage() {
           <h1
             className="mb-1 text-[#0f172a]"
             style={{
-              fontFamily: "'Baloo 2', cursive",
-              fontWeight: 900,
+              fontFamily: "'Inter', sans-serif",
+              fontWeight: 800,
               fontSize: "clamp(22px,2.6vw,32px)",
+              letterSpacing: "-0.6px",
             }}
           >
             Checkout
@@ -405,9 +410,9 @@ export default function CheckoutPage() {
           <p
             className="mb-6 text-[#64748b]"
             style={{
-              fontFamily: "'Nunito', sans-serif",
+              fontFamily: "'Inter', sans-serif",
               fontSize: "14px",
-              fontWeight: 600,
+              fontWeight: 500,
             }}
           >
             Enter your details and delivery address. On the next step we&apos;ll
@@ -437,7 +442,7 @@ export default function CheckoutPage() {
                     <p
                       className="text-[#0f172a] m-0"
                       style={{
-                        fontFamily: "'Baloo 2', cursive",
+                        fontFamily: "'Inter', sans-serif",
                         fontWeight: 800,
                         fontSize: "14px",
                         lineHeight: 1.3,
@@ -449,9 +454,9 @@ export default function CheckoutPage() {
                     <p
                       className="text-[#64748b] m-0"
                       style={{
-                        fontFamily: "'Nunito', sans-serif",
+                        fontFamily: "'Inter', sans-serif",
                         fontSize: "12px",
-                        fontWeight: 600,
+                        fontWeight: 500,
                       }}
                     >
                       {cartPickerOpen
@@ -472,7 +477,8 @@ export default function CheckoutPage() {
                       }}
                       className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-black tracking-[0.08em] uppercase"
                       style={{
-                        fontFamily: "'Baloo 2', cursive",
+                        fontFamily: "'Inter', sans-serif",
+                        fontWeight: 800,
                         background:
                           "linear-gradient(180deg,#60a5fa 0%,#2563eb 52%,#1d4ed8 100%)",
                         color: "#fff",
@@ -486,7 +492,7 @@ export default function CheckoutPage() {
                     <span
                       className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold"
                       style={{
-                        fontFamily: "'Nunito', sans-serif",
+                        fontFamily: "'Inter', sans-serif",
                         background:
                           selectedCartKeys.size > 0 ? "#dcfce7" : "#f1f5f9",
                         color:
@@ -533,7 +539,7 @@ export default function CheckoutPage() {
                         }
                         className="text-[11px] font-bold text-[#2563eb] hover:underline"
                         style={{
-                          fontFamily: "'Nunito', sans-serif",
+                          fontFamily: "'Inter', sans-serif",
                           background: "none",
                           border: "none",
                           cursor: "pointer",
@@ -547,7 +553,7 @@ export default function CheckoutPage() {
                         onClick={() => setSelectedCartKeys(new Set())}
                         className="text-[11px] font-bold text-[#94a3b8] hover:underline"
                         style={{
-                          fontFamily: "'Nunito', sans-serif",
+                          fontFamily: "'Inter', sans-serif",
                           background: "none",
                           border: "none",
                           cursor: "pointer",
@@ -628,7 +634,7 @@ export default function CheckoutPage() {
                             <p
                               className="m-0 truncate"
                               style={{
-                                fontFamily: "'Nunito', sans-serif",
+                                fontFamily: "'Inter', sans-serif",
                                 fontSize: "13px",
                                 fontWeight: 700,
                                 color: "#0f172a",
@@ -639,9 +645,9 @@ export default function CheckoutPage() {
                             <p
                               className="m-0"
                               style={{
-                                fontFamily: "'Nunito', sans-serif",
+                                fontFamily: "'Inter', sans-serif",
                                 fontSize: "11px",
-                                fontWeight: 600,
+                                fontWeight: 500,
                                 color: "#94a3b8",
                               }}
                             >
@@ -654,7 +660,7 @@ export default function CheckoutPage() {
                           <p
                             className="m-0 flex-shrink-0"
                             style={{
-                              fontFamily: "'Nunito', sans-serif",
+                              fontFamily: "'Inter', sans-serif",
                               fontSize: "13px",
                               fontWeight: 800,
                               color: "#0f172a",
@@ -679,8 +685,8 @@ export default function CheckoutPage() {
               <p
                 className="mb-2"
                 style={{
-                  fontFamily: "'Baloo 2', cursive",
-                  fontWeight: 900,
+                  fontFamily: "'Inter', sans-serif",
+                  fontWeight: 800,
                   fontSize: "16px",
                   color: "#0f172a",
                 }}
@@ -690,9 +696,9 @@ export default function CheckoutPage() {
               <p
                 className="mb-4 text-center"
                 style={{
-                  fontFamily: "'Nunito', sans-serif",
+                  fontFamily: "'Inter', sans-serif",
                   fontSize: "13px",
-                  fontWeight: 600,
+                  fontWeight: 500,
                 }}
               >
                 Add some uniforms to your bag before checking out.
@@ -701,7 +707,8 @@ export default function CheckoutPage() {
                 to="/schools"
                 className="text-xs font-black tracking-[0.12em] uppercase px-4 py-2 rounded-full"
                 style={{
-                  fontFamily: "'Baloo 2', cursive",
+                  fontFamily: "'Inter', sans-serif",
+                  fontWeight: 800,
                   background:
                     "linear-gradient(180deg,#60a5fa 0%,#2563eb 52%,#1d4ed8 100%)",
                   color: "#fff",
@@ -719,7 +726,7 @@ export default function CheckoutPage() {
               <section className="space-y-3">
                 <h2
                   className="text-xs font-extrabold tracking-[0.16em] uppercase text-[#0f172a]"
-                  style={{ fontFamily: "'Nunito', sans-serif" }}
+                  style={{ fontFamily: "'Inter', sans-serif" }}
                 >
                   Contact details
                 </h2>
@@ -727,7 +734,7 @@ export default function CheckoutPage() {
                   <div>
                     <label
                       className="block mb-1 text-xs font-semibold text-slate-500"
-                      style={{ fontFamily: "'Nunito', sans-serif" }}
+                      style={{ fontFamily: "'Inter', sans-serif" }}
                     >
                       Full name
                     </label>
@@ -742,7 +749,7 @@ export default function CheckoutPage() {
                   <div>
                     <label
                       className="block mb-1 text-xs font-semibold text-slate-500"
-                      style={{ fontFamily: "'Nunito', sans-serif" }}
+                      style={{ fontFamily: "'Inter', sans-serif" }}
                     >
                       Phone
                     </label>
@@ -757,7 +764,7 @@ export default function CheckoutPage() {
                   <div>
                     <label
                       className="block mb-1 text-xs font-semibold text-slate-500"
-                      style={{ fontFamily: "'Nunito', sans-serif" }}
+                      style={{ fontFamily: "'Inter', sans-serif" }}
                     >
                       Email
                     </label>
@@ -776,7 +783,7 @@ export default function CheckoutPage() {
               <section className="space-y-3">
                 <h2
                   className="text-xs font-extrabold tracking-[0.16em] uppercase text-[#0f172a]"
-                  style={{ fontFamily: "'Nunito', sans-serif" }}
+                  style={{ fontFamily: "'Inter', sans-serif" }}
                 >
                   Delivery address
                 </h2>
@@ -784,7 +791,7 @@ export default function CheckoutPage() {
                   <div>
                     <label
                       className="block mb-1 text-xs font-semibold text-slate-500"
-                      style={{ fontFamily: "'Nunito', sans-serif" }}
+                      style={{ fontFamily: "'Inter', sans-serif" }}
                     >
                       Address line 1
                     </label>
@@ -799,7 +806,7 @@ export default function CheckoutPage() {
                   <div>
                     <label
                       className="block mb-1 text-xs font-semibold text-slate-500"
-                      style={{ fontFamily: "'Nunito', sans-serif" }}
+                      style={{ fontFamily: "'Inter', sans-serif" }}
                     >
                       Address line 2 (optional)
                     </label>
@@ -814,7 +821,7 @@ export default function CheckoutPage() {
                     <div>
                       <label
                         className="block mb-1 text-xs font-semibold text-slate-500"
-                        style={{ fontFamily: "'Nunito', sans-serif" }}
+                        style={{ fontFamily: "'Inter', sans-serif" }}
                       >
                         City
                       </label>
@@ -829,7 +836,7 @@ export default function CheckoutPage() {
                     <div>
                       <label
                         className="block mb-1 text-xs font-semibold text-slate-500"
-                        style={{ fontFamily: "'Nunito', sans-serif" }}
+                        style={{ fontFamily: "'Inter', sans-serif" }}
                       >
                         State
                       </label>
@@ -844,7 +851,7 @@ export default function CheckoutPage() {
                     <div>
                       <label
                         className="block mb-1 text-xs font-semibold text-slate-500"
-                        style={{ fontFamily: "'Nunito', sans-serif" }}
+                        style={{ fontFamily: "'Inter', sans-serif" }}
                       >
                         Pincode
                       </label>
@@ -862,7 +869,7 @@ export default function CheckoutPage() {
                   <div>
                     <label
                       className="block mb-1 text-xs font-semibold text-slate-500"
-                      style={{ fontFamily: "'Nunito', sans-serif" }}
+                      style={{ fontFamily: "'Inter', sans-serif" }}
                     >
                       Note for delivery (optional)
                     </label>
@@ -876,7 +883,7 @@ export default function CheckoutPage() {
                   {isAuthenticated && hasSavedAddress && (
                     <label
                       className="mt-1 flex items-center gap-2 text-xs text-slate-600"
-                      style={{ fontFamily: "'Nunito', sans-serif" }}
+                      style={{ fontFamily: "'Inter', sans-serif" }}
                     >
                       <input
                         type="checkbox"
@@ -894,8 +901,8 @@ export default function CheckoutPage() {
                 <p
                   className="text-[11px] text-[#94a3b8]"
                   style={{
-                    fontFamily: "'Nunito', sans-serif",
-                    fontWeight: 600,
+                    fontFamily: "'Inter', sans-serif",
+                    fontWeight: 500,
                   }}
                 >
                   You&apos;ll be securely redirected to a payment page. We never
@@ -906,7 +913,8 @@ export default function CheckoutPage() {
                   disabled={submitting}
                   className="inline-flex items-center justify-center px-6 py-2.5 rounded-full text-xs font-black tracking-[0.14em] uppercase disabled:opacity-60"
                   style={{
-                    fontFamily: "'Baloo 2', cursive",
+                    fontFamily: "'Inter', sans-serif",
+                    fontWeight: 800,
                     background:
                       "linear-gradient(180deg,#fcd88a 0%,#F7BE4F 50%,#e5a732 100%)",
                     color: "#5c3a0a",
@@ -925,9 +933,10 @@ export default function CheckoutPage() {
             <h2
               className="mb-3 text-[#0f172a]"
               style={{
-                fontFamily: "'Baloo 2', cursive",
-                fontWeight: 900,
+                fontFamily: "'Inter', sans-serif",
+                fontWeight: 800,
                 fontSize: "16px",
+                letterSpacing: "-0.3px",
               }}
             >
               Order summary
@@ -935,7 +944,7 @@ export default function CheckoutPage() {
             {displayItems.length === 0 ? (
               <p
                 className="text-sm text-[#94a3b8]"
-                style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 600 }}
+                style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}
               >
                 Your cart is empty. Add items from any school to continue.
               </p>
@@ -943,7 +952,7 @@ export default function CheckoutPage() {
               <>
                 <ul
                   className="mb-3 space-y-3 text-sm max-h-60 overflow-y-auto"
-                  style={{ fontFamily: "'Nunito', sans-serif" }}
+                  style={{ fontFamily: "'Inter', sans-serif" }}
                 >
                   {displayItems.map((i) => (
                     <li
@@ -966,7 +975,7 @@ export default function CheckoutPage() {
                 </ul>
                 <div
                   className="pt-3 space-y-1 text-sm border-t border-[#e2e8f0]"
-                  style={{ fontFamily: "'Nunito', sans-serif" }}
+                  style={{ fontFamily: "'Inter', sans-serif" }}
                 >
                   <div className="flex justify-between">
                     <span className="text-[#94a3b8]">Items total</span>
@@ -994,7 +1003,7 @@ export default function CheckoutPage() {
           </div>
           <div
             className="p-4 text-xs rounded-2xl border border-[#e2e8f0] bg-white space-y-2"
-            style={{ fontFamily: "'Nunito', sans-serif", color: "#94a3b8" }}
+            style={{ fontFamily: "'Inter', sans-serif", color: "#94a3b8" }}
           >
             <p className="font-semibold text-sm text-[#0f172a]">
               Secure payment

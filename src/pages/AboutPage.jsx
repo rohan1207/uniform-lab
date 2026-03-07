@@ -27,22 +27,34 @@ import {
 const SPECIALISATIONS = [
   {
     icon: Shirt,
-    text: "School uniform manufacturing with consistent fabric and colour control",
+    label: "School Uniform Manufacturing",
+    sub: "Fabric & colour consistency at scale",
   },
   {
     icon: BriefcaseBusiness,
-    text: "Corporate uniform supply for offices, factories, and institutional teams",
+    label: "Corporate Uniform Supply",
+    sub: "Offices, factories & institutions",
   },
   {
     icon: Boxes,
-    text: "Bulk uniform production and distribution with scalable processes",
+    label: "Bulk Production & Distribution",
+    sub: "Scalable output, reliable delivery",
   },
   {
     icon: MapPin,
-    text: "On-campus uniform camps during admissions and reopening seasons",
+    label: "On-Campus Uniform Camps",
+    sub: "Admissions & reopening seasons",
   },
-  { icon: Store, text: "Retail and e-commerce uniform distribution models" },
-  { icon: PencilRuler, text: "Custom design and role-based uniform solutions" },
+  {
+    icon: Store,
+    label: "Retail & E-Commerce",
+    sub: "Multi-channel uniform distribution",
+  },
+  {
+    icon: PencilRuler,
+    label: "Custom Design Solutions",
+    sub: "Role-based & bespoke uniforms",
+  },
 ];
 
 const WHY_CHOOSE = [
@@ -78,20 +90,50 @@ const WHY_CHOOSE = [
   },
 ];
 
-const QUALITY_POINTS = [
-  "Fabric sourcing and standardisation for composition and colour stability",
-  "Structured production workflow: pattern, cutting, stitching, finishing",
-  "Multi-level quality checks: pre-production, mid-production, final stage",
-  "Fit and size consistency through standardised measurement mapping",
-  "Timely production planning aligned to academic and corporate cycles",
-  "Traceability and accountability through documented production cycles",
+const QUALITY_STEPS = [
+  {
+    icon: Boxes,
+    num: "01",
+    title: "Fabric Sourcing",
+    desc: "Standardised composition and colour stability across all batches.",
+  },
+  {
+    icon: Settings,
+    num: "02",
+    title: "Production Workflow",
+    desc: "Structured process: pattern-making, cutting, stitching and finishing.",
+  },
+  {
+    icon: ShieldCheck,
+    num: "03",
+    title: "Multi-Level QC",
+    desc: "Checks at pre-production, mid-production and final stage.",
+  },
+  {
+    icon: PencilRuler,
+    num: "04",
+    title: "Fit & Size Mapping",
+    desc: "Standardised measurement mapping for consistent fit every time.",
+  },
+  {
+    icon: ClipboardList,
+    num: "05",
+    title: "Timely Production Planning",
+    desc: "Aligned to academic calendars and corporate delivery cycles.",
+  },
+  {
+    icon: Files,
+    num: "06",
+    title: "Full Traceability",
+    desc: "Documented cycles with accountability at every production step.",
+  },
 ];
 
 const STATS = [
-  { value: "500+", label: "Schools Served" },
-  { value: "15+", label: "Years Experience" },
+  { value: "100+", label: "Schools Served" },
+  { value: "20+", label: "Years Experience" },
   { value: "98%", label: "Reorder Rate" },
-  { value: "50K+", label: "Units / Month" },
+  { value: "20K+", label: "Units / Month" },
 ];
 
 const CERTIFICATES = [
@@ -120,7 +162,7 @@ const GALLERY = [
     alt: "School children in uniforms",
   },
   {
-    src: "/fabric3.jpg",
+    src: "/fabric3.avif",
     alt: "Fabric manufacturing",
   },
   {
@@ -128,7 +170,7 @@ const GALLERY = [
     alt: "Students at school",
   },
   {
-    src: "/fabric1.png",
+    src: "/fabric1.jpg",
     alt: "Quality fabric rolls",
   },
 ];
@@ -200,37 +242,34 @@ function Reveal({ children, delay = 0, className = "", style = {} }) {
 
 /* ─── CSS ─────────────────────────────────────────────────────────────── */
 const CSS = `
-  @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800;900&family=Nunito:wght@400;600;700;800&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .ab-root, .ab-root * { font-family: 'Inter', sans-serif !important; }
 
   .ab-root {
     min-height: 100vh;
     background: #f6f8ff;
     padding-top: 88px;
-    font-family: 'Nunito', sans-serif;
     overflow-x: hidden;
   }
 
   /* ── Hero banner ── */
   .ab-hero {
     position: relative;
-    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 60%, #1d4ed8 100%);
+    background: url('/aboutus.jpg') center center / cover no-repeat;
     padding: clamp(56px, 9vw, 110px) clamp(20px, 5vw, 80px) clamp(72px, 11vw, 130px);
     overflow: hidden;
   }
   .ab-hero::before {
     content: '';
     position: absolute; inset: 0;
-    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    background: linear-gradient(135deg, rgba(10,18,40,0.55) 0%, rgba(15,40,100,0.42) 60%, rgba(20,60,160,0.30) 100%);
+    z-index: 0;
   }
   .ab-hero-glow {
-    position: absolute;
-    width: 600px; height: 600px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(96,165,250,0.18) 0%, transparent 70%);
-    top: -200px; right: -100px;
-    pointer-events: none;
+    display: none;
   }
   .ab-hero-content { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; }
   .ab-pill {
@@ -250,9 +289,10 @@ const CSS = `
     backdrop-filter: blur(8px);
   }
   .ab-h1 {
-    font-family: 'Baloo 2', cursive;
-    font-size: clamp(34px, 5vw, 66px);
-    line-height: 1.05;
+    font-weight: 800;
+    font-size: clamp(32px, 5vw, 60px);
+    line-height: 1.06;
+    letter-spacing: -0.8px;
     color: #fff;
     max-width: 780px;
     margin-bottom: 18px;
@@ -262,7 +302,7 @@ const CSS = `
     color: #93c5fd;
     font-size: clamp(14px, 1.4vw, 17px);
     line-height: 1.7;
-    font-weight: 600;
+    font-weight: 500;
     max-width: 600px;
     margin-bottom: 0;
   }
@@ -293,13 +333,13 @@ const CSS = `
   .ab-stat:last-child { border-right: none; }
   .ab-stat:hover { background: #f6f9ff; }
   .ab-stat-val {
-    font-family: 'Baloo 2', cursive;
     font-size: clamp(28px, 3.5vw, 44px);
-    font-weight: 900;
+    font-weight: 800;
     color: #1e3a8a;
     line-height: 1;
     display: block;
     margin-bottom: 6px;
+    letter-spacing: -0.5px;
   }
   .ab-stat-lbl {
     color: #64748b;
@@ -345,18 +385,19 @@ const CSS = `
   }
   .ab-split-text {}
   .ab-h2 {
-    font-family: 'Baloo 2', cursive;
-    font-size: clamp(26px, 3vw, 38px);
+    font-weight: 800;
+    font-size: clamp(22px, 2.6vw, 34px);
     color: #1a1a2e;
-    line-height: 1.12;
+    line-height: 1.1;
+    letter-spacing: -0.5px;
     margin-bottom: 16px;
   }
   .ab-h2 span { color: #2563eb; }
   .ab-body {
-    color: #475569;
-    font-size: clamp(14px, 1.2vw, 16px);
-    line-height: 1.8;
-    font-weight: 600;
+    color: #64748b;
+    font-size: 15px;
+    line-height: 1.75;
+    font-weight: 500;
     margin-bottom: 0;
   }
 
@@ -438,18 +479,18 @@ const CSS = `
     margin-bottom: 4px;
   }
   .ab-founder-name {
-    font-family: 'Baloo 2', cursive;
-    font-size: clamp(20px, 2vw, 26px);
+    font-size: clamp(18px, 1.8vw, 24px);
     font-weight: 800;
     color: #1e293b;
     margin-bottom: 8px;
     line-height: 1.15;
+    letter-spacing: -0.3px;
   }
   .ab-founder-bio {
     color: #64748b;
-    font-size: 13.5px;
-    font-weight: 600;
-    line-height: 1.65;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.68;
     margin: 0 0 10px 0;
   }
   .ab-founder-bio + .ab-founder-bio { margin-top: 0; }
@@ -457,11 +498,10 @@ const CSS = `
     border-left: 3px solid #2563eb;
     margin: 10px 0 10px 0;
     padding: 8px 0 8px 14px;
-    font-family: 'Baloo 2', cursive;
     font-size: 14px;
-    font-weight: 700;
+    font-weight: 600;
     color: #1e3a8a;
-    line-height: 1.5;
+    line-height: 1.55;
     font-style: italic;
   }
   .ab-founder-tags {
@@ -528,38 +568,40 @@ const CSS = `
     flex-shrink: 0;
   }
 
-  /* ── Specialisations list ── */
-  .ab-spec-grid {
+  /* ── Specialisations pointer list ── */
+  .ab-spec-list {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
-  }
-  .ab-spec-item {
-    display: flex;
-    align-items: flex-start;
+    grid-template-columns: 1fr 1fr;
     gap: 10px;
-    padding: 16px;
-    background: #f8faff;
-    border: 1px solid #e6edf9;
-    border-radius: 14px;
-    transition: all 0.22s ease;
+  }
+  .ab-spec-pointer {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    background: linear-gradient(135deg, #eef5ff 0%, #f4f8ff 100%);
+    border: 1px solid rgba(37,99,235,0.12);
+    border-left: 3px solid #2563eb;
+    border-radius: 10px;
+    transition: all 0.2s ease;
     cursor: default;
   }
-  .ab-spec-item:hover {
-    background: #eff6ff;
-    border-color: #bfdbfe;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(30,58,138,0.08);
+  .ab-spec-pointer:hover {
+    background: linear-gradient(135deg, #dbeafe 0%, #eff6ff 100%);
+    border-left-color: #1d4ed8;
+    transform: translateX(3px);
+    box-shadow: 0 4px 14px rgba(37,99,235,0.10);
   }
-  .ab-spec-emoji {
-    width: 32px; height: 32px;
-    border-radius: 12px;
-    background: linear-gradient(135deg, #e0edff 0%, #c7d2fe 100%);
+  .ab-spec-ico {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: rgba(37,99,235,0.10);
     display: flex; align-items: center; justify-content: center;
-    color: #1d4ed8;
+    color: #2563eb;
     flex-shrink: 0;
   }
-  .ab-spec-text { color: #475569; font-size: 13px; font-weight: 700; line-height: 1.5; }
+  .ab-spec-label { font-size: 13.5px; font-weight: 700; color: #1e293b; line-height: 1.3; margin-bottom: 2px; }
+  .ab-spec-sub   { font-size: 12px; font-weight: 500; color: #64748b; line-height: 1.4; }
 
   /* ── Why choose grid ── */
   .ab-why-grid {
@@ -568,12 +610,15 @@ const CSS = `
     gap: 16px;
   }
   .ab-why-card {
-    padding: 22px 18px;
+    padding: 24px 20px;
     background: #f8faff;
     border: 1px solid #e6edf9;
     border-radius: 16px;
     transition: all 0.25s ease;
     cursor: default;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
   }
   .ab-why-card:hover {
     background: linear-gradient(135deg, #eff6ff, #dbeafe);
@@ -582,45 +627,85 @@ const CSS = `
     box-shadow: 0 8px 28px rgba(30,58,138,0.1);
   }
   .ab-why-emoji {
-    width: 32px; height: 32px;
-    border-radius: 999px;
-    background: #eff6ff;
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #dbeafe 0%, #eff6ff 100%);
+    border: 1px solid rgba(37,99,235,0.12);
     display: flex; align-items: center; justify-content: center;
     color: #2563eb;
-    margin-bottom: 10px;
     flex-shrink: 0;
   }
-  .ab-why-title { font-family: 'Baloo 2', cursive; font-size: 16px; font-weight: 800; color: #1e293b; margin-bottom: 4px; }
-  .ab-why-sub { color: #64748b; font-size: 12px; font-weight: 700; }
+  .ab-why-text {}
+  .ab-why-title { font-size: 15px; font-weight: 700; color: #1e293b; margin-bottom: 4px; line-height: 1.3; }
+  .ab-why-sub   { color: #64748b; font-size: 13px; font-weight: 500; line-height: 1.5; }
 
-  /* ── Quality list ── */
-  .ab-quality-list { display: flex; flex-direction: column; gap: 12px; }
-  .ab-quality-item {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 16px 18px;
-    background: #f8faff;
+  /* ── Quality process grid ── */
+  .ab-quality-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .ab-qstep {
+    position: relative;
+    padding: 22px 20px 20px;
+    background: #fff;
     border: 1px solid #e6edf9;
-    border-radius: 14px;
-    transition: all 0.22s ease;
+    border-top: 3px solid #2563eb;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.25s ease;
     cursor: default;
   }
-  .ab-quality-item:hover {
-    background: #eff6ff;
-    border-color: #bfdbfe;
-    transform: translateX(4px);
-    box-shadow: 0 4px 16px rgba(30,58,138,0.07);
+  .ab-qstep::after {
+    content: attr(data-num);
+    position: absolute;
+    bottom: 10px;
+    right: 14px;
+    font-size: 52px;
+    font-weight: 900;
+    color: rgba(37,99,235,0.05);
+    line-height: 1;
+    pointer-events: none;
+    letter-spacing: -2px;
   }
-  .ab-quality-check {
-    width: 28px; height: 28px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+  .ab-qstep:hover {
+    border-top-color: #1d4ed8;
+    box-shadow: 0 10px 32px rgba(30,58,138,0.11);
+    transform: translateY(-4px);
+    background: linear-gradient(160deg, #f8faff 0%, #fff 100%);
+  }
+  .ab-qstep-ico {
+    width: 42px; height: 42px;
+    border-radius: 11px;
+    background: linear-gradient(135deg, #dbeafe 0%, #eff6ff 100%);
+    border: 1px solid rgba(37,99,235,0.13);
     display: flex; align-items: center; justify-content: center;
     color: #2563eb;
+    margin-bottom: 14px;
     flex-shrink: 0;
   }
-  .ab-quality-text { color: #475569; font-size: 14px; font-weight: 700; }
+  .ab-qstep-num {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    color: #2563eb;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    display: block;
+  }
+  .ab-qstep-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1e293b;
+    line-height: 1.3;
+    margin-bottom: 7px;
+  }
+  .ab-qstep-desc {
+    font-size: 13px;
+    font-weight: 500;
+    color: #64748b;
+    line-height: 1.6;
+  }
 
   /* ── Certificates ── */
   .ab-cert-section {
@@ -658,15 +743,15 @@ const CSS = `
     text-transform: uppercase;
   }
   .ab-cert-title {
-    font-family: 'Baloo 2', cursive;
-    font-size: 18px;
-    font-weight: 800;
+    font-size: 17px;
+    font-weight: 700;
     color: #111827;
+    letter-spacing: -0.2px;
   }
   .ab-cert-subtitle {
     font-size: 13px;
-    font-weight: 600;
-    color: #6b7280;
+    font-weight: 500;
+    color: #64748b;
   }
   .ab-cert-frame {
     margin-top: 6px;
@@ -759,13 +844,13 @@ const CSS = `
   }
   .ab-cta-text { position: relative; }
   .ab-cta-title {
-    font-family: 'Baloo 2', cursive;
-    font-size: clamp(22px, 2.5vw, 32px);
+    font-size: clamp(20px, 2.2vw, 28px);
     color: #fff;
     font-weight: 800;
+    letter-spacing: -0.4px;
     margin-bottom: 8px;
   }
-  .ab-cta-sub { color: #93c5fd; font-size: 15px; font-weight: 600; }
+  .ab-cta-sub { color: #93c5fd; font-size: 15px; font-weight: 500; }
   .ab-cta-btn {
     position: relative;
     display: inline-flex;
@@ -777,10 +862,9 @@ const CSS = `
     border: 1px solid rgba(0,76,153,0.6);
     box-shadow: 0 2px 8px rgba(0,76,153,0.25), inset 0 1px 0 rgba(255,255,255,0.15);
     color: #fff;
-    font-family: 'Baloo 2', cursive;
-    font-size: 14px;
-    font-weight: 800;
-    letter-spacing: 0.08em;
+    font-size: clamp(12px, 1vw, 14px);
+    font-weight: 700;
+    letter-spacing: 0.11em;
     text-transform: uppercase;
     text-decoration: none;
     transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
@@ -827,8 +911,9 @@ const CSS = `
     /* reverse row: on mobile always show image on top */
     .ab-founder-row.ab-row-reverse .ab-founder-photo-wrap { order: -1; }
     .ab-founder-text-panel { padding: 24px 20px; }
-    .ab-spec-grid { grid-template-columns: 1fr 1fr; }
+    .ab-spec-list { grid-template-columns: 1fr 1fr; }
     .ab-why-grid { grid-template-columns: 1fr 1fr; }
+    .ab-quality-grid { grid-template-columns: 1fr 1fr; }
     .ab-cta-block { flex-direction: column; text-align: center; }
     .ab-card-header {
       flex-direction: column;
@@ -842,8 +927,9 @@ const CSS = `
     .ab-cert-carousel { display: block; margin-top: 4px; }
   }
   @media (max-width: 480px) {
-    .ab-spec-grid { grid-template-columns: 1fr; }
+    .ab-spec-list { grid-template-columns: 1fr; }
     .ab-why-grid { grid-template-columns: 1fr; }
+    .ab-quality-grid { grid-template-columns: 1fr; }
     .ab-mosaic { grid-template-columns: 1fr 1fr; grid-template-rows: 150px 140px 140px; }
     .ab-main { padding-left: 14px; padding-right: 14px; }
     .ab-wide-card { padding: 20px 18px; border-radius: 18px; }
@@ -1018,7 +1104,7 @@ export default function AboutPage() {
               <div className="ab-founder-row">
                 <FounderPhotoCard src="/priyank.jpeg" alt="Priyank Mota" />
                 <div className="ab-founder-text-panel">
-                  <div className="ab-founder-role">Founder</div>
+                  <div className="ab-founder-role">Co-Founder</div>
                   <div className="ab-founder-name">Priyank Mota</div>
                   <p className="ab-founder-bio">
                     Priyank comes from the Mota Group — a family business with
@@ -1037,8 +1123,9 @@ export default function AboutPage() {
                       of The Uniform Lab — from standardising fabric sourcing to
                       designing production workflows that handle tens of
                       thousands of units every month without compromising on
-                      consistency. His approach treats every school or corporate
-                      partnership as a long-term system, not a one-off order.
+                      consistency. His approach is to treat every school or
+                      corporate partnership as a long-term system, not just a
+                      one-off order.
                     </p>
 
                     <blockquote className="ab-founder-quote">
@@ -1154,13 +1241,16 @@ export default function AboutPage() {
                   !isMobile || showAllSpecs ? all : all.slice(0, 3);
                 return (
                   <>
-                    <div className="ab-spec-grid">
-                      {visible.map(({ icon: SpecIcon, text }) => (
-                        <div className="ab-spec-item" key={text}>
-                          <span className="ab-spec-emoji">
+                    <div className="ab-spec-list">
+                      {visible.map(({ icon: SpecIcon, label, sub }) => (
+                        <div className="ab-spec-pointer" key={label}>
+                          <span className="ab-spec-ico">
                             <SpecIcon size={18} strokeWidth={2} />
                           </span>
-                          <span className="ab-spec-text">{text}</span>
+                          <div>
+                            <div className="ab-spec-label">{label}</div>
+                            <div className="ab-spec-sub">{sub}</div>
+                          </div>
                         </div>
                       ))}
                     </div>
@@ -1202,10 +1292,12 @@ export default function AboutPage() {
                       {visible.map(({ icon: WhyIcon, title, sub }) => (
                         <div className="ab-why-card" key={title}>
                           <span className="ab-why-emoji">
-                            <WhyIcon size={18} strokeWidth={2} />
+                            <WhyIcon size={22} strokeWidth={2} />
                           </span>
-                          <div className="ab-why-title">{title}</div>
-                          <div className="ab-why-sub">{sub}</div>
+                          <div className="ab-why-text">
+                            <div className="ab-why-title">{title}</div>
+                            <div className="ab-why-sub">{sub}</div>
+                          </div>
                         </div>
                       ))}
                     </div>
@@ -1239,18 +1331,20 @@ export default function AboutPage() {
                 </div>
               </div>
               {(() => {
-                const all = QUALITY_POINTS;
+                const all = QUALITY_STEPS;
                 const visible =
                   !isMobile || showAllQuality ? all : all.slice(0, 3);
                 return (
                   <>
-                    <div className="ab-quality-list">
-                      {visible.map((item) => (
-                        <div className="ab-quality-item" key={item}>
-                          <div className="ab-quality-check">
-                            <CheckCircle2 size={14} strokeWidth={2.5} />
+                    <div className="ab-quality-grid">
+                      {visible.map(({ icon: QIcon, num, title, desc }) => (
+                        <div className="ab-qstep" key={num} data-num={num}>
+                          <div className="ab-qstep-ico">
+                            <QIcon size={20} strokeWidth={2} />
                           </div>
-                          <span className="ab-quality-text">{item}</span>
+                          <span className="ab-qstep-num">Step {num}</span>
+                          <div className="ab-qstep-title">{title}</div>
+                          <div className="ab-qstep-desc">{desc}</div>
                         </div>
                       ))}
                     </div>
@@ -1353,7 +1447,7 @@ export default function AboutPage() {
               <div className="ab-cta-text">
                 <div className="ab-cta-title">Ready to Partner with Us?</div>
                 <p className="ab-cta-sub">
-                  Join 500+ schools that trust The Uniform Lab year after year.
+                  Join 100+ schools that trust The Uniform Lab year after year.
                 </p>
               </div>
               <Link to="/schoolenquiry" className="ab-cta-btn">

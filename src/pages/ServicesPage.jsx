@@ -76,8 +76,7 @@ const SERVICES = [
     title: "Distribution & Fulfilment Models",
     description:
       "Flexible, zero-hassle fulfilment — from on-campus camps to e-commerce ordering for parents.",
-    image:
-      "/distribution.jpg",
+    image: "/distribution.jpg",
     points: [
       "On-campus uniform camps during admissions and reopening",
       "Retail store support for direct purchases",
@@ -130,38 +129,35 @@ function Reveal({ children, delay = 0, className = "", style = {} }) {
 
 /* ─── CSS ────────────────────────────────────────────────────────────────── */
 const CSS = `
-  @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800;900&family=Nunito:wght@400;600;700;800&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
   *, *::before, *::after { box-sizing: border-box; }
+
+  .sv-root, .sv-root * { font-family: 'Inter', sans-serif !important; }
 
   .sv-root {
     min-height: 100vh;
     background: #f6f8ff;
     padding-top: 88px;
-    font-family: 'Nunito', sans-serif;
     overflow-x: hidden;
   }
 
   /* ── Hero ── */
   .sv-hero {
     position: relative;
-    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 55%, #2563eb 100%);
+    background: url('/services.jpg') center center / cover no-repeat;
     padding: clamp(52px, 9vw, 108px) clamp(20px, 5vw, 80px) clamp(80px, 13vw, 150px);
     overflow: hidden;
-    text-align: center;
   }
-  .sv-hero-bg {
-    position: absolute; inset: 0; pointer-events: none;
-    background:
-      radial-gradient(ellipse 60% 55% at 15% 50%, rgba(96,165,250,0.13) 0%, transparent 70%),
-      radial-gradient(ellipse 50% 60% at 85% 30%, rgba(167,139,250,0.1) 0%, transparent 65%);
+  .sv-hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(10,18,40,0.58) 0%, rgba(15,40,100,0.44) 60%, rgba(20,60,160,0.30) 100%);
+    z-index: 0;
   }
-  .sv-hero-dots {
-    position: absolute; inset: 0; pointer-events: none;
-    background-image: radial-gradient(rgba(255,255,255,0.07) 1px, transparent 1px);
-    background-size: 28px 28px;
-  }
-  .sv-hero-inner { position: relative; z-index: 1; max-width: 820px; margin: 0 auto; }
+  .sv-hero-bg { display: none; }
+  .sv-hero-dots { display: none; }
+  .sv-hero-inner { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; }
   .sv-pill {
     display: inline-flex; align-items: center; gap: 6px;
     padding: 6px 16px; border-radius: 999px;
@@ -172,16 +168,18 @@ const CSS = `
     margin-bottom: 22px; backdrop-filter: blur(8px);
   }
   .sv-h1 {
-    font-family: 'Baloo 2', cursive;
-    font-size: clamp(32px, 5vw, 62px);
-    line-height: 1.06; color: #fff;
+    font-size: clamp(32px, 5vw, 60px);
+    font-weight: 800;
+    line-height: 1.06;
+    letter-spacing: -0.8px;
+    color: #fff;
     margin: 0 0 18px;
   }
   .sv-h1 em { font-style: normal; color: #93c5fd; }
   .sv-hero-sub {
     color: #93c5fd; font-size: clamp(14px, 1.4vw, 17px);
-    font-weight: 600; line-height: 1.7;
-    max-width: 620px; margin: 0 auto;
+    font-weight: 500; line-height: 1.7;
+    max-width: 600px; margin: 0;
   }
 
   /* ── Services grid ── */
@@ -256,14 +254,14 @@ const CSS = `
     content: ''; width: 18px; height: 2px; border-radius: 2px;
   }
   .sv-card-h2 {
-    font-family: 'Baloo 2', cursive;
-    font-size: clamp(20px, 2.2vw, 28px);
+    font-size: clamp(18px, 2vw, 26px);
     font-weight: 800; color: #1e293b;
-    line-height: 1.18; margin: 0 0 10px;
+    line-height: 1.15; margin: 0 0 10px;
+    letter-spacing: -0.4px;
   }
   .sv-card-desc {
-    color: #64748b; font-size: 14px; font-weight: 600;
-    line-height: 1.7; margin: 0 0 22px;
+    color: #64748b; font-size: 14px; font-weight: 500;
+    line-height: 1.75; margin: 0 0 22px;
   }
   .sv-points { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; }
   .sv-point {
@@ -282,7 +280,7 @@ const CSS = `
   .sv-point-icon {
     width: 20px; height: 20px; flex-shrink: 0; margin-top: 1px;
   }
-  .sv-point-text { color: #475569; font-size: 13px; font-weight: 700; line-height: 1.5; }
+  .sv-point-text { color: #64748b; font-size: 13.5px; font-weight: 500; line-height: 1.55; }
 
   /* ── Bottom CTA ── */
   .sv-cta {
@@ -312,29 +310,31 @@ const CSS = `
     margin-bottom: 18px; backdrop-filter: blur(8px);
   }
   .sv-cta-title {
-    font-family: 'Baloo 2', cursive;
-    font-size: clamp(24px, 3vw, 38px);
-    color: #fff; font-weight: 900;
+    font-size: clamp(22px, 2.6vw, 34px);
+    color: #fff; font-weight: 800;
+    letter-spacing: -0.5px;
     margin: 0 0 12px;
   }
-  .sv-cta-sub { color: #93c5fd; font-size: 15px; font-weight: 600; margin: 0 0 32px; }
+  .sv-cta-sub { color: #93c5fd; font-size: 15px; font-weight: 500; margin: 0 0 32px; }
   .sv-cta-btns { display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; }
   .sv-btn-primary {
     display: inline-flex; align-items: center; gap: 8px;
-    padding: 14px 28px; border-radius: 14px;
+    padding: 12px 24px; border-radius: 9999px;
     background: #fff; color: #1e3a8a;
-    font-family: 'Baloo 2', cursive; font-size: 15px; font-weight: 800;
+    font-size: clamp(12px, 1vw, 14px); font-weight: 700;
+    letter-spacing: 0.11em; text-transform: uppercase;
     text-decoration: none;
     transition: all 0.22s ease;
   }
   .sv-btn-primary:hover { background: #dbeafe; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.2); }
   .sv-btn-secondary {
     display: inline-flex; align-items: center; gap: 8px;
-    padding: 14px 28px; border-radius: 14px;
+    padding: 12px 24px; border-radius: 9999px;
     background: rgba(255,255,255,0.1);
     border: 1px solid rgba(255,255,255,0.2);
     color: #fff;
-    font-family: 'Baloo 2', cursive; font-size: 15px; font-weight: 800;
+    font-size: clamp(12px, 1vw, 14px); font-weight: 700;
+    letter-spacing: 0.11em; text-transform: uppercase;
     text-decoration: none; backdrop-filter: blur(8px);
     transition: all 0.22s ease;
   }
@@ -481,7 +481,7 @@ export default function ServicesPage() {
                   Ready to Simplify Your Uniform Operations?
                 </h2>
                 <p className="sv-cta-sub">
-                  Join 500+ schools and institutions that trust The Uniform Lab
+                  Join 100+ schools and institutions that trust The Uniform Lab
                   for consistent, on-time delivery.
                 </p>
                 <div className="sv-cta-btns">

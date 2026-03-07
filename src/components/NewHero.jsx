@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 
 /* ─────────────────────────────────────────────────────────────────────────
    GLOBAL STYLES
@@ -222,77 +222,117 @@ const GLOBAL_CSS = `
   }
 `;
 
-
 /* ─────────────────────────────────────────────────────────────────────────
    SVG ICONS
 ────────────────────────────────────────────────────────────────────────── */
 /* Proper school building — flat facade with flag, windows, door, steps */
 const IconSchool = ({ size = 22 }) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{width:`${size}px`,height:`${size}px`}}>
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.8"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: `${size}px`, height: `${size}px` }}
+  >
     {/* Main building body */}
-    <rect x="2" y="10" width="20" height="11" rx="0.5"/>
+    <rect x="2" y="10" width="20" height="11" rx="0.5" />
     {/* Roof / pediment */}
-    <path d="M1 10h22"/>
-    <path d="M4 10V7h16v3"/>
+    <path d="M1 10h22" />
+    <path d="M4 10V7h16v3" />
     {/* Central entrance arch */}
-    <path d="M10 21v-5a2 2 0 014 0v5"/>
+    <path d="M10 21v-5a2 2 0 014 0v5" />
     {/* Left window */}
-    <rect x="4" y="13" width="3" height="2.5" rx="0.4"/>
+    <rect x="4" y="13" width="3" height="2.5" rx="0.4" />
     {/* Right window */}
-    <rect x="17" y="13" width="3" height="2.5" rx="0.4"/>
+    <rect x="17" y="13" width="3" height="2.5" rx="0.4" />
     {/* Flag pole + flag */}
-    <line x1="12" y1="7" x2="12" y2="3"/>
-    <path d="M12 3h4l-1 1.5L16 6h-4"/>
+    <line x1="12" y1="7" x2="12" y2="3" />
+    <path d="M12 3h4l-1 1.5L16 6h-4" />
     {/* Steps */}
-    <path d="M8 21h8"/>
+    <path d="M8 21h8" />
   </svg>
 );
 
 const IconDelivery = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{width:'22px',height:'22px'}}>
-    <rect x="1" y="3" width="15" height="13" rx="1"/>
-    <path d="M16 8h4l3 5v4h-7V8z"/>
-    <circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: "22px", height: "22px" }}
+  >
+    <rect x="1" y="3" width="15" height="13" rx="1" />
+    <path d="M16 8h4l3 5v4h-7V8z" />
+    <circle cx="5.5" cy="18.5" r="2.5" />
+    <circle cx="18.5" cy="18.5" r="2.5" />
   </svg>
 );
 const IconQuality = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{width:'22px',height:'22px'}}>
-    <path d="M12 2l2.9 6.3L22 9.3l-5 4.9 1.2 6.8L12 18l-6.2 3 1.2-6.8L2 9.3l7.1-1z"/>
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: "22px", height: "22px" }}
+  >
+    <path d="M12 2l2.9 6.3L22 9.3l-5 4.9 1.2 6.8L12 18l-6.2 3 1.2-6.8L2 9.3l7.1-1z" />
   </svg>
 );
 const IconFit = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{width:'22px',height:'22px'}}>
-    <path d="M9 3H5a2 2 0 00-2 2v4"/><path d="M15 3h4a2 2 0 012 2v4"/>
-    <path d="M9 21H5a2 2 0 01-2-2v-4"/><path d="M15 21h4a2 2 0 002-2v-4"/>
-    <rect x="9" y="9" width="6" height="6" rx="1"/>
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: "22px", height: "22px" }}
+  >
+    <path d="M9 3H5a2 2 0 00-2 2v4" />
+    <path d="M15 3h4a2 2 0 012 2v4" />
+    <path d="M9 21H5a2 2 0 01-2-2v-4" />
+    <path d="M15 21h4a2 2 0 002-2v-4" />
+    <rect x="9" y="9" width="6" height="6" rx="1" />
   </svg>
 );
-
 
 /* ─────────────────────────────────────────────────────────────────────────
    GAME BUTTON  —  with peek-emoji effect (no tooltip)
 ────────────────────────────────────────────────────────────────────────── */
-function GameButton({ to, label, emoji, peekEmoji, variant = 'gold' }) {
-  const isGold = variant === 'gold';
+function GameButton({ to, label, emoji, peekEmoji, variant = "gold" }) {
+  const isGold = variant === "gold";
 
   /* Partner/Join us: #F7BE4F. Shop Now: #004C99. */
   const shadowOn = isGold
-    ? '0 2px 8px rgba(247,190,79,0.35), inset 0 1px 0 rgba(255,255,255,0.45)'
-    : '0 2px 8px rgba(0,76,153,0.25), inset 0 1px 0 rgba(255,255,255,0.15)';
+    ? "0 2px 8px rgba(247,190,79,0.35), inset 0 1px 0 rgba(255,255,255,0.45)"
+    : "0 2px 8px rgba(0,76,153,0.25), inset 0 1px 0 rgba(255,255,255,0.15)";
   const shadowOff = isGold
-    ? '0 1px 4px rgba(247,190,79,0.25), inset 0 1px 0 rgba(255,255,255,0.35)'
-    : '0 1px 4px rgba(0,76,153,0.2), inset 0 1px 0 rgba(255,255,255,0.1)';
+    ? "0 1px 4px rgba(247,190,79,0.25), inset 0 1px 0 rgba(255,255,255,0.35)"
+    : "0 1px 4px rgba(0,76,153,0.2), inset 0 1px 0 rgba(255,255,255,0.1)";
   const bg = isGold
-    ? 'linear-gradient(180deg, #fcd88a 0%, #F7BE4F 50%, #e5a732 100%)'
-    : 'linear-gradient(180deg, #1a6bb8 0%, #004C99 50%, #003d7a 100%)';
-  const border = isGold ? '1px solid rgba(229,167,50,0.6)' : '1px solid rgba(0,76,153,0.6)';
-  const textColor = isGold ? '#5c3a0a' : '#fff';
+    ? "linear-gradient(180deg, #fcd88a 0%, #F7BE4F 50%, #e5a732 100%)"
+    : "linear-gradient(180deg, #1a6bb8 0%, #004C99 50%, #003d7a 100%)";
+  const border = isGold
+    ? "1px solid rgba(229,167,50,0.6)"
+    : "1px solid rgba(0,76,153,0.6)";
+  const textColor = isGold ? "#5c3a0a" : "#fff";
 
   return (
-    <Link to={to} style={{ textDecoration: 'none' }} className="select-none peek-wrap">
-
+    <Link
+      to={to}
+      style={{ textDecoration: "none" }}
+      className="select-none peek-wrap"
+    >
       {/* Peek icon (same emoji as button) */}
-      <span className="peek-icon" aria-hidden="true">{peekEmoji || emoji}</span>
+      <span className="peek-icon" aria-hidden="true">
+        {peekEmoji || emoji}
+      </span>
 
       {/* Button — sits on top (pill shape, no emoji inside; peek emoji on hover only) */}
       <div
@@ -301,31 +341,32 @@ function GameButton({ to, label, emoji, peekEmoji, variant = 'gold' }) {
           background: bg,
           border,
           boxShadow: shadowOn,
-          transition: 'transform 0.1s ease, box-shadow 0.1s ease, filter 0.12s ease',
+          transition:
+            "transform 0.1s ease, box-shadow 0.1s ease, filter 0.12s ease",
         }}
-        onMouseEnter={e => {
-          e.currentTarget.style.filter = 'brightness(1.04)';
-          e.currentTarget.style.transform = 'translateY(-1px)';
+        onMouseEnter={(e) => {
+          e.currentTarget.style.filter = "brightness(1.04)";
+          e.currentTarget.style.transform = "translateY(-1px)";
         }}
-        onMouseLeave={e => {
-          e.currentTarget.style.filter = '';
-          e.currentTarget.style.transform = 'translateY(0)';
+        onMouseLeave={(e) => {
+          e.currentTarget.style.filter = "";
+          e.currentTarget.style.transform = "translateY(0)";
           e.currentTarget.style.boxShadow = shadowOn;
         }}
-        onMouseDown={e => {
-          e.currentTarget.style.transform = 'translateY(1px)';
+        onMouseDown={(e) => {
+          e.currentTarget.style.transform = "translateY(1px)";
           e.currentTarget.style.boxShadow = shadowOff;
         }}
-        onMouseUp={e => {
-          e.currentTarget.style.transform = 'translateY(0)';
+        onMouseUp={(e) => {
+          e.currentTarget.style.transform = "translateY(0)";
           e.currentTarget.style.boxShadow = shadowOn;
         }}
       >
         <span
           className="font-bold uppercase text-center"
           style={{
-            fontSize: 'clamp(12px, 1.1vw, 14px)',
-            letterSpacing: '0.11em',
+            fontSize: "clamp(12px, 1.1vw, 14px)",
+            letterSpacing: "0.11em",
             color: textColor,
           }}
         >
@@ -336,20 +377,19 @@ function GameButton({ to, label, emoji, peekEmoji, variant = 'gold' }) {
   );
 }
 
-
 /* ─────────────────────────────────────────────────────────────────────────
    METRIC ROW
 ────────────────────────────────────────────────────────────────────────── */
-function Metric({ Icon, title, sub, iconColor = '#2563eb' }) {
+function Metric({ Icon, title, sub, iconColor = "#2563eb" }) {
   return (
     <div className="hero-metric-card flex items-center gap-3">
       <div
         className="flex-shrink-0 flex items-center justify-center rounded-2xl"
         style={{
-          width: 'clamp(36px, 3.6vw, 52px)',
-          height: 'clamp(36px, 3.6vw, 52px)',
-          background: 'linear-gradient(135deg, #eef5ff 0%, #ddeaff 100%)',
-          boxShadow: '0 2px 10px rgba(0,80,200,0.12)',
+          width: "clamp(36px, 3.6vw, 52px)",
+          height: "clamp(36px, 3.6vw, 52px)",
+          background: "linear-gradient(135deg, #eef5ff 0%, #ddeaff 100%)",
+          boxShadow: "0 2px 10px rgba(0,80,200,0.12)",
           color: iconColor,
           flexShrink: 0,
         }}
@@ -359,13 +399,13 @@ function Metric({ Icon, title, sub, iconColor = '#2563eb' }) {
       <div>
         <p
           className="hero-metric-title m-0 font-semibold text-[#1a1a2e] leading-snug"
-          style={{ fontSize: 'clamp(11px, 1.1vw, 15px)' }}
+          style={{ fontSize: "clamp(11px, 1.1vw, 15px)" }}
         >
           {title}
         </p>
         <p
           className="hero-metric-sub m-0 text-gray-400 font-semibold leading-snug"
-          style={{ fontSize: 'clamp(9px, 0.85vw, 12px)' }}
+          style={{ fontSize: "clamp(9px, 0.85vw, 12px)" }}
         >
           {sub}
         </p>
@@ -374,17 +414,16 @@ function Metric({ Icon, title, sub, iconColor = '#2563eb' }) {
   );
 }
 
-
 /* ─────────────────────────────────────────────────────────────────────────
    HERO
 ────────────────────────────────────────────────────────────────────────── */
 export default function NewHero({
-  logoSrc       = '/logo.png',
-  lineOne       = 'School Uniforms Made Simple.',
-  lineTwo       = 'Order online, get fast delivery and perfect fits.',
-  heroVideoSrc  = '/hero.mp4',
-  primaryHref   = '/schoolenquiry',
-  secondaryHref = '/schools',
+  logoSrc = "/logo.png",
+  lineOne = "School Uniforms Made Simple.",
+  lineTwo = "Order online, get fast delivery and perfect fits.",
+  heroVideoSrc = "/hero.mp4",
+  primaryHref = "/schoolenquiry",
+  secondaryHref = "/schools",
 }) {
   return (
     <>
@@ -392,81 +431,128 @@ export default function NewHero({
 
       <section
         className="hero-root relative h-svh max-h-screen overflow-hidden flex flex-col"
-        style={{ background: '#FAF3F0' }}
+        style={{ background: "#FAF3F0" }}
       >
         <div className="relative z-10 flex flex-col w-full h-full">
-
           {/* ── Logo ── */}
           {/* Navbar is ~60-70px; paddingTop pushes logo clearly below it */}
           <div
             className="hero-logo-section flex-shrink-0 flex justify-center"
             style={{
-              position: 'relative',
+              position: "relative",
               zIndex: 20,
-              paddingTop:   'clamp(52px, 6vh, 80px)',
-              paddingLeft:  'clamp(14px, 2.2vw, 36px)',
-              paddingRight: 'clamp(14px, 2.2vw, 36px)',
+              paddingTop: "clamp(52px, 6vh, 80px)",
+              paddingLeft: "clamp(14px, 2.2vw, 36px)",
+              paddingRight: "clamp(14px, 2.2vw, 36px)",
             }}
           >
-             <p
-                className="m-0 font-bold text-[#1a1a2e] leading-tight mt-10"
-                style={{ fontSize: 'clamp(20px, 2.6vw, 36px)', letterSpacing: '-0.3px' }}
-              >
-                {lineOne}
-              </p>
+            <p
+              className="m-0 font-bold text-[#1a1a2e] leading-tight mt-10"
+              style={{
+                fontSize: "clamp(20px, 2.6vw, 36px)",
+                letterSpacing: "-0.3px",
+              }}
+            >
+              {lineOne}
+            </p>
           </div>
 
           {/* ── Main grid ── */}
           <div
             className="hero-main-grid flex-1 min-h-0 w-full grid"
             style={{
-              gridTemplateColumns: '1fr 1.8fr 1fr',
-              columnGap:     'clamp(10px, 1.8vw, 28px)',
-              marginTop:     'clamp(4px, 0.8vh, 12px)',
-              paddingBottom: 'clamp(10px, 1.6vh, 22px)',
-              paddingLeft:   'clamp(14px, 2.2vw, 36px)',
-              paddingRight:  'clamp(14px, 2.2vw, 36px)',
-              alignItems:    'center',
+              gridTemplateColumns: "1fr 1.8fr 1fr",
+              columnGap: "clamp(10px, 1.8vw, 28px)",
+              marginTop: "clamp(4px, 0.8vh, 12px)",
+              paddingBottom: "clamp(10px, 1.6vh, 22px)",
+              paddingLeft: "clamp(14px, 2.2vw, 36px)",
+              paddingRight: "clamp(14px, 2.2vw, 36px)",
+              alignItems: "center",
             }}
           >
             {/* LEFT */}
-            <div className="hero-left-col flex flex-col justify-center gap-3 h-full" style={{ position: 'relative', zIndex: 30, paddingLeft: 'clamp(8px, 1vw, 16px)', paddingRight: 'clamp(8px, 1.8vw, 24px)' }}>
+            <div
+              className="hero-left-col flex flex-col justify-center gap-3 h-full"
+              style={{
+                position: "relative",
+                zIndex: 30,
+                paddingLeft: "clamp(8px, 1vw, 16px)",
+                paddingRight: "clamp(8px, 1.8vw, 24px)",
+              }}
+            >
               <div className="flex items-center gap-2">
                 <span
                   className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-medium uppercase tracking-widest"
                   style={{
-                    background: 'linear-gradient(135deg, #eef5ff 0%, #ddeaff 100%)',
-                    color: '#2563eb',
-                    fontSize: 'clamp(9px, 0.75vw, 11px)',
-                    boxShadow: '0 1px 6px rgba(37,99,235,0.12)',
+                    background:
+                      "linear-gradient(135deg, #eef5ff 0%, #ddeaff 100%)",
+                    color: "#2563eb",
+                    fontSize: "clamp(9px, 0.75vw, 11px)",
+                    boxShadow: "0 1px 6px rgba(37,99,235,0.12)",
                   }}
                 >
-                  🏛️ Trusted by 500+ Schools
+                  🏛️ Trusted by 100+ Schools
                 </span>
               </div>
-             
+
               <p
                 className="m-0 font-semibold text-gray-400 leading-snug"
-                style={{ fontSize: 'clamp(11px, 1vw, 14px)', maxWidth: '28ch' }}
+                style={{ fontSize: "clamp(11px, 1vw, 14px)", maxWidth: "28ch" }}
               >
                 {lineTwo}
               </p>
-              <hr className="hero-left-divider" style={{ border:'none', height:'1px', background:'linear-gradient(to right, #ccdeff 0%, transparent 80%)', margin:'2px 0' }} />
-              <ul className="hero-features-list m-0 p-0 flex flex-col gap-2" style={{ listStyle: 'none' }}>
+              <hr
+                className="hero-left-divider"
+                style={{
+                  border: "none",
+                  height: "1px",
+                  background:
+                    "linear-gradient(to right, #ccdeff 0%, transparent 80%)",
+                  margin: "2px 0",
+                }}
+              />
+              <ul
+                className="hero-features-list m-0 p-0 flex flex-col gap-2"
+                style={{ listStyle: "none" }}
+              >
                 {[
-                  { Icon: IconDelivery, color: '#0ea5e9', text: '2–3 day doorstep delivery' },
-                  { Icon: IconQuality,  color: '#f59e0b', text: 'ISI certified quality fabrics' },
-                  { Icon: IconFit,      color: '#10b981', text: 'Exact sizing, guaranteed fit' },
-                  { Icon: IconSchool,   color: '#2563eb', text: 'Affordable school pricing' },
+                  {
+                    Icon: IconDelivery,
+                    color: "#0ea5e9",
+                    text: "2–3 day doorstep delivery",
+                  },
+                  {
+                    Icon: IconQuality,
+                    color: "#f59e0b",
+                    text: "ISI certified quality fabrics",
+                  },
+                  {
+                    Icon: IconFit,
+                    color: "#10b981",
+                    text: "Exact sizing, guaranteed fit",
+                  },
+                  {
+                    Icon: IconSchool,
+                    color: "#2563eb",
+                    text: "Affordable school pricing",
+                  },
                 ].map(({ Icon, color, text }) => (
                   <li key={text} className="flex items-center gap-2">
                     <span
                       className="flex items-center justify-center rounded-lg flex-shrink-0"
-                      style={{ width: 'clamp(24px, 2vw, 30px)', height: 'clamp(24px, 2vw, 30px)', background: `${color}18`, color }}
+                      style={{
+                        width: "clamp(24px, 2vw, 30px)",
+                        height: "clamp(24px, 2vw, 30px)",
+                        background: `${color}18`,
+                        color,
+                      }}
                     >
                       <Icon />
                     </span>
-                    <span className="font-semibold text-[#1a1a2e]" style={{ fontSize: 'clamp(10px, 0.9vw, 13px)' }}>
+                    <span
+                      className="font-semibold text-[#1a1a2e]"
+                      style={{ fontSize: "clamp(10px, 0.9vw, 13px)" }}
+                    >
                       {text}
                     </span>
                   </li>
@@ -475,9 +561,19 @@ export default function NewHero({
 
               {/* Desktop: first 2 metrics on the left */}
               <div className="hero-left-metrics">
-                <Metric Icon={IconSchool}   iconColor="#2563eb" title="School Approved"  sub="Trusted by 500+ schools" />
-                <hr className="metric-sep" style={{ margin: '2px 0' }} />
-                <Metric Icon={IconDelivery} iconColor="#0ea5e9" title="Fastest Delivery" sub="2–3 day doorstep delivery" />
+                <Metric
+                  Icon={IconSchool}
+                  iconColor="#2563eb"
+                  title="School Approved"
+                  sub="Trusted by 100+ schools"
+                />
+                <hr className="metric-sep" style={{ margin: "2px 0" }} />
+                <Metric
+                  Icon={IconDelivery}
+                  iconColor="#0ea5e9"
+                  title="Fastest Delivery"
+                  sub="2–3 day doorstep delivery"
+                />
               </div>
             </div>
 
@@ -488,27 +584,34 @@ export default function NewHero({
                 <video
                   src={heroVideoSrc}
                   className="hero-img-scale"
-                  autoPlay loop muted playsInline
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
                   style={{
-                    width: '100%',
-                    height: 'auto',
-                    objectFit: 'contain',
-                    objectPosition: 'center',
-                    display: 'block',
-                    transform: 'scale(1.32) translateY(3%)',
-                    transformOrigin: 'center center',
-                    pointerEvents: 'none',
-                    clipPath: 'inset(1px 1px 2px 1px)',
-                    WebkitClipPath: 'inset(1px 1px 2px 1px)',
-                    backfaceVisibility: 'hidden',
-                    WebkitBackfaceVisibility: 'hidden',
+                    width: "100%",
+                    height: "auto",
+                    objectFit: "contain",
+                    objectPosition: "center",
+                    display: "block",
+                    transform: "scale(1.32) translateY(3%)",
+                    transformOrigin: "center center",
+                    pointerEvents: "none",
+                    clipPath: "inset(1px 1px 2px 1px)",
+                    WebkitClipPath: "inset(1px 1px 2px 1px)",
+                    backfaceVisibility: "hidden",
+                    WebkitBackfaceVisibility: "hidden",
                   }}
                 />
 
                 {/* Buttons desktop — extra padding-top so peek has room */}
                 <div
                   className="hero-btns-desktop flex items-center justify-center gap-4"
-                  style={{ marginTop: 'clamp(40px, 7vh, 90px)', width: '100%', paddingTop: '48px' }}
+                  style={{
+                    marginTop: "clamp(40px, 7vh, 90px)",
+                    width: "100%",
+                    paddingTop: "48px",
+                  }}
                 >
                   <GameButton
                     to={primaryHref}
@@ -531,25 +634,72 @@ export default function NewHero({
             {/* RIGHT */}
             <div
               className="hero-right-col flex flex-col justify-center gap-3 h-full"
-              style={{ position: 'relative', zIndex: 30, paddingBottom: 'clamp(4px, 0.8vh, 10px)', paddingLeft: 'clamp(40px, 6vw, 80px)' }}
+              style={{
+                position: "relative",
+                zIndex: 30,
+                paddingBottom: "clamp(4px, 0.8vh, 10px)",
+                paddingLeft: "clamp(40px, 6vw, 80px)",
+              }}
             >
-              <Metric Icon={IconQuality}  iconColor="#f59e0b" title="100% Quality"  sub="ISI certified fabrics"    />
+              <Metric
+                Icon={IconQuality}
+                iconColor="#f59e0b"
+                title="100% Quality"
+                sub="ISI certified fabrics"
+              />
               <hr className="metric-sep" />
-              <Metric Icon={IconFit}      iconColor="#10b981" title="Perfect Fit"   sub="Exact sizing, guaranteed" />
+              <Metric
+                Icon={IconFit}
+                iconColor="#10b981"
+                title="Perfect Fit"
+                sub="Exact sizing, guaranteed"
+              />
             </div>
 
             {/* Mobile: all 4 metrics in 2×2 grid, above CTA buttons */}
             <div className="hero-mobile-metrics-wrap">
-              <Metric Icon={IconSchool}   iconColor="#2563eb" title="School Approved"  sub="Trusted by 500+ schools" />
-              <Metric Icon={IconDelivery} iconColor="#0ea5e9" title="Fastest Delivery" sub="2–3 day doorstep delivery" />
-              <Metric Icon={IconQuality}  iconColor="#f59e0b" title="100% Quality"     sub="ISI certified fabrics" />
-              <Metric Icon={IconFit}      iconColor="#10b981" title="Perfect Fit"      sub="Exact sizing, guaranteed" />
+              <Metric
+                Icon={IconSchool}
+                iconColor="#2563eb"
+                title="School Approved"
+                sub="Trusted by 100+ schools"
+              />
+              <Metric
+                Icon={IconDelivery}
+                iconColor="#0ea5e9"
+                title="Fastest Delivery"
+                sub="2–3 day doorstep delivery"
+              />
+              <Metric
+                Icon={IconQuality}
+                iconColor="#f59e0b"
+                title="100% Quality"
+                sub="ISI certified fabrics"
+              />
+              <Metric
+                Icon={IconFit}
+                iconColor="#10b981"
+                title="Perfect Fit"
+                sub="Exact sizing, guaranteed"
+              />
             </div>
 
             {/* Buttons mobile */}
             <div className="hero-btns-mobile">
-              <GameButton to={primaryHref}   label="Join us" emoji="🏫" peekEmoji="🏫" variant="gold" />
-              <GameButton to={secondaryHref} label="Shop Now" emoji="👨‍👩‍👦" peekEmoji="👨‍👩‍👦" variant="blue" />
+              <GameButton
+                to={primaryHref}
+                label="Join us"
+                emoji="🏫"
+                peekEmoji="🏫"
+                variant="gold"
+              />
+              <GameButton
+                to={secondaryHref}
+                label="Shop Now"
+                emoji="👨‍👩‍👦"
+                peekEmoji="👨‍👩‍👦"
+                variant="blue"
+              />
             </div>
           </div>
         </div>

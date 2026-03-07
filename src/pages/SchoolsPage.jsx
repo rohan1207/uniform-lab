@@ -552,7 +552,7 @@ export default function SchoolsPage() {
                   fontFamily: "'Nunito', sans-serif",
                 }}
               >
-                🏫 500+ Schools on board
+                🏫 100+ Schools on board
               </span>
             </div>
 
