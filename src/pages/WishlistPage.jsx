@@ -12,8 +12,8 @@ const PAGE_CSS = `
 
   .wl-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 18px;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 24px;
   }
   .wl-card {
     background: #fff;
@@ -63,15 +63,15 @@ const PAGE_CSS = `
   }
   .wl-remove-btn:hover { color: #e11d48; background: #fff0f3; border-color: #fecdd3; }
   .wl-info {
-    padding: 12px 14px 14px;
+    padding: 16px 18px 18px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 14px;
     flex: 1;
   }
   .wl-name {
     font-weight: 800;
-    font-size: 14px;
+    font-size: 16px;
     color: #0f172a;
     line-height: 1.3;
     display: -webkit-box;
@@ -80,19 +80,19 @@ const PAGE_CSS = `
     overflow: hidden;
   }
   .wl-price {
-    font-weight: 900;
-    font-size: 15px;
+    font-weight: 800;
+    font-size: 18px;
     color: #1e3a8a;
   }
   .wl-atc {
     width: 100%;
-    padding: 9px 12px;
+    padding: 11px 14px;
     border-radius: 10px;
     background: linear-gradient(180deg, #1a6bb8 0%, #004C99 50%, #003d7a 100%);
     border: none;
     color: #fff;
     font-weight: 800;
-    font-size: 13px;
+    font-size: 14px;
     letter-spacing: 0.02em;
     cursor: pointer;
     display: flex;
@@ -111,8 +111,8 @@ const PAGE_CSS = `
     }
     .wl-info { padding: 10px 11px 12px; }
     .wl-name { font-size: 13px; }
-    .wl-price { font-size: 14px; }
-    .wl-atc { font-size: 12px; padding: 8px 10px; border-radius: 9px; }
+    .wl-price { font-size: 15px; }
+    .wl-atc { font-size: 13px; padding: 9px 11px; border-radius: 9px; }
   }
 `;
 
@@ -157,8 +157,8 @@ export default function WishlistPage() {
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1
-              className="text-2xl font-bold text-[#1a1a2e] mb-1"
-              style={FONT_HEADING}
+              className="text-[#1a1a2e] mb-1"
+              style={{ ...FONT_HEADING, fontSize: "clamp(28px, 2.8vw, 38px)", letterSpacing: "-0.7px" }}
             >
               Wishlist
               {items.length > 0 && (
@@ -167,7 +167,7 @@ export default function WishlistPage() {
                 </span>
               )}
             </h1>
-            <p className="text-sm text-[var(--color-text-muted)]">
+            <p className="text-[var(--color-text-muted)]" style={{ fontSize: "15px" }}>
               Save uniforms you like and add to cart when ready.
             </p>
           </div>
@@ -189,21 +189,22 @@ export default function WishlistPage() {
               <Heart size={28} className="text-rose-300" />
             </div>
             <p
-              className="text-base font-bold text-slate-700 mb-1"
-              style={FONT_HEADING}
+              className="text-slate-700 mb-1"
+              style={{ ...FONT_HEADING, fontSize: "20px" }}
             >
               Nothing saved yet
             </p>
-            <p className="text-sm text-slate-400 mb-5">
+            <p className="text-slate-400 mb-5" style={{ fontSize: "15px" }}>
               Tap the ♡ on any product to save it here.
             </p>
             <Link
               to="/schools"
-              className="inline-flex items-center gap-2 py-2.5 px-6 rounded-full font-bold text-white hover:brightness-105 transition text-sm"
+              className="inline-flex items-center gap-2 py-2.5 px-6 rounded-full font-bold text-white hover:brightness-105 transition"
               style={{
                 background:
                   "linear-gradient(180deg, #1a6bb8 0%, #004C99 50%, #003d7a 100%)",
                 textDecoration: "none",
+                fontSize: "14px",
                 ...FONT_HEADING,
               }}
             >

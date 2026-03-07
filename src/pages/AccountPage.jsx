@@ -14,7 +14,7 @@ const BTN_PRIMARY = {
   color: "#fff",
   borderRadius: "9999px",
   padding: "0.5rem 1.25rem",
-  fontSize: "0.8125rem",
+  fontSize: "0.875rem",
   fontWeight: 700,
   letterSpacing: "0.02em",
 };
@@ -26,7 +26,7 @@ const BTN_GOLD = {
   color: "#5c3a0a",
   borderRadius: "9999px",
   padding: "0.5rem 1.25rem",
-  fontSize: "0.8125rem",
+  fontSize: "0.875rem",
   fontWeight: 700,
 };
 const PILL_TOGGLE_BG = {
@@ -1554,16 +1554,28 @@ export default function AccountPage() {
 
   return (
     <main
-      className="min-h-screen bg-[var(--page-bg)] pt-24 px-4 sm:px-6"
+      className="min-h-screen account-root bg-[var(--page-bg)] pt-24 px-4 sm:px-6"
       style={FONT_BODY}
     >
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap'); .min-h-screen { font-family: 'Inter', sans-serif; }`}</style>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+        .min-h-screen, .min-h-screen * { font-family: 'Inter', sans-serif !important; }
+        .account-root .text-xs { font-size: 13px; }
+        .account-root [class~="text-[10px]"] { font-size: 12px; }
+        .account-root [class~="text-[11px]"] { font-size: 13px; }
+        .account-root .text-sm { font-size: 15px; }
+        .account-root .text-base { font-size: 16px; }
+        .account-root .text-lg { font-size: 20px; }
+        .account-root .text-xl { font-size: 22px; }
+        .account-root input, .account-root select, .account-root textarea { font-size: 15px !important; font-family: 'Inter', sans-serif !important; }
+        .account-root label { font-size: 13px; }
+      `}</style>
       <div className="max-w-5xl mx-auto">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
           <div>
             <h1
-              className="text-2xl font-bold text-[#1a1a2e] mb-1"
-              style={FONT_HEADING}
+              className="text-[#1a1a2e] mb-1"
+              style={{ ...FONT_HEADING, fontSize: "clamp(28px, 2.8vw, 38px)", letterSpacing: "-0.7px" }}
             >
               My Account
             </h1>
@@ -1602,7 +1614,7 @@ export default function AccountPage() {
                         ...BTN_PRIMARY,
                         ...FONT_HEADING,
                         padding: "0.375rem 1rem",
-                        fontSize: "0.75rem",
+                        fontSize: "13px",
                       }
                     : undefined
                 }
