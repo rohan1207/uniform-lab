@@ -1050,7 +1050,7 @@ export default function SchoolProductsPage() {
                   }}
                 >
                   {totalProducts} products · {catalog.categories?.length ?? 0}{" "}
-                  grades
+                  Categories
                 </p>
               </div>
               <button
@@ -1278,14 +1278,14 @@ export default function SchoolProductsPage() {
 
             {/* Grade filter (product categories) */}
             <div>
-              <p className="spp-section-label">Grade</p>
+              <p className="spp-section-label">Categories</p>
               <div className="flex flex-col gap-1">
                 <button
                   type="button"
                   onClick={() => setSelectedCategoryIds([])}
                   className={`spp-pill ${selectedCategoryIds.length === 0 ? "active" : ""}`}
                 >
-                  All grades
+                  All categories
                 </button>
                 {catalog.categories.map((cat) => (
                   <button
@@ -1305,7 +1305,7 @@ export default function SchoolProductsPage() {
 
             <hr className="spp-divider" />
 
-            {/* Categories filter (product tags) */}
+            {/* Categories filter (product tags)
             <div className="flex-1">
               <p className="spp-section-label">Categories</p>
               <div className="flex flex-col gap-1">
@@ -1335,7 +1335,7 @@ export default function SchoolProductsPage() {
                   </p>
                 )}
               </div>
-            </div>
+            </div> */}
 
             {/* Clear */}
             {hasActiveFilters && (
