@@ -79,7 +79,7 @@ export default function Footer() {
               }}
             >
               {/* ── Col 1 : Brand ── */}
-          <div>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
             <div
               style={{
                 display: "inline-block",
@@ -102,8 +102,7 @@ export default function Footer() {
                   alt="The Uniform Lab Logo"
                   className="ftl-logo"
                   style={{
-                    margin: "0 0 0px",
-                   
+                    marginLeft: "-14px",
                   }}
                 />
             
@@ -114,6 +113,7 @@ export default function Footer() {
                 lineHeight: 1.7,
                 margin: "0 0 0",
                 maxWidth: 280,
+                textAlign: 'left',
               }}
             >
               Uniforms that make students look smart, feel comfortable, and wear

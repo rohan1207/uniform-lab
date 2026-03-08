@@ -310,7 +310,7 @@ const CSS = `
   .eq-success {
     min-height: 80vh;
     display: flex; align-items: center; justify-content: center;
-    padding: clamp(20px, 5vw, 60px);
+    padding: clamp(20px, 5vw, 63px);
   }
   .eq-success-card {
     background: #fff; border: 1px solid #e5edf9;

@@ -1114,7 +1114,7 @@ export function ProductDetailTemplate({
                   label: "2 Lakh+\nCustomers",
                   color: "#0f172a",
                 },
-                { icon: Truck, label: "₹125\nDelivery", color: "#0f172a" },
+                { icon: Truck, label: "Fast\nDelivery", color: "#0f172a" },
                 { icon: RotateCcw, label: "7-Day\nExchange", color: "#0f172a" },
               ].map(({ icon: Icon, label, color }) => (
                 <div
