@@ -379,7 +379,7 @@ function SchoolCard({ school }) {
           <p className="sp-card-name">
             {school.name.split(/(School)/g).map((part, i) =>
               part === "School" ? (
-                <span key={i} className="text-[#2563eb]">
+                <span key={i} className="">
                   School
                 </span>
               ) : (

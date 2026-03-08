@@ -465,14 +465,14 @@ export default function NewHero({
             </p> */}
 
             <h1
-              className="sp-heading mt-4 font-black text-[#1a1a2e] leading-tight mb-3"
+              className="sp-heading mt-10 font-black text-[#1a1a2e] leading-tight mb-3"
               style={{
                 fontFamily: "'Inter', sans-serif",
-                fontSize: "clamp(24px, 2.5vw, 50px)",
+                fontSize: "clamp(22px, 2vw, 50px)",
                 letterSpacing: "-0.5px",
               }}
             >
-              <span className="text-[#2563eb]">School Uniforms</span> Made
+              <span className="text-[#2563eb]">Uniforms</span> Made
               Simple
             </h1>
           </div>

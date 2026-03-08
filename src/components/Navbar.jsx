@@ -166,7 +166,7 @@ export default function Navbar() {
             maxWidth: "1280px",
             margin: "0 auto",
             padding: "0 32px",
-            height: "84px",
+            height: "96px",
           }}
         >
           {/* Logo — LEFT aligned */}
@@ -184,13 +184,14 @@ export default function Navbar() {
               src="/logo.png"
               alt="Logo"
               style={{
-                height: "72px",
+                height: "96px",
                 width: "auto",
                 display: "block",
                 objectFit: "contain",
-                transform: "scale(1.25)",
+                transform: "scale(1.4)",
                 transformOrigin: "left center",
-                marginTop: "12px",
+                // marginTop: "14px",
+                padding: "15px",
               }}
             />
           </Link>
@@ -492,7 +493,7 @@ export default function Navbar() {
           className="flex md:hidden"
           style={{
             alignItems: "center",
-            height: "60px",
+            height: "72px",
             padding: "0 16px",
             position: "relative",
           }}
@@ -511,10 +512,12 @@ export default function Navbar() {
               src="/logo.png"
               alt="Logo"
               style={{
-                height: "48px",
+                height: "94px",
                 width: "auto",
                 display: "block",
                 objectFit: "contain",
+                marginTop: "10px",
+                padding: "14px",
               }}
             />
           </Link>
@@ -707,10 +710,11 @@ export default function Navbar() {
                     src="/logo.png"
                     alt="Uniform Lab"
                     style={{
-                      height: "44px",
+                      height: "72px",
                       width: "auto",
                       display: "block",
                       objectFit: "contain",
+                      marginTop: "6px",
                     }}
                   />
                 </Link>

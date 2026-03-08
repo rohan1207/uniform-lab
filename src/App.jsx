@@ -9,6 +9,7 @@ import Footer from "@/components/Footer";
 import { CartDrawerWrapper } from "@/components/CartDrawerWrapper";
 
 import SchoolsPage from "@/pages/SchoolsPage";
+import FeaturedSchools from "@/pages/FeaturedSchools";
 import SchoolProductsPage from "@/pages/SchoolProductsPage";
 import ProductPage from "@/pages/ProductPage";
 import CheckoutPage from "@/pages/CheckoutPage";
@@ -49,7 +50,7 @@ function LayoutContent() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/home" element={<HomePage />} />
-          <Route path="/schools" element={<SchoolsPage />} />
+          <Route path="/schools" element={<FeaturedSchools />} />
           <Route path="/schools/:slug" element={<SchoolProductsPage />} />
           <Route path="/product/:id" element={<ProductPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
