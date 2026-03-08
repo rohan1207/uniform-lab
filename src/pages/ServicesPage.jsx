@@ -382,8 +382,8 @@ export default function ServicesPage() {
               <em>Manufacturing &amp; Distribution</em>
             </h1>
             <p className="sv-hero-sub">
-              Complete services for schools, corporates, and institutions,
-              built for consistency, scalability, and operational ease.
+              Complete services for schools, corporates, and institutions, built
+              for consistency, scalability, and operational ease.
             </p>
           </div>
         </div>

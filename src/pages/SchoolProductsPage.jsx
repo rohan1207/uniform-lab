@@ -684,6 +684,7 @@ export default function SchoolProductsPage() {
           id: school?._id || school?.slug,
           slug: school?.slug || slug,
           name: school?.name || slug,
+          logo: school?.logoUrl || school?.logo || null,
           allProducts: allProductsFlat,
           categories: categories.map((c) => ({
             id: c._id,
@@ -1020,30 +1021,50 @@ export default function SchoolProductsPage() {
                 <ArrowLeft size={17} strokeWidth={2.5} />
                 All Schools
               </Link>
-              <div className="flex flex-col items-center flex-1 min-w-0">
-                <h1
-                  className="m-0 font-black leading-tight text-center truncate w-full"
-                  style={{
-                    fontSize: "clamp(14px, 1.4vw, 19px)",
-                    fontWeight: 800,
-                    letterSpacing: "-0.3px",
-                    color: "#0f172a",
-                  }}
-                >
-                  {catalog.name}
-                </h1>
-                <p
-                  className="m-0 font-semibold"
-                  style={{
-                    fontSize: "clamp(10px,0.8vw,11px)",
-                    fontWeight: 500,
-                    color: "#94a3b8",
-                    marginTop: "2px",
-                  }}
-                >
-                  {totalProducts} products · {catalog.categories?.length ?? 0}{" "}
-                  Categories
-                </p>
+              <div className="flex items-center justify-center gap-4 flex-1 min-w-0">
+                {catalog.logo && (
+                  <img
+                    src={catalog.logo}
+                    alt={`${catalog.name} logo`}
+                    style={{
+                      width: 90,
+                      height: 90,
+                      objectFit: "contain",
+                      flexShrink: 0,
+                      scale: "150%",
+                      marginRight: 12,
+                    }}
+                  />
+                )}
+                <div className="flex flex-col items-start min-w-0">
+                  <h1
+                    className="m-0 font-black leading-tight"
+                    style={{
+                      fontSize: "clamp(14px, 1.4vw, 19px)",
+                      fontWeight: 800,
+                      letterSpacing: "-0.3px",
+                      color: "#0f172a",
+                      maxWidth: "28ch", // ← wraps after ~4-5 words
+                      whiteSpace: "normal", // ← allow wrapping
+                      wordBreak: "break-word", // ← safety for very long single words
+                      lineHeight: 1.25,
+                    }}
+                  >
+                    {catalog.name}
+                  </h1>
+                  <p
+                    className="m-0 font-semibold"
+                    style={{
+                      fontSize: "clamp(10px,0.8vw,11px)",
+                      fontWeight: 500,
+                      color: "#94a3b8",
+                      marginTop: "2px",
+                    }}
+                  >
+                    {totalProducts} products · {catalog.categories?.length ?? 0}{" "}
+                    Categories
+                  </p>
+                </div>
               </div>
               <button
                 type="button"
@@ -1114,32 +1135,53 @@ export default function SchoolProductsPage() {
                 </button>
               </div>
               {/* Row 2: school name */}
-              <h1
-                className="m-0 font-black leading-snug"
-                style={{
-                  fontSize: "15px",
-                  fontWeight: 800,
-                  letterSpacing: "-0.2px",
-                  color: "#0f172a",
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                }}
+              {/* Row 2: logo + school name */}
+              <div
+                className="flex items-center gap-6 mt-1"
+                style={{ minWidth: 0 }}
               >
-                {catalog.name}
-              </h1>
-              <p
-                className="m-0"
-                style={{
-                  fontSize: "11px",
-                  fontWeight: 500,
-                  color: "#94a3b8",
-                  marginTop: "1px",
-                }}
-              >
-                {totalProducts} products · {catalog.categories?.length ?? 0}{" "}
-                grades
-              </p>
+                {catalog.logo && (
+                  <img
+                    src={catalog.logo}
+                    alt={`${catalog.name} logo`}
+                    style={{
+                      width: 64,
+                      height: 64,
+                      scale: "120%",
+                      objectFit: "contain",
+                      flexShrink: 0,
+                    }}
+                  />
+                )}
+                <div style={{ minWidth: 0, flex: 1 }}>
+                  <h1
+                    className="m-0 font-black"
+                    style={{
+                      fontSize: "12px",
+                      fontWeight: 800,
+                      letterSpacing: "",
+                      color: "#0f172a",
+                      whiteSpace: "normal",
+                      wordBreak: "break-word",
+                      lineHeight: 1.25,
+                      margin: 0,
+                    }}
+                  >
+                    {catalog.name}
+                  </h1>
+                  <p
+                    className="m-0"
+                    style={{
+                      fontSize: "11px",
+                      fontWeight: 500,
+                      color: "#94a3b8",
+                      marginTop: "1px",
+                    }}
+                  >
+                    {totalProducts} products
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

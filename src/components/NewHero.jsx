@@ -27,6 +27,14 @@ const GLOBAL_CSS = `
   /* Hide mobile-only buttons row on desktop */
   .hero-btns-mobile { display: none; }
 
+  /* desktop: add extra gap between upper/lower metric card via hr separator */
+  @media (min-width: 768px) {
+    .hero-left-metrics .metric-sep,
+    .hero-right-col .metric-sep {
+      margin: 68px 0 !important;
+    }    /* nudge right metrics a little further right for perfect symmetry */
+     }
+
   /* Left-col metric cards: visible on desktop, hidden on mobile */
   .hero-left-metrics {
     display: flex;
@@ -456,16 +464,17 @@ export default function NewHero({
               {lineOne}
             </p> */}
 
-            <h2
-              className="sp-heading mt-3 font-black text-[#1a1a2e] leading-tight mb-3"
+            <h1
+              className="sp-heading mt-4 font-black text-[#1a1a2e] leading-tight mb-3"
               style={{
                 fontFamily: "'Inter', sans-serif",
-                fontSize: "clamp(26px, 3vw, 52px)",
+                fontSize: "clamp(28px, 4vw, 54px)",
                 letterSpacing: "-0.5px",
               }}
             >
-              <span className="text-[#2563eb]">School Uniforms</span> Made Simple 
-            </h2>
+              <span className="text-[#2563eb]">School Uniforms</span> Made
+              Simple
+            </h1>
           </div>
 
           {/* ── Main grid ── */}
@@ -488,7 +497,7 @@ export default function NewHero({
                 position: "relative",
                 zIndex: 30,
                 paddingLeft: "clamp(8px, 1vw, 16px)",
-                paddingRight: "clamp(8px, 1.8vw, 24px)",
+                paddingRight: "clamp(40px, 6vw, 80px)",
               }}
             >
               <div className="flex items-center gap-2">
@@ -626,7 +635,7 @@ export default function NewHero({
                 >
                   <GameButton
                     to={primaryHref}
-                    label="Partner with us"
+                    label="Join us"
                     emoji="🏫"
                     peekEmoji="🏫"
                     variant="gold"
@@ -650,6 +659,7 @@ export default function NewHero({
                 zIndex: 30,
                 paddingBottom: "clamp(4px, 0.8vh, 10px)",
                 paddingLeft: "clamp(40px, 6vw, 80px)",
+                paddingRight: "clamp(8px, 1.8vw, 24px)",
               }}
             >
               <Metric

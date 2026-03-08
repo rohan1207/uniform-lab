@@ -312,7 +312,7 @@ export default function AboutSection() {
             </div>
             <h2 className="about-h2">
               Reliable Uniform Systems.
-              <span> Human-Centered Execution.</span>
+              <span> Human-Centric Execution.</span>
             </h2>
             <div className="about-divider" />
           </motion.div>

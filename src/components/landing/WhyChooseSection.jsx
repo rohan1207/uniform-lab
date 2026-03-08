@@ -276,9 +276,9 @@ export default function WhyChooseSection() {
             {/* Heading + sub — flex row like ServicesSection */}
             <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
               <h2 className="why-h2">
-                Built for Stability,
+                Built for Quality, 
                 <br />
-                <span>Not Short-Term Supply</span>
+                <span>Crafted for Comfort</span>
               </h2>
               <div className="why-quote">
                 <span className="why-quote-mark">&ldquo;</span>
