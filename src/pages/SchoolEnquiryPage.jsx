@@ -381,9 +381,9 @@ const CSS = `
 /* ─── COMPONENT ──────────────────────────────────────────────────────── */
 
 // ── EmailJS — fill these 3 values once client sends them ──────────────
-const EMAILJS_SERVICE_ID  = "YOUR_SERVICE_ID";   // e.g. service_abc123
-const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID";  // e.g. template_xyz789
-const EMAILJS_PUBLIC_KEY  = "YOUR_PUBLIC_KEY";   // e.g. user_XXXXXXXX
+const EMAILJS_SERVICE_ID = "service_f2safjb"; // e.g. service_abc123
+const EMAILJS_TEMPLATE_ID = "template_cm59nij"; // e.g. template_xyz789
+const EMAILJS_PUBLIC_KEY = "kFDTNJndPmAv3uuJc"; // e.g. user_XXXXXXXX
 // ──────────────────────────────────────────────────────────────────────
 
 const WHATSAPP_NUMBER = "919028552855"; // no + or spaces
@@ -460,12 +460,12 @@ export default function SchoolEnquiryPage() {
         EMAILJS_SERVICE_ID,
         EMAILJS_TEMPLATE_ID,
         {
-          from_name:   form.contact,
-          reply_to:    form.email,
-          phone:       form.phone,
+          from_name: form.contact,
+          reply_to: form.email,
+          phone: form.phone,
           school_name: form.school,
-          city:        form.city    || "—",
-          message:     form.message || "—",
+          city: form.city || "—",
+          message: form.message || "—",
         },
         EMAILJS_PUBLIC_KEY,
       );

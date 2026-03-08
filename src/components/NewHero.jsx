@@ -419,7 +419,7 @@ function Metric({ Icon, title, sub, iconColor = "#2563eb" }) {
 ────────────────────────────────────────────────────────────────────────── */
 export default function NewHero({
   logoSrc = "/logo.png",
-  lineOne = "School Uniforms Made Simple.",
+  lineOne = "School Uniforms Made Simple",
   lineTwo = "Order online, get fast delivery and perfect fits.",
   heroVideoSrc = "/hero.mp4",
   primaryHref = "/schoolenquiry",
@@ -446,7 +446,7 @@ export default function NewHero({
               paddingRight: "clamp(14px, 2.2vw, 36px)",
             }}
           >
-            <p
+            {/* <p
               className="m-0 font-bold text-[#1a1a2e] leading-tight mt-10"
               style={{
                 fontSize: "clamp(20px, 2.6vw, 36px)",
@@ -454,7 +454,18 @@ export default function NewHero({
               }}
             >
               {lineOne}
-            </p>
+            </p> */}
+
+            <h2
+              className="sp-heading mt-3 font-black text-[#1a1a2e] leading-tight mb-3"
+              style={{
+                fontFamily: "'Inter', sans-serif",
+                fontSize: "clamp(26px, 3vw, 52px)",
+                letterSpacing: "-0.5px",
+              }}
+            >
+              <span className="text-[#2563eb]">School Uniforms</span> Made Simple 
+            </h2>
           </div>
 
           {/* ── Main grid ── */}
