@@ -79,7 +79,8 @@ const CSS = `
     background: url('/contact.png') center center / cover no-repeat;
     padding: clamp(56px, 9vw, 110px) clamp(20px, 5vw, 80px) clamp(72px, 11vw, 130px);
     text-align: left; overflow: hidden;
-  }
+    min-height: 80vh;    display: flex;
+    align-items: center; /* vertical centering */  }
   /* dark blue overlay matching AboutPage for readability */
   .eq-hero::before {
     content: '';
@@ -91,7 +92,7 @@ const CSS = `
   /* decorative layers not needed when using photo */
   .eq-hero-dots,
   .eq-hero-glow { display: none; }
-  .eq-hero-inner { position: relative; z-index: 2; max-width: 1200px; margin: 0 auto; text-align: left; }
+  .eq-hero-inner { position: relative; z-index: 2; max-width: 1200px; margin: 0 auto; text-align: left; display: inline-block; padding: 0 clamp(16px, 3vw, 40px); }
   .eq-pill {
     display: inline-flex; align-items: center; gap: 6px;
     padding: 6px 16px; border-radius: 999px;
@@ -230,7 +231,7 @@ const CSS = `
     letter-spacing: -0.3px;
   }
   .eq-form-subtitle { color: #64748b; font-size: 13px; font-weight: 500; }
-  .eq-form-body { padding: 28px 32px 40px; /* extra bottom space to align with contact strip */ }
+  .eq-form-body { padding: 28px 32px 64px; }
 
   /* Form elements */
   .eq-field { margin-bottom: 18px; }
@@ -268,7 +269,7 @@ const CSS = `
     font-weight: 700; letter-spacing: 0.11em; text-transform: uppercase;
     display: flex; align-items: center; justify-content: center; gap: 10px;
     transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
-    margin-top: 26px;
+    margin-top: 22px;
   }
   .eq-submit:hover { filter: brightness(1.04); transform: translateY(-1px); box-shadow: 0 6px 22px rgba(37,99,235,0.28); }
   .eq-submit:active { transform: translateY(1px); box-shadow: none; }
@@ -358,13 +359,13 @@ const CSS = `
   }
   @media (max-width: 767px) {
     .eq-root { padding-top: 72px; }
-    .eq-hero { padding: clamp(40px, 8vw, 56px) 16px clamp(56px, 10vw, 72px); }
+    .eq-hero { padding: clamp(48px, 10vw, 72px) 16px clamp(64px, 12vw, 88px); }
     .eq-pill { font-size: 10px; padding: 5px 12px; white-space: nowrap; }
     .eq-main { margin-top: -32px; padding: 0 16px 40px; }
     .eq-info-card { padding: 24px 20px; border-radius: 20px; }
     .eq-form-card { border-radius: 20px; }
     .eq-form-top { padding: 22px 20px 18px; flex-direction: column; align-items: center; text-align: center; }
-    .eq-form-body { padding: 20px 20px 24px; }
+    .eq-form-body { padding: 20px 20px 40px; }
     .eq-contact-strip { padding: 18px 20px; border-radius: 16px; }
   }
   @media (max-width: 600px) {
@@ -532,12 +533,10 @@ export default function SchoolEnquiryPage() {
             <h1 className="eq-h1">
               A uniform partner that
               <br />
-              <em>thinks like a school.</em>
+              <em> That Values Your Time.</em>
             </h1>
             <p className="eq-hero-sub">
-              We bring an organised, process-first approach to uniforms from
-              fabric sourcing and patterning to branding and doorstep delivery
-              for parents.
+             Eliminate the stress of uniform management. We combine 20+ years of heritage with a modern, system-driven approach to deliver high-quality apparel for any institution.
             </p>
           </div>
         </div>
