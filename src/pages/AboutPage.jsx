@@ -1385,31 +1385,32 @@ export default function AboutPage() {
           {/* ── Certificates ── */}
           <Reveal>
             <section className="ab-cert-section">
-              <div className="ab-card-header">
-                <div>
-                  <div className="ab-sec-label">Certifications</div>
+              <div className="ab-card-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 0 }}>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 0 }}>
+                  <div className="ab-sec-label" style={{ marginBottom: '6px' }}>Certifications</div>
                   <h2 className="ab-h2" style={{ marginBottom: 0 }}>
                     Registered &amp; <span>Compliant</span>
                   </h2>
                 </div>
-                <div className="ab-card-icon">
-                  <Files size={22} />
+                <div style={{ background: '#e0edff', borderRadius: '12px', padding: '12px', display: 'flex', alignItems: 'center' }}>
+                  <Files size={28} style={{ color: '#2563eb' }} />
                 </div>
               </div>
 
               {/* Desktop / tablet: side-by-side cards */}
               <div className="ab-cert-grid">
                 {CERTIFICATES.map((cert) => (
-                  <article key={cert.id} className="ab-cert-card">
-                    <span className="ab-cert-badge">{cert.badge}</span>
-                    <h3 className="ab-cert-title">{cert.title}</h3>
-                    <p className="ab-cert-subtitle">{cert.subtitle}</p>
-                    <div className="ab-cert-frame">
+                  <article key={cert.id} className="ab-cert-card" style={{ padding: '24px 24px 18px', border: '1.5px solid #cbd5e1', boxShadow: '0 12px 32px rgba(37,99,235,0.08)' }}>
+                    <span className="ab-cert-badge" style={{ fontSize: '12px', padding: '6px 14px' }}>{cert.badge}</span>
+                    <h3 className="ab-cert-title" style={{ fontSize: '19px', marginBottom: '6px' }}>{cert.title}</h3>
+                    <p className="ab-cert-subtitle" style={{ fontSize: '14px', marginBottom: '10px' }}>{cert.subtitle}</p>
+                    <div className="ab-cert-frame" style={{ padding: '0', minHeight: 'auto', background: '#f8fafc', border: '1.5px solid #cbd5e1', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       <img
                         src={cert.image}
                         alt={cert.alt}
                         loading="lazy"
                         className="ab-cert-img"
+                        style={{ width: '96%', maxHeight: '340px', objectFit: 'contain', borderRadius: '14px', boxShadow: '0 4px 24px rgba(37,99,235,0.10)' }}
                       />
                     </div>
                   </article>

@@ -199,23 +199,6 @@ function ServiceCard({ service, index }) {
             {service.text}
           </p>
 
-          {/* Tags */}
-          <div className="flex flex-wrap gap-1 md:gap-2">
-            {service.tags.map((tag) => (
-              <span
-                key={tag}
-                className="text-[9px] md:text-[11px] font-700 px-2 md:px-3 py-0.5 md:py-1 rounded-full border transition-all duration-200 group-hover:border-opacity-60"
-                style={{
-                  background: service.accentLight,
-                  color: service.accent,
-                  borderColor: `${service.accent}28`,
-                }}
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-
           {/* Arrow — hide on phone to save space, show from md */}
           <div className="hidden md:flex items-center gap-1.5 mt-1">
             <span

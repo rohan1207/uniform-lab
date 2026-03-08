@@ -16,14 +16,14 @@ const SHOP_BY_LOOK_CONFIG = [
     modelImage: "/kalyani_shopbylook.png",
   },
   {
-    id:"Vidya Pratishthan's Magarpatta City Public School",
+    id: "Vidya Pratishthan's Magarpatta City Public School",
     slug: "vidya-pratishthans-magarpatta-city-public-school",
     shortName: " Vidya Pratishthan's Magarpatta City Public School",
     logo: "/magarpatta_logo.png",
     modelImage: "/magarpatta_shopbylook.png",
   },
   {
-    id:"Vidya Pratishthan's Nanded City Public School",
+    id: "Vidya Pratishthan's Nanded City Public School",
     slug: "vidya-pratishthans-nanded-city-public-school",
     shortName: "Vidya Pratishthan's Nanded City Public School",
     logo: "/nanded_logo.png",
@@ -41,7 +41,6 @@ const SHOP_BY_LOOK_CONFIG = [
     logo: "/bvrtse_logo.png",
     modelImage: "/bvrtse_shopbylook.png",
   },
-  
 ];
 
 const SHOP_BY_LOOK_SCHOOLS = SHOP_BY_LOOK_CONFIG.map((cfg) => {
@@ -53,7 +52,7 @@ const SHOP_BY_LOOK_SCHOOLS = SHOP_BY_LOOK_CONFIG.map((cfg) => {
     id: base?.id || cfg.id,
     slug,
     name: base?.name || cfg.shortName || cfg.id,
-   
+
     logo: cfg.logo || null,
     shortName: cfg.shortName || base?.name || cfg.id,
     modelImage: cfg.modelImage,
@@ -87,7 +86,7 @@ const CSS = `
 }
 
 .sbl-inner {
-  max-width: 1160px;
+  max-width: 1280px;
   margin: 0 auto;
   padding: 0 32px;
   display: grid;
@@ -215,6 +214,8 @@ const CSS = `
   align-items: center;
   gap: 7px;
   margin-top: 20px;
+  padding-left: 24px;
+  max-width: 420px;
 }
 
 .sbl-dot {

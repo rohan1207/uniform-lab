@@ -376,7 +376,17 @@ function SchoolCard({ school }) {
 
         {/* ── Name (first, prominent) ── */}
         <div className="sp-card-body">
-          <p className="sp-card-name">{school.name}</p>
+          <p className="sp-card-name">
+            {school.name.split(/(School)/g).map((part, i) =>
+              part === "School" ? (
+                <span key={i} className="text-[#2563eb]">
+                  School
+                </span>
+              ) : (
+                part
+              ),
+            )}
+          </p>
         </div>
       </div>
     </Link>
@@ -470,7 +480,7 @@ export default function FeaturedSchools() {
                 letterSpacing: "-0.5px",
               }}
             >
-              Find Your School
+              Find Your <span className="text-[#2563eb]">School</span>
             </h1>
 
             <p

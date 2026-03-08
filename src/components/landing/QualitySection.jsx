@@ -43,7 +43,11 @@ const CSS = `
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 22px;
-    align-items: start;
+    align-items: stretch;
+  }
+  .qc-left {
+    display: flex;
+    flex-direction: column;
   }
   .qc-h2 {
     margin: 0 0 12px;
@@ -67,7 +71,8 @@ const CSS = `
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 8px;
-    margin-top: 14px;
+    margin-top: auto;
+    padding-top: 14px;
   }
   .qc-feature {
     border: 1px solid #dbeafe;
@@ -169,7 +174,7 @@ export default function QualitySection() {
               Manufacturing & Quality
             </div>
             <div className="qc-grid">
-              <div>
+              <div className="qc-left">
                 <h2 className="qc-h2">
                   Uniform consistency is not accidental.
                   <span> It is process-driven.</span>
@@ -203,13 +208,13 @@ export default function QualitySection() {
                     </li>
                   ))}
                 </ul>
-                <div className="qc-cta-wrap">
-                  <Link to="/about#quality-control" className="qc-cta">
-                    Quality Framework
-                    <ArrowRight size={14} />
-                  </Link>
-                </div>
               </div>
+            </div>
+            <div className="qc-cta-wrap">
+              <Link to="/about#quality-control" className="qc-cta">
+                Quality Framework
+                <ArrowRight size={14} />
+              </Link>
             </div>
           </div>
         </div>
