@@ -311,7 +311,7 @@ const CSS = `
   .ab-stats-strip {
     position: relative;
     margin: -36px auto 0;
-    max-width: 1100px;
+    max-width: 1280px; /* widened further for better alignment */
     padding: 0 clamp(16px, 3vw, 40px);
     z-index: 10;
   }

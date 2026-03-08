@@ -347,7 +347,7 @@ const CSS = `
 @media (max-width: 640px) {
   .sbl-sec { padding: 28px 0 32px; }
   .sbl-inner { padding: 0 16px; gap: 12px; align-items: center !important; }
-  .sbl-right { min-height: 300px; display: flex !important; justify-content: center !important; align-items: center !important; width: 100%; }
+.sbl-right { max-height: 300px; display: flex !important; justify-content: center !important; align-items: center !important; width: 100%; z-index: 0; }
 
   /* Model link: fit content so it centers in .sbl-right */
   .sbl-model-link { width: fit-content !important; max-width: 100%; margin-left: auto !important; margin-right: auto !important; }
@@ -363,8 +363,9 @@ const CSS = `
     max-height: 320px;
     object-fit: contain;
     object-position: top center;
-    transform: scale(1.18);
+    transform: scale(1); /* remove oversize scaling on phone */
     transform-origin: top center;
+    z-index: 1; /* keep behind school card when stacking */
   }
 
   /* Compact heading on phone */

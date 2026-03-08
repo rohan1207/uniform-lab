@@ -287,7 +287,7 @@ const CSS = `
     .about-points-row { gap: 8px; margin-bottom: 22px; }
     .about-point-pill { padding: 8px 12px; font-size: 12px; }
     .about-cta-bar { flex-direction: column; align-items: center; text-align: center; padding: 16px; }
-    .about-cta-btn { justify-content: center; }
+    .about-cta-btn { justify-content: center; margin-left: 0; }
   }
 `;
 

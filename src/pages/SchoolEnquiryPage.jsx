@@ -76,21 +76,22 @@ const CSS = `
   /* ── Hero ── */
   .eq-hero {
     position: relative;
-    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 55%, #2563eb 100%);
-    padding: clamp(90px, 14vw, 140px) clamp(20px, 5vw, 80px) clamp(100px, 16vw, 160px);
-    text-align: center; overflow: hidden;
+    background: url('/contact.png') center center / cover no-repeat;
+    padding: clamp(56px, 9vw, 110px) clamp(20px, 5vw, 80px) clamp(72px, 11vw, 130px);
+    text-align: left; overflow: hidden;
   }
-  .eq-hero-dots {
-    position: absolute; inset: 0; pointer-events: none;
-    background-image: radial-gradient(rgba(255,255,255,0.07) 1px, transparent 1px);
-    background-size: 28px 28px;
+  /* dark blue overlay matching AboutPage for readability */
+  .eq-hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(10,18,40,0.55) 0%, rgba(15,40,100,0.42) 60%, rgba(20,60,160,0.30) 100%);
+    z-index: 0;
   }
-  .eq-hero-glow {
-    position: absolute; width: 600px; height: 600px; border-radius: 50%;
-    background: radial-gradient(circle, rgba(96,165,250,0.16) 0%, transparent 70%);
-    left: 50%; top: 50%; transform: translate(-50%, -50%); pointer-events: none;
-  }
-  .eq-hero-inner { position: relative; z-index: 1; max-width: 700px; margin: 0 auto; }
+
+  /* decorative layers not needed when using photo */
+  .eq-hero-dots,
+  .eq-hero-glow { display: none; }
+  .eq-hero-inner { position: relative; z-index: 2; max-width: 1200px; margin: 0 auto; text-align: left; }
   .eq-pill {
     display: inline-flex; align-items: center; gap: 6px;
     padding: 6px 16px; border-radius: 999px;
@@ -104,7 +105,7 @@ const CSS = `
     color: #fff; font-weight: 800;
     line-height: 1.06; letter-spacing: -0.8px; margin: 0 0 16px;
   }
-  .eq-h1 em { font-style: normal; color: #93c5fd; }
+  .eq-h1 em { font-style: normal; color: #60a5fa; }
   .eq-hero-sub {
     color: #93c5fd; font-size: clamp(14px, 1.3vw, 17px);
     font-weight: 500; line-height: 1.7;
@@ -229,7 +230,7 @@ const CSS = `
     letter-spacing: -0.3px;
   }
   .eq-form-subtitle { color: #64748b; font-size: 13px; font-weight: 500; }
-  .eq-form-body { padding: 28px 32px 32px; }
+  .eq-form-body { padding: 28px 32px 40px; /* extra bottom space to align with contact strip */ }
 
   /* Form elements */
   .eq-field { margin-bottom: 18px; }
@@ -267,7 +268,7 @@ const CSS = `
     font-weight: 700; letter-spacing: 0.11em; text-transform: uppercase;
     display: flex; align-items: center; justify-content: center; gap: 10px;
     transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
-    margin-top: 22px;
+    margin-top: 26px;
   }
   .eq-submit:hover { filter: brightness(1.04); transform: translateY(-1px); box-shadow: 0 6px 22px rgba(37,99,235,0.28); }
   .eq-submit:active { transform: translateY(1px); box-shadow: none; }
@@ -357,7 +358,7 @@ const CSS = `
   }
   @media (max-width: 767px) {
     .eq-root { padding-top: 72px; }
-    .eq-hero { padding: clamp(48px, 10vw, 72px) 16px clamp(64px, 12vw, 88px); }
+    .eq-hero { padding: clamp(40px, 8vw, 56px) 16px clamp(56px, 10vw, 72px); }
     .eq-pill { font-size: 10px; padding: 5px 12px; white-space: nowrap; }
     .eq-main { margin-top: -32px; padding: 0 16px 40px; }
     .eq-info-card { padding: 24px 20px; border-radius: 20px; }
