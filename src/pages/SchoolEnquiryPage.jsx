@@ -775,7 +775,7 @@ export default function SchoolEnquiryPage() {
                   </div>
 
                   <button type="submit" className="eq-submit">
-                    Send via WhatsApp
+                    Send via WhatsApp / Email
                     <ArrowRight size={18} />
                   </button>
 

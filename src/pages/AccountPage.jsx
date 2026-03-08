@@ -1322,8 +1322,9 @@ export default function AccountPage() {
             Exchange request
           </h2>
           <p className="text-xs text-[var(--color-text-muted)]">
-            Select the order and item you'd like to exchange, then describe the
-            reason. Our team will get back to you.
+            **Please note: exchanges must be initiated from the store or by
+            contacting us first.** Select the order and item you'd like to
+            exchange, then describe the reason. Our team will get back to you.
           </p>
           {exchangeSuccess && (
             <div

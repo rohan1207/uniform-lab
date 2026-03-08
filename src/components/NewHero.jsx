@@ -468,7 +468,7 @@ export default function NewHero({
               className="sp-heading mt-4 font-black text-[#1a1a2e] leading-tight mb-3"
               style={{
                 fontFamily: "'Inter', sans-serif",
-                fontSize: "clamp(28px, 4vw, 54px)",
+                fontSize: "clamp(24px, 2.5vw, 50px)",
                 letterSpacing: "-0.5px",
               }}
             >

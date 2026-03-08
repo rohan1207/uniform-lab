@@ -42,31 +42,43 @@ export default function Footer() {
         .ftl-contact-text a { color: #cbd5e1; text-decoration: none; transition: color 0.15s; }
         .ftl-contact-text a:hover { color: #fff; }
         .ftl-contact-sub { font-size: 11.5px; color: #94a3b8; margin-top: 1px; }
-      `}</style>
+            .ftl-logo { height: 38px; display: block; filter: drop-shadow(0 1px 4px rgba(0,0,0,0.12)); }
+            @media (min-width: 640px) {
+              .ftl-logo { height: 95px; }
+            }
+            @media (min-width: 1024px) {
+              .ftl-logo { height: 95px; }
+            }
+            @media (max-width: 480px) {
+              .ftl-logo { height: 80px; }
+            }
+          `}</style>
 
-      {/* ── Accent line ── */}
-      <div
-        style={{
-          height: "2px",
-          background:
-            "linear-gradient(90deg, transparent 0%, #1d4ed8 30%, #facc15 55%, transparent 100%)",
-        }}
-      />
+          {/* ── Accent line ── */}
+          <div
+            style={{
+              height: "2px",
+              background:
+                "linear-gradient(90deg, transparent 0%, #1d4ed8 30%, #facc15 55%, transparent 100%)",
+            }}
+          />
 
-      {/* ── Main content ── */}
-      <div
-        style={{ maxWidth: 1200, margin: "0 auto", padding: "52px 24px 36px" }}
-      >
-        {/* 3-col grid */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-            gap: "48px 40px",
-            alignItems: "start",
-          }}
-        >
-          {/* ── Col 1 : Brand ── */}
+          {/* ── Main content ── */}
+          <div
+            style={{
+              maxWidth: 1200, margin: "0 auto", padding: "52px 24px 36px",
+            }}
+          >
+            {/* 3-col grid */}
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+                gap: "48px 40px",
+                alignItems: "start",
+              }}
+            >
+              {/* ── Col 1 : Brand ── */}
           <div>
             <div
               style={{
@@ -85,17 +97,16 @@ export default function Footer() {
             >
               School Uniforms
             </div>
-            <h3
-              style={{
-                fontSize: 24,
-                fontWeight: 800,
-                color: "#fff",
-                margin: "0 0 10px",
-                letterSpacing: "-0.4px",
-              }}
-            >
-              The Uniform Lab
-            </h3>
+                <img
+                  src="/logo.png"
+                  alt="The Uniform Lab Logo"
+                  className="ftl-logo"
+                  style={{
+                    margin: "0 0 0px",
+                   
+                  }}
+                />
+            
             <p
               style={{
                 fontSize: 13,
@@ -228,7 +239,9 @@ export default function Footer() {
             color: "#94a3b8",
           }}
         >
-          <span>© {year} The Uniform Lab. All rights reserved.</span>
+              <span>
+                © {year} The Uniform Lab. All rights reserved.
+              </span>
           <span>Serving schools &amp; institutions across India.</span>
           <span>Designed &amp; developed by TheSocialKollab</span>
         </div>

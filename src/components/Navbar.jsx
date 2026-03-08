@@ -107,14 +107,12 @@ export default function Navbar() {
     letterSpacing: "0.01em",
   });
 
-  const leftLinks = [
-    { href: "/", label: "Home" },
-  ];
+  const leftLinks = [{ href: "/", label: "Home" }];
 
   const rightLinks = [
+    { href: "/about", label: "About Us" },
     { href: "/services", label: "Services" },
     { href: "/faqs", label: "FAQs" },
-    { href: "/about", label: "About Us" },
     { href: "/size-guide", label: "Size Guide" },
     { href: "/schoolenquiry", label: "Contact Us" },
   ];
@@ -362,7 +360,14 @@ export default function Navbar() {
           </nav>
 
           {/* Icons — RIGHT */}
-          <div style={{ display: "flex", alignItems: "center", gap: "4px", flexShrink: 0 }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "4px",
+              flexShrink: 0,
+            }}
+          >
             {[
               { icon: User, label: "Account", href: "/account" },
               {

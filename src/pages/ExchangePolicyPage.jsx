@@ -192,9 +192,11 @@ export default function ExchangePolicyPage() {
 
           {/* Quick notice */}
           <div className="ep-notice">
-            ⚠️ Please note: <strong>Returns are not accepted</strong>. For
-            uniforms, only exchange requests will be considered. We have a{" "}
-            <strong>7-day exchange window</strong> from the date of delivery.
+            ⚠️ Please note:{" "}
+            <strong>In case of exchange kindly visit the store.</strong> Returns
+            are not accepted. For uniforms, only exchange requests will be
+            considered. We have a <strong>7-day exchange window</strong> from
+            the date of delivery.
           </div>
 
           {/* General Policy */}
@@ -204,7 +206,9 @@ export default function ExchangePolicyPage() {
               General Exchange Policy
             </div>
             <ul className="ep-list">
-              <li>In case of uniforms, ONLY EXCHANGE requests will be considered.</li>
+              <li>
+                In case of uniforms, ONLY EXCHANGE requests will be considered.
+              </li>
               <li>The exchange will be done for extra charges.</li>
               <li>
                 For exchange requests for a higher or lower size, a convenience
@@ -223,9 +227,15 @@ export default function ExchangePolicyPage() {
                 Branded packaging should be intact and returned in a safe
                 condition with the product.
               </li>
-              <li>Damage due to misuse of product is not covered under this policy.</li>
+              <li>
+                Damage due to misuse of product is not covered under this
+                policy.
+              </li>
               <li>Socks and clothing freebies are ineligible for exchange.</li>
-              <li>Products with tampered or missing serial numbers are not eligible.</li>
+              <li>
+                Products with tampered or missing serial numbers are not
+                eligible.
+              </li>
               <li>
                 Replacement can be for the full product or part(s) of the
                 product, subject to availability.
@@ -254,8 +264,14 @@ export default function ExchangePolicyPage() {
               any further action is taken.
             </p>
             <ul className="ep-list" style={{ marginTop: 12 }}>
-              <li>We have a 7-day exchange policy from the date of receiving your item.</li>
-              <li>Exchanges are only possible for a size change in the same product.</li>
+              <li>
+                We have a 7-day exchange policy from the date of receiving your
+                item.
+              </li>
+              <li>
+                Exchanges are only possible for a size change in the same
+                product.
+              </li>
               <li>
                 Your item must be in the same condition as received — unworn,
                 unused, with tags, and in its original packaging.
@@ -295,10 +311,16 @@ export default function ExchangePolicyPage() {
               Certain types of items cannot be returned or exchanged:
             </p>
             <ul className="ep-list">
-              <li>Custom products (special orders, personalized items, hemmed pants).</li>
+              <li>
+                Custom products (special orders, personalized items, hemmed
+                pants).
+              </li>
               <li>Personal care goods (such as beauty products).</li>
               <li>Customized products and wholesale orders.</li>
-              <li>Sale items — we cannot accept returns or exchanges on sale items.</li>
+              <li>
+                Sale items — we cannot accept returns or exchanges on sale
+                items.
+              </li>
             </ul>
             <p className="ep-para" style={{ marginTop: 12 }}>
               Please get in touch if you have questions or concerns about your
@@ -313,7 +335,10 @@ export default function ExchangePolicyPage() {
               Exchange Process
             </div>
             <ul className="ep-list">
-              <li>Exchange is accepted only for size change within 7 days of receiving the product.</li>
+              <li>
+                Exchange is accepted only for size change within 7 days of
+                receiving the product.
+              </li>
               <li>
                 The fastest way is to return the item at our physical store and
                 pick up the required size.
@@ -361,10 +386,14 @@ export default function ExchangePolicyPage() {
                 To ensure timely delivery, please provide accurate details:
                 delivery address, name, and contact number of the addressee.
               </li>
-              <li>Please allow <strong>2–3 working days</strong> for your order to be dispatched.</li>
+              <li>
+                Please allow <strong>2–3 working days</strong> for your order to
+                be dispatched.
+              </li>
               <li>
                 Orders cannot be shipped to PO boxes or military addresses.
-                Rural domestic addresses may require one or more additional days.
+                Rural domestic addresses may require one or more additional
+                days.
               </li>
               <li>
                 For customization, personalized, or pre-ordered products,
