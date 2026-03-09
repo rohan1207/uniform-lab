@@ -291,7 +291,7 @@ export default function SizeGuidePage() {
           <div className="sg-tip-banner-inner">
             <span className="sg-tip-icon">💡</span>
             <span>
-              <strong>Before you start:</strong> use a soft measuring tape,
+              <strong>Before you start:</strong> Please keep 2 inches extra margin while measuring. If you are unsure about the measurements, contact us before ordering. use a soft measuring tape,
               stand straight in a relaxed posture, and wear thin clothing. Have
               someone help you for more accurate readings.
             </span>
