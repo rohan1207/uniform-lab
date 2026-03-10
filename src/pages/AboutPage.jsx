@@ -158,11 +158,11 @@ const CERTIFICATES = [
 /* Unsplash photos relevant to school/manufacturing/uniform */
 const GALLERY = [
   {
-    src: "/fabric4.webp",
+    src: "/fabric4.jpeg",
     alt: "School children in uniforms",
   },
   {
-    src: "/fabric3.avif",
+    src: "/fabric3.jpg",
     alt: "Fabric manufacturing",
   },
   {
