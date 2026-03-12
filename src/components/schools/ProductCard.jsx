@@ -4,7 +4,6 @@ import { useCart } from "@/contexts/CartContext";
 import { useWishlist } from "@/contexts/WishlistContext";
 import { getProductColors, getProductImages } from "@/data/schoolCatalog";
 import { ShoppingBag, Check, Zap, Heart } from "lucide-react";
-import { toTitleCase } from "@/lib/apiCache";
 
 /* ─────────────────────────────────────────────────────────────────────────
    STYLES
@@ -429,7 +428,7 @@ export function ProductCard({ product, schoolName, schoolSlug, onQuickShop }) {
                 }}
                 className="group-hover:text-[#2563eb]"
               >
-                {toTitleCase(product.name)}
+                {product.name}
               </h3>
             </Link>
             <span

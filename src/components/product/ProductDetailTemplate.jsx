@@ -1,6 +1,5 @@
 import { useState, useRef, useCallback, useEffect, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { toTitleCase } from "@/lib/apiCache";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import {
   ShoppingBag,
@@ -670,7 +669,7 @@ export function ProductDetailTemplate({
                 color: "#0f172a",
               }}
             >
-              {toTitleCase(product.name)}
+              {product.name}
             </span>
           </nav>
         </div>
@@ -778,7 +777,7 @@ export function ProductDetailTemplate({
                 letterSpacing: "-0.3px",
               }}
             >
-              {toTitleCase(product.name)}
+              {product.name}
             </h1>
 
             <p
